@@ -1,0 +1,285 @@
+<!--放入公池-->
+<div class="popup_ changeStatusPop" id="changeStatusPop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="changeStatus_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{potentDesc?potentDesc.length:0}}/500</span>
+                            <textarea class="form-control" ng-model="potentDesc" maxlength="500" rows="3" placeholder="请输入备注内容" required style="min-height:110px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发送短信-->
+<div class="popup_ send_message">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="otherFun.sendMsg(2)">
+            <div class="popup_form_content" style="max-height:460px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">收件潜客:</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in adviser_">{{x.name}}<i ng-click="delAdviser_($index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="col-xs-3 noPadding">
+                                <span class="icon_name_add" ng-click="goCommonPop('potial-sel','potial_sel', '960px', adviser_)">添加潜客</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">短信内容:</label>
+                        <div class="col-xs-10">
+                            <span style="position: absolute;left: 18px;top: 4px;color: #999;">【{{sendMsgData.messageInfo.signName?sendMsgData.messageInfo.signName:'短信签名'}}】</span>
+                            <span class="input_words" style="right: 0px;">{{sendMsgData.messageInfo.signName?(sendMsgData.sendContent.length + sendMsgData.messageInfo.signName.length + 2):sendMsgData.sendContent.length}}/500</span>
+                            <textarea ng-trim="false" class="form-control" ng-model="sendMsgData.sendContent" ng-style="{'text-indent': (sendMsgData.messageInfo.signName?(sendMsgData.messageInfo.signName.length + 2):6) + 'em'}" style="width: 600px; height: 92px; resize: none;" maxlength="{{498 - sendMsgData.messageInfo.signName.length}}"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10" style="color: #F6B352;">
+                            <p>注：移动/联通/电信每条70字，普通短信70字符，长短信67字符为一条计费。</p>
+                            <p style="text-indent: 25px;">同一收件人只发送一条短信，短信未发送成功不扣除短信条数。</p>
+                            <p style="text-indent: 25px;">短信剩余条数不足时，系统将自动关闭短信提醒.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="common_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav_big(1)" ng-class="{tab_nav_show: studNavJud_big==1}">潜客</span>
+        <span ng-click="switchStudNav_big(2)" ng-class="{tab_nav_show: studNavJud_big==2}" ng-if="'165' | _authId">公池</span>
+    </div>
+    <div class="second_nav" ng-show="studNavJud_big==1">
+        <span ng-click="switchStudNav(0)" ng-class="{show_sp: studNavJud==0}">全部</span>
+        <span ng-click="switchStudNav(1)" ng-class="{show_sp: studNavJud==1}">新分配<i ng-class='{"main_color":studNavJud!=1}' style="font-style: initial;">{{"("+(potHead.newAllot>99?(99+"+"):potHead.newAllot)+")"}}</i></span>
+        <span ng-click="switchStudNav(2)" ng-class="{show_sp: studNavJud==2}">今日待跟进<i ng-class='{"main_color":studNavJud!=2}' style="font-style: initial;">{{"("+(potHead.todayFollow>99?(99+"+"):potHead.todayFollow)+")"}}</i></span>
+        <span ng-click="switchStudNav(3)" ng-class="{show_sp: studNavJud==3}">过去未跟进<i ng-class='{"main_color":studNavJud!=3}' style="font-style: initial;">{{"("+(potHead.pastFollow>99?(99+"+"):potHead.pastFollow)+")"}}</i></span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" select-id="potialSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择录入时间" autocomplete="off">
+            </li>
+
+            <li class="common_tab_libtn" ng-show="isDaochu">
+                <div class="common_tab_btn fontRed_BgWhite" ng-click="export_config()"><i class="icon_export"></i>导出潜客</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="isDaoru">
+                <div class="common_tab_btn fontRed_BgWhite" ng-click="goCommonPop('import-pop','import_popup','860px',{page:'潜客'})"><i class="icon_import"></i>导入潜客</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="addPotiental">
+                <div class="common_tab_btn" ng-click="goCommonPop('add-infos','addPotential','760px',datas)"><i class="icon_Addpotential"></i>新增潜客</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <ul class="common_tab_box">
+                    <li>
+                        <my-select list-name="跟进状态" list-data="{{search_track}}" list-field="name" list-click="searchByFind(n)" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="学员类型" list-data="{{search_studentType}}" list-field="name" list-click="searchByStudent(n)" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="意向课程" list-data="{{courseList}}" list-field="courseName" list-click="searchByCourse(n)" list-sort="true" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="最近跟进" list-data="{{screen_time}}" list-field="name" list-click="searchByDate(n)" list-sort="false"></my-select>
+                    </li>
+                    <li ng-show="isAllpotential">
+                        <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser(n)" list-search="true" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="采单员" list-data="{{screen_marketer}}" list-field="teacherName" list-click="searchByMaker(n)" list-search="true" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="渠道类型" list-data="{{channelTypeList}}" list-field="channelTypeName" list-click="searchByChannelType(n)" list-sort="false"></my-select>
+                    </li>
+                    <li ng-show="isActivity">
+                        <my-select list-name="活动" list-data="{{activityList}}" list-field="activityName" list-click="searchByActivity(n)" list-sort="true" list-search="true"></my-select>
+                    </li>
+                    <li ng-show="hasSecondType">
+                        <my-select list-name="来源渠道" list-data="{{channelList}}" list-field="channelName" list-click="searchByChannel(n)" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="意向度" list-data="{{intentList}}" list-field="name" list-click="searchByIntent(n)" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <search-age age-id="potiental" age-click="searchByAge(n)"></search-age>
+                    </li>
+                    <li>
+                        <my-select list-name="年级" list-data="{{gradeList}}" list-field="name" list-click="searchByGrade(n)" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="标签" list-data="{{markList}}" list-field="name" list-click="searchByMark(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="学校" list-data="{{schoolList}}" list-field="schoolName" list-click="searchBySchool(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <!--<li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="potential_status" ng-change="changeStatus()">已签约
+                        </label>
+                    </li>-->
+                    <!--<li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="potential_channel" ng-change="changeChannel()">无渠道
+                        </label>
+                    </li>-->
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover">
+                <thead my-id="potHead" my-thead="{{nameListThead_}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="potentialList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="{{nameListThead_.length}}">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody ng-show="potentialList" my-id="potialTdChange" my-td my-tr='<tr ng-repeat="x in potentialList">' td-head="{{checkedHead}}" td-list="{{nameListThead}}">
+                    <!--<tr my-id="potialTdChange" ng-repeat="x in potentialList" my-td td-head="{{checkedHead}}" td-list="{{nameListThead}}">-->
+                    <!--姓名、联系方式、意向度、意向课程、顾问、最近沟通、回访时间、状态、出生日期、年龄、来源、标签、学校、年级、录入时间、操作。-->
+                    <!--<td></td>
+                        <td></td>
+
+                        <td>{{x.intents}}</td>
+                        <td>{{x.courseName}}</td>
+                        <td>{{x.oaUserName}}</td>
+                        <td >
+                            <span ng-mouseenter="showRecord(x,$index,$event)" ng-mouseleave="hideRecord($event)">{{x.dater}}</span>
+                                <div class="openPop"  ng-show="$index == showRecdInd">
+                                    <ul class="popContent">
+                                        <li>{{potentialCustomerRecord[0].potentialCustomerRecordTypeT}}</li>
+                                        <li style="white-space: initial;">
+                                            <span>备注:</span>
+                                            <span>{{potentialCustomerRecord[0].potentialCustomerRecordDesc}}</span>
+                                        </li>
+                                        <li>
+                                            <span>操作人:</span>
+                                            <span>{{potentialCustomerRecord[0].oaUserName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </td>
+                        <td ng-class='{"1":"fontColor_ff595e"}[x.returnTimeType]'>{{x.returnTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <btn-drop class="clickText" drop-type="click" drop-title="{{x.status}}" drop-list="{{x.dropStatus}}" drop-id="{{x}}"  drop-click="changeListStatus(m)"></btn-drop>
+                            <i class="dropMark icon_drop_up" ng-if="!(x.potentialCustomerStatus == 1 || x.potentialCustomerStatus == 3)"></i>
+                        </td>
+                        <td>{{x.birthday}}</td>
+                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                        <td>
+                            <span>{{x.channelTypeName}}</span>
+                            <span ng-if="x.channelName">-{{x.channelName}}</span>
+                            <span ng-if="x.fromUserName">-{{x.fromUserName}}</span>
+                        </td>
+                        <td>
+                            <span class="separate_list"><span ng-repeat="y in x.tags">{{y.name}}</span></span>
+                        </td>
+                        <td>{{x.schoolName}}</td>
+                        <td>{{x.grade}}</td>
+                        <td>录入时间</td>
+                        <td></td>-->
+                    <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:320px;">
+                <thead>
+                    <tr>
+                        <th width="50px" class="textAlignCenter"><input type="checkbox" name="sel_order" ng-model="sel_all" ng-click="sel_allFun(sel_all,potentialList,select_params,'potentialCustomerId')" /></th>
+                        <th>姓名</th>
+                        <th>联系方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in potentialList">
+                        <td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'potentialCustomerId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked" /></td>
+                        <td ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':page,'fromPage':'studentPop','item':x,'tab':1})" title='{{x.name}} {{x.nickname?"("+x.nickname+")":""}}'>
+                            <span class="clickText">{{x.name}}</span>
+                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                        </td>
+                        <td>
+                            <span>{{x.potentialCustomerParentPhone}}({{x.typePhone}})</span>
+                            <span ng-show="x.potentialCustomerParentTowPhone || x.potentialCustomerParentThreePhone" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)" class="icon_more" style="color:#fa575d;margin-left:5px;position: absolute;">
+                                <div class="openPop"  ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomerParentTowPhone}}&nbsp;</span>
+                            <span>{{x.typeTwoPhone}}&nbsp;</span>
+                            <span>{{x.potentialCustomerParentTowName}}</span>
+                            </li>
+                            <li ng-if="x.potentialCustomerParentThreePhone">
+                                <span>{{x.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                <span>{{x.typeThreePhone}}&nbsp;</span>
+                                <span>{{x.potentialCustomerParentThreeName}}</span>
+                            </li>
+                            </ul>
+        </div>
+        </span>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="table-fixed table-fixed-r">
+        <table style="width:180px;">
+            <thead>
+                <tr>
+                    <th class="textAlignCenter cursor_pointer" ng-click="goCommonPop('custom-pop','customTable','560px',{data:checkedHead,customTagId:getHeads.customTagId,customTagType:2,callBackName:'潜客表头-自定义'})">自定义显示列<i class="icon_setHead"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in potentialList">
+                    <td class="operate overflow-normal textAlignCenter">
+                        <span class="clickText" ng-click="openOpreatePop(x,'添加跟进')" ng-if="addPotiental">跟进</span>
+                        <span class="clickText" ng-click="openOpreatePop(x,'预约试听')" ng-if="addPotiental">试听</span>
+                        <span class="clickText" ng-click="openOpreatePop(x,'报名')" ng-if="addPotiental">报名</span>
+                        <btn-drop drop-type="mouseover" class="clickText" drop-title="更多" drop-list="{{x.dropData}}" drop-id="{{x}}" drop-status="{{x.rosterStatus}}" drop-mouseenter="drop_mouseEnter(x)" drop-click="openPop(m)"></btn-drop>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="pagitionDiv">
+    <div class="M-left">
+        <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+        <div class="M-button common_tab_btn fontRed_BgWhite" ng-if="addPotiental" ng-click="patchChange()">转让潜客</div>
+        <div class="M-button common_tab_btn fontRed_BgWhite" ng-if="addPotiental" ng-click="patchReturn()">放回公池</div>
+    </div>
+    <div class="M-box3 potial"></div>
+</div>
+</div>

@@ -1,0 +1,297 @@
+<div class="shade_" id="shopTimeWrap">
+	<div class="shade_body">
+		<!--<h6>营业时间</h6>-->
+		<div class="shade_content">
+			<form class="form-horizontal shade_middle_form" role="form">
+				<div class="shade_form_content">
+					<div class="shade_form_content_big">
+						<!-- 内容区 -->
+						<div class="form-group po-relat">
+							<label class="control-label col-xs-4">上班时间</label>
+							<div class="col-xs-4">
+								<select ng-model="shopBeginTime" ng-init="shopBeginTime='6'" id="hourSelect" class="business_shade-sel1 time_hour form-control" ng-change="changeshopBeginTime()">
+									<option value="6" selected="selected">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<!--<option value="24">24</option>-->
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select name="" ng-model="shopBeginHour" ng-init="shopBeginHour='00'" id="minSelect" class="business_shade-sel2 time_min form-control">
+									<option value="00">00</option>
+									<option value="05" ng-hide="showHideTime1==true">05</option>
+									<option value="10" ng-hide="showHideTime1==true">10</option>
+									<option value="15" ng-hide="showHideTime1==true">15</option>
+									<option value="20" ng-hide="showHideTime1==true">20</option>
+									<option value="25" ng-hide="showHideTime1==true">25</option>
+									<option value="30" ng-hide="showHideTime1==true">30</option>
+									<option value="35" ng-hide="showHideTime1==true">35</option>
+									<option value="40" ng-hide="showHideTime1==true">40</option>
+									<option value="45" ng-hide="showHideTime1==true">45</option>
+									<option value="50" ng-hide="showHideTime1==true">50</option>
+									<option value="55" ng-hide="showHideTime1==true">55</option>
+								</select>
+							</div>
+							<div class="help_icon" data-tips="上班时间将会影响排课的最早时间，同时员工上班打卡考勤时间也以上班时间为准" style="margin: 0;"></div>
+						</div>
+						<div class="form-group po-relat">
+							<label class="control-label col-xs-4">下班时间</label>
+							<div class="col-xs-4">
+								<select name="" ng-model="shopEndTime" ng-init="shopEndTime='6'" id="hourSelect_" class="business_shade-sel3 time_hour form-control" ng-change="changeshopEndTime()">
+									<option value="6" selected="selected">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<!--<option value="24">24</option>-->
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select name="" ng-model="shopEndHour" ng-init="shopEndHour='00'" id="minSelect_" class="business_shade-sel4 time_min form-control">
+									<option value="00">00</option>
+									<option value="05" ng-hide="showHideTime2==true">05</option>
+                                    <option value="10" ng-hide="showHideTime2==true">10</option>
+                                    <option value="15" ng-hide="showHideTime2==true">15</option>
+                                    <option value="20" ng-hide="showHideTime2==true">20</option>
+                                    <option value="25" ng-hide="showHideTime2==true">25</option>
+                                    <option value="30" ng-hide="showHideTime2==true">30</option>
+                                    <option value="35" ng-hide="showHideTime2==true">35</option>
+                                    <option value="40" ng-hide="showHideTime2==true">40</option>
+                                    <option value="45" ng-hide="showHideTime2==true">45</option>
+                                    <option value="50" ng-hide="showHideTime2==true">50</option>
+                                    <option value="55" ng-hide="showHideTime2==true">55</option>
+								</select>
+							</div>
+							<div class="help_icon" data-tips="下班时间将会影响排课的最晚时间，同时员工下班打卡考勤时间也以下班时间为准" style="margin: 0;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="popup_btn">
+					<button class="btn cancel" ng-click="closeDialog()" type="button">取消</button>
+					<button class="btn sure" ng-click="updateShopTime()" type="">确定</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="shade_ " id="holidayEditWrap">
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form" ng-submit="newHoliday()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:20px;">
+                        <div class="popup_line">
+                            <label class="form-label required">节假日:</label>
+                            <div class="col-xs-10">
+                                <input class="form-control formRequired" maxlength="24" ng-model="holidayTitle" type="text" required>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">日期:</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control dateIcon laydateyear" ng-model="LAYDATEYEAR" required  autocomplete="off"/>
+                                <div class="help_icon" data-tips="节假日的设定将会影响排课时的实际排课结果" style="margin: 0;right:-13px"></div>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">描述:</label>
+                            <div class="col-xs-10">
+                                <textarea maxlength="200" class="form-control smallArea" ng-model="holidayDesc" cols="45" name="txta" rows="8"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closeDialog()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="common_body time_body zjtime_body">
+	    <div class="tab_nav">
+            <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+            <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+            <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+            <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+            <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+            <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+            <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+            <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+        </div>
+	<div class="time_date clearfix">
+		<!--<div class="time_tab">
+			<div class="business_hours" ng-init="tabType='time'" ng-class="{'time_active':tabType=='time'}" ng-click="time_tab('time')">营业时间</div>
+			<div class="containerss" ng-class="{'time_active':tabType=='holiday'}" ng-click="time_tab('holiday')">节假日</div>
+		</div>-->
+		<!--营业时间-->
+		<div id="business_hours">
+			<div class="business_header">
+				<ul>
+					<li>星期一</li>
+					<li>星期二</li>
+					<li>星期三</li>
+					<li>星期四</li>
+					<li>星期五</li>
+					<li>星期六</li>
+					<li>星期日</li>
+				</ul>
+			</div>
+			<div class="business_hours_column">
+				<ul class="business_hours_column_bac">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+				<ul class="business_hours_time" style="background: white;">
+					<li style="height: 17px;"></li>
+					<li>6:00</li>
+					<li>7:00</li>
+					<li>8:00</li>
+					<li>9:00</li>
+					<li>10:00</li>
+					<li>11:00</li>
+					<li>12:00</li>
+					<li>13:00</li>
+					<li>14:00</li>
+					<li>15:00</li>
+					<li>16:00</li>
+					<li>17:00</li>
+					<li>18:00</li>
+					<li>19:00</li>
+					<li>20:00</li>
+					<li>21:00</li>
+					<li>22:00</li>
+					<li>23:00</li>
+					<li>24:00</li>
+				</ul>
+				<ul class="business_column">
+					<li>
+						<div class="column1"></div>
+					</li>
+					<li>
+						<div class="column2"></div>
+					</li>
+					<li>
+						<div class="column3"></div>
+					</li>
+					<li>
+						<div class="column4"></div>
+					</li>
+					<li>
+						<div class="column5"></div>
+					</li>
+					<li>
+						<div class="column6"></div>
+					</li>
+					<li>
+						<div class="column7"></div>
+					</li>
+				</ul>
+			</div>
+			<ul class="business_hours_add clearfix">
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+				<li>
+					<div>+</div>
+				</li>
+			</ul>
+		</div>
+		<!--节假日-->
+		<div class="date-content" style="border:none;">
+			<!--月表模式-->
+			<div id='container' class="timer_calander" style="height: 490px;"  ng-show="isActive"></div>
+			<!--列表模式-->
+			<div id="table-model" ng-show="!isActive">
+				<div class="btnAdd_jia" ng-click="btnAdd_jia()">
+					<i class="icon_addcourse"></i>节假日
+				</div>
+				<table class="table table-hover">
+					<thead >
+						<tr>
+							<th>节假日</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th class="textAlignCenter">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="x in $getHolidayList track by $index">
+							<td>{{x.holidayTitle}}</td>
+							<td>{{x.holidayBeginTime | yznDate:"yyyy-MM-dd"}}</td>
+							<td>{{x.holidayEndTime | yznDate:"yyyy-MM-dd"}}</td>
+							<td class="operate overflow-normal textAlignCenter">
+							    <span class="clickText" ng-click="editHolidayType2(x)">编辑</span>
+							    <span class="clickText" ng-click="deleteHolidayType2(x)">删除</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagitionDiv" ng-show="!isActive" style="margin-top: 20px;">
+                    <div class="M-box3" data-status="true"></div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

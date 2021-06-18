@@ -1,0 +1,33 @@
+<div class="time-panel" style="float: left;">
+    <div class="select-time" name="beginTimeHour">
+        <div index="1"><input class="select-time-data" yzn-filter='num:{"min":0,"max":23}' type="text" ng-model="chosebeginhourtime" ng-blur="checkH_m(chosebeginhourtime,'hour','begin',hourtimelist)"/></div>
+        <div class="select-time-drop icon_v"></div>
+        <ul class="select-time-list">
+            <li ng-class="{active:chosebeginhourtime==x}" ng-repeat="x in hourtimelist" ng-click="clickbeginhourtime(x)"><span>{{x}}</span></li>
+        </ul>
+    </div>
+    <div class="split">:</div>
+    <div class="select-time" name="beginTimeMinute">
+        <div><input class="select-time-data select-time-data1" yzn-filter='num:{"min":0,"max":59}' type="text" ng-model="chosebeginmintime" ng-blur="checkH_m(chosebeginmintime,'minus','begin',stat_mintimelist)"/></div>
+        <div class="select-time-drop icon_v"></div>
+        <ul class="select-time-list">
+            <li ng-class="{active:chosebeginmintime==x}" ng-repeat="x in stat_mintimelist" ng-click="clickbeginmintime(x)"><span>{{x}}</span></li>
+        </ul>
+    </div>
+    <div class="split">-</div>
+    <div class="select-time" name="endTimeHour">
+        <div index="2"><input class="select-time-data" yzn-filter='num:{"min":0,"max":23}' type="text" ng-model="choseendhourtime" ng-blur="checkH_m(choseendhourtime,'hour','end',hourtimelist)"/></div>
+        <div class="select-time-drop icon_v"></div>
+        <ul class="select-time-list">
+            <li ng-class="{active:choseendhourtime==x}" ng-repeat="x in hourtimelist" ng-click="clickendhourtime(x)"><span>{{x}}</span></li>
+        </ul>
+    </div>
+    <div class="split">:</div>
+    <div class="select-time" name="endTimeMinute">
+        <div><input class="select-time-data select-time-data2" yzn-filter='num:{"min":0,"max":59}' type="text" ng-model="choseendmintime" ng-blur="checkH_m(choseendmintime,'minus','end',end_mintimelist)"/></div>
+        <div class="select-time-drop icon_v"></div>
+        <ul class="select-time-list">
+            <li ng-class="{active:choseendmintime==x}" ng-repeat="x in end_mintimelist" ng-click="clickendmintime(x)"><span>{{x}}</span></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,263 @@
+
+<!--公共弹窗样式结构（一级类名可自行添加）id为-->
+<div class="popup_" id="rollCall">
+    <!--closePopup方法为公共的关闭弹窗的方法，参数填需要关闭的id名-->
+    <h6>点名<span ng-click="closePopup('rollCall')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <!--滚动区域（添加属性isScroll=true则出现滚动条）-->
+                <div class="popup_scroll" isScroll="true">
+                    <!--内容区域-->
+                    
+                    <div class="popup_line">
+                        <label for="" class="form-label">课程名称:</label>
+                        <span class="col-xs-4 form-span">初级启蒙英语</span>
+                        <label for="" class="form-label">课程班级:</label>
+                        <span class="col-xs-4 form-span">初级启蒙英语一班</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">性别:</label>
+                        <div class="col-xs-4">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width: 40px;">
+                                <input type="radio" name="optionsRa" value="0" ng-model="$xWhetherPay" required>否
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width: 40px;">
+                                <input type="radio" name="optionsRa" value="1" ng-model="$xWhetherPay" required>否
+                            </label>
+                        </div>
+                        <label class="required form-label">年龄:</label>
+                        <div class="col-xs-1">
+                            <input type="text" class="form-control" name="age" required/>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control dateIcon" name="date" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">身份证:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" name="name" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" required/>
+                        </div>
+                        <label for="" class="form-label">证:</label>
+                        <div class="col-xs-4">
+                            <label class="checkbox-inline checkbox-padding" style="width: 40px;">
+                                <input type="checkbox" name="optionsRa" value="0"  required>否
+                            </label>
+                            <label class="checkbox-inline checkbox-padding" style="width: 40px;">
+                                <input type="checkbox" name="optionsRa" value="1"  required>否
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label required">主要联系人:</label>
+                        <div class="col-xs-3 padRightNone">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                        <div class="col-xs-3 padRightNone">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                        <div class="col-xs-3 padRightNone">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">其它联系人:</label>
+                        <div class="col-xs-3 padRightNone"  >
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                        <div class="col-xs-3 padRightNone"  >
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                        <div class="col-xs-3 padRightNone">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-3">
+                            <span>添加家长信息</span>
+                        </div>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label required">学校:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                        <label for="" class="form-label">住址:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" name="name" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="3" style="min-width: 607px;max-width: 607px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr class="head-tr-col">
+                                    <th rowspan="2" style="width: 9%;" class="textAlignCenter">课程</th>
+                                    <th colspan="3" class="textAlignCenter">王五</th>
+                                    <th colspan="3" class="textAlignCenter">李四</th>
+                                    <th colspan="2" class="textAlignCenter">李四</th>
+                                    <th rowspan="2" style="width: 5%;" class="textAlignCenter">操作</th>
+                                </tr>
+                                <tr>
+                                    <!--<th style="width: 9%;">课程</th>-->
+                                    <th style="width: 9%;"></th>
+                                    <th style="width: 6%;">单课价</th>
+                                    <th style="width: 5%;">购买课时</th>
+                                    <th style="width: 5%;">赠送课时</th>
+                                    <th style="width: 5%;">课程价格</th>
+                                    <th style="width: 13%;">优惠</th>
+                                    <th style="width: 5%;">均课价</th>
+                                    <th style="width: 5%;">签约金额</th>
+                                    <th style="width: 7%;">班级</th>
+                                    <th style="width: 13%;">有效期</th>
+                                    <!--<th style="width: 5%;">操作</th>-->
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr>
+                                        <td style="width: 9%;">课程课程课程课程课程课程课程课程</td>
+                                        <td style="width: 9%;">
+                                            <select name="" class="form-control">
+                                                <option value="">123</option>
+                                                <option value="">123</option>
+                                                <option value="">123</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 6%;">
+                                            <input type="text" class="form-control width45"/>&nbsp;&nbsp;元
+                                        </td>
+                                        <td style="width: 5%;">
+                                            <input type="text" class="form-control width45"/>
+                                        </td>
+                                        <td style="width: 5%;">
+                                            <input type="text" class="form-control width45"/>
+                                        </td>
+                                        <td style="width: 5%;">￥0.00</td>
+                                        <td style="width: 13%;">
+                                            <select class="form-control width45">
+                                                <option value=""></option>
+                                            </select>
+                                            <input type="text" class="form-control width45"/>&nbsp;&nbsp;元
+                                        </td>
+                                        <td style="width: 5%;">￥40.00</td>
+                                        <td style="width: 5%;">￥40.00</td>
+                                        <td style="width: 7%;"><span class="clickText">选择班级</span></td>
+                                        <td style="width: 13%;">
+                                            <select class="form-control">
+                                                <option value=""></option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 5%;"><span class=""><i class="icon_delete clickText"></i></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('rollCall')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-inline">
+      <label class="layui-form-label">分组选择框</label>
+      <div class="layui-input-inline">
+        <select name="quiz" ng-model="selected" ng-change = "change()">
+          <option value="">请选择问题</option>
+          <optgroup label="{{x.name}}" ng-repeat="x in list">
+            <option value="{{y.id}}" ng-repeat="y in x.list">{{y.name}}</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+<script>
+        $scope.list = [
+            {name:"城市记忆",id:"1",list:[{name:"城市记忆",id:"11"},{name:"你工作的第一个城市",id:"12"}]},
+            {name:"学生时代",id:"2",list:[{name:"你的工号",id:"21"},{name:"你最喜欢的老师",id:"22"}]},
+        ];
+        $scope.change = function(){
+            console.log($scope.selected);
+        }
+    //创建公共弹窗
+    creatPopup({
+       el: 'commonPopup',   //标签名
+       openPopupFn: 'open', //打开弹窗的方法（参数：id，弹窗宽度，传数据props）
+       htmlUrl: './templates/popup/other.html', //引用的html地址（每个单独的弹窗html需要独立）
+       controllerFn: function($scope, props) {  //点击弹出后运行的方法
+           
+       }
+    });
+    /*调用潜客一级弹框所传的参数格式
+     * 
+     * page:0 潜客管理，1学员管理
+     * tab 入口直接进入的页面，从1开始
+     * item 调弹框所需要传的参数对象
+     * */
+//  props={
+//      page: 0,
+//      item: Object,
+//      tab: 1
+//  }
+    /*
+     * 注：可自行添加公共的demo
+     * 
+     * 
+     * 
+     */
+    
+    /*
+     * 向下滚动添加数据demo
+     * loadData(id, fn);
+     * 参数说明：
+     * id：滚动区域的父级元素id名
+     * fn:滚动回调方法（加载数据）
+     * 注：每次加载数据记住start参数，获取到新的数据才能concat到数组里面去
+     */
+    loadData('course_loading', function() {
+        getCourseList(course_page);
+    });
+    function getCourseList(start) {
+        var data = {
+            start: start,
+            count: '10',
+            courseTypeId: $courseType,
+            searchType: $searchType,
+            searchName: $searchName,
+        }
+        if($scope.$choseClassType == '1') {
+            $.hello({
+                url: CONFIG.URL + "/api/oa/course/getCoursesList",
+                type: "get",
+                data: data,
+                success: function(res) {
+                    if(res.status == '200') {
+                        if(start == 0) {
+                            $scope.listen_courseList = res.context.items;
+                        } else {
+                            $scope.listen_courseList = $scope.listen_courseList.concat(res.context.items);
+                        }
+                        if(res.context.items) {
+                            course_page = course_page + res.context.items.length;
+                        }
+                        console.log('预约课程列表', $scope.listen_courseList);
+                    };
+                }
+            })
+        }
+    }
+</script>

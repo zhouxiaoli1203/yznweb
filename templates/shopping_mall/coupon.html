@@ -1,0 +1,320 @@
+<!--优惠券参数-->
+<creat_coupon></creat_coupon>
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li class="common_tab_libtn" ng-show="potentialQuanxian_opra">
+                <div class="common_tab_btn" ng-click="dispend_coupon()"><i class="icon_sendcoupon"></i>发送优惠券</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="potentialQuanxian_opra">
+                <div class="common_tab_btn" ng-click="operationScreen()"><i class="icon_addcourse"></i>创建优惠券</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <my-select list-name="适用学员" list-data="{{couponRangeforUser}}" list-field="name" list-click="screen_operate(n, 2)" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="适用商品" list-data="{{couponRange}}" list-field="name" list-click="screen_operate(n, 3)" list-sort="false"></my-select>
+            </li>
+            <li ng-show='productScope == 1'>
+                <my-select list-name="选择商品" list-data="{{screen_product}}" list-field="productName" list-click="select_product(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="领券条件" list-data="{{mallTypeList}}" list-field="name" list-click="screen_operate(n, 1)" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox" style="margin-right: 10px;">
+                    <input type="checkbox" ng-checked="searchStatus == 1" ng-click="sel_screen(1, $event)" class="checkbox-inline labelLeft">上架
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-checked="searchStatus == 0" ng-click="sel_screen(2, $event)"  class="checkbox-inline labelLeft">下架
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox" style="margin-right: 10px;">
+                    <input type="checkbox" ng-checked="discountType == 1" ng-click="sel_screen(3, $event)" class="checkbox-inline labelLeft">代金券
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-checked="discountType == 2" ng-click="sel_screen(4, $event)"  class="checkbox-inline labelLeft">折扣券
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset(true)">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <div class="table-fixed table-fixed-l" ng-hide="mallList.length == 0">
+                <table style="width:160px;">
+                    <thead>
+                        <tr>
+                            <th>优惠券名称</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in mallList">
+                            <td class="clickText" ng-click="operationList(x, 'mall_check')">{{x.couponName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-fixed table-fixed-r" ng-hide="mallList.length == 0">
+                <table style="width:130px;">
+                    <thead>
+                        <tr>
+                            <th class="textAlignCenter cursor_pointer">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in mallList">
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-if="potentialQuanxian_opra" ng-click="operationList(x, 'edit')">编辑</span>
+                                <span class="clickText" ng-if="potentialQuanxian_opra" ng-click="operationList(x, 'copy')">复制</span>
+                                <span class="clickText" ng-click="operationList(x, 'share')">分享</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <table class="table table-hover">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!mallList || mallList.length==0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="12">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in mallList">
+                        <td></td>
+                        <td>{{x.discountType == 1?"代金券":"折扣券"}}</td>
+                        <td>{{x.discountType == 1?x.discounts + "元": (x.discounts/10 | number:1)+"折"}}</td>
+                        <td>{{x.useLimits == 1?"满"+x.useMoney+"可用":"无门槛"}}</td>
+                        <td>{{x.stockNumber}}</td>
+                        <td title='{{x.validity == 1?(x.validityBeginTime | yznDate:"yyyy-MM-dd")+" 至 "+(x.validityEndTime | yznDate:"yyyy-MM-dd"):x.validity == 2?"领取后"+x.validityDays+"天内有效":"长期有效"}}'>{{x.validity == 1?(x.validityBeginTime | yznDate:"yyyy-MM-dd")+" 至 "+(x.validityEndTime | yznDate:"yyyy-MM-dd"):x.validity == 2?"领取后"+x.validityDays+"天内有效":"长期有效"}}</td>
+                        <td>{{x.userScope == 1?'新学员':x.userScope == 2?'老学员':'不限'}}</td>
+                        <td title="{{x.productScope == 1?x.productText:'不限'}}">{{x.productScope == 1?'指定商品':'不限'}}</td>
+                        <td>{{x.conditions == 1?'支付金额':x.conditions == 2?'积分兑换':'免费领取'}}</td>
+                        <td><span ng-click="operationList(x, 'mall_on')" ng-class="{'enable_showcourse': x.sync==1, 'disable_showcourse': x.sync==0}"></span></td>
+                        <td><span ng-click="operationList(x, 'mall_on',1)" ng-class="{'enable_showcourse': x.status==1, 'disable_showcourse': x.status==0}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3 M_box3_1"></div>
+    </div>
+</div>
+
+<!--点击分享-->
+<div class="popup_ mall_share" id="mall_share">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <dl class="mall_share_title clearfix">
+                        <dt><img src="{{mallShareData.productImageUrl}}" alt="" /><span>封面</span></dt>
+                        <dd>
+                            <h3>{{mallShareData.productName}}</h3>
+                            <p style="white-space: pre-wrap; word-wrap: break-word;">{{mallShareData.productDesc}}</p>
+                        </dd>
+                    </dl>
+                    <div class="mall_share_code">
+                        <span id="mall_share_code"></span>
+                        <p>扫一扫分享到微信或者支付宝</p>
+                    </div>
+                    <div class="mall_share_url">
+                        <strong>链接分享</strong>
+                        <input type="text" ng-model="mallShareData._url" />
+                        <span ng-click="clickShareCopy()">复制链接</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--查看优惠券使用情况-->
+<div class="popup_ checkCouponUse">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class='dialogWarnTip'>免费领取的优惠券，未使用支持撤回。购买或积分兑换的优惠券不支持撤回。</div>
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData_forcheck(n)" list-keyup="Enterkeyup_forcheck(n)" list-data="{{searchData_forcheck}}" select-name="{{selectInfoId_forcheck}}">
+                                </kindsearch>
+                            </li>
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="oldOrNew" ng-change="getcouponcheckList(0)">新增潜客
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="usageState1" ng-change="chargeTypeforcheck(true)">未使用
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="usageState2" ng-change="chargeTypeforcheck(false)">已使用
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="expireFlag" ng-change="getcouponcheckList(0)">已过期
+                                </label>
+                            </li>
+                            <li ng-click="onReset(false)" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"姓名"},{"name":"联系电话"},{"name":"领取时间"},{"name":"使用状态"},{"name":"操作"}]'></thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 100%">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-show="!couponcheckList || couponcheckList.length == 0">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="x in couponcheckList" ng-click="sel_potial(x)">
+                                        <td>
+                                            {{x.potentialCustomer.name}}
+                                        </td>
+                                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td>{{x.receiveTime | yznDate:"yyyy-MM-dd"}}</td>
+                                        <td>{{x.usageState == 1?"已使用":x.usageState == 0?"未使用":x.expireFlag == 1?"已过期":""}}{{x.usageState == 1?(x.orderId?"":"(付款中)"):""}}</td>
+                                        <td class="clickText" ng-show="x.usageState == 1 && x.orderId" ng-click="goCommonPop( 'order-info', 'orderInfo','960px',{data:x, page:'优惠券'})">查看订单</td>
+                                        <td class="clickText" ng-show="x.usageState == 0 && x.conditions == 0 && potentialQuanxian_opra" ng-click="countermandCoupon(x.couponPackageId)">撤回</td>
+                                        <td class="clickText" ng-show="x.usageState == 0 && (!potentialQuanxian_opra || x.conditions !== 0)"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 M_box3_2"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--扫码分享-->
+<div class="popup_ onlineshare" id="onlineShare_miniweb">
+    <div class="onlineShare_code"></div>
+    <p class="textAlignCenter line50">扫一扫分享至微信</p>
+</div>
+<!--发放优惠券 提示信息-->
+<div class="popup_ remindMsg" id="remindMsg">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line textAlignCenter" ng-repeat="x in remindList">
+                        {{x}}优惠券
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="sendCoupon_confirm2('2')">重复发放</button>
+                <button class="btn sure" type="button" ng-click="sendCoupon_confirm2('1')">过滤发放</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发放优惠券-->
+<div class="popup_ dispendCoupon" id="dispendCoupon">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="sendCoupon_confirm()">
+            <div class="popup_form_content" style="overflow: inherit;">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="dialogWarnTip">
+                        优惠券发放通知默认通过微信服务消息发送给学员，请确保学员已绑定微信服务号通知，可以前往"学员中心"了解绑定情况。如需通过短信发送，请前往“校区设置＞其他设置＞校区通知设置”开启。
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">发送:</label>
+                        <div class="col-xs-4" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="duixiang" ng-model="sendData.type" value="1" required />按班级
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="duixiang" ng-model="sendData.type" value="2" required />按学员
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="sendData.type == 1">
+                        <label class="form-label">班级:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in sendData.apt_class">{{x.className}}<i ng-click="delClass(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkClass()">选择班级</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="sendData.type == 2">
+                        <label class="form-label">学员:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in sendData.apt_students">{{x.name}}<i ng-click="delStudent(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkStudent()">选择学员</span>
+                        </div>
+                    </div>
+                    <div class="parting_line popup_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label">优惠券:</label>
+                        <div class="col-xs-10 coupon_info" style="line-height:28px;">
+                            <ul class="coupon_list clearfix">
+                                <!--// 适用用户范围 0：不限制 1：新用户 2；老用户-->
+                                <li ng-repeat="x in sendData.apt_coupons" class="noneBorder">
+                                    <span class="coupon_li_delete" ng-click="delCoupon(x, $index)"></span>
+                                    <span class="coupon_li_type" ng-class="{'coupon_li_type1': x.userScope == 1, 'coupon_li_type3': x.userScope == 2}"></span>
+                                    <h3>
+                                        <strong ng-if="x.discountType == 1" title="{{x.discounts}}"><em>¥</em>{{x.discounts}}</strong>
+                                        <strong ng-if="x.discountType == 2" title="{{x.discounts}}">{{x.discounts / 10}}折</strong>
+                                        <p ng-if="x.useLimits == 0">无门槛</p>
+                                        <p ng-if="x.useLimits == 1">满{{x.useMoney}}可用</p>
+                                    </h3>
+                                    <h4>
+                                        <p><strong title="{{x.couponName}}">{{x.couponName}}</strong></p>
+                                        <!--有效期 1:固定日期区间 2：领取后多少天 3：长期有效-->
+                                        <em ng-if="x.validity==1">{{x.validityBeginTime | yznDate:'yyyy-MM-dd'}} 至 {{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</em>
+                                        <em ng-if="x.validity==2">领取后{{x.validityDays}}天内有效</em>
+                                        <em ng-if="x.validity==3">长期有效</em>
+                                        <var ng-if="x.instructions" ng-mouseover="x.showIns=true" ng-mouseout="x.showIns=false">详细信息</var>
+                                    </h4>
+                                    <div class="coupon_ins" ng-if="x.showIns && x.instructions">
+                                        <p>使用说明：{{x.instructions}}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkCoupons()">添加优惠券</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

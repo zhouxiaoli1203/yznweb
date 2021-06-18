@@ -1,0 +1,240 @@
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav_big(1)" ng-class="{tab_nav_show: studNavJud_big==1}">学员列表</span>
+        <span ng-click="switchStudNav_big(2)" ng-class="{tab_nav_show: studNavJud_big==2}">报课明细</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择有效期截止时间" autocomplete="off">
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="changeYear(n)" list-all="no" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="changeTerm(n)" list-all="no" list-sort="false"></my-select>
+            </li>
+
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="an_keshi" ng-click="changeType(true)">按课时
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="an_tian" ng-click="changeType(false)">按月
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="contractRenewStatus == '0'"  ng-click="changeByStatus($event,'0')">未结课
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="contractRenewStatus == '1'"  ng-click="changeByStatus($event,'1')">已结课
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-id="studentHead" my-thead="{{nameListThead}}" list-clicks="sortCllict(data)" che-clicks="sel_allFun(data)"></thead>
+                <tbody class="demo_tbody" ng-if="StudentList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="10">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="StudentList">
+                    <tr ng-repeat="x in StudentList">
+                        <td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'contractRenewId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked" /></td>
+                        <td ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':page,'fromPage':'studentPop','item':x,'tab':1})" title='{{x.name}} {{x.nickname?"("+x.nickname+")":""}}'>
+                            <span class="clickText">{{x.name}}</span>
+                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                        </td>
+                        <td>
+                            <span>{{x.potentialCustomerParentPhone}}</span>
+                            <div ng-show="x.potentialCustomerParentTowPhone || x.potentialCustomerParentThreePhone" class="icon_more" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)">
+                                <div class="openPop" ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                            <span>{{x.typeTwoPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentTowName}}</span>
+                                        </li>
+                                        <li ng-if="x.potentialCustomerParentThreePhone">
+                                            <span>{{x.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                            <span>{{x.typeThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentThreeName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{x.contractRenewStartDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.lastCourseName}}">{{x.lastCourseName}}</td>
+                        <td class="textAlignRt" title="{{x.contractRenew.feeType == 2?(x.contractRenew.buyAllDateNum|tian):(x.contractRenew.buyAllTime|number:2|keshi)}}">{{x.contractRenew.feeType == 2?(x.contractRenew.buyAllDateNum|tian):(x.contractRenew.buyAllTime|number:2|keshi)}}</td>
+                        <td class="textAlignRt" title="{{x.contractRenew.feeType == 2?(x.contractRenew.giveAllDateNum|tian):(x.contractRenew.giveTime|number:2|keshi)}}">{{x.contractRenew.feeType == 2?(x.contractRenew.giveAllDateNum|tian):(x.contractRenew.giveTime|number:2|keshi)}}</td>
+                        <td class="textAlignRt" title="{{x.contractRenew.feeType == 2?(x.contractRenew.totalSurplusDayNum|tian):(x.contractRenew.totalSurplusTime|number:2|keshi)}}">{{x.contractRenew.feeType == 2?(x.contractRenew.totalSurplusDayNum|tian):(x.contractRenew.totalSurplusTime|number:2|keshi)}}</td>
+                        <td class="textAlignCenter" ng-show="x.validityEndTime && x.contractRenewStatus != 1">{{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</td>
+                        <td class="textAlignCenter" ng-show="!x.validityEndTime || x.contractRenewStatus == 1">-</td>
+                        <td class="overflow-normal textAlignCenter" ng-class='{"operate":x.contractRenewStatus == "0"}' ng-show="x.contractRenew.feeType != 2">
+                            <span class="clickText" ng-show="addPotientalPop && x.contractRenewStatus == '0'" ng-click="operat_transfer('operat_finish','960px','结课',x)">结课</span>
+                            <span class="clickText" ng-show="youxiaoqi && x.contractRenewStatus == '0'" ng-click="operat_transfer('#signUp_update_validity','660px','变更有效期',x)">变更有效期</span>
+                            <span class="clickText" ng-show="youxiaoqi" ng-click="operat_transfer('#signUp_update_validity_2','860px','变更记录',x)">变更记录</span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter" ng-show="x.contractRenew.feeType == 2">
+                            <span class="clickText" ng-show="addPotientalPop && x.contractRenewStatus == '0'" ng-click="operat_transfer('operat_finish','960px','结课',x)">结课</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-left">
+            <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+            <div class="M-button common_tab_btn fontRed_BgWhite" ng-show="addPotientalPop" ng-click="patchConfirm(2)">批量结课</div>
+            <div class="M-button common_tab_btn fontRed_BgWhite" ng-show="'150'| _authId" ng-click="patchConfirm(1)">变更有效期</div>
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>
+<!--变更有效期-->
+<div class="popup_ " id="signUp_update_validity">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="validityOperate()">
+            <div class="popup_form_content" style="max-height: 440px;">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+
+                        <label class="form-label newHelp_before">延期方式:
+                                <div style="left: 12px;" class="help_icon noneWidth" data-tips="指定日期：将学员课程有效期延期至某一天<br>
+    自定义：将学员课程有效期延期至多少天后"></div>
+                            </label>
+                        <div class="col-xs-4 form-span">
+                            <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="yanqi" ng-model="lineValidityInfo.type" value="1"/>指定日期
+                                </label>
+                            <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="yanqi" ng-model="lineValidityInfo.type" value="0"/>自定义
+                                </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="lineValidityInfo.type==1">
+                        <label class="form-label required">有效期至:</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control dateIcon" id="signUp_validity_time" name="name" ng-model="lineValidityInfo.validityTime" placeholder="请选择课程有效期" autocomplete="off" style="width:240px;" />
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="lineValidityInfo.type==0">
+                        <label class="form-label required">延长天数:</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" ng-model="lineValidityInfo.validityNum" placeholder="请输入延期天数" required autocomplete="off" style="width:240px;" yzn-filter="numMoreThanZero" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words">{{lineValidityInfo.remake?lineValidityInfo.remake.length:0}}/500</span>
+                            <textarea class="form-control" rows="4" placeholder="备注信息" maxlength="500" ng-model="lineValidityInfo.remake" style="resize: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--变更有效期记录-->
+<div class="popup_" id="signUp_update_validity_2">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="max-height: 440px;">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <td>变更时间</td>
+                                    <td>有效期至</td>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody class="demo_tbody" ng-if="signUp_updateValidityList_2==''">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in signUp_updateValidityList_2">
+                                    <td>{{x.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td>{{x.validityEndTime?(x.validityEndTime | yznDate:'yyyy-MM-dd'):"-"}}</td>
+                                    <td title="{{x.desc}}">{{x.desc}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--欠课处理-->
+<div class="popup_" id="qianke_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        已勾选的课程合同中，有学员存在欠课的情况，无法批量结课，请单独处理后再试。
+                    </div>
+                    <div class="table_title clearfix">
+                        <span class="span_title">欠课学员及欠课课程如下：</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>学员姓名</th>
+                                    <th>报读课程</th>
+                                </tr>
+                            </thead>
+                            <tbody class="demo_tbody" ng-if="qiankeList==''">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="roll_tbody" ng-if="qiankeList">
+                                <tr ng-repeat="x in qiankeList">
+                                    <td>{{x.studentName}}</td>
+                                    <td title="{{x.courseName}}">{{x.courseName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="submit" ng-click="closePop()">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,443 @@
+@charset "utf-8";
+/*特殊字体*/
+/*@font-face{
+    font-family: 'huihua';
+    src: url('font/huihua.ttf')format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}*/
+#show_contain {
+    font-size: 100px;
+}
+.tp1 {
+    overflow: hidden;
+    width: 100%;
+    background-color: #549d62;
+}
+.tp1_header {
+    width: 100%;
+}
+.tp1_header img {
+    display: block;
+    width: 100%;
+}
+.tp1_course, .tp1_organ, .tp1_teacher, .tp1_yuyue {
+    position: relative;
+    margin-top: 0.4rem;
+    color: #348575;
+    background-color: white;
+}
+.font_huihua{
+    /*font-family: 'huihua';*/
+}
+.tp1_organ {
+}
+.tp1_teacher {
+    padding-bottom: 0.5rem;
+}
+.tp1_course_detail {
+    display: none;
+    position: relative;
+    background-color: #549d62;
+    color: #348575;
+}
+.tp1_yuyue {
+    min-height: 0;
+}
+.tp1_title {
+    width: 4.4rem;
+    height: 0.85rem;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.45rem;
+    line-height: 0.85rem;
+    color: #ee8358;
+
+    border-bottom: solid 1px #ee8358;
+}
+.tp1_course_title {
+    background: url("../../../makeappointment/painting/img/course_tp.png") no-repeat;
+    background-size: 100% auto;
+}
+.tp1_organ_title {
+    background: url("../../../makeappointment/painting/img/organ_tp.png") no-repeat;
+    background-size: 100% auto;
+}
+.tp1_teacher_title {
+    background: url("../../../makeappointment/painting/img/teacher_tp.png") no-repeat;
+    background-size: 100% auto;
+}
+.tp1_yuyue_title {
+    background: url("../../../makeappointment/painting/img/yuyue_tp.png") no-repeat;
+    background-size: 100% auto;
+}
+.teachers_point {
+    overflow: hidden;
+    margin: 0.4rem auto 0;
+}
+.teachers_point p {
+    width: 200%;
+    height: 0.1rem;
+}
+.teachers_point span {
+    float: left;
+    width: 0.1rem;
+    height: 0.1rem;
+    border-radius: 50%;
+    background-color: #919191;
+    margin-right: 0.12rem;
+}
+.teachers_point .sp_show {
+    background-color: #006897;
+}
+.tp1_course_lis {
+    /*width: 120%;*/
+    padding-left: 0.26rem;
+    margin-top: 0.4rem;
+}
+.tp1_course_lis li {
+    float: left;
+    /*width: 2.46rem;*/
+    /*height: 4.35rem;*/
+    /*margin: 0px 1rem 0.75rem 0;*/
+    cursor: pointer;
+}
+.tp1_course_lisname {
+    display: block;
+    height: 0.5rem;
+    padding: 0 0.3rem;
+    text-align: center;
+    color: #2C8171;
+    margin: 0.22rem 0 0.4rem;
+    font-size: 0.24rem;
+    overflow: hidden;
+}
+.tp1_course_lisimg {
+    width: 3.29rem;
+}
+.tp1_course_lisimg img {
+    display: block;
+    width: 3.16rem;
+    border: 3px solid #549d62;
+    margin: 0 auto;
+}
+/*校区*/
+.tp1_organName {
+    width: 6.24rem;
+    margin: 0.4rem auto 0.1rem;
+    font-size: 0.32rem;
+    color: #348575;
+}
+.tp1_organ_lis {
+    color: #348575;
+    margin-top:0.4rem;
+}
+.tp1_organ_lis li {
+    width: 6.24rem;
+    margin: 0 auto 0.2rem;
+}
+.tp1_organ_lis dd {
+    word-wrap:break-word;
+    margin-bottom: 0.1rem;
+    font-size: 0.28rem;
+}
+.tp1_organ_lis dt {
+    overflow: hidden;
+    width: 100%;
+}
+.tp1_organ_lis dt img {
+    display: block;
+    width: 100%;
+}
+/*老师介绍*/
+.tp1_teacher_con {
+    overflow: hidden;
+    width: 6.27rem;
+    height: 4.3rem;
+    margin: 0.16rem auto;
+    padding: 0.24rem 0 0 0.35rem;
+}
+.btn_left {
+    position: absolute;
+    top: 2.8rem;
+    left: 0.1rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.04rem;
+    background: url("../../../makeappointment/painting/img/btn_left.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    z-index: 999;
+}
+.btn_right {
+    position: absolute;
+    top: 2.8rem;
+    right: 0.1rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.04rem;
+    background: url("../../../makeappointment/painting/img/btn_right.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    z-index: 999;
+}
+.tp1_teacher_lis {
+    height: 3.73rem;
+}
+.tp1_teacher_lis li {
+    float: left;
+    width: 6.57rem;
+    height: 3.73rem;
+}
+.tp1_teacher_lis dl {
+    width: 100%;
+    height: 100%;
+}
+.tp1_teacher_lis dt {
+    position: relative;
+    float: left;
+    width: 2.46rem;
+    height: 3.73rem;
+    margin-right: 0.15rem;
+    background-color: #fff;
+}
+.tp1_teacher_lis dd {
+    float: left;
+    width: 3.13rem;
+}
+.teacher_detail {
+    /*font-family: 'huihua';*/
+    overflow:hidden;
+    width: 3.13rem;
+    height: 3.57rem;
+    font-size: 0.28rem;
+}
+.teacher_name {
+    font-size: 0.4rem;
+    margin-bottom: 0.1rem;
+}
+.teacher_img {
+    /*overflow: hidden;*/
+    /*width: 2.1rem;*/
+    /*height: 3rem;*/
+    /*margin: 0.33rem auto 0;*/
+    /*border-radius: 50%;*/
+}
+.teacher_img img {
+    display: block;
+    width:100%;
+    height:100%;
+}
+/*预约*/
+.tp1_yuyue_lis {
+    position: relative;
+    width: 6.5rem;
+    /*min-height: 6.13rem;*/
+    margin: 0 auto;
+    padding-bottom: 0.37rem;
+    background-color: #fff;
+    /*font-family: 'huihua';*/
+}
+.tp1_yuyue_lis ul {
+    width: 6rem;
+    margin-left: 0.56rem;
+    line-height: 0.4rem;
+    /*padding-top: 1.36rem;*/
+    padding-top: 0.4rem;
+}
+.tp1_yuyue_lis li {
+    height: 0.88rem;
+    /*font-family: 'huihua';*/
+}
+.yuyue_course {
+    float: left;
+    width: 3.85rem;
+    border-bottom: 1px solid #5eae4c;
+}
+.tp1_yuyue_lis select {
+    float: left;
+    width: 4rem;
+    height: 0.4rem;
+    border: none;
+    /*font-family: 'huihua';*/
+    color: #444;
+}
+.tp1_yuyue_lis label {
+    position: relative;
+    float: left;
+    margin-right: 0.1rem;
+}
+.tp1_yuyue_lis input {
+    float: left;
+    width: 4rem;
+    border: none;
+    border-bottom: 1px solid #5eae4c;
+    text-indent: 0.2rem;
+    /*font-family: 'huihua';*/
+    color: #444;
+}
+.show_required:before {
+    position: absolute;
+    top: 0;
+    left: -0.2rem;
+    content: '*';
+    color: #f45a4e;
+}
+.yuyue_sumbit {
+    display: block;
+    width: 4.06rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    border: none;
+    background-color: #04be99;
+    color: #fff;
+    line-height: 0.76rem;
+    text-align: center;
+    /*font-family: 'huihua';*/
+}
+.copyright {
+    width: 100%;
+    /*margin-top: 0.4rem;*/
+    font-size: 0.24rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.5rem;
+    background-color: #549d62;
+    color: white;
+}
+.copyright p {
+    text-align: center;
+    font-size: 0.24rem;
+    line-height: 0.34rem;
+    margin-top: 0.2rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.show_none {
+    display: none;
+}
+
+/*课程详情*/
+.course_detail_img {
+    overflow: hidden;
+    width: 100%;
+    height: 3.75rem;
+    margin-bottom: 0.4rem;
+}
+.course_detail_img img {
+    display: block;
+    width: 100%;
+}
+.course_detail_name {
+    padding: 0 0.4rem;
+    font-size: 0.36rem;
+    /*font-family: 'huihua';*/
+    color: #ee8358;
+}
+.detail_name{
+    padding-top:0.4rem;
+}
+.course_detail_name span {
+     padding-left: 0.2rem;
+    /*font-family: 'huihua';*/
+    font-size: 0.36rem;
+}
+.course_detail_tit {
+    padding: 0.4rem 0.4rem 0.2rem;
+    font-size: 0.28rem;
+    /*font-family: 'huihua';*/
+    color: #ee8358;
+}
+.course_detail_text {
+    /*padding: 0 0.5rem;*/
+    font-size: 0.24rem;
+    padding: 0 0.4rem;
+    /*font-size: 0.26rem;*/
+    /*font-family: 'huihua';*/
+    color: #549d62;
+}
+.course_detail_con li {
+    padding: 0 0.4rem 0.2rem;
+}
+.course_detail_con li img {
+    display: block;
+    width: 100%;
+}
+.return_page {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    background-size: contain;
+    cursor: pointer;
+    text-align: center;
+}
+.return_page:before {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.3rem;
+}
+.icon_xiu{
+    height: 0.24rem;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.8rem;
+    top: 1.6rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}

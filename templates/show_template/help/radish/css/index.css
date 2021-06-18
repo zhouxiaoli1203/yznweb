@@ -1,0 +1,285 @@
+@charset "utf-8";
+.turntable div, .turntable p, .turntable span {
+    font-size: 0.28rem;
+}
+.turntable {
+    background-color: #c5fcff;
+}
+.contain_1 {
+    position: relative;
+    width: 100%;
+}
+.contain_1 img {
+    display: block;
+    width: 100%;
+}
+.contain_1_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 0.42rem;
+}
+.contain_1_con>img{
+    width: 5.86rem;
+    height: 8.22rem;
+    position: relative;
+    top: -1.3rem;
+    left: 0.9rem;
+}
+.t_peo {
+    height: 1.3rem;
+    padding-left: 0.25rem;
+    color: #fff;
+}
+.t_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin: 0.14rem 0.14rem 0 0;
+    border-radius: 50%;
+}
+.t_peo p {
+    line-height: 0.38rem;
+    color: #2b4311;
+}
+.t_peo p span {
+    font-size: 0.36rem;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.t_title {
+    width: 5.83rem;
+    height: 2.14rem;
+    margin: 0 auto;
+    padding-top: 0.4rem;
+    /*background: url("../img/t_title.png") no-repeat;*/
+    /*background-size: 100% 100%;*/
+}
+.t_title p {
+    width: 5.74rem;
+    height: 1.56rem;
+    margin: 0 auto;
+    color: #448117;
+    font-size: 0.42rem;
+    text-align: center;
+    line-height: 0.54rem;
+    padding: 0.2rem;
+    background: url(../img/title_bg.png) no-repeat;
+    background-size: 100% 100%;
+}
+.t_time {
+    width: 5.6rem;
+    height: 0.47rem;
+    margin: 7.5rem auto 0.11rem;
+    border-radius: 0.18rem;
+    background: url(../img/timebg.png) no-repeat;
+    background-size: 100% 100%;
+}
+.t_time{
+    color: #ffffff;
+    font-size: 0.24rem;
+    text-align: center;
+    line-height: 0.47rem;
+    position: relative;
+}
+.t_time span {
+    position: absolute;
+    top:0;
+    display: inline-block;
+    color: #FDF57B;
+    margin: 0 0.1rem;
+}
+.t_time span:nth-of-type(1){
+    left:2.1rem;
+}
+.t_time span:nth-of-type(2){
+    left: 2.85rem;
+}
+.t_time span:nth-of-type(3){
+    left:3.65rem;
+}
+.t_time span:nth-of-type(4){
+    left:4.45rem;
+}
+.t_turntable ul {
+    width: 110%;
+}
+.t_turntable li {
+    height: 1.86rem;
+}
+.t_turntable li span {
+    position: relative;
+    float: left;
+    width: 1.68rem;
+    height: 1.77rem;
+    margin: 0.045rem;
+    background: url("../img/small_box.png") no-repeat;
+    background-size: contain;
+    color: #C25301;
+    text-align: center;
+}
+.t_turntable li .turntable_btn {
+    background: url("../img/small_box2.png") no-repeat;
+    background-size: contain;
+}
+.t_turntable li i {
+    display: block;
+    padding-top: 0.2rem;
+    font-size: 0.56rem;
+    font-weight: bold;
+    font-style: normal;
+}
+.t_turntable li var {
+    font-size: 0.36rem;
+    font-style: normal;
+}
+.t_turntable li b {
+    display: block;
+    font-size: 0.36rem;
+}
+.t_turntable em {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.12rem;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.t_turntable .small_box_show em {
+    display: none;
+}
+.t_btn {
+    display: block;
+    width: 2.08rem;
+    height: 1.28rem;
+    margin: 5.8rem auto;
+    border: none;
+    background: url("../img/t_btn.png") no-repeat;
+    background-size: contain;
+}
+.t_tit {
+    width: 5.16rem;
+    height: 0.66rem;
+    margin: 0.6rem auto 0.25rem;
+}
+.t_tit1 {
+    background: url("../img/t_tit (1).png") no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.t_tit2 {
+    background: url("../img/t_tit (3).png") no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.t_tit3 {
+    background: url("../img/t_tit (2).png") no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.t_tit4 {
+    background: url("../img/t_tit (4).png") no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.t_context {
+    width: 6.8rem;
+    margin: 0 auto;
+    padding: 0.36rem;
+    background-color: #EBFAEE;
+    color: #357705;
+    box-shadow: 0 0.1rem 0.14rem #44BC49;
+    border-radius: 0.12rem;
+}
+.t_context p {
+    margin-bottom: 0.1rem;
+    font-size: 0.24rem;
+    line-height: 0.43rem;
+}
+.t_context img {
+    display: block;
+    width: 100%;
+}
+.nodata {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 2.28rem;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #3E4143;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

@@ -1,0 +1,169 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">采单员工作概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <!--<div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">课时收费</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">按月收费</span>
+    </div>-->
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>新增名单</th>
+                    <th>有效名单</th>
+                    <th>无效名单</th>
+                    <!--<th>带到访</th>-->
+                    <th>已转潜客</th>
+                    <th>已签约</th>
+                    <th>报课金额</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td>本周</td>
+                    <td>{{dataTotal.weekAddRosterNum}}</td>
+                    <td>{{dataTotal.weekEffectiveRosterNum}}</td>
+                    <td>{{dataTotal.weekInvalidRosterNum}}</td>
+                    <!--<td>{{dataTotal.weekToVisitNum}}</td>-->
+                    <td>{{dataTotal.weekToPotentialCustomerNum}}</td>
+                    <td>{{dataTotal.weekToContractNum}}</td>
+                    <td>￥{{dataTotal.weekContractPriceTotal | number:2}}</td>
+                </tr>
+                <tr>
+                    <td>本月</td>
+                    <td>{{dataTotal.monthAddRosterNum}}</td>
+                    <td>{{dataTotal.monthEffectiveRosterNum}}</td>
+                    <td>{{dataTotal.monthInvalidRosterNum}}</td>
+                    <!--<td>{{dataTotal.monthToVisitNum}}</td>-->
+                    <td>{{dataTotal.monthToPotentialCustomerNum}}</td>
+                    <td>{{dataTotal.monthToContractNum}}</td>
+                    <td>￥{{dataTotal.monthContractPriceTotal | number:2}}</td>
+                </tr>
+                <tr>
+                    <td>上周</td>
+                    <td>{{dataTotal.lastWeekAddRosterNum}}</td>
+                    <td>{{dataTotal.lastWeekEffectiveRosterNum}}</td>
+                    <td>{{dataTotal.lastWeekInvalidRosterNum}}</td>
+                    <!--<td>{{dataTotal.lastWeekToVisitNum}}</td>-->
+                    <td>{{dataTotal.lastWeekToPotentialCustomerNum}}</td>
+                    <td>{{dataTotal.lastWeekToContractNum}}</td>
+                    <td>￥{{dataTotal.lastWeekContractPriceTotal | number:2}}</td>
+                </tr>
+                <tr>
+                    <td>上月</td>
+                    <td>{{dataTotal.lastMonthAddRosterNum}}</td>
+                    <td>{{dataTotal.lastMonthEffectiveRosterNum}}</td>
+                    <td>{{dataTotal.lastMonthInvalidRosterNum}}</td>
+                    <!--<td>{{dataTotal.lastMonthToVisitNum}}</td>-->
+                    <td>{{dataTotal.lastMonthToPotentialCustomerNum}}</td>
+                    <td>{{dataTotal.lastMonthToContractNum}}</td>
+                    <td>￥{{dataTotal.lastMonthContractPriceTotal | number:2}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="pot_pop_peo_nav clearfix">
+            <div class="tab_course_history">
+                <div ng-class="{bg_active:isactive==1}" ng-click="tab_course_history(1)">按老师</div>
+                <div ng-class="{bg_active:isactive==2}" ng-click="tab_course_history(2)">按课程</div>
+                <div ng-class="{bg_active:isactive==3}" ng-click="tab_course_history(3)">按班级</div>
+            </div>
+        </div>-->
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+                </li>
+                <li class="li_left" style="margin-left:5px;">
+                    <my-select list-name="渠道类型" list-data="{{screen_channelType}}" list-field="channelTypeName" list-click="changeChannelType(n)"></my-select>
+                </li>
+                <li class="li_left" style="margin-left:5px;" ng-show="hasChannel2">
+                    <my-select my-id="channel2" list-name="请选择来源" list-data="{{screen_channelType2}}" list-field="channelName" list-click="changeChannelType2(n)"></my-select>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+
+                    <li class="li_left margin_lf_15">
+                        <my-select my-id="class_type" list-name="新增名单" list-data="{{screen_namelist}}" list-field="name" list-click="changeNameStatus(n)" list-all="no" list-sort="false"></my-select>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;{{name2 == "报课金额"?"元":"人"}}&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                    <span>统计规则 </span>
+                    <div style="top:0;" class="help_icon noneWidth" data-tips="新增名单：按名单录入时间统计，新增名单的人数之和<br>
+有效名单：按名单操作时间统计，名单状态为“预约、延期”的人数之和<br>
+无效名单：按名单操作时间统计，名单状态为“无效”的人数之和<br>
+<!--带到访：按潜客录入时间统计，来访管理“潜客登记”且选择采单员的人数之和<br>-->
+已转潜客：按名单操作时间统计，名单转为潜客的人数之和<br>
+已签约：按订单时间统计，名单转为潜客并签约的人数之和<br>
+报课金额：按订单时间统计，名单转为潜客并签约的应收金额之和"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0;">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.addRosterNum}}</td>
+                        <td class="textAlignCenter">{{x.effectiveRosterNum}}</td>
+                        <td class="textAlignCenter">{{x.invalidRosterNum}}</td>
+                        <!--<td class="textAlignCenter">{{x.toVisitNum}}</td>-->
+                        <td class="textAlignCenter">{{x.toPotentialCustomerNum}}</td>
+                        <td class="textAlignCenter">{{x.toContractNum}}</td>
+                        <td class="textAlignCenter">￥{{x.contractPriceTotal|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0">
+                <tbody>
+                    <tr>
+                        <td width="14%">总计</td>
+                        <td width="14%" class="textAlignCenter main_color">{{"addRosterNum" |_total :tableList}}</td>
+                        <td width="14%" class="textAlignCenter main_color">{{"effectiveRosterNum" |_total :tableList}}</td>
+                        <td width="14%" class="textAlignCenter main_color">{{"invalidRosterNum" |_total :tableList}}</td>
+                        <!--<td width="14%"class="textAlignCenter main_color">{{"toVisitNum" |_total :tableList}}</td>-->
+                        <td width="14%" class="textAlignCenter main_color">{{"toPotentialCustomerNum" |_total :tableList}}</td>
+                        <td width="14%" class="textAlignCenter main_color">{{"toContractNum" |_total :tableList}}</td>
+                        <td width="14%" class="textAlignCenter main_color">￥{{"contractPriceTotal" |_total :tableList|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

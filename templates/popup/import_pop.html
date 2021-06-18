@@ -1,0 +1,224 @@
+<div class="popup_ import_popup" id="import_popup">
+    <h6>{{props.page}}导入<span ng-click="closePopup('import_popup')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="popup_line">
+            <div class="navigation_bar import_width navigation_bar_bgm{{navigation_bar_bgm}}">
+                <!--导航条-->
+                <div ng-class="{colorFFF:navigation_bar_bgm==1}">1.选取文件</div>
+                <div ng-class="{colorFFF:navigation_bar_bgm==2}">2.数据校验</div>
+                <div ng-class="{colorFFF:navigation_bar_bgm==3}">3.导入成功</div>
+            </div>
+        </div>
+        <form class="popup_form" role="form" enctype="multipart/form-data" id="form_load" method="POST" ng-show="navigation_bar_bgm==1" ng-submit="confirmNext(2)">
+            <!--<form class="popup_form" role="form" ng-submit="ConfirmNext(1)" ng-show="navigation_bar_bgm==1">-->
+            <div class="popup_form_content content" style="height: 387px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <div class="file_input col-xs-7">
+                            <input type="text" class="col-xs-9 form-control fileInput" ng-model="uploadData.file_name" placeholder="请选择文件" readonly/>
+                            <button class="btn sure">{{uploadData.uploadText}}</button>
+                            <input type="file" class="upload_file" id="upfile" name="upfile" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                        </div>
+                        <span class="clickText col-xs-3" ng-click="download_btn()" style="line-height:28px;">下载导入模板</span>
+                    </div>
+                    <div class="popup_line success" ng-if="uploadData.hasFile && props.page == '名单'">
+                        <label class="form-label labelLeft" style="text-align: left;">渠道选择:</label>
+                        <div class="col-xs-4 noPadding">
+                            <select class="form-control" ng-model="$parent.channelType" ng-change="resourceChange($parent.channelType)">
+                                <option value="">请选择来源渠道</option>
+                                <option value="{{x}}" ng-repeat="x in $parent.channelTypelist" ng-hide="x.status == 0">{{x.channelTypeName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4" ng-show="$parent.hasSecondSelect">
+                            <select class="form-control" ng-model="$parent.channel_Id" ng-change="upResourceChange($parent.channel_Id)">
+                                <option value="">请选择</option>
+                                <option value="{{y}}" ng-repeat="y in $parent.channelList">{{y.channelName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--以下工资单-->
+                    <div ng-show="props.page == '工资单'">
+                        <div class="parting_line popup_line"></div>
+                        <div class="popup_line">
+                            <label class="form-label required">标题:</label>
+                            <div class="col-xs-5">
+                                <input type="text" name="1" class="form-control" maxlength="20" autocomplete="off" placeholder="请输入标题" ng-model="payroll.payrollRecordTitle">
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">发薪月份:</label>
+                            <div class="col-xs-5">
+                                <input class="form-control dateIcon" name="2" type="text" id="s_payrollMonth" ng-model="payroll.payrollMonth" autocomplete="off" placeholder="请选择发薪月份">
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">结算日期:</label>
+                            <div class="col-xs-5">
+                                <input class="form-control dateIcon" name="3" type="text" id="s_payrollDate" ng-model="payroll.payrollDate" autocomplete="off" placeholder="请选择结算日期">
+                            </div>
+                        </div>
+                    </div>
+                    <!--以上工资单-->
+
+                    <div class="parting_line popup_line"></div>
+                    <div class="popup_line">
+                        <div class="text" style="color:#999;" ng-if="props.page == '学员'">
+                            学员导入须知：<br> 1、支持导入报名订单，导入的订单不包含学杂信息；
+                            <br> 2、重复学员导入系统将自动合并学员；
+                            <br> 3、同课程多次导入后课程课时会累加；学员账户多次导入后账户余额会累加；
+                            <br> 4、同课程不同收费方式，需拆分为多行导入；
+                            <br> 5、同课程相同收费方式，需分2次导入；
+                            <br> 6、一次最多能导入1000条数据；
+                            <br>
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '班级'">
+                            班级导入须知：<br> 1、系统内存在相同班级名称不允许导入；
+                            <br> 2、表格内存在相同班级名称不允许导入；
+                            <br> 3、学期班级需填写“学年学期”；非学期班级不需填写；
+                            <br> 4、一次最多能导入1000条数据；
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '名单'">
+                            名单导入须知：<br> 1、系统内已存在相同手机号的名单允许去重导入；
+                            <br> 2、表格内存在相同手机号的名单不允许导入；
+                            <br> 3、一次最多能导入1000条数据；
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '潜客'">
+                            潜客导入须知：<br> 1、系统内已存在相同手机号的潜客不允许导入；
+                            <br> 2、表格内存在相同手机号的潜客不允许导入；
+                            <br> 3、一次最多能导入1000条数据；
+                            <br> 4、未分配顾问的潜客将自动进入公池；
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '工资单'">
+                            工资导入须知：<br> 1、导入前，请先到“工资模版设置“中设置您机构的工资导入模板；
+                            <br> 2、表格内员工姓名和手机号必须与系统中保持一致；
+                            <br> 3、表格内的表头必须与系统中“工资模板”保持一致；
+                            <br> 4、一次最多只能导入1000条数据；
+                            <br>
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '物品'">
+                            物品导入须知：<br> 1、重复物品导入时，系统将自动合并该物品；
+                            <br> 2、同物品不同规格，需拆分为多行导入；
+                            <br> 3、同物品同规格，需分2次导入；
+                            <br> 4、相同规格的物品若填写采购数量时，导入后该规格物品库存会相应增加；
+                            <br> 5、一次最多能导入1000条数据；
+
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '教室'">
+                            教室导入须知：<br> 1、"教室名称"和"座位"为必填项；
+                            <br> 2、表格内有相同的教室则无法导入；
+                            <br> 3、系统内已有教室则无法导入；
+                            <br> 4、一次最多能导入1000条数据；
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '推单'">
+                            推单导入须知：<br> 1、所导入学员必须是系统内已存在的学员；
+                            <br> 2、表格内有相同的学员，其课程将汇总于一个订单内；
+                            <br> 4、一次最多能导入1000条数据；
+                        </div>
+                        <div class="text" style="color:#999;" ng-if="props.page == '收支'">
+                            收支导入须知：<br> 1、系统内未录入费用分类无法导入；
+                            <br>2、一次最多能导入1000条数据；
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('import_popup')" type="button">取消</button>
+                <button class="btn sure" type="submit">上传</button>
+            </div>
+        </form>
+        <form class="popup_form" role="form" ng-show="navigation_bar_bgm==2">
+            <div class="popup_form_content content2" style="height: 387px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <div class="title" ng-if="props.page == '名单'">{{errorMsg.isFormat?"以下名单信息格式异常，请处理后重新上传文件":"以下名单信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '潜客'">{{errorMsg.isFormat?"以下潜客信息格式异常，请处理后重新上传文件":"以下潜客信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '学员'">{{errorMsg.isFormat?"以下学员信息格式异常，请处理后重新上传文件":"以下学员信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '班级'">{{errorMsg.isFormat?"以下班级信息格式异常，请处理后重新上传文件":"以下班级信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '工资单'">{{errorMsg.isFormat?"以下工资单信息异常，请处理后重新上传文件":""}}</div>
+                        <div class="title" ng-if="props.page == '物品'">{{errorMsg.isFormat?"以下物品信息异常，请处理后重新上传文件":""}}</div>
+                        <div class="title" ng-if="props.page == '教室'">{{errorMsg.isFormat?"以下教室信息格式异常，请处理后重新上传文件":"以下教室信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '推单'">{{errorMsg.isFormat?"以下推单信息格式异常，请处理后重新上传文件":"以下推单信息数据异常，请处理后重新上传文件"}}</div>
+                        <div class="title" ng-if="props.page == '收支'">{{errorMsg.isFormat?"以下收支信息格式异常，请处理后重新上传文件":"以下收支信息数据异常，请处理后重新上传文件"}}</div>
+
+                    </div>
+                    <div class="popup_line">
+                        <div class="text" ng-bind-html="errorMsg.msg"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="button" ng-click="confirmNext(1)">重新上传</button>
+                <button class="btn sure" type="button" ng-click="uploadFile(true)" ng-if="errorCode == '20026' && props.page !== '工资单'">去重导入</button>
+            </div>
+        </form>
+        <form class="popup_form" role="form" ng-show="navigation_bar_bgm==3">
+            <div class="popup_form_content content3" style="height: 387px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="metadata"><span class="font_metadata">导入成功</span></div>
+                    <div class="success" ng-if="props.page == '名单'">
+                        <div class="popup_line">
+                            <label class="form-label">导入渠道:</label>
+                            <div class="col-xs-10">
+                                {{resourceName}}{{resourceName2?(" - "+resourceName2):""}}
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">导入名单数量:</label>
+                            <div class="col-xs-10">
+                                <span class="fontColor_ff595e">{{successData.allTotal}}</span>人
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">名单分配结果:</label>
+                            <div class="col-xs-10">
+                                <span ng-repeat="x in successData.rosterUpFileList" style="margin-right:5px;">
+                                    <span class="name">{{x.teacherName?x.teacherName:"无电话销售"}}&nbsp;&nbsp;</span>
+                                <span class="num fontColor_ff595e">{{x.total}}</span>人;
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="success" ng-if="props.page == '潜客'">
+                        <div class="popup_line">
+                            <label class="form-label">导入潜客数量:</label>
+                            <div class="col-xs-10">
+                                <span class="fontColor_ff595e">{{successData.allTotal}}</span>人
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">潜客分配结果:</label>
+                            <div class="col-xs-10">
+                                <span ng-repeat="x in successData.rosterUpFileList" style="margin-right:5px;">
+                                    <span class="name">{{x.teacherName?x.teacherName:"无顾问"}}&nbsp;&nbsp;</span>
+                                <span class="num fontColor_ff595e">{{x.total}}</span>人;
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="success" ng-if="props.page == '学员' || props.page == '班级'">
+                        <div class="popup_line">
+                            <label class="form-label">导入{{props.page}}数量:</label>
+                            <div class="col-xs-10">
+                                <span class="fontColor_ff595e">{{successData}}</span>{{props.page == '班级'?"个":"人"}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="success" ng-if="props.page == '工资单' || props.page == '物品'|| props.page == '教室'||props.page == '推单'">
+                        <div class="popup_line">
+                            <!--<label class="form-label">导入工资单数量:</label>-->
+                            <div class="col-xs-10">
+                                <span class="fontColor_ff595e">{{successDataMsg}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="submit" ng-click="closePopup('import_popup')">完成</button>
+            </div>
+        </form>
+    </div>
+</div>

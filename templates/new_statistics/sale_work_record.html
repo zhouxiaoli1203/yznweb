@@ -1,0 +1,140 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">工作概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+     <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工作概况</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">工作记录</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">试听统计</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>电话沟通人次</th>
+                    <th>来店洽谈人次</th>
+                    <th>线上沟通人次</th>
+                    <th>预约来访人次</th>
+                    <th>实际来访人次</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td>本周</td>
+                    <td class="">{{dataTotal.weekTelephoneCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.weekTalkByShopTotal}}</td>
+                    <td class="">{{dataTotal.weekOnlineCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.weekAppointVisitsTotal}}</td>
+                    <td class="">{{dataTotal.weekActualVisitsTotal}}</td>
+                </tr>
+                <tr>
+                    <td>本月</td>
+                    <td class="">{{dataTotal.monthTelephoneCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.monthTalkByShopTotal}}</td>
+                    <td class="">{{dataTotal.monthOnlineCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.monthAppointVisitsTotal}}</td>
+                    <td class="">{{dataTotal.monthActualVisitsTotal}}</td>
+                </tr>
+                <tr>
+                    <td>上周</td>
+                    <td class="">{{dataTotal.lastWeekTelephoneCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekTalkByShopTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekOnlineCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekAppointVisitsTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekActualVisitsTotal}}</td>
+                </tr>
+                <tr>
+                    <td>上月</td>
+                    <td class="">{{dataTotal.lastMonthTelephoneCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthTalkByShopTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthOnlineCommunicationTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthAppointVisitsTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthActualVisitsTotal}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="changeAdviser(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="新增潜客" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" list-defalut="{{typeName}}"></my-select>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1" >
+                    <span>单位:&nbsp;人次&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" class="help_icon noneWidth" data-tips="电话沟通人次：按沟通记录时间统计，“新增沟通”且类型为“电话沟通”的次数之和<br>来店洽谈人次：按沟通记录时间统计，“新增沟通”且类型为“来店洽谈”的次数之和<br>
+线上沟通人次：按沟通记录时间统计，“新增沟通”且类型为“线上沟通”的次数之和<br>
+预约来访人次：按操作时间统计，潜客管理“预约来访”的次数之和<br>
+实际来访人次：按操作时间统计，来访管理“确认来访”的次数之和"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0">
+                <thead my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.telephoneCommunicationTotal}}</td>
+                        <td class="textAlignCenter">{{x.talkByShopTotal}}</td>
+                        <td class="textAlignCenter">{{x.onlineCommunicationTotal}}</td>
+                        <td class="textAlignCenter">{{x.appointVisitsTotal}}</td>
+                        <td class="textAlignCenter">{{x.actualVisitsTotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td  width="15%">总计</td>
+                    <td  width="17%" class="textAlignCenter main_color">{{totalData.telephoneCommunicationTotal_total}}</td>
+                    <td  width="17%" class="textAlignCenter main_color">{{totalData.talkByShopTotal_total}}</td>
+                    <td  width="17%" class="textAlignCenter main_color">{{totalData.onlineCommunicationTotal_total}}</td>
+                    <td  width="17%" class="textAlignCenter main_color">{{totalData.appointVisitsTotal_total}}</td>
+                    <td  width="17%" class="textAlignCenter main_color">{{totalData.actualVisitsTotal_total}}</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

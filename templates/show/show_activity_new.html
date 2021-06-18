@@ -1,0 +1,592 @@
+<div class="common_body stud_common" style="padding-bottom: 30px;">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(2, 1)" ng-class="{tab_nav_show: studNavJud==2}">模板库</span>
+        <span ng-click="switchStudNav(1, 1)" ng-class="{tab_nav_show: studNavJud==1}">活动列表</span>
+        <span ng-click="switchStudNav(3, 1)">去旧版</span>
+    </div>
+    <div class="tab_nav_3" ng-if="studNavJud==2">
+        <ul>
+            <li class="tab_nav_3_n">类型:</li>
+            <li ng-click="switchStudNav(x.value, 3)" ng-class="{'tab_nav_3_c': studNavJud_3 == x.value}" ng-repeat="x in templateTypeList">{{x.name}}</li>
+        </ul>
+        <ul>
+            <li class="tab_nav_3_n">风格:</li>
+            <li ng-click="switchStudNav(x.tagId, 5)" ng-class="{'tab_nav_3_c': studNavJud_5 == x.tagId}" ng-repeat="x in templateStyleList_2">{{x.tagName}}</li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content" ng-show="studNavJud == 1">
+        <!-- 搜索 -->
+        <div class="common_tab">
+            <ul class="ul_left clearfix">
+                <li>
+                    <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                </li>
+                <li>
+                    <my-select list-name="活动类型" list-data="{{templateTypeList_}}" list-field="name" list-click="changeType(n)"></my-select>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$distSwitch == 1" ng-click="screenSel($event, '$distSwitch')">分销
+                        </label>
+                </li>
+                <li class="part_leftLine">
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$upDownStatus == 0" ng-click="screenSel($event, '$upDownStatus','0')">待发布
+                        </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$activityStatus== 1" ng-click="screenSel($event, '$activityStatus','1')">未开始
+                        </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$activityStatus == 2" ng-click="screenSel($event, '$activityStatus','2')">进行中
+                        </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$activityStatus == 3" ng-click="screenSel($event, '$activityStatus','3')">已结束
+                        </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$upDownStatus == -1" ng-click="screenSel($event, '$upDownStatus','-1')">已下架
+                        </label>
+                </li>
+                <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                <!-- <li class="common_tab_libtn">
+                    <div class="common_tab_btn" ng-click="newCreatAct()"><i class="icon_addcourse"></i>新建活动</div>
+                </li> -->
+            </ul>
+        </div>
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{nameListThead_1}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td>{{x.activityType == 1?'微传单':x.activityType == 2?'抢购':x.activityType == 3?'拼团':x.activityType == 4?'砍价':'助力'}}</td>
+                        <td class="clickText" ng-click="seeDataBrowsing(x,6)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.distSwitch == 1?'是':'否'}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+
+                        <td ng-if="x.upDownStatus==-1" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=-1" title="未下架">{{x.activityStatus==3?'已结束':(x.activityStatus==1?'未开始':(x.upDownStatus==0?'待发布':'进行中'))}}</td>
+                        <td>{{x.userNum}}</td>
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <span ng-hide="x.upDownStatus==-1 || (x.activityType == 3 && x.activityStatus == 3)" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span ng-hide="x.upDownStatus==-1" class="clickText" ng-click="operation(5, x)">{{x.upDownStatus==0?'发布':(x.upDownStatus==-1?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3 M-box3_1"></div>
+        </div>
+    </div>
+    <div class="common_content" ng-show="studNavJud == 2">
+        <ul class="show_template clearfix">
+            <li ng-repeat="x in templateList">
+                <span class="template_name">{{x.activityName}}</span>
+                <dl>
+                    <dt class="template_img">
+                	    <span class="template_new_icon" ng-if="x.newFlag"></span>
+                	    <img ng-src="{{x.top && x.top.fileUrl}}" alt="模板图" />
+                	</dt>
+                    <dd>
+                        <div class="template_code" id="templateCode_{{$index}}"></div>
+                        <span class="template_btn"><span ng-click="addTemplate(x, 'add')">开始制作</span></span>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--数据概览-->
+<div class="popup_" id="show_dataBrowsing">
+    <!--<h6>数据概览（{{browsing_lineData.activityName}}）<span ng-click="closeLayer('dataBrowsing')" class="popup_x icon_drop_x"></span></h6>-->
+    <div class="popup_content">
+        <div class="popup_form_content">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_line browsing_nav">
+                    <span ng-class="{browsing_nav_show: browsingShow==1}" ng-click="browsingNav(1)">数据总览</span>
+                    <span ng-if="courseDataList.length != 1" ng-class="{browsing_nav_show: browsingShow==4}" ng-click="browsingNav(4)">报名情况</span>
+                    <span ng-class="{browsing_nav_show: browsingShow==2}" ng-click="browsingNav(2)">有效用户</span>
+                    <span ng-if="browsing_lineData.activityType==3" ng-class="{browsing_nav_show: browsingShow==3}" ng-click="browsingNav(3)">拼团列表</span>
+                    <span ng-class="{browsing_nav_show: browsingShow==6}" ng-click="browsingNav(6)">活动分享</span>
+                    <span ng-if="browsing_lineData.distSwitch == 1" ng-class="{browsing_nav_show: browsingShow==5}" ng-click="browsingNav(5)">分销汇总</span>
+                </div>
+                <!-- 数据总览 -->
+                <div class="browsing_con" ng-show="browsingShow==1">
+                    <div class="overview_tit">总览：</div>
+                    <div class="overview_data">
+                        <ul class="overview_data_con">
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总浏览量(PV)</strong>
+                                    <em>{{overViewData.totalPV | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayPV | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayPV | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总访客量(UV)</strong>
+                                    <em>{{overViewData.totalVisitors | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayVisitors | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayVisitors | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总分享数</strong>
+                                    <em>{{overViewData.totalShares | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayShares | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayShares | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总有效用户</strong>
+                                    <em>{{overViewData.totalUsers | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayUsers | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayUsers | _wf}}人</i></em>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="overview_tit">数据趋势：</div>
+                    <div class="overview_map_nav">
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==0}" ng-click="getOverViewTrendData(0, '有效用户')">有效用户</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==1}" ng-click="getOverViewTrendData(1, '浏览量')">浏览量</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==3}" ng-click="getOverViewTrendData(3, '访问量')">访问量</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==2}" ng-click="getOverViewTrendData(2, '分享数')">分享数</span>
+                        <input type="text" class="form-control dateIcon mr10" id="overViewTime" placeholder="活动时间" ng-model="overViewMapTime" />
+                        <select ng-model="overViewMapTab.timeType" ng-options="x.type as x.name for x in timeTypes" ng-change="getOverViewTrendData(overViewMapTab.type,overViewMapTab.name)">
+                            <option value="" disabled selected>请选择</option>
+                        </select>
+                        <em>{{overViewMapTab.name}}趋势图</em>
+                    </div>
+                    <div class="overview_map" id="mainechart"></div>
+                </div>
+                <!-- 有效用户 -->
+                <div class="browsing_con signUp-popup" ng-if="browsingShow==2">
+                    <div class="reInfos" ng-if="browsing_lineData.activityType==3" style="width:100%;text-align: left;padding-left:10px;margin: 0 0 10px;">
+                        <span class="icon_warning"></span>由于易收宝升级，2020年11月2日11:10之后参与拼团的用户，拼团失败后，支付金额将自动原路退回给用户，不需要线下单独退款。
+                    </div>
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch class="vagueSearch" list-clicks="SearchData_browsing(n,'valid')" list-keyup="SearchData_browsing(n,'valid')" list-data="{{searchData_browsing}}" select-name="{{selectInfoNameId_browsing}}" select-input="false"></kindsearch>
+                        </li>
+                        <li ng-show="browsing_lineData.activityType<4">
+                            <my-select list-name="商品筛选" list-data="{{ListProduct}}" list-field="productName" list-click="searchByHandle(n,'screen_contentId',browsingShow,'contentId')" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li ng-show="browsing_lineData.activityType == 3">
+                            <my-select list-name="拼团状态" list-data="{{actions_group}}" list-field="name" list-click="searchByHandle(n,'screen_activitySuccess',browsingShow)" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li ng-show="browsing_lineData.activityType == 5">
+                            <my-select list-name="助力状态" list-data="{{actions_help}}" list-field="name" list-click="searchByHandle(n,'screen_activitySuccess',browsingShow)" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="potentialCustomerType == 1" ng-click="changeState($event, 1)">新潜客
+                            </label>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="potentialCustomerType == 2" ng-click="changeState($event, 2)">老潜客
+                            </label>
+                        </li>
+                        <li ng-click="actData_onReset('valid')" class="clickText" style="line-height: 28px;">重置</li>
+                        <li class="common_tab_btn" style="float: right;" ng-click="browsing_operate(null, 1)">导出</li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 125px;">姓名</th>
+                                    <th style="width: 125px;">联系方式</th>
+                                    <th style="width: 125px;">参与时间</th>
+                                    <th style="width: 200px;" ng-if="browsing_lineData.activityType < 4">报名商品</th>
+                                    <th style="width: 125px;" ng-if="browsing_lineData.activityType == 5">助力情况</th>
+                                    <th style="width: 160px;" ng-if="browsing_lineData.activityType == 4">砍价情况</th>
+                                    <th style="width: 125px;" ng-if="browsing_lineData.activityType == 3">拼团状态</th>
+                                    <th style="width: 20%;text-align: center;">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px;max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!overViewDataList.length">
+                                        <td colspan="{{browsing_lineData.activityType>3?5:browsing_lineData.activityType==3?6:4}}" style="text-align: center;">没有相关数据</td>
+                                    </tr>
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td style="width: 125px;"><span class="clickText" ng-click="browsing_showPeoInfo(a, 'yuyue')">{{a.studentName}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <td style="width: 125px;">{{a.phone}}</td>
+                                        <td style="width: 125px;">{{a.createTime | yznDate:'yyyy-MM-dd H:mm'}}</td>
+                                        <td style="width: 200px;" ng-if="browsing_lineData.activityType < 4">{{a.productName}}</td>
+                                        <td style="width: 125px;" ng-if="browsing_lineData.activityType == 5"><span class="main_color">{{a.currentNumber}}</span>/{{a.totalNumber}}个助力包</td>
+                                        <td style="width: 160px;" ng-if="browsing_lineData.activityType == 4">
+                                            现价¥{{a.currentPrice | _qf}}
+                                            <span ng-if="a.originalPrice - a.currentPrice == 0" class="main_color">（未砍）</span>
+                                            <span ng-if="a.originalPrice - a.currentPrice > 0" class="main_color">（已砍¥{{(a.originalPrice - a.currentPrice) | _qf}}）</span></td>
+                                        <td style="width: 125px;" ng-if="browsing_lineData.activityType == 3">{{a.activitySuccess == 1?'拼团成功':a.activitySuccess == -1?'拼团失败':'拼团中'}}<span class="main_color" ng-if="a.lackNumber && a.activitySuccess==2">（差{{a.lackNumber}}人）</span></td>
+                                        <td style="width: 20%;text-align: center;" class="operate overflow-normal textAlignCenter">
+                                            <span ng-if="a.viewType == 1" class="clickText" ng-click="browsingFun.operate(1, {data: a, page: '订单管理'})">查看订单</span>
+                                            <span ng-if="a.viewType == 2" class="clickText" ng-click="browsingFun.operate(2, a)">关联订单</span>
+                                            <span ng-if="a.viewType == 3" class="clickText" ng-click="browsingFun.operate(3, a)">退款详情</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 拼团列表 -->
+                <div class="browsing_con" ng-if="browsingShow==3">
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch class="vagueSearch" list-clicks="SearchData_browsing(n,'pintuan')" list-keyup="SearchData_browsing(n,'pintuan')" list-data="{{searchData_browsing}}" select-name="{{selectInfoNameId_browsing}}" select-input="false"></kindsearch>
+                        </li>
+                        <li>
+                            <my-select list-name="商品筛选" list-data="{{ListProduct}}" list-field="productName" list-click="searchByHandle(n,'screen_contentId',browsingShow,'contentId')" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li>
+                            <my-select list-name="拼团状态" list-data="{{actions_group}}" list-field="name" list-click="searchByHandle(n,'screen_activitySuccess',browsingShow)" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li ng-click="actData_onReset('pintuan')" class="clickText" style="line-height: 28px;">重置</li>
+                        <li class="common_tab_btn" style="float: right;" ng-click="browsing_operate(null, 2)">导出</li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 190px; padding-left: 44px;">商品</th>
+                                    <th style="width: 125px;">拼团状态</th>
+                                    <th style="width: 125px;">姓名</th>
+                                    <th style="width: 185px;">联系方式</th>
+                                    <th style="width: 140px;">参与时间</th>
+                                    <th style="text-align: center;">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!listGroup.length">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="a in listGroup">
+                                        <td ng-if="a.rows" rowspan="{{a.rows}}" style="width: 190px; padding-left: 44px;">{{a.productName}}</td>
+                                        <td ng-if="a.rows" rowspan="{{a.rows}}" style="width: 125px;border-right: 1px solid #d6d6d6;"><span ng-if="a.activitySuccess==2">拼团中</span><span ng-if="a.activitySuccess==1">拼团成功</span><span ng-if="a.activitySuccess==-1">拼团失败</span></td>
+                                        <td style="width: 125px;">{{a.studentName}}</td>
+                                        <td style="width: 185px;">{{a.phone}}</td>
+                                        <td style="width: 140px;">{{a.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                        <td class="operate overflow-normal textAlignCenter">
+                                            <span ng-if="a.viewType == 1" class="clickText" ng-click="browsingFun.operate(1, {data: a, page: '订单管理'})">查看订单</span>
+                                            <span ng-if="a.viewType == 2" class="clickText" ng-click="browsingFun.operate(2, a)">关联订单</span>
+                                            <span ng-if="a.viewType == 3" class="clickText" ng-click="browsingFun.operate(3, a)">退款详情</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 报名情况 -->
+                <div class="browsing_con" ng-if="browsingShow==4">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 190px; padding-left: 44px;">商品名称</th>
+                                    <th style="width: 170px;">{{browsing_lineData.activityType == 3?'拼团价':'活动价'}}</th>
+                                    <th style="width: 185px;">支付方式</th>
+                                    <th style="width: 125px;">报名人数</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!courseDataList.length">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="a in courseDataList">
+                                        <td style="width: 190px; padding-left: 44px;">{{a.productName}}</td>
+                                        <td ng-if="browsing_lineData.activityType == 3" style="width: 170px;">
+                                            <div ng-repeat="x in a.showContentRuleList">{{x.number}}人团 / ¥{{x.price | _qf}}</div>
+                                        </td>
+                                        <td ng-if="browsing_lineData.activityType != 3" style="width: 170px;">¥{{a.floorPrice | _qf}}</td>
+                                        <td style="width: 185px;">{{a.paySet == 1?'线下支付':a.paySet == 2?'活动价':a.paySet == 3?'预付'+a.prepaidAmount+'元':'-'}}</td>
+                                        <td style="width: 125px;">
+                                            <span>
+                                                {{a.soldCopies}}{{a.places?'/'+a.places:''}}
+                                            </span>
+                                            <!-- <span ng-click="gototheUserList(a)" ng-class="{true:'clickText'}[a.soldCopies>0]">{{a.soldCopies}}</span> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 分销汇总 -->
+                <div class="browsing_con" ng-if="browsingShow==5">
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch class="vagueSearch" list-clicks="SearchData_browsing(n,'fenxiao')" list-keyup="SearchData_browsing(n,'fenxiao')" list-data="{{searchData_browsing_jies}}" select-name="{{selectInfoNameId_browsing_jies}}" select-input="false"></kindsearch>
+                        </li>
+                        <li class="common_tab_btn" style="float: right;" ng-click="browsing_operate(null,3)">导出</li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">推荐人</th>
+                                    <th style="width: 20%;">联系方式</th>
+                                    <th style="width: 30%;">关联学员</th>
+                                    <th style="width: 170px;">参与推广时间</th>
+                                    <th style="width: 20%;">浏览人次</th>
+                                    <th style="width: 20%;">有效邀请/人</th>
+                                    <th style="width: 20%;">推荐报课/人</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!referralList.length">
+                                        <td colspan="7" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="x in referralList">
+                                        <td style="width: 20%;">{{x.studentName}}</td>
+                                        <td style="width: 20%;">{{x.phoneNum}}</td>
+                                        <!-- <th style="width: 20%;">后台无字段</th> -->
+                                        <td class="clickText" style="width: 30%;white-space: inherit;">
+                                            <span ng-repeat="n in x.potentialCustomerList track by $index" ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':'0','fromPage':'studentPop','item':n,'tab':1})">{{n.name}}{{($index == x.potentialCustomerList.length -1)?'':'，'}}</span>
+                                        </td>
+                                        <td style="width: 170px;">{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                        <td style="width: 20%;">{{x.views}}</td>
+                                        <td style="width: 20%;" class="clickText" ng-click="x.inviteNumber>0?operatePop(x,3):return;">{{x.inviteNumber}}</td>
+                                        <td style="width: 20%;" class="clickText" ng-click="x.recommendedNumber?operatePop(x,4):return;">{{x.recommendedNumber}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 活动分享 -->
+                <div class="browsing_con" ng-if="browsingShow==6">
+                    <div class="activity_share pull_inherit" style="margin:20px auto 0;">
+                        <div class="share_con">
+                            <div class="share_con_img">
+                                <strong><img ng-src="{{browsing_lineData.shareImageUrl}}" alt="分享图片" /></strong>
+                                <span>封面</span>
+                            </div>
+                            <div class="share_con_tit">
+                                <strong>分享标题：{{browsing_lineData.shareTitle}}</strong>
+                                <span>分享描述：{{browsing_lineData.shareDesc}}</span>
+                            </div>
+                        </div>
+                        <div class="share_con_code">
+                            <div id="shareCode_"></div>
+                            <span>{{browsing_lineData.upDownStatus !== -1?"扫一扫分享活动":"扫一扫预览活动"}}</span>
+                        </div>
+                        <div class="share_con_copy">
+                            <label>链接分享</label>
+                            <input type="text" id="shareCopyText_" ng-model="discontentUrl_" />
+                            <span ng-click="clickShareCopy()">复制链接</span>
+                        </div>
+                        <div class="share_con_btn clearfix">
+                            <!-- <div class="share_con_btn clearfix" ng-style="{'width': clickLineData.upDownStatus==2?'170px':'65px'}"> -->
+                            <!-- <span ng-hide="clickLineData.upDownStatus==0 || clickLineData.activityStatus == 2" ng-click="openLink(2)"><i class="icon_edit"></i>编辑</span>
+                            <strong ng-if="clickLineData.upDownStatus == 2" ng-click="openLink(1)"><i class="icon_shangban"></i>复制活动</strong> -->
+                            <span ng-click="openLink(2)"><i class="icon_edit"></i>编辑</span>
+                            <strong ng-click="openLink(1)"><i class="icon_shangban"></i>复制活动</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="pagitionDiv mr_bm_10" style="margin-top: 10px;" ng-if="browsingShow==2 || browsingShow==3 || browsingShow==5" ng-hide="overViewDataList.length <= 0">
+                    <div class="M-box3 browsing_box3"></div>
+                </div> -->
+            </div>
+        </div>
+        <div class="popup_btn">
+            <button class="btn sure" ng-click="closeLayer('dataBrowsing')" type="button">关闭</button>
+        </div>
+    </div>
+</div>
+<!--有效邀请-->
+<div class="popup_ validInvit" id="validInvit">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>提交时间</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!youxiaoList || youxiaoList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="youxiaoList && youxiaoList.length > 0">
+                            <tr ng-repeat="x in youxiaoList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--推荐报课-->
+<div class="popup_ referralSignup" id="referralSignup">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>报课时间</th>
+                            <th>报课金额</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!tuijianList || tuijianList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="tuijianList && tuijianList.length > 0">
+                            <tr ng-repeat="x in tuijianList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>￥{{x.amount|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--退款详情-->
+<div class="popup_ groupFailDetail" id="groupFailDetail">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款金额：</label>
+                <div class="col-xs-9 line28">
+                    ¥ {{(0 > groupFailDetail.paymentMoney)?0-groupFailDetail.paymentMoney:groupFailDetail.paymentMoney | _qf}} </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款状态：</label>
+                <div class="col-xs-9 line28">
+                    已退款
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款时间：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentTime | yznDate:'yyyy-MM-dd HH:mm'}}
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款方式：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentMode}}
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">交易号：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentBillId}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--查看拼团详情-->
+<div class="popup_" id="show_dataBrowsing_detail">
+    <div class="popup_content">
+        <div class="popup_form_content" style="height: 480px;">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_table">
+                    <table class="popup_table_head">
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">姓名</th>
+                                <th style="width: 75px;">年龄</th>
+                                <th style="width: 150px;">联系电话</th>
+                                <th style="width: 150px;">参与时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="width: 735px; max-height: 280px;">
+                        <table>
+                            <tbody class="roll_tbody">
+                                <tr ng-if="!browsingPTList.length">
+                                    <td colspan="5" style="text-align: center;">暂无数据</td>
+                                </tr>
+                                <tr ng-repeat="a in browsingPTList">
+                                    <td style="width: 150px;"><span>{{a.potentialCustomer.name}}</span><span style="width: 40px;" class="browsing_peo_icon" ng-if="a.headFlag==1">团长</span></td>
+                                    <td style="width: 75px;">{{a.potentialCustomer.age}}</td>
+                                    <td style="width: 150px;">{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                    <td style="width: 150px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td class="operate overflow-normal" ng-if="browsing_lineData.activityStatus != 2">
+                                        <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                    </td>
+                                    <td class="operate overflow-normal" ng-if="browsing_lineData.activityStatus == 2">
+                                        <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                        <!-- <span class="clickText" ng-click="browsing_viewOrder(2, a)" ng-if="a.activitySuccess == 0">退款</span> -->
+                                        <!-- <span class="clickText" ng-click="browsing_viewOrder(3, a)" ng-if="a.activitySuccess == 0">手动成单</span> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

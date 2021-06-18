@@ -1,0 +1,118 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">工作概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+     <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工作概况</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">试听统计</span>
+    </div>
+    
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+                <li>
+                    <my-select list-name="省" list-data="{{provincesList['0']}}" list-field="" list-click="searchByProv(n, i)" list-search="false" list-sort="false"></my-select>
+                </li>
+                <li>
+                    <my-select list-name="市" list-data="{{cityList}}" list-field="" list-click="searchByCity(n)" list-search="false" list-sort="false"></my-select>
+                </li>
+                <li>
+                    <my-select list-name="所属校区" list-data="{{shooList}}" list-field="shopName" list-click="searchByShop(n)" list-search="false"></my-select>
+                </li>
+                <li class="screen_onreset clickText margin_lf_15" ng-click="onReset()">重置</li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="新增潜客" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" list-defalut="{{typeName}}"></my-select>
+                    </li>
+                     <!--<li class="li_left">
+                        <my-select list-name="按时间" my-id="by_type" list-data="{{screen_time}}" list-field="name" list-click="clickTime(n)"  list-all="no" list-defalut="{{xiaoKe.time}}"></my-select>
+                    </li>-->
+                    
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1" >
+                    <span>单位:&nbsp;人&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" class="help_icon noneWidth" data-tips="到课人数(应到)：按上课时间统计，各校区已安排试听课的学员人数之和<br>
+到课人数(实到)：按上课时间统计，各校区已安排试听学员且点名结果为“到课”的人数之和<br>
+成单人数：按签约时间统计，预约试听后并报名试听课程的人数之和<br>
+成单率：成单人数÷到课人数(实到)<br>
+到课人次(应到)：按上课时间统计，各校区已安排的试听学员人次之和<br>
+到课人次(实到)：按上课时间统计，各校区已安排试听且点名状态为“到课”的人次之和<br>
+到课率：到课人次(实到)÷到课人次(应到)"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0;">
+                <thead>
+                    <tr class="head-tr-col">
+                        <th></th>
+                        <th colspan="2" class="textAlignCenter">到课人数</th>
+                        <th colspan="2"></th>
+                        <th colspan="2" class="textAlignCenter">到课人次</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <thead my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td class="rightBorder clickText" ng-click="gotoPartyShop(x.id,'new_saleStatistics/appointListen')">{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.auditionStudentTotal}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionToClassTotal}}</td>
+                        <td class="textAlignCenter">{{x.auditionContractTotal}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionContractRate|number:2}}%</td>
+                        <td class="textAlignCenter">{{x.auditionStudentTimes}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionToClassTimes}}</td>
+                        <td class="textAlignCenter">{{x.auditionToClassRate|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td class="rightBorder">总计</td>
+                    <td class="textAlignCenter main_color">{{"auditionStudentTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionToClassTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{"auditionContractTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color rightBorder">{{(("auditionContractTotal" |_total :tableList)/("auditionToClassTotal" |_total :tableList)*100|number:2)||"0.00"}}%</td>
+                    <td class="textAlignCenter main_color">{{"auditionStudentTimes" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionToClassTimes" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{(("auditionToClassTimes" |_total :tableList)/("auditionStudentTimes" |_total :tableList)*100|number:2)||"0.00"}}%</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

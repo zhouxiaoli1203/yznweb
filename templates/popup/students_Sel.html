@@ -1,0 +1,759 @@
+<!--选择学员-->
+<div class="popup_ selectStuds" id="selectStuds">
+    <h6>选择学员<span ng-click="closePopup('selectStuds')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch select-id="select_studs" list-clicks="screen_SearchBtn(n,'student')" list-keyup="screen_Enterkeyup(n,'student')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}"></kindsearch>
+                            </li>
+                            <li ng-if="isCourseScreen">
+                                <my-select list-name="选择课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="screen_courseSelect(n,'student')" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isCourseScreen">{{props.item.course.courseName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="选择班级" list-data="{{screen_classList}}" list-field="className" list-click="screen_classSelect(n,'student')" list-sort="false" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li ng-click="screen_onReset_('student')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;"></th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <!--<th>昵称</th>-->
+                                    <th ng-hide="props.sourcePage=='积分'">年龄</th>
+                                    <th>联系方式</th>
+                                    <th ng-if="props.sourcePage=='积分'">积分</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.name}}</span>
+                                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                                        </td>
+                                        <!--<td title="{{x.nickname}}">{{x.nickname}}</td>-->
+                                        <td ng-hide="props.sourcePage=='积分'" ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td>{{x.potentialCustomerParentPhone}}</td>
+                                        <td ng-if="props.sourcePage=='积分'">{{x.points}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 studentPage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('selectStuds')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('student')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--新公用 选择学员-->
+<div class="popup_ selectStuds_new" id="selectStuds_new">
+    <h6>选择学员<span ng-click="closePopup('selectStuds_new')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="select_studs_new" list-clicks="screen_SearchBtn(n,'student_new')" list-keyup="screen_Enterkeyup(n,'student_new')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li ng-if="!props.courseId">
+                                <my-select list-name="选择课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="screen_courseSelect(n,'student_new')" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li ng-if="props.unneed != 'class'">
+                                <my-select list-name="选择班级" list-data="{{screen_classList}}" list-field="className" list-click="screen_classSelect(n,'student_new')" list-sort="false" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li>
+                                <search-age age-id="screen_age" age-click="screenByAge(n,'student_new')"></search-age>
+                            </li>
+                            <li>
+                                <my-select my-id="screen_grade" list-name="年级" list-data="{{screen_grade_list}}" list-field="name" list-click="screenByGrade(n,'student_new')" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="courseType_0" ng-change="courseType0('student_new')">标准课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="courseType_1" ng-change="courseType1('student_new')">通用课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="classStatus" ng-change="chgclassStatus()">待分班
+                                </label>
+                            </li>
+                            <li ng-click="screen_onReset_('student_new')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                        <input ng-show="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,studentList)" />
+                                    </th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th style="width:200px;">报读课程</th>
+                                    <th class="textAlignCenter">剩余</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.potentialCustomer.name}}</span>
+                                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(x.potentialCustomer.age,x.potentialCustomer.birthday)"></td>
+                                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width:200px;">{{x.course.courseName}}</td>
+                                        <td class="textAlignCenter">{{x.allSurplustime|keshi_tian_sheng:x.allSurplusDateNum:x.contract.buyAllTime:x.contract.buyAllDateNum:x.contract.giveAllTime}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 student_newPage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('selectStuds_new')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('selectStuds_new')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--活动班选择学员-->
+<div class="popup_ selectStuds_activity" id="selectStuds_activity">
+    <h6>选择学员<span ng-click="closePopup('selectStuds_activity')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="select_studs_activity" list-clicks="screen_SearchBtn(n,'student_activity')" list-keyup="screen_Enterkeyup(n,'student_activity')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li ng-if="isCourseScreen">
+                                <my-select list-name="课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="screen_courseSelect(n,'student_activity')" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isCourseScreen">{{props.item.course.courseName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="班级" list-data="{{screen_classList}}" list-field="className" list-click="screen_classSelect(n,'student_activity')" list-sort="false" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li ng-click="screen_onReset_('student_activity')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                        <input ng-show="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,studentList)" />
+                                    </th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th style="width:200px;">报读课程</th>
+                                    <th class="textAlignCenter">剩余</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.name}}</span>
+                                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td>{{x.potentialCustomerParentPhone}}</td>
+                                        <td style="width:200px;">{{x.courseName}}
+                                            <span class="statusBg blue" ng-if="x.schoolTermId">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            {{x.totalSurplusTime|keshi_tian:x.totalSurplusDayNum}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 student_activityPage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('selectStuds_activity')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('student_activity')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择线上课程学员-->
+<div class="popup_ selectStuds_online" id="selectStuds_online">
+    <h6>选择学员<span ng-click="closePopup('selectStuds_online')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch select-id="select_studs_online" list-clicks="screen_SearchBtn(n,'student_online')" list-keyup="screen_Enterkeyup(n,'student_online')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}"></kindsearch>
+                            </li>
+                            <li ng-if="isCourseScreen">
+                                <my-select list-name="选择课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="screen_courseSelect(n,'student_online')" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isCourseScreen">{{props.item.course.courseName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="选择班级" list-data="{{screen_classList}}" list-field="className" list-click="screen_classSelect(n,'student_online')" list-sort="false" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li ng-click="screen_onReset_('student_online')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                        <input ng-show="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,studentList)" />
+                                    </th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <!--<th>昵称</th>-->
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.name}}</span>
+                                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                                        </td>
+                                        <!--<td title="{{x.nickname}}">{{x.nickname}}</td>-->
+                                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td>{{x.potentialCustomerParentPhone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagitionDiv mr_bm_10">
+                    <div class="M-box3 student_onlinePage"></div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('selectStuds_online')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('student_online')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择包含所有潜客的学员-->
+<div class="popup_ selectStuds_potential" id="selectStuds_potential">
+    <h6>选择学员<span ng-click="closePopup('selectStuds_potential')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li ng-if="props.sourcePage!=='快速收款'">
+                                <kindsearch select-id="select_potential" list-clicks="screen_SearchBtn(n,'potential')" list-keyup="screen_Enterkeyup(n,'potential')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}"></kindsearch>
+                            </li>
+                            <li ng-if="props.sourcePage=='快速收款'">
+                                <kindsearch class="vagueSearch" select-id="select_potential" select-input="false" list-clicks="screen_SearchBtn(n,'potential')" list-keyup="screen_Enterkeyup(n,'potential')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}"></kindsearch>
+                            </li>
+                            <li ng-click="screen_onReset_('potential')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                        <input ng-show="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,studentList)" />
+                                    </th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th ng-if="props.sourcePage=='快速收款'">学员类型</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.name}}</span>
+                                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td ng-hide="props.phoneHidden">{{x.potentialCustomerParentPhone}}</td>
+                                        <td ng-show="props.phoneHidden">{{x.potentialCustomerParentPhone | phoneHide}}</td>
+                                        <td ng-if="props.sourcePage=='快速收款'">{{x.studentFrom | _studentType}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagitionDiv mr_bm_10">
+                    <div class="M-box3 potentialPage"></div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('selectStuds_potential')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('potential')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--转介绍包含所有潜客的学员-->
+<div class="popup_ selectStuds_refferral" id="selectStuds_refferral">
+    <h6>选择推荐人<span ng-click="closePopup('selectStuds_refferral')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="pot_pop_peo_nav clearfix">
+                        <div class="tab_course_history">
+                            <div ng-class="{bg_active:isactive==1}" ng-click="tab_studs(1)">推荐人</div>
+                            <div ng-class="{bg_active:isactive==2}" style="border-left:1px solid #ccc;border-right:1px solid #ccc;" ng-click="tab_studs(2)">学员</div>
+                            <div ng-class="{bg_active:isactive==3}" ng-click="tab_studs(3)">老师</div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="select_refferral" list-clicks="screen_SearchBtn(n,'refferral')" list-keyup="screen_Enterkeyup(n,'refferral')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <!-- <li ng-click="screen_onReset_('refferral')" class="clickText" style="line-height: 28px;">重置</li> -->
+                        </ul>
+                    </div>
+                    <div class="popup_table" ng-show="isactive==1">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                    </th>
+                                    <th style="width:160px;">推荐人姓名</th>
+                                    <th>联系方式</th>
+                                    <th>关联学员</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无推荐人信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input  type="radio" name="sel_stu" value="{{x.referralDataId}}" ng-model="params_student.referralDataId" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.studentName}}</span>
+                                        </td>
+                                        <td>{{x.phoneNum}}</td>
+                                        <td>
+                                            <span  class="clickText" ng-repeat="n in x.potentialCustomerList track by $index" ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':'0','fromPage':'studentPop','item':n,'tab':1})">{{n.name}}{{($index == x.potentialCustomerList.length -1)?'':'，'}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-show="isactive==2">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                    </th>
+                                    <th style="width:160px;">学员姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.name}}</span>
+                                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td>{{x.potentialCustomerParentPhone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-show="isactive==3">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+                                    </th>
+                                    <th style="width:160px;">老师姓名</th>
+                                    <th>联系方式</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList || studentList == ''">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无老师信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList">
+                                    <tr class="order_course" ng-repeat="x in studentList" ng-click="checkSingle(x,studentList)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input type="radio" name="sel_stu" value="{{x.shopTeacherId}}" ng-model="params_student.shopTeacherId" />
+                                        </td>
+                                        <td style="width:160px;">
+                                            <span>{{x.teacherName}}</span>
+                                        </td>
+                                        <td>{{x.teacherPhone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagitionDiv mr_bm_10">
+                    <div class="M-box3 referralPage"></div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('selectStuds_refferral')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('refferral')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择学员 通用课-->
+<div class="popup_ selectStuds_2" id="selectStuds_2">
+    <h6>选择学员<span ng-click="closePopup('selectStuds_2')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="select_studs2" list-clicks="screen_SearchBtn(n,'student2')" list-keyup="screen_Enterkeyup(n,'student2')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="courseType_0" ng-change="courseType0('student2')">标准课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="courseType_1" ng-change="courseType1('student2')">通用课
+                                </label>
+                            </li>
+                            <li ng-click="screen_onReset_('student2')" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 100%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;"></th>
+                                    <th style="width:160px;">姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th>课程</th>
+                                    <th style="width:120px;">剩余</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 100%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!studentList2 || studentList2 == ''">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="studentList2">
+                                    <tr class="order_course" ng-repeat="x in studentList2" ng-click="checkSingle(x,studentList2)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_stu" value="{{x.id}}" ng-model="params_student.id" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:160px;" title='{{x.potentialCustomer.name}} {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}'>
+                                            <span>{{x.potentialCustomer.name}}</span>
+                                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(x.potentialCustomer.age,x.potentialCustomer.birthday)"></td>
+                                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td title="{{x.course.courseName}}">{{x.course.courseName}}</td>
+                                        <td style="width:120px;">
+                                            {{x.allSurplustime|keshi_tian_sheng:x.allSurplusDateNum:x.contract.buyAllTime:x.contract.buyAllDateNum:x.contract.giveAllTime}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 studentPage2"></div>
+            </div>-->
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('selectStuds_2')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureStudent('student2')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--补课学员-->
+<div class="popup_ makeup_stu" id="makeup_stu">
+    <h6>补课学员选择<span ng-click="closePopup('makeup_stu')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="select_studs_make" list-clicks="screen_SearchBtn(n, 'makeup')" list-keyup="screen_Enterkeyup(n, 'makeup')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li class="dropdown dropdown110">
+                                <input type="text" class="form-control dateIcon" id="makeup_screenTime" size="30" ng-model="makeup_screenTime" placeholder="请选择时间" autocomplete="off">
+                            </li>
+                            <li>
+                                <my-select list-name="选择班级" list-data="{{screen_classList}}" list-field="className" list-click="screen_classSelect(n,'makeup')" list-sort="false" list-search="true" list-all="no"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="screen_changeYear(n,'makeup')" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="screen_changeTerm(n,'makeup')" list-sort="false"></my-select>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="screen_onReset_('makeup')">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;width:40px;"><input type="checkbox" ng-model="sel_all" ng-click="checkboxAll(sel_all,makeupStudentList)" /></th>
+                                    <th style="width:120px;text-align: left;">姓名（昵称）</th>
+                                    <!--<th>昵称</th>-->
+                                    <th>课程</th>
+                                    <th style="text-align: center;">剩余</th>
+                                    <th style="width: 120px;">班级</th>
+                                    <th style="width: 220px;">缺课时间</th>
+                                    <th style="text-align: center;">缺课课时</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!makeupStudentList || makeupStudentList == ''">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-if="makeupStudentList">
+                                    <tr ng-repeat="n in makeupStudentList" ng-class="{back_color_f5: $index%2 != 0}" ng-click="checkSingle(n)">
+                                        <td style="text-align: center; width:40px;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td style="width:120px;text-align: left;">
+                                            <span>{{n.potentialCustomer.name}}</span>
+                                            <span>{{n.potentialCustomer.nickname?"("+n.potentialCustomer.nickname+")":""}}</span>
+                                        </td>
+                                        <!--<td title="{{n.potentialCustomer.nickname}}"></td>-->
+                                        <td title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td style="text-align: center;">
+                                            {{(n.contract.buySurplusTime*1+n.contract.giveSurplusTime*1)|number:2}}
+                                        </td>
+                                        <td style="width: 120px;" title="{{n.classInfo.className}}">{{n.classInfo.className}}</td>
+                                        <td style="width: 220px;">{{n.arrangingCourses.arrangingCoursesBeginDate | beginEndDate: n.arrangingCourses.arrangingCoursesEndDate: 'yyWeek_hh' : n.arrangingCourses.arrangingCoursesWeek}}</td>
+                                        <td style="text-align: center;">{{n.feeType==2?"---":(n.arrangingCourses.arrangingCoursesTime|number:2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 makeupStudentPage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="props.choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('makeup_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sureStudent('makeup',makeupStudentList)">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--试听学员-->
+<div class="popup_ listen_stu" id="listen_stu">
+    <h6>试听学员选择<span ng-click="closePopup('listen_stu')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch select-id="select_studs_listen" list-clicks="screen_SearchBtn(n, 'listen')" list-keyup="screen_Enterkeyup(n, 'listen')" list-data="{{screen_searchData}}" select-name="{{screen_InfoNameId}}"></kindsearch>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="screen_onReset_('listen')">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th class="textAlignCenter" style="width:40px;"><input type="checkbox" ng-model="sel_all" ng-click="checkboxAll(sel_all,listenStudentList)" /></th>
+                                    <th width="45%">姓名（昵称）</th>
+                                    <!--<th width="35%">昵称</th>-->
+                                    <th style="width:86px;">年龄</th>
+                                    <th style="width:116px;">联系方式</th>
+                                    <th style="width:140px;">预约时间</th>
+                                    <th width="35%">预约老师</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!listenStudentList || listenStudentList == '' || listenStudentList == []">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">暂无学员信息</td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-if="listenStudentList">
+                                    <tr ng-repeat="n in listenStudentList" ng-class="{back_color_f5: $index%2 != 0}" ng-click="checkSingle(n)">
+                                        <td class="textAlignCenter" style="width:40px;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td width="45%">
+                                            <span>{{n.potentialCustomer.name}}</span>
+                                            <span>{{n.potentialCustomer.nickname?"("+n.potentialCustomer.nickname+")":""}}</span>
+                                        </td>
+                                        <!--<td width="35%" title="{{n.potentialCustomer.nickname}}">{{n.potentialCustomer.nickname}}</td>-->
+                                        <td style="width:86px;" ng-bind-html="caclBirthToAge(n.potentialCustomer.age,n.potentialCustomer.birthday)"></td>
+                                        <td style="width:116px;">{{n.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width:140px;" title="{{n.auditionDates}}">{{n.auditionDates}}</td>
+                                        <td width="35%" title="{{n.teacherStr}}">{{n.teacherStr}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 listenStudentPage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="props.choseType == 'checkbox'">已选中<span>{{params_student.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('listen_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sureStudent('listen',listenStudentList)">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

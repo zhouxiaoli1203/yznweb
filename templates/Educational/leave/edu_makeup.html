@@ -1,0 +1,223 @@
+<!--请假--处理弹出框-->
+<div class="popup_ procesApply_pop" id="procesApply_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_procesApply()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <!--<div class="popup_line">
+                        <label for="" class="form-label">处理人:</label>
+                        <div class="col-xs-6">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择处理人" my-id="_addTeacher" list-data="{{teacherList}}" list-field="teacherName" list-click="clickTeacher(n)" list-search="true" list-all="no" list-default="{{makeup_Process.absentShopTeacherName?makeup_Process.absentShopTeacherName:''}}"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">处理时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="absentDate" ng-model="absentDate" placeholder="请选择处理时间" />
+                        </div>
+                    </div>-->
+                    <div class="popup_line" ng-hide="(makeup_Process.buyTime*1+makeup_Process.giveTime*1)>0">
+                        <label class="form-label newHelp_before">扣课方式:
+                            <div  class="help_icon noneWidth" style="left:13px;" data-tips=" 扣课时：缺课记录中的课时将自动扣除，扣除后将影响学员剩余课时和机构消课金额<br>
+   不扣课时：缺课记录中的课时将不做扣课处理"></div>
+                        </label>
+                        <div class="col-xs-5 form-span">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="keshi" ng-model="kouornot" value="1"/>扣课时
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="keshi" ng-model="kouornot" value="0"/>不扣课时
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">处理备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{leaveTeacherDesc?leaveTeacherDesc.length:0}}/100</span>
+                            <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="leaveTeacherDesc" placeholder="请输入备注"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeProcesApply()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}" ng-if="viewQingjia || isQingjia">请假申请</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}" ng-if="viewMakeup || opMakeup">补课管理</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" select-id="makeupsearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择上课时间" autocomplete="off">
+            </li>
+            <li>
+                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="班级" list-data="{{screen_class}}" list-field="className" list-click="changeClass(n)" list-search="true"></my-select>
+            </li>
+            <!--<li ng-if="studNavJud == 1">
+                <my-select list-name="状态" list-data="{{screen_status}}" list-field="name" list-click="changeStatus(n)" list-search="false" list-all="no"></my-select>
+            </li>-->
+            <li>
+                <my-select list-name="状态" list-data="{{screen_status2}}" list-field="name" list-click="changeStatus(n)" list-search="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="absent" ng-change="changeByAbsent()">缺席
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="leave" ng-change="changeByLeave()">请假
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="kouKeshi=='0'" ng-click="changeKou($event,'0')">未扣
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="kouKeshi=='1'" ng-click="changeKou($event,'1')">已扣
+                </label>
+            </li>
+            <!--<li class="common_tab_libtn" ng-show="studNavJud == 1">
+                <div class="common_tab_btn" ng-click="leavePop()"><i class="icon_qingjia"></i>请假</div>
+            </li>-->
+            <li class="common_tab_libtn" ng-show="opMakeup">
+                <div class="common_tab_btn" ng-click='goCommonPop("arange-pop","arange_pop","760px",{"name":"leave","isSingle":"0","title":"补课排课","isChangePaike":false})'><i class="icon_paike"></i>补课排课</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <!--<div class="common_content" ng-show="studNavJud == 1">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="leaveList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="leaveList">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in leaveList">
+                        <td>
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                        </td>
+                        <td>{{x.potentialCustomer.nickname}}</td>
+                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                        <td>{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.leaveDesc}}">{{x.leaveDesc}}</td>
+                        <td>{{x.leaveDate | yznDate:'yyyy-MM-dd'}}</td>
+                        <td>{{x.leaveStatus == 0?"待处理":x.leaveStatus == 2?"已拒绝":x.leaveStatus == 4?"已处理":"放弃"}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="x.leaveStatus == 0" ng-click="gotoProcsessApply(x)">处理申请</span>
+                            <span class="clickText" ng-if="x.leaveStatus == 2 || x.leaveStatus == 4" ng-click="gotoProcsessApply(x)">重新处理</span>
+                            <span class="clickText" ng-click="gotoViewInfo(x)">查看详情</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>-->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead2}}"></thead>
+                <tbody class="demo_tbody" ng-if="leaveList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="leaveList">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in leaveList">
+                        <td></td>
+                        <td></td>
+                        <td>{{x.arrangingCourses.arrangingCoursesBeginDate | beginEndDate: x.arrangingCourses.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCourses.arrangingCoursesWeek}}</td>
+                        <td title="{{x.course.courseName}}">{{x.course.courseName}}</td>
+                        <td title="{{x.classInfo.className}}">{{x.classInfo.className}}</td>
+                        <td class="textAlignCenter">{{x.feeType==2?"---":(x.arrangingCourses.arrangingCoursesTime|number:2)}}</td>
+                        <td>
+                            <span>{{x.studentStatus == 0?"缺席":x.studentStatus == 1?"到课":"请假"}}</span>
+                            <span style="display: inline-block;line-height: 21px;" ng-if="x.bukeStatus != 2 && x.feeType!=2"><span class="statusButton paddingLeft" ng-class='{"green":(x.buyTime*1+x.giveTime*1)>0,"red":(x.buyTime*1+x.giveTime*1)<=0}'>{{(x.buyTime*1+x.giveTime*1)>0?"已扣":"未扣"}}</span></span>
+                            <span style="display: inline-block;line-height: 21px;" ng-if="x.bukeStatus == 2 && x.feeType!=2"><span class="statusButton paddingLeft" ng-class='{true:"green",false:"red"}[(x.buyTime*1+x.giveTime*1)>0 && x.absentTimeStatus != 1]'>{{((x.buyTime*1+x.giveTime*1)>0&&x.absentTimeStatus != 1)?"已扣":"未扣"}}</span></span>
+                        </td>
+                        <!--注释   ****在线下已扣的情况下 把点名状态扣课时改成未扣-->
+                        <td style="text-overflow: inherit;">
+                            <!--<leave-info view-data="{{x}}"></leave-info>-->
+                            <span>{{x.bukeStatus == 0?"待处理":x.bukeStatus == 1?(x.makeUparrAngingCourses.arrangingCoursesStatus==0?"已安排":x.makeUparrAngingCourses.arrangingCoursesStatus==1?"已补课":""):x.bukeStatus == 2?"线下处理":x.bukeStatus == 3?"已结课":""}}</span>
+                            <span ng-if="x.bukeStatus == 1 && x.makeUparrAngingCourses.arrangingCoursesStatus == 1 && x.feeType!=2" class="statusButton paddingLeft" ng-class='{"green":x.makeupTimeStatus == 1,"red":x.makeupTimeStatus == 0}'>{{x.makeupTimeStatus == 1?"已扣":x.makeupTimeStatus == 0?"未扣":""}}</span>
+                            <span ng-if="x.bukeStatus == 2  && x.feeType!=2" class="statusButton paddingLeft" ng-class='{"green":x.absentTimeStatus == 1,"red":x.absentTimeStatus == 0}'>{{x.absentTimeStatus == 1?"已扣":x.absentTimeStatus == 0?"未扣":""}}</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:220px;">
+                <thead>
+                    <tr>
+                        <th style="width:120px;">姓名(昵称)</th>
+                        <th style="width:100px;">联系方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in leaveList">
+                        <td title='{{x.potentialCustomer.name}}  {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}' class="clickText" ng-click="gotoViewStudent(x.potentialCustomer)">
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                        </td>
+                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r">
+            <table style="width:240px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in leaveList">
+                        <td class="operate overflow-normal textAlignCenter">
+                            <!--待处理：查看详情、插班补课、线下补课
+                                                                        已安排：查看详情、取消补课
+                                                                        已补课(已扣/未扣)：查看详情
+                                                                        线下补课(已扣/未扣)：查看详情、取消处理
+                                                                        结课处理：查看详情-->
+                            <span class="clickText" ng-if="x.temporaryStudentArrangingCourseRS.length>0" ng-click="goCommonPop('buke-pop','bukeDetail_pop','560px',x.temporaryStudentArrangingCourseRS)">查看详情</span>
+                            <span class="clickText" ng-if="x.bukeStatus == 0 && opMakeup" ng-click="goCommonPop('course-sel', 'chosePaikeCourse','960px', {name: 'paikeCourse', type: 'radio', callBackName: '插班补课',deleteType:'1',item:x,schoolYear:x.classInfo.schoolYear,schoolTermId:x.classInfo.schoolTermId,schoolTermName:x.classInfo.schoolTerm.schoolTermName});gotoChaban_makeup(x)">插班补课</span>
+                            <span class="clickText" ng-if="x.bukeStatus == 0 && opMakeup" ng-click="gotoHandle(x)">线下补课</span>
+                            <span class="clickText" ng-if="x.bukeStatus == 1 && x.makeUparrAngingCourses.arrangingCoursesStatus == 0 && opMakeup" ng-click="gotoCancelbuke(x,'makeup')">取消补课</span>
+                            <span class="clickText" ng-if="x.bukeStatus == 2 && opMakeup" ng-click="gotoCancelbuke(x,'process')">取消处理</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

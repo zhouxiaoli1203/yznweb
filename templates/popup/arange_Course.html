@@ -1,0 +1,418 @@
+<!--预设时间-->
+<div class="popup_ arange_pop" id="arange_pop">
+    <h6>{{constants.title}}<span ng-click="closePopup('arange_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.postLesson()">
+            <div class="popup_form_content">
+                <!--滚动区域（添加属性isScroll=true则出现滚动条）-->
+                <div class="popup_scroll" isScroll="false" style="padding-bottom: 0">
+                    <!--内容区域-->
+                    <div ng-if="props.isSingle != '0'">
+                        <div class="popup_line">
+                            <label class="form-label required">排课方式:</label>
+                            <div class="col-xs-4">
+                                <label class="checkbox-inline labelLeft checkbox-padding">
+                                    <input type="radio" name="optionsRa" value="1"
+                                           ng-model="constants.isingle" ng-change="Fns.changeLoop(1)">循环排课
+                                </label>
+                                <label class="checkbox-inline labelLeft checkbox-padding">
+                                    <input type="radio" name="optionsRa" value="0"
+                                           ng-model="constants.isingle" ng-change="Fns.changeLoop(1)">单次排课
+                                </label>
+                            </div>
+                        </div>
+                        <div class="popup_line" ng-if="isCourse">
+                            <label class="form-label required">课程:</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" ng-model="constants.courseId" ng-required="isCourse">
+                                    <option value=''>请选择课程</option>
+                                    <option ng-repeat="item in constants.courseList track by $index"
+                                            value="{{item.courseId}}">{{item.courseName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="parting_line_2"></div>
+
+                        <div class="popup_line">
+                            <label for="" class="form-label required">班级:</label>
+                            <div class="drop_select screen_no popup_mainTe">
+                                <span class="drop_select_icon"></span>
+                                <my-select my-id="_class" list-name="请选择班级" list-data="{{constants.classList}}" list-field="className" list-click="Fns.screenSel_(n, 1)" list-search="true" list-all="no"></my-select>
+                            </div>
+                            <span style="float: left; margin: 5px 10px; color: #397fd4; cursor: pointer;" ng-click="Fns.conflictBtn(1)">新增班级</span>
+                        </div>
+                    </div>
+                    <!--循环-->
+                    <div ng-show="constants.isingle == 1">
+                        <div class="popup_line">
+                            <label class="form-label">排课安排:</label>
+                            <div class="col-xs-10">
+                                <div ng-repeat="item in constants.loopInfo.loops track by $index" class="chargeistItem">
+                                    <!--✘-->
+                                    <span class="cursor pos_rg_delete" ng-click="Fns.operationItem(constants.loopInfo.loops,'paikeRemove',$index)"></span>
+                                    <div class="popup_line">
+                                        <label class="form-label pull-left required">周几上课:</label>
+                                        <div class="col-xs-10">
+                                            <label class="checkbox-inline checkbox-padding" ng-click="Fns.clickSelWeek()" style="margin-left:5px" ng-repeat="w in constants.weekList track by $index">
+                                                <input type="checkbox" ng-model="item.week[w]">{{w | _week}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="popup_line" style="margin-bottom:5px;">
+                                        <label class="form-label required">上课时间:</label>
+                                        <div class="col-xs-10" style="height:30px;">
+                                            <timesel list-click="Fns.changeClasstime(data,$index,item)" list-data="{{item.operateTime}}" list-id="preSetTime_Id"></timesel>
+                                            <div style="line-height:30px;padding:0;">
+                                                (上课时长:{{Fns.getMinutes(item.operateTime)}}分钟)
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="popup_line" style="margin:0;">
+                                        <label class="form-label"></label>
+                                        <div class="col-xs-4">
+                                            <span class="clickText" ng-click="Fns.usePreSetTime($index)">使用预设时间</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="popup_line">
+                                        <label class="form-label pull-left required">授课课时:</label>
+                                        <div class="col-xs-4">
+                                            <input type="text" class="form-control" ng-model="item.oneCourseTime" yzn-filter="num_" placeholder="请输入授课课时" ng-required="constants.isingle == 1" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="cursor inline_dm openopText line28" ng-click="Fns.operationItem(constants.loopInfo.loops,'add')">
+                                    <i class="icon_name_add"></i>
+                                    <span>添加排课安排</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="popup_line" ng-repeat="item in constants.loopInfo.startTime track by $index" repeat-finish='{"wrapper":".arange_pop"}'>
+                            <label class="form-label required">开始日期:</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control dateIcon searchTimeforcharge" ng-model="item.startTime" placeholder="请选择开始日期" size="30" ng-required="constants.isingle == 1" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">结束方式:</label>
+                            <div class="col-xs-2" style="width:120px;padding-right:0;">
+                                <select class="line28" style="width:105px;height:28px;" ng-model="constants.getDoArrangingCourses.type" ng-change="Fns.getDoArrangingCourses_(constants.getDoArrangingCourses.type)" ng-required="constants.isingle == 1">
+                                    <option value='' style="display: none;">请选择</option>
+                                    <option value="3">课次数量</option>
+                                    <option value="2">结束日期</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-8" ng-if="constants.getDoArrangingCourses.type==3">
+                                <input type="text" class="form-control" style="width:180px;display: inline-block;" ng-model="constants.getDoArrangingCourses.num" placeholder="请输入课次数量" yzn-filter="numMoreThanZero" ng-required="constants.getDoArrangingCourses.type==3 && constants.isingle == 1"
+                                    autocomplete="off" />
+                                <span ng-show="constants.maxPaikeday">预计最后一次排课日期为<span class="main_color">{{constants.maxPaikeday|yznDate:'yyyy-MM-dd'}}</span></span>
+                            </div>
+                            <div class="col-xs-8" ng-if="constants.getDoArrangingCourses.type==2" ng-repeat="item in constants.loopInfo.endTime track by $index" repeat-finish='{"wrapper":".arange_pop"}'>
+                                <input type="text" class="form-control dateIcon searchTimeforcharge" style="width:180px;display: inline-block;" ng-model="item.endTime" placeholder="请选择结束时间" size="30" ng-required="constants.getDoArrangingCourses.type==2 && constants.isingle == 1" autocomplete="off"
+                                />
+                                <span ng-show="constants.loopInfo.endTime[0].endTime">预计排课<span class="main_color">{{constants.maxkeci}}</span>课次</span>
+                            </div>
+                        </div>
+                        <!--<div class="popup_line" ng-repeat="item in constants.loopInfo.endTime track by $index"
+                             repeat-finish='{"wrapper":".arange_pop"}'>
+                            <label class="form-label">结束时间:</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control dateIcon searchTimeforcharge"
+                                       ng-model="item.endTime"
+                                       placeholder="请选择结束时间" size="30"  autocomplete="off" >
+                            </div>
+                        </div>-->
+
+                        <div class="popup_line">
+                            <label class="form-label required">上课教室:</label>
+                            <div class="col-xs-4">
+                                <div class="drop_select screen_no" ng-click="Fns.checkConflict($event, 1)" style="overflow: visible;">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select my-id="_room" list-name="请选择上课教室" list-data="{{constants.classroomList_}}" list-field="classRoom.classRoomName" list-click="Fns.screenSel_(n, 2)" list-sort="false" list-search="true" list-all="no" list-conflict="true"></my-select>
+                                </div>
+                            </div>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #397fd4; cursor: pointer;" ng-click="Fns.openClassroom()">新增教室</span>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #ff595e; cursor: pointer;" ng-click="Fns.conflictBtn(2)" ng-if="constants.conflictJud.room">教室冲突</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">主教老师:</label>
+                            <div class="col-xs-4">
+                                <div class="drop_select screen_no" ng-click="Fns.checkConflict($event)" style="overflow: visible;">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select my-id="_teacher1" list-name="请选择主教" list-data="{{constants.teacherList_}}" list-field="shopTeacher.teacherName" list-click="Fns.screenSel_(n, 3)" list-sort="false" list-search="true" list-all="no" list-conflict="true"></my-select>
+                                </div>
+                            </div>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #ff595e; cursor: pointer;" ng-click="Fns.conflictBtn(3)" ng-if="constants.conflictJud.teacher">老师冲突</span>
+                        </div>
+                        <div class="popup_line" ng-if="constants.teachingMethod==2">
+                            <label for="" class="form-label marging-rt-15">助教老师:</label>
+                            <div class="col-xs-10 padLeftNone">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in constants.subTeacher track by $index">{{x.shopTeacher.teacherName}}
+                                    <i ng-click="Fns.operationItem(x,'remove', $index, true)" class="icon_drop_x"></i>
+                                </span>
+                                </div>
+
+                                <div class="drop_add_teacher screen_no" style="overflow: visible;">
+                                    <i class="icon_name_add"></i>
+                                    <my-select my-id="subTeacher" list-name="请选择助教" list-data="{{constants.teacherList_2}}" list-field="shopTeacher.teacherName" list-click="Fns.screenSel_(n, 4)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--单次-->
+                    <div class="popup_form_content" ng-show="constants.isingle == 0">
+                        <!--补课入口  补课排课-->
+                        <div ng-show="props.name == 'leave' && props.title == '补课排课'">
+                            <div class="popup_line">
+                                <label class="form-label required">补课课程:</label>
+                                <div class="col-xs-4">
+                                    <div class="drop_select screen_no">
+                                        <span class="drop_select_icon"></span>
+                                        <my-select my-id="_leave" list-name="请选择课程" list-data="{{constants.courseList}}" list-field="courseName" list-click="Fns.getPackageList(n.courseId);constants.selectMakeupStud=[];Fns.getcoursethemeList(n.courseId);" list-search="true" list-all="no"></my-select>
+                                    </div>
+                                </div>
+                                <div class="line28"><input style="margin-right: 2px;margin-bottom: -2px;" type="checkbox" ng-model='forTerm'>设置为学期补课课</div>
+                                <!-- <div class="col-xs-4">
+                                    <select class="form-control newyear_left" ng-model="constants.schoolYear">
+                                        <option value=''>选择学年</option>
+                                        <option ng-repeat="item in constants.years track by $index"
+                                            value="{{item}}">{{item}}
+                                        </option>
+                                    </select>
+                                    <select class="form-control newyear_right" ng-model="constants.schoolTermId">
+                                        <option value=''>选择学期</option>
+                                        <option ng-repeat="item in constants.packageList track by $index"
+                                            value="{{item.schoolTermId}}">{{item.schoolTermName}}
+                                        </option>
+                                    </select>
+                                </div> -->
+                            </div>
+                            <div class="popup_line" ng-show="forTerm">
+                                <label class="form-label required">学年学期:</label>
+                                <div class="col-xs-4">
+                                    <select class="form-control newyear_left" ng-model="constants.schoolYear">
+                                        <option value=''>选择学年</option>
+                                        <option ng-repeat="item in constants.years track by $index"
+                                            value="{{item}}">{{item}}
+                                        </option>
+                                    </select>
+                                    <select class="form-control newyear_right" ng-model="constants.schoolTermId">
+                                        <option value=''>选择学期</option>
+                                        <option ng-repeat="item in constants.packageList track by $index"
+                                            value="{{item.schoolTermId}}">{{item.schoolTermName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="popup_line">
+                                <label for="" class="form-label marging-rt-15">补课学员:</label>
+                                <div class="col-xs-10 padLeftNone">
+                                    <div class="teacher_select">
+                                        <span ng-repeat="x in constants.selectMakeupStud">{{x.potentialCustomer.name}}
+                                            <i ng-click="Fns.deleteSelectStud(x,$index)" class="icon_drop_x"></i>
+                                        </span>
+                                    </div>
+                                    <span class="col-xs-4 form-span" style="padding-left:0px;">
+                                        <span class="addParent icon_name_add" ng-click="Fns.openStudentTb('makeup_stu')">添加补课学员</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--已上   补课入口  补课排课-->
+                        <div ng-show="props.name == 'listen'">
+                            <div class="popup_line warningBg" ng-show="constants.singleData.studentTotal>0">
+                                <i class="main_color icon_warning"></i> 已有学员参加该试听课，上课日期、上课时间无法编辑。
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">上课日期:</label>
+                            <div class="col-xs-4" ng-repeat="item in constants.data track by $index" repeat-finish='{"wrapper":".arange_pop"}'>
+                                <input type="text" class="form-control dateIcon searchTimeforcharge" ng-model="item.data" placeholder="请选择上课时间" size="30" autocomplete="off" ng-required="constants.isingle == 0" />
+                            </div>
+                        </div>
+                        <div class="popup_line" style="margin-bottom:5px;">
+                            <label class="form-label required">上课时间:</label>
+                            <div class="col-xs-10" style="height:30px;">
+                                <timesel list-click="Fns.changeClasstime(data)" list-data="{{constants.operateTime}}" list-id="arange_preSetTime_Id"></timesel>
+                                <div style="line-height:30px;padding:0;">
+                                    (上课时长:{{Fns.getMinutes(constants.operateTime)}}分钟)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup_line" style="margin:0;">
+                            <label class="form-label"></label>
+                            <div class="col-xs-4">
+                                <span class="clickText" ng-click="Fns.usePreSetTime()">使用预设时间</span>
+                            </div>
+                        </div>
+                        <div class="popup_line" ng-if="constants.showCourseType != 1">
+                            <label class="form-label pull-left required">授课课时:</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control" yzn-filter="num_" ng-model="constants.singleData.arrangingCoursesTime" placeholder="请输入授课课时" size="30" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" ng-class='{"required":constants.showCourseType != 1}'>上课教室:</label>
+                            <div class="col-xs-4">
+                                <div class="drop_select screen_no" ng-click="Fns.checkConflict($event, 1)" style="overflow: visible;">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select my-id="_room2" list-name="请选择上课教室" list-data="{{constants.classroomList_}}" list-field="classRoom.classRoomName" list-click="Fns.screenSel_(n, 2)" list-sort="false" list-search="true" list-all="no" list-conflict="true" list-moren="{{constants.showCourseType == 1?'请选择上课教室':''}}"></my-select>
+                                </div>
+                            </div>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #397fd4; cursor: pointer;" ng-click="Fns.openClassroom()">新增教室</span>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #ff595e; cursor: pointer;" ng-click="Fns.conflictBtn(2)" ng-if="constants.conflictJud.room">教室冲突</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" ng-class='{"required":constants.showCourseType != 1}'>主教老师:</label>
+                            <div class="col-xs-4">
+                                <div class="drop_select screen_no" ng-click="Fns.checkConflict($event)" style="overflow: visible;">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select my-id="_teacher2" list-name="请选择主教" list-data="{{constants.teacherList_}}" list-field="shopTeacher.teacherName" list-click="Fns.screenSel_(n, 3)" list-sort="false" list-search="true" list-all="no" list-conflict="true" list-moren="{{constants.showCourseType == 1?'请选择主教':''}}"></my-select>
+                                </div>
+                            </div>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #ff595e; cursor: pointer;" ng-click="Fns.conflictBtn(3)" ng-if="constants.conflictJud.teacher">老师冲突</span>
+                        </div>
+                        <!--如果是一对多的班级需要展示助教老师-->
+                        <div class="popup_line" ng-show="constants.teachingMethod==2">
+                            <label for="" class="form-label marging-rt-15">助教老师:</label>
+                            <div class="col-xs-10 padLeftNone">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in constants.subTeacher track by $index">{{x.shopTeacher.teacherName}}
+                                    <i ng-click="Fns.operationItem(x,'remove', $index, true)" class="icon_drop_x"></i>
+                                </span>
+                                </div>
+                                <div class="drop_add_teacher screen_no" style="overflow: visible;">
+                                    <i class="icon_name_add"></i>
+                                    <my-select my-id="subTeacher2" list-name="请选择助教" list-data="{{constants.teacherList_2}}" list-field="shopTeacher.teacherName" list-click="Fns.screenSel_(n, 4)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">上课主题:</label>
+                            <div class="col-xs-4">
+                                <div class="drop_select screen_no" style="overflow: visible;">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select my-id="_theme2" list-name="请选择上课主题" list-data="{{constants.courseThemeList_}}" list-field="courseThemeName" list-click="Fns.screenSel_(n, 5)" list-sort="false" list-search="true" list-all="no" list-moren="请选择上课主题"></my-select>
+                                </div>
+                            </div>
+                            <span style="float: left; margin: 5px 10px 0 0; color: #397fd4; cursor: pointer;" ng-click="Fns.openTnemePop()">添加上课主题</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">备注:</label>
+                            <div class="col-xs-10">
+                                <span class="input_words">{{constants.singleData.remark?constants.singleData.remark.length:0}}/100</span>
+                                <textarea class="form-control" style="width:100%;height:60px;" maxlength="100" ng-model="constants.singleData.remark">
+
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('arange_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">
+                    确定
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--冲突提示-->
+<div class="popup_ sy_conflict_prompt" id="sy_conflict_prompt">
+    <h6>冲突提示<span ng-click="closePopup('sy_conflict_prompt')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_table" ng-if="teachConfList">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="addPaddingLeft_50">教师冲突</th>
+                                    <th>上课时间</th>
+                                    <th>班级</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="teachConfList">
+                                    <tr ng-repeat="x in teachConfList">
+                                        <td class="separate_list addPaddingLeft_50"><span>{{x.shopTeacher.teacherName}}</span>
+                                            <td>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate}}</td>
+                                            <td>{{x.classInfo.className}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="classRmConfList" style="margin-top:20px;">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="addPaddingLeft_50">教室冲突</th>
+                                    <th>上课时间</th>
+                                    <th>班级</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="classRmConfList">
+                                    <tr ng-repeat="x in classRmConfList">
+                                        <td class="addPaddingLeft_50">{{x.classRoomName}}</td>
+                                        <td>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate}}</td>
+                                        <td>{{x.classInfo.className}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('sy_conflict_prompt')" type="button">返回修改</button>
+                <button class="btn sure" type="submit" ng-click="Fns.postLesson('0',true)">忽略冲突</button>
+                <!--<button class="btn sure" type="submit" ng-click="ispakeorsunyan?ignoreConflict():Fns.postLesson('0',true)">忽略冲突</button>-->
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--冲突弹框-->
+<div class="popup_" id="conflictInfo">
+    <h6>{{constants.conflictInfo.type == 1?'教室冲突':'老师冲突'}}<var class="color_nameState">({{constants.conflictInfo.type==1?constants.conflictInfo.room.classRoom.classRoomName:constants.conflictInfo.teacher.shopTeacher.teacherName}})</var><span ng-click="closePopup()"
+            class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="margin-bottom: 25px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="padding-left: 60px;">上课时间</th>
+                                    <th>班级</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in (constants.conflictInfo.type==1?constants.conflictInfo.room.arrangingCourses:constants.conflictInfo.teacher.arrangingCourses)">
+                                    <td style="padding-left: 60px;">{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate}}</td>
+                                    <td>{{x.classInfo.className}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

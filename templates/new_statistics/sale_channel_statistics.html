@@ -1,0 +1,129 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">渠道分析详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="common_content organ">
+        <div class="common_tab">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+                 <li class="ml5">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="chargeType(true)">按应收统计
+                    </label>
+                </li>
+                <li class="ml5">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(false)">按实收统计
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="common_tab" style="padding-bottom: 5px;">
+            <ul class="ul_left clearfix">
+               <li class="li_left" style="margin:15px 0 0 0;">
+                    <my-select list-name="新增潜客" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" ></my-select>
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <!--统计图-->
+            <!--<div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>总计:&nbsp;{{totalNum}}人</span>
+                </div>
+            </div>-->
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;margin-top:6px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" ng-if="!compareType1" class="help_icon noneWidth" data-tips="新增潜客：按潜客录入时间统计，各校区不同渠道新增潜客的人数之和<br>
+签约人数：按订单时间统计，各校区不同渠道完成签约的人数之和<br>
+报课金额：按订单时间统计，各校区不同渠道签约课程应收的金额之和<br>
+转化率：签约人数÷新增潜客"></div>
+                   <div style="top:0;" ng-if="compareType1" class="help_icon noneWidth" data-tips="新增潜客：按潜客录入时间统计，各校区不同渠道新增潜客的人数之和<br>
+签约人数：按订单时间统计，各校区不同渠道完成签约的人数之和<br>
+报课金额：按支付时间统计，各校区不同渠道签约课程实收的金额之和<br>
+转化率：签约人数÷新增潜客"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody noHoverBg" ng-if="tableList" ng-repeat="x in tableList.tableList" style="border-top: 1px solid #ddd;">
+                    <tr ng-repeat="y in x.workRecordByChannels">
+                        <td ng-if="$index === 0" rowspan={{x.workRecordByChannels.length}}>{{x.channelTypeName}}</td>
+                        <td ng-if="$index === 0" rowspan={{x.workRecordByChannels.length}} class="textAlignRt">
+                            <div>{{x.addNum}}</div>
+                            <div>{{x.addNumRate|number:2}}%</div>
+                        </td>
+                        <td ng-if="$index === 0" rowspan={{x.workRecordByChannels.length}} class="textAlignRt">
+                            <div>{{x.addContract}}</div>
+                            <div>{{x.addContractRate|number:2}}%</div>
+                        </td>
+                        <td ng-if="$index === 0" rowspan={{x.workRecordByChannels.length}} class="textAlignRt">
+                            <div ng-if="compareType">
+                                <div>￥{{x.receivable|number:2}}</div>
+                                <div>{{x.receivableRate|number:2}}%</div>
+                            </div>
+                            <div ng-if="compareType1">
+                                <div>￥{{x.received|number:2}}</div>
+                                <div>{{x.receivedRate|number:2}}%</div>
+                            </div>
+                        </td>
+                        <td class="textAlignCenter" ng-if="$index === 0" rowspan={{x.workRecordByChannels.length}} style="border-right:1px solid #ddd;" >{{x.rate|number:2}}%</td>
+                        <td class="textAlignRt">{{y.channelName}}</td>
+                        <td class="textAlignRt">
+                            <div >{{y.addNum}}</div>
+                            <div  class="textAlignRt">{{y.addNumRate|number:2}}%</div>
+                        </td>
+                        <td class="textAlignRt">
+                            <div  class="textAlignRt">{{y.addContract}}</div>
+                            <div  class="textAlignRt">{{y.addContractRate|number:2}}%</div>
+                        </td>
+                        <td class="textAlignRt">
+                            <div ng-if="compareType">
+                                <div>￥{{y.receivable|number:2}}</div>
+                                <div>{{y.receivableRate|number:2}}%</div>
+                            </div>
+                            <div ng-if="compareType1">
+                                <div>￥{{y.received|number:2}}</div>
+                                <div>{{y.receivedRate|number:2}}%</div>
+                            </div>
+                        </td>
+                        <td class="textAlignCenter">{{y.rate|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-show="tableList.tableList.length>0"><tbody>
+                <tr>
+                    <td width="10%">总计</td>
+                    <td width="10%" class="textAlignRt main_color">{{"addNum" |_total :tableList.tableList}}</td>
+                    <td width="10%" class="textAlignRt main_color">{{"addContract" |_total :tableList.tableList}}</td>
+                    <td width="10%" class="textAlignRt main_color" ng-if="compareType">￥{{"receivable" |_total :tableList.tableList|number:2}}</td>
+                    <td width="10%" class="textAlignRt main_color" ng-if="compareType1">￥{{"received" |_total :tableList.tableList|number:2}}</td>
+                    <td width="10%" class="textAlignCenter main_color">{{(("addContract" |_total :tableList.tableList)/("addNum" |_total :tableList.tableList))*100|number:2}}%</td>
+                    <td width="10%" class="main_color">-</td>
+                    <td width="10%" class="textAlignRt main_color">-</td>
+                    <td width="10%" class="textAlignRt main_color">-</td>
+                    <td width="10%" class="textAlignRt main_color">-</td>
+                    <td width="10%" class="textAlignCenter main_color">-</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

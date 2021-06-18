@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html ng-app="loginApp" lang="zh">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-store">
+		<meta name="description"
+			content="“易知鸟”智慧教育云服务平台为老师求高效，为家长求便捷，帮助机构进行招生、营销、运营管理和业务的智能化，解决日常管理过程中的难点，搭建完整的营销、运营体系，提供智能化的技术与服务支持，帮助机构更好的发展。我们一直秉承着校外教育只有机构、老师、家庭、孩子各个角色真正做到互通互联才能保证学习效果的理念。" />
+		<title>易知鸟登录</title>
+		<link rel="icon" href="static/img/must/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="static/css/global.css" />
+		<link rel="stylesheet" type="text/css" href="static/css/login.css" />
+		<link rel="stylesheet" type="text/css" href="libs/bootstrap/bootstrap.min.css" />
+		<script>
+			(function() {
+				if (localStorage.getItem('oa_token')) {
+					var url = new URL(location.href);
+					location.href = "./index.html" + url.search;
+					return
+				}
+
+				//有时候页面第一次加载会因为网络等原因加载失败，这时主动刷新一次页面
+				window.onerror = function(errorMessage, scriptURI, lineNumber, columnNumber, errorObj) {
+					var newUrl = location.href;
+					if (newUrl.indexOf('errorRefresh=') == -1) {
+						if (newUrl.indexOf('?') == -1) {
+							newUrl = newUrl + '?errorRefresh=1'
+						} else {
+							newUrl += '&errorRefresh=1';
+						}
+						console.log(newUrl)
+						location.href = newUrl;
+					}
+				}
+
+				if (getmyBrowser() == "rtChrome" || getmyBrowser() == "Safari" || getmyBrowser() == "AppleWebKit" ||
+					getmyBrowser() == "edge") {
+
+					return true;
+				}
+				return location.href = "./browserError.html";
+			})();
+
+			function getmyBrowser() {
+				var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+				var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+				var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE浏览器
+				var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+				var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+				var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+				var isSafari = userAgent.indexOf("Safari") > -1; //判断是否Safari浏览器
+				var isChrome = userAgent.indexOf("Chrome") > -1; //判断是否为Chrome浏览器
+				var isAppleWebKit = userAgent.indexOf("AppleWebKit") > -1; //判断是否为包含AppleWebKit浏览器，手机以及钉钉企业微信
+				if (isIE) {
+					var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+					reIE.test(userAgent);
+					var fIEVersion = parseFloat(RegExp["$1"]);
+					if (fIEVersion <= 10) {
+						return "lfIE10";
+					} else {
+						return "rtIE10";
+					}
+				} else if (isEdge) {
+					return 'edge'; //edge
+				} else if (isIE11) {
+					return 'isIE11'; //IE11
+				}
+
+				if (isChrome) {
+					var ischrome = false;
+					var reChrm = new RegExp("Chrome\/(\[\\d\.\]+)");
+					reChrm.test(userAgent);
+					var fIEVersion = parseFloat(RegExp["$1"]);
+					ischrome = fIEVersion;
+					if (ischrome) {
+						if (ischrome <= 50) { //判断chrome浏览器版本低于50则定为sougou,不能用
+							return "lfChrome";
+						} else {
+							return "rtChrome";
+						}
+					}
+				}
+				if (isFF) {
+					return "FF";
+				}
+				if (isOpera) {
+					return "Opera";
+				}
+				if (isSafari) {
+					return "Safari";
+				}
+
+				if (isAppleWebKit) {
+					var reAppleWebKit = new RegExp("AppleWebKit\/(\[\\d\.\]+)");
+					reAppleWebKit.test(userAgent);
+					var fVersion = parseFloat(RegExp["$1"]);
+					if (fVersion >= 537) {
+						return "AppleWebKit";
+					}
+				}
+
+				if (!(isIE && isIE11 && isEdge && isSafari && isChrome)) {
+					return "none";
+				}
+
+			}
+		</script>
+		<script type="text/javascript" src="components/angular/angular.min.js"></script>
+		<script type="text/javascript" src="components/angular-ui-router/angular-ui-router.min.js"></script>
+		<script type="text/javascript" src="components/angular-sanitize/angular-sanitize.min.js"></script>
+		<script type="text/javascript" src="libs/libsJs/md5.js"></script>
+	</head>
+
+	<body>
+		<div class="login_body" ng-controller="LoginController">
+			<div class="msk_img" ng-cloak ng-show="isShowImg">
+				<div class="msk_img_con">
+					<span class="closeBtn" ng-click="isShowImg=false"></span>
+					<img src="static/img/login/erweima.png" alt="" width="380" height="380" />
+					<p>扫码下载老师端</p>
+				</div>
+			</div>
+			<div class="login_nav">
+				<div class="login_left_logo">
+					<img ng-src="{{orgs.loginImg}}" width="100%" alt="" />
+				</div>
+
+				<div class="login_right_nav">
+					<div>
+						<a href="{{loginSaveUrl}}">保存到桌面</a>
+					</div>
+					<div ng-click="loginCollection()">添加收藏夹</div>
+				</div>
+
+			</div>
+			<div class="login_center" ng-style="{'background-image':'url('+loginBg+')'}">
+				<!-- <div class="login_left_img">
+            </div>
+            <div class="login_im3"></div>
+            <div class="login_im4"></div>
+            <div class="login_im5"></div> -->
+				<div class="login_im">
+					<div class="login_right" id="login_submit" ng-cloak>
+						<div class="login_right_title">
+							登录{{orgs.title}}平台
+						</div>
+
+						<form name="loginForm">
+							<div class="warn_title">
+								<span class="usererr assertive" ng-cloak ng-show="validateError">账号或密码错误，请重新输入</span>
+								<span class="login_tip login_tip3" ng-show="isPwdError"
+									ng-cloak>{{login_tipText}}</span>
+								<!--<span class="usererr assertive" ng-cloak ng-if="validatePwdError">密码由6-30位字母数字组合</span>-->
+							</div>
+							<label style="margin:17px 0 20px 0;">
+								<span class="login_user icon_login_user"></span>
+								<input class="login_user" type="text" name="number" placeholder="请输入手机号" maxlength="11"
+									autocomplete="off" ng-model="credentials.userAccount"
+									ng-keyup="bindPhoneEnter(credentials,$event)" ng-blur="validatePhone(credentials.userAccount)
+               " yzn-filter="phone" required>
+							</label>
+							<label>
+								<span class="login_pwd icon_login_pwd"></span>
+								<input class="login_pwd" type="password" name="login_password"
+									placeholder="请输入密码（初始密码为：123456）" maxlength="30" autocomplete="off"
+									ng-model="credentials.password" ng-keyup="bindPwdEnter(credentials,$event)"
+									ng-blur="validatePwd(credentials.password)" required>
+							</label>
+							<div type="submit" class="submit" ng-click="submitLogin(credentials)">登录</div>
+						</form>
+						<div class="login_aboutPwd">
+							<label for="remind_Me"><input type="checkbox" id="remind_Me"
+									ng-model="remind_user">下次自动登录</label>
+							<span class="linkto_forgotPwd"><a href=""
+									ng-click="gotoSetNewPwd()">{{gotoSetText}}</a></span>
+						</div>
+					</div>
+
+					<div class="login_href" ng-cloak>
+						<ul>
+							<li>
+								<a ng-click="openNewWindow(orgs.loginLink)">
+									<span class="image goguanwang"></span>
+									<p>{{orgs.title}}官网</p>
+								</a>
+							</li>
+							<li class="line"></li>
+							<li ng-click="openErweima()">
+								<span class="image phoneload"><i class="icon_phoneload"></i></span>
+								<p>下载手机端</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="login_footer" ng-cloak>
+				©2017-{{year}} 浙江筑森网络科技有限公司 Zhejiang zhusen Network Technology Co., Ltd
+				<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank"
+					style="color:#666;">浙ICP备17016508号</a>
+				<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202001644" target="_blank"
+					style="color:#666;">浙公网安备 33010202001644号</a>
+			</div>
+			<div class="shade_ editPwd_pop" id="login_setPwd">
+				<div class="shade_body">
+					<span ng-click="pop_cancel()" class="popup_x icon_drop_x"></span>
+					<div class="shade_content">
+						<div class="pop_title">
+							{{forgotPwd_title}}
+						</div>
+						<form class="form-horizontal shade_middle_form shade_middle_form_charge" role="form"
+							name="setPwd_form">
+							<div class="shade_form_content" id="change_Pwd">
+								<div class="form-group errorTips" ng-show="error_tips.length>0"> {{error_tips}}
+								</div>
+								<div class="form-group" style="margin:30px auto 0;">
+									<div class="input_ctrl">
+										<span class="login_user icon_login_user"></span>
+										<input class="form-control" name="number" ng-model="setNewPwdData.phone"
+											maxlength="11" placeholder="请输入注册手机号" autocomplete="off"
+											ng-keyup="bindPhoneEnter_edit()"
+											ng-blur="validatePhone_edit(setNewPwdData.phone)" yzn-filter="phone"
+											required />
+									</div>
+									<div class="usererr assertive" ng-cloak ng-if="validatePhoneError_edit">请输入正确的11位手机号
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input_ctrl testCode">
+										<span class="login_pwd icon_login_test"></span>
+										<input class="form-control" type="text" name="testCode" placeholder="手机验证码"
+											ng-model="setNewPwdData.code" ng-keyup="bindCodeEnter_edit()"
+											autocomplete="off" yzn-filter="num" required />
+									</div>
+									<div class="get_testCode" ng-click="getTestCode(setNewPwdData.phone)"
+										ng-bind="description" ng-disabled="canClick"></div>
+								</div>
+								<div class="form-group">
+									<div class="input_ctrl">
+										<span class="login_pwd icon_login_pwd"></span>
+										<input class="form-control" type="password" name="newpwd"
+											ng-model="setNewPwdData.pwd" maxlength="30" placeholder="设置新密码"
+											ng-keyup="bindPwdEnter_edit()" ng-blur="validatePwd_edit(setNewPwdData.pwd)"
+											autocomplete="new-password" required />
+										<input class="form-control" style="display:none;" name="newpwd"
+											autocomplete="new-password" required />
+									</div>
+									<div class="login_tip login_tip3" ng-if="isNewPwdError_edit">{{setNew_tipText}}
+									</div>
+									<div class="usererr assertive" ng-cloak ng-if="validatePwdError_edit">密码长度至少6位</div>
+									<!--<div class="usererr assertive" ng-cloak ng-if="validatePwdError_edit">密码由6-30位字母数字组合</div>-->
+								</div>
+							</div>
+
+							<div class="charge_add_confirm1" type="submit" ng-click="setNewPwd(setNewPwdData)">提交</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
+
+<script type="text/javascript" src="libs/libsJs/jquery.min.js"></script>
+<script type="text/javascript" src='static/js/config.js'></script>
+<script type="text/javascript" src="static/js/controller/login.js"></script>
+<script type="text/javascript" src="libs/libsJs/cookie.js"></script>
+<script type="text/javascript" src="static/js/extend.js"></script>
+<script type="text/javascript" src="libs/layer/layer.js"></script>
+<script type="text/javascript" src="static/js/commonFunctions.js"></script>
+<script type="text/javascript" src="static/js/constant.js"></script>

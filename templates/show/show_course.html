@@ -1,0 +1,161 @@
+<div class="common_body stud_common">
+    <div class="common_content">
+        <div class="common_tab">
+            <ul class="ul_left clearfix">
+                <li>
+                    <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                </li>
+                <li class="dropdown dropdown110">
+                    <input type="text" class="form-control dateIcon" id="showcourseTime" size="30" value="" placeholder="请选择创建时间"  autocomplete="off" >
+                </li>
+                <li>
+                    <label class="search_checkbox" style="margin-right: 10px;">
+                        <input type="checkbox" ng-checked="$type == 1" ng-click="sel_courseStatus($event, 1)" class="checkbox-inline labelLeft">启用
+                    </label>
+                    <label class="search_checkbox">
+                        <input type="checkbox" ng-checked="$type == 0" ng-click="sel_courseStatus($event, 0)"  class="checkbox-inline labelLeft">未启用
+                    </label>
+                </li>
+                <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                <li class="common_tab_libtn">
+                    <div class="common_tab_btn" ng-click="addShowCourse('add')"><i class="icon_addcourse"></i>新增展示课程</div>
+                </li>
+            </ul>
+        </div>
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="showCourseList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="showCourseList">
+                    <tr ng-repeat="x in showCourseList">
+                        <td class="clickText" ng-click="addShowCourse('edit', x)">{{x.experienceCourseName}}</td>
+                        <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.course.courseName}}</td>
+                        <td>
+                            <span ng-click="changeCourseStatus(x)" ng-class="{'enable_showcourse': x.courseStatus==1, 'disable_showcourse': x.courseStatus==0}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3"></div>
+        </div>
+    </div>
+</div>
+
+<!--新增展示课程-->
+<div class="popup_" id="add_showcourse">
+    <div class="popup_content">
+        <form class="popup_form" ng-submit="submit_showcourse()">
+            <div class="popup_form_content" style="height: 455px; position: relative;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label for="" class="form-label required">课程封面：</label>
+                        <div class="col-xs-9">
+                            <dl class="show_title" style="width: 460px;">
+                                <dt style="width: 213.34px;" class="icon_noimg imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                    <img ng-if="showcourseInfo.titlesrc" ng-src="{{showcourseInfo.titlesrc}}" alt="课程封面" />
+                                    <div class="msk_changeimg"><span ng-click="add_showcourseInfo('titleimg')">{{showcourseInfo.titlesrc?'更换图片':'添加图片'}}</span></div>
+                                </dt>
+                                <dd>
+                                    <div class="popup_line" style="margin-top: 85px;">
+                                        <span>图片可根据实际大小裁剪</span>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                        <p class="img_tagging" style="padding-left: 92px;">（建议尺寸750:420像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">课程名称</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" ng-model="showcourseInfo.courseName" maxlength="50" placeholder="填写课程名称" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">关联课程</label>
+                        <div class="col-xs-4">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择课程" my-id="relationCourse" list-data="{{screen_courseList}}" list-field="courseName" list-click="screen_operate(n, 'course')" list-search="true" list-all="no"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">适龄</label>
+                        <div class="col-xs-4 ageOfage">
+                            <input class="form-control" type="text" ng-model="showcourseInfo.ageLower" maxlength="3" placeholder="最小" yzn-filter="num_"/>
+                            <span>~</span>
+                            <input class="form-control" type="text" ng-model="showcourseInfo.ageUpper" maxlength="3" placeholder="最大" yzn-filter="num_"/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">授课形式</label>
+                        <div class="col-xs-4">
+                            <label style="margin-left: 21px;" class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="checkbox" ng-click="sel_courseType($event, 2)" ng-checked="showcourseInfo.courseType==2">一对多
+                            </label>
+                            <label style="margin-left: 30px;" class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="checkbox" ng-click="sel_courseType($event, 1)" ng-checked="showcourseInfo.courseType==1">一对一
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">培养能力</label>
+                        <div class="col-xs-8">
+                            <span class="input_words" style="right: 105px;">{{showcourseInfo.power.length?showcourseInfo.power.length:0}}/150</span>
+                            <textarea style="white-space: pre-wrap; word-wrap: break-word;height: 113px;padding-right: 38px;" class="form-control showcourseText" ng-model="showcourseInfo.power" maxlength="150" rows="3" placeholder="填写培养能力"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">摘要</label>
+                        <div class="col-xs-8">
+                            <span class="input_words" style="right: 105px;">{{showcourseInfo.abstract.length?showcourseInfo.abstract.length:0}}/150</span>
+                            <textarea style="white-space: pre-wrap; word-wrap: break-word;height: 113px;padding-right: 38px;" class="form-control showcourseText" ng-model="showcourseInfo.abstract" maxlength="150" rows="3" placeholder="填写摘要"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">课程详情</label>
+                        <div class="col-xs-8">
+                            <div class="popup_line" ng-repeat="x in showcourseInfo.courseList">
+                                <div style="margin: 0;" class="organ_img" ng-if="x.type == 'img'">
+                                    <div class="imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                        <img ng-src="{{x.value}}" alt="课程图片" />
+                                        <div class="msk_changeimg"><span ng-click="add_showcourseInfo('changeCourseimg', $index)">更换图片</span></div>
+                                    </div>
+                                    <i class="icon_newdelete" ng-click="delete_showcourseInfo($index, 'course')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                    <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                        <i ng-click="moveUpDown(showcourseInfo.courseList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                        <i ng-click="moveUpDown(showcourseInfo.courseList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                    </var>
+                                </div>
+                                <div style="margin: 0;" class="organ_info" ng-if="x.type == 'text'">
+                                    <i class="icon_newdelete" ng-click="delete_showcourseInfo($index, 'course')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                    <textarea ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word;" class="form-control" ng-model="x.value" rows="3" maxlength="150" placeholder="课程详情："></textarea>
+                                    <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                        <i ng-click="moveUpDown(showcourseInfo.courseList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                        <i ng-click="moveUpDown(showcourseInfo.courseList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                    </var>
+                                </div>
+                            </div>
+                            <div class="popup_line">
+                                <span class="add_info" ng-click="add_showcourseInfo('coursetext')" style="margin-left: 0;">+ 添加文字</span>
+                                <span class="add_info" ng-click="add_showcourseInfo('courseimg')">+ 添加图片</span>
+                            </div>
+                        </div>
+                        <p class="img_tagging" style="padding-left: 92px;">（建议尺寸720:540像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeLayer()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="common_body">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)">上课记录</span>
+        <span ng-click="switchVisitNav(2)">课堂展示</span>
+        <span ng-click="switchVisitNav(3)" class="tab_nav_show">课堂点评</span>
+        <span ng-click="switchVisitNav(4)">课后作业</span>
+        <span ng-click="switchVisitNav(5)">打卡作业</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li class="dropdown dropdown110">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择上课时间"  autocomplete="off" >
+            </li>
+            <li class="common_tab_libtn"  ng-if="operateClass">
+                <div class="common_tab_btn" ng-click='goCommonPop("clsaffair-pop","classAffair_set","760px",{tab:2,pop:"课务设置"})'><i class="icon_normalSet"></i>点评设置</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <ul class="common_tab_box">
+                    <li>
+                        <my-select list-name="课程选择" list-data="{{courseList}}" list-field="courseName" list-click="courseSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="班级选择" list-data="{{classList}}" list-field="className" list-click="classSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="老师选择" list-data="{{teacherList}}" list-field="teacherName" list-click="teacherSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="上课主题" list-data="{{courseTheme}}" list-field="courseThemeName" list-click="changeCourseTh(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="chargeType(true)">一对一
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(false)">一对多
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="activityStatus == 1" ng-click="chargeactivityStatus($event,1)">活动班
+                        </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{scheduleListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="scheduleComment==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in scheduleComment">
+                        <td>
+                            <span class="clickText" title="{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}" ng-click='goCommonPop("clsaffair-pop","affair_pop","960px",{tab:4,item:x,page:"comment"})'>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}</span>
+                             <span ng-if="x.classInfo.activityStatus == 0">
+                                <span ng-class='{"1":"listenIcon","2":"bukeIcon"}[x.courseType]'></span>
+                            </span>
+                            <span ng-if="x.classInfo.activityStatus == 1" class="actvitIcon"></span>
+                        </td>
+                        <td title="{{x.classInfo.className}}">{{x.classInfo.className}}</td>
+                        <td class="textAlignCenter">{{x.courseType == 0?x.arrangingCourseOrd:"—"}}</td>
+                        <td title="{{x.teacherStr}}">{{x.teacherStr}}</td>
+                        <td class="textAlignRt addPaddingRight_100">{{x.reviewTotal}}/{{x.studentTotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

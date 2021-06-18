@@ -1,0 +1,286 @@
+<div class="signInPage msk_img" ng-show="isShowImg" ng-click="isShowImg=false">
+    <div class="msk_img_con">
+        <img src="{{picture}}" alt="" />
+    </div>
+</div>
+<!--点名设置-->
+<!-- <div class="popup_" id="rollCall_set">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_set()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <div class="col-xs-12 mb10">周一到周五</div>
+                        <div class="col-xs-12 cursor popup_form_content">
+                            <div class="popup_scroll no_padding">
+                                <div class="popup_table">
+                                    <table class="popup_table_head">
+                                        <thead>
+                                            <th style="width:100%;">考勤批次</th>
+                                            <th style="width:110px;">签到开始时间</th>
+                                            <th style="width:110px;">签到结束时间</th>
+                                            <th style="width:110px;" class="textAlignCenter">是否需要签退</th>
+                                            <th style="width:110px;">签退开始时间</th>
+                                            <th style="width:110px;">签退结束时间</th>
+                                            <th style="width:100px;" class="textAlignCenter">操作</th>
+                                        </thead>
+                                        <tbody class="demo_tbody" ng-if="workList.length == 0">
+                                            <tr>
+                                                <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody class="roll_tbody">
+                                            <tr ng-repeat="item in workList">
+                                                <td>
+                                                    <input type="text" class="form-control" ng-model="item.rulesName" maxlength="10" required/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signInBeginTime" ng-mouseover="selTimeFrame(item, $event, 1)" required/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signInEndTime" ng-mouseover="selTimeFrame(item, $event, 2)" required/>
+                                                </td>
+                                                <td class="textAlignCenter">
+                                                    <span ng-class='{"isYesToggle":item.signBackStatus=="1","isNoToggle":item.signBackStatus=="0"}' ng-click="changeStatus(item)"></span>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signBackBeginTime" ng-mouseover="selTimeFrame(item, $event, 3)" ng-disabled="item.signBackStatus=='0'" ng-required="item.signBackStatus=='1'" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signBackEndTime" ng-mouseover="selTimeFrame(item, $event, 4)" ng-disabled="item.signBackStatus=='0'" ng-required="item.signBackStatus=='1'" />
+                                                </td>
+                                                <td class="textAlignCenter">
+                                                    <span class="icon_delete clickText" ng-click="deleteItem(workList,$index)"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="line28" style="display: inline-block;" ng-click="addTime(1)">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">新增考勤时间段</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <div class="col-xs-12 mb10">周六周日</div>
+                        <div class="col-xs-12 cursor popup_form_content">
+                            <div class="popup_scroll no_padding">
+                                <div class="popup_table">
+                                    <table class="popup_table_head">
+                                        <thead>
+                                            <th style="width:100%;">考勤批次</th>
+                                            <th style="width:110px;">签到开始时间</th>
+                                            <th style="width:110px;">签到结束时间</th>
+                                            <th style="width:110px;" class="textAlignCenter">是否需要签退</th>
+                                            <th style="width:110px;">签退开始时间</th>
+                                            <th style="width:110px;">签退结束时间</th>
+                                            <th style="width:100px;" class="textAlignCenter">操作</th>
+                                        </thead>
+                                        <tbody class="demo_tbody" ng-if="weekList.length == 0">
+                                            <tr>
+                                                <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody class="roll_tbody">
+                                            <tr ng-repeat="item in weekList">
+                                                <td>
+                                                    <input type="text" class="form-control" ng-model="item.rulesName" maxlength="10" required/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signInBeginTime" ng-mouseover="selTimeFrame(item, $event, 1)" required/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signInEndTime" ng-mouseover="selTimeFrame(item, $event, 2)" required/>
+                                                </td>
+                                                <td class="textAlignCenter">
+                                                    <span ng-class='{"isYesToggle":item.signBackStatus=="1","isNoToggle":item.signBackStatus=="0"}' ng-click="changeStatus(item)"></span>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signBackBeginTime" ng-mouseover="selTimeFrame(item, $event, 3)" ng-disabled="item.signBackStatus=='0'" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control dateIcon_2" ng-model="item.signBackEndTime" ng-mouseover="selTimeFrame(item, $event, 4)" ng-disabled="item.signBackStatus=='0'" />
+                                                </td>
+                                                <td class="textAlignCenter">
+                                                    <span class="icon_delete clickText" ng-click="deleteItem(weekList,$index)"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="line28" style="display: inline-block;" ng-click="addTime(2)">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">新增考勤时间段</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="parting_line"></div>
+                    <div class="popup_line">
+                        <div class="col-xs-10">
+                            自动点名设置
+                        </div>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <span style="margin-top: 10px;cursor: pointer;" ng-class='{"isEnable":change_confirm,"isDisable":!change_confirm}' ng-click="changeSet()"></span>
+                            <span style="display: inline-block;vertical-align: top;margin-top: 7px;">学生刷脸签到，上课时间结束自动完成点名</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<div class="common_body signIn_page" ng-if="judgeSignInState == 0 || judgeSignInState == 1" ng-clock>
+    <div class="apply_left">
+        <h1>易知鸟AI智能人脸识别系统</h1>
+        <h2>用AI智能赋能教育</h2>
+        <h2>更快、更安全、更智能</h2>
+        <div class="apply_intro">
+            <ul>
+                <li ng-repeat="x in applyArr">
+                    <img ng-src="{{x.img}}" alt="" />
+                    <span>{{x.text}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="applybtn">
+            <div class="apply_btn apply_1" ng-if="judgeSignInState == 0">
+                <div>
+                    <button ng-click="btn_apply(1)">立即购买</button>
+                    <button ng-click="btn_apply(2)"><a href="" ng-click="openNewWindow('https://mp.weixin.qq.com/s/h9p55wEG6gwnUuqE8MMxGw')">功能介绍</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="apply_right">
+        <div class="apply_img"></div>
+    </div>
+</div>
+<div class="common_body" ng-show="judgeSignInState == 2">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">今日签到</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">打卡记录</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li ng-show="studNavJud==2">
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li ng-show="studNavJud==2">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="按打卡时间段筛选" autocomplete="off">
+            </li>
+            <li ng-show="studNavJud==1">
+                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-search="true"></my-select>
+            </li>
+            <li ng-show="studNavJud==1">
+                <my-select list-name="班级" list-data="{{screen_class}}" list-field="className" list-click="changeClass(n)" list-search="true"></my-select>
+            </li>
+            <!--//签到状态，0:到校，1:离校,2:重复签到，3：重复签退，4：非考勤时间内签到-->
+            <li ng-show="studNavJud==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "status == 0" ng-click="changeByStatus($event,0)">签到
+                </label>
+            </li>
+            <li ng-show="studNavJud==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "status == 2" ng-click="changeByStatus($event,2)">重复签到
+                </label>
+            </li>
+            <li ng-show="studNavJud==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "status == 1" ng-click="changeByStatus($event,1)">签退
+                </label>
+            </li>
+            <li ng-show="studNavJud==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "status == 3" ng-click="changeByStatus($event,3)">重复签退
+                </label>
+            </li>
+            <li ng-show="studNavJud==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "status == 4" ng-click="changeByStatus($event,4)">不在考勤时间段内
+                </label>
+            </li>
+            <li class="common_tab_libtn" ng-show="('182' | _authId) && studNavJud==1">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageOther',{tab:3,before:'edu_signIn'})"><i class="icon_paike"></i>学员考勤设置</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+    <div class="common_content" ng-if="studNavJud==1">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead1}}"></thead>
+                <tbody class="demo_tbody" ng-if="!todaySignInlist">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in todaySignInlist">
+                        <td>
+                            <span class="clickText" title="{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}" ng-click='goCommonPop("clsaffair-pop","affair_pop","960px",{tab:1,item:x,page:"schedule"})'>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}</span>
+                        </td>
+                        <td>{{x.course.courseName}}</td>
+                        <td>{{x.classInfo.className}}</td>
+                        <td>{{x.signTotal===undefined?"-":(x.signTotal+"/"+x.studentAllTotal)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="common_content" ng-if="studNavJud==2">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead2}}"></thead>
+                <tbody class="demo_tbody" ng-if="!signInlist">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in signInlist">
+                        <td title='{{x.potentialCustomer.name}}  {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}'>
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                        </td>
+                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                        <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <!--//签到状态，0:到校，1:离校,2:重复签到，3：重复签退，4：非考勤时间内签到-->
+                        <td>{{x.type == 0?"签到":x.type == 1?"签退":x.type == 2?"重复签到":x.type == 3?"重复签退":x.type == 4?"非考勤时间内签到":"-"}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="viewImg(x)" ng-if="x.pictureUrl">查看照片</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>
+
+<style type="text/css">
+    .layui-laydate-content>.layui-laydate-list {
+        padding-bottom: 0px;
+        overflow: hidden;
+    }
+    
+    .layui-laydate-content>.layui-laydate-list>li {
+        width: 50%
+    }
+    
+    .merge-box .scrollbox .merge-list {
+        padding-bottom: 5px;
+    }
+</style>

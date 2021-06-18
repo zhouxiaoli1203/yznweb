@@ -1,0 +1,134 @@
+<div class="common_body" style="overflow: inherit;">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)">列表模式</span>
+        <span ng-click="switchVisitNav(2)" class="tab_nav_show">视图模式</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li class="sch_nav_2">
+                <span ng-class="{sp_show: tabNav_2==1}" ng-click="chanNav_2(1)">按时间</span>
+                <span ng-class="{sp_show: tabNav_2==2}" ng-click="chanNav_2(2)">按老师</span>
+                <span ng-class="{sp_show: tabNav_2==3}" ng-click="chanNav_2(3)">按教室</span>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="exportSchedule()"><i class="icon_export"></i>导出课表</div>
+            </li>
+            <!--<li class="common_tab_libtn" ng-show="changePaike">-->
+                <!--<div class="common_tab_btn" ng-click='goCommonPop("arange-pop","pkShunyan","1060px",{"inputType":"checkbox","name":"lesson"})'><i class="icon_shunyan"></i>排课顺延</div>-->
+            <!--</li>-->
+            <li class="common_tab_libtn" ng-show="fastPaike">
+                <div class="common_tab_btn" ng-click='goCommonPop("arange-pop","arange_pop","760px",{"pop":"paike","name":"lesson","isSingle":"1","title":"快速排课"})'><i class="icon_paike"></i>快速排课</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop" style="margin-top: 10px;">
+            <li>
+                <ul class="common_tab_box">
+                    <li ng-if="tabNav_2 == 1">
+                        <my-select my-id="edu_course" list-name="课程" list-data="{{_courseList}}" list-field="courseName" list-click="screenSel(n, 1)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select my-id="edu_class" list-name="班级" list-data="{{_classList}}" list-field="className" list-click="screenSel(n, 2)" list-search="true"></my-select>
+                    </li>
+                    <li class="var_line"><var></var></li>
+                    <li ng-if="tabNav_2 == 1 || tabNav_2 == 3">
+                        <span class="myselect_list" ng-repeat="x in _params.t">{{x.teacherName}}<i class="icon_list_x" ng-click="delect_screen(x, $index, 'teacher')"></i></span>
+                        <div class="drop_add_teacher screen_no" style="float: left; min-width: 70px; padding-right: 0;">
+                            <i class="icon_name_add"></i>
+                            <my-select my-id="edu_teacher" list-name="添加老师" list-data="{{_teacherList}}" list-field="teacherName" list-click="screenSel(n, 3)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                        </div>
+                    </li>
+                    <li class="var_line" ng-if="tabNav_2 == 1 || tabNav_2 == 3"><var></var></li>
+                    <li ng-if="tabNav_2 == 1 || tabNav_2 == 2">
+                        <span class="myselect_list" ng-repeat="x in _params.r">{{x.classRoomName}}<i class="icon_list_x" ng-click="delect_screen(x, $index, 'room')"></i></span>
+                        <div class="drop_add_teacher screen_no" style="float: left; min-width: 70px; padding-right: 0;">
+                            <i class="icon_name_add"></i>
+                            <my-select  my-id="edu_room" list-name="添加教室" list-data="{{_roomList}}" list-field="classRoomName" list-click="screenSel(n, 4)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                        </div>
+                    </li>
+                    <li class="var_line" ng-if="tabNav_2 == 1 || tabNav_2 == 2"><var></var></li>
+                    <li ng-if="tabNav_2 == 1">
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="_params.$courseType == 1" ng-click="screenSel($event, 5)">试听
+                        </label>
+                    </li>
+                    <li ng-if="tabNav_2 == 1">
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="_params.$courseType == 2" ng-click="screenSel($event, 6)">补课
+                        </label>
+                    </li>
+                    <li ng-show="bookingSture!=0">
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="_params.$bookingStatus == 1" ng-click="screenSel($event, 7)">约课
+                        </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="common_content">
+        <div class="sch_time_frame">
+            <span class="sch_time_frame_btn1" ng-click="TimeFrameEvent(1)">上周</span>
+            <p class="sch_time_frame_text"><span class="dateIcon">{{_data._time}}</span><input type="text" id="sch_time_frame" /></p>
+            <span class="sch_time_frame_btn2" ng-click="TimeFrameEvent(2)">下周</span>
+            <span class="sch_time_frame_btn3" ng-click="TimeFrameEvent(3)">返回本周</span>
+        </div>
+        <div class="sch_time" ng-if="tabNav_2==1"></div>
+        <div class="sch_teacher" ng-if="tabNav_2==2"></div>
+        <div class="sch_room" ng-if="tabNav_2==3"></div>
+    </div>
+</div>
+
+<!--排课信息-->
+<div class="popup_ _paike_info">
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line _paike_info_btn">
+                        <span class="icon_delete" ng-click="paikeDelete(1)" ng-if="viewPaikeInfo.arrangingCoursesStatus == '0' && changePaike">删除</span>
+                        <span class="icon_delete" ng-click="paikeDelete(2)" ng-if="viewPaikeInfo.arrangingCoursesStatus != '0' && changePaike">删除点名</span>
+                        <span class="icon_changeClassRoom" ng-if="viewPaikeInfo.arrangingCoursesStatus == '0' && changePaike" ng-click='goCommonPop("arange-pop","arange_pop","760px",{"pop":"paike","name":"lesson","isSingle":"0","title":"排课变更","isChangePaike":true,item:viewPaikeInfo})'>排课变更</span>
+                        <span class="icon_roll" ng-click="gotolistRollCall(viewPaikeInfo)" ng-if="changePaike">{{viewPaikeInfo.arrangingCoursesStatus == '0'?'点名':'编辑点名'}}</span>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label">上课日期：</label>
+                        <span class="col-xs-8 form-span">{{viewPaikeInfo.arrangingCoursesBeginDate | yznDate: 'yyyy-MM-dd'}}【{{returnweek(viewPaikeInfo.arrangingCoursesWeek)}}】    {{viewPaikeInfo.arrangingCoursesBeginDate | yznDate: 'HH:mm'}}-{{viewPaikeInfo.arrangingCoursesEndDate | yznDate: 'HH:mm'}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">班级名称：</label>
+                        <span class="col-xs-8 form-span">{{viewPaikeInfo.classInfo.className}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">课程：</label>
+                        <span class="col-xs-8 form-span">{{viewPaikeInfo.course.courseName}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">上课教室：</label>
+                        <span class="col-xs-8 form-span">{{viewPaikeInfo.classRoomName}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">授课课时：</label>
+                        <span class="col-xs-4 form-span">{{viewPaikeInfo.arrangingCoursesTime}}</span>
+                        <label class="form-label">课次：</label>
+                        <span class="col-xs-4 form-span">{{viewPaikeInfo.arrangingCourseOrd}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">主教老师：</label>
+                        <span class="col-xs-4 form-span">{{viewPaikeInfo.t_1.join(',')}}</span>
+                        <label class="form-label">助教老师：</label>
+                        <span class="col-xs-4 form-span">{{viewPaikeInfo.t_2.join(',')}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">上课主题：</label>
+                        <span class="col-xs-4 form-span">{{viewPaikeInfo.arrangingCoursesTheme.courseThemeName}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" ng-click="closePop()" type="button">关闭</button>
+            </div>
+        </form>
+    </div>
+</div>

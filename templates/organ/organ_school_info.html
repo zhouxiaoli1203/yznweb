@@ -1,0 +1,125 @@
+<!--编辑-->
+<div class="popup_ edit_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="edit_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">校区名称:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control" autocomplete="off" ng-model="schoolInfo.shopName" type="text" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">校区简称:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control" autocomplete="off" ng-model="schoolInfo.shopShortName" type="text" maxlength="10" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">校区地址:</label>
+                        <div class="col-xs-3">
+                            <select class="form-control" ng-model="schoolInfo.province" ng-change="changeProvince(schoolInfo.province)" required>
+                                <option value="">请选择省</option>
+                                <option value="{{x}}" ng-repeat="x in provincesList['0']">{{x}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <select class="form-control" ng-model="schoolInfo.city" required>
+                                <option value="">请选择市</option>
+                                <option value="{{x}}" ng-repeat="x in pro_cityList">{{x}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-8">
+                            <textarea rows="5" class="form-control" autocomplete="off" ng-model="schoolInfo.shopAddress" type="text" required></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">门店类型:</label>
+                        <div class="col-xs-8">
+                            <span class="line28">{{schoolInfo.shopType == 0?'总店':schoolInfo.shopType == 1?'直营店':'直营店'}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">负责人:</label>
+                        <div class="col-xs-8">
+                            <span class="line28">{{schoolInfo.shopTeacher.teacherName}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">联系方式:</label>
+                        <div class="col-xs-8">
+                            <span class="line28">{{schoolInfo.shopTeacher.teacherPhone}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="common_body">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="bindKeyEnter(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <my-select list-name="省" list-data="{{provincesList['0']}}" list-field="" list-click="searchByProv(n, i)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-show="cityList.length">
+                <my-select list-name="市" list-data="{{cityList}}" list-field="" list-click="searchByCity(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="shopType == 1" ng-click="changesType($event,1)">直营店
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="shopType == 2" ng-click="changesType($event,2)">加盟店
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="schoolList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in schoolList">
+                        <td title="{{x.shopName}}">{{x.shopName}}</td>
+                        <td title="{{x.shopShortName}}">{{x.shopShortName}}</td>
+                        <td title="{{x.shopAddress}}">{{x.shopAddress}}</td>
+                        <td>{{x.shopType == 0?'总店':x.shopType == 1?'直营店':'加盟店'}}</td>
+                        <td>{{x.shopTeacher.teacherName}}</td>
+                        <td>{{x.shopTeacher.teacherPhone}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="editSchool" ng-click="gotoEdit(x)">编辑</span>
+                            <span class="clickText" ng-click="gotoPartyShop(x.shopId)">进入校区</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

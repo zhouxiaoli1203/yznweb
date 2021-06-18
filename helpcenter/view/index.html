@@ -1,0 +1,20 @@
+<div class="contain clearfix">
+    <!--板块形式-->
+    <div class="indexWrapper">
+        <div class="title clearfix">
+            <span>热门问题</span>
+            <span ng-click="toMore()">更多</span>
+        </div>
+        <div class="partWrapper clearfix">
+            <div ng-repeat="x in listHotTopicList track by $index" ng-if="x.status == 1" style="width:{{partWidth}}px;height:{{partHeight}}px">
+                <div>
+                    <div class="first_level" style="margin-bottom:10px">{{x.topicName}}</div>
+                    <ul>
+                        <li ng-repeat='n in x.helpCenterList' ng-click="addQid(n.helpCenterId)">{{n.helpCenterTitle}}</li>
+                    </ul>
+                    <div class="nodata" ng-show="!x.helpCenterList || x.helpCenterList.length == 0">暂无信息</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

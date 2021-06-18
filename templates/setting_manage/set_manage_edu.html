@@ -1,0 +1,257 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}" ng-if="routerBefore">
+    <div class="back_icon icon_return" ng-click="routerSkip(routerBefore)">返回</div>
+</div>
+<div class="common_body visit_common" ng-style="{'margin-top':routerBefore?'34px':'0px'}">
+    <div class="tab_nav">
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+
+    <div class="center_body" ng-if="visitNavJud==1">
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th width='250px'>功能</th>
+                            <th>功能描述</th>
+                        </tr>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr>
+                            <td>预约期限</td>
+                            <td>
+                                上课前 <input type="text" ng-blur="aeDataBlur()" ng-model="$parent.bookingSubmitTime" class="form-control width45" oninput="value=value.replace(/[^\d]/g,'') " required/> 小时停止学员预约课程
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>取消预约期限</td>
+                            <td>
+                                上课前 <input type="text" ng-blur="aeDataBlur()" ng-model="$parent.bookingTime" class="form-control width45" oninput="value=value.replace(/[^\d.]/g,'') " required/> 小时内学员不可取消预约。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>预警设置</td>
+                            <td>
+                                学员低于 <input type="text" ng-blur="aeDataBlur()" ng-model="$parent.bookingPercent" class="form-control width45" yzn-filter="percent" required/> %时提醒预警（设置后，系统将在上课前一天提醒预警。）
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix mb10">
+            <p class="pull-left" style="margin-top:16px;">预警班级</p>
+            <div class="common_tab_btn fontRed_BgWhite pull-right" style="margin-right:0" ng-click="$root.yznOpenPopUp(this, 'course-sel', 'choseClass', '1060px', {name: 'class', type: 'checkbox', bookingStatus:'0', teachingMethod:'2',courseType:'0',screen_classType: '0', callBackName: '预警班级'})"><i class="icon_addcourse"></i>添加可预约班级</div>
+        </div>
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th>班级名称</th>
+                            <th>最大人数</th>
+                            <th class="relative_dm newHelp_before">
+                                预警值
+                                <div class="help_icon noneWidth" style="left: 42px;top:9px" data-tips="班级最大人数x预警百分比，低于预警人数时将提示预警。"></div>
+                            </th>
+                            <th class="textAlignCenter" width='140px'>操作</th>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr ng-repeat="x in selClassList track by $index">
+                            <td>{{x.className}}</td>
+                            <td>{{x.classMax}}</td>
+                            <td>{{x.classMax*bookingPercent/100|floor}}</td>
+                            <td class="textAlignCenter"><span class="clickText" ng-click="delCourse(x)">删除</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="center_body" ng-if="visitNavJud==2">
+        <div class="pot_pop_peo_nav clearfix" style="padding-top:0;">
+            <div class="clearfix">
+                <div class="tab_course_history">
+                    <div ng-click="tabSwitch(false)" ng-class="{bg_active:!inteActive}">系统规则</div>
+                    <div ng-click="tabSwitch(true)" ng-class="{bg_active:inteActive}">自定义规则</div>
+                </div>
+            </div>
+            <div ng-if="inteActive" class="clearfix">
+                <div class="pull-left" style="margin-top: 16px;">设置完成后，可快速选择相应规则为学员增加或减少积分。</div>
+                <div class="common_tab_libtn pull-right">
+                    <div class="common_tab_btn" ng-click="setRule('add')" style="margin-right:0;"><i class="icon_addcourse"></i>新增积分项</div>
+                </div>
+            </div>
+
+            <div class="common_content mt10" ng-if="!inteActive">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover abnormal">
+                        <thead>
+                            <tr>
+                                <th style="width:137px;">积分项</th>
+                                <th style="width:345px;">说明</th>
+                                <th style="width:210px;">规则</th>
+                                <th style="width:130px;">启用状态</th>
+                                <th style="width:100px;" class="textAlignCenter">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="demo_tbody">
+                            <tr ng-repeat="x in ruleList">
+                                <td>{{x.pointsItem}}</td>
+                                <td title="{{x.remark}}">{{x.remark}}</td>
+                                <td title="{{x.rule}}">{{x.rule}}</td>
+                                <td>
+                                    <span ng-class='{"isEnable":x.status==1,"isDisable":x.status==0}' ng-click="changeBtn(x)"></span>
+                                </td>
+                                <td class="textAlignCenter">
+                                    <span class="clickText" ng-click="toSubmitHk(x)">编辑</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="common_content mt10" ng-if="inteActive">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover abnormal">
+                        <thead>
+                            <tr>
+                                <th>积分项</th>
+                                <th>说明</th>
+                                <th style="width:210px;" class="textAlignCenter">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="demo_tbody">
+                            <tr ng-repeat="x in ruleList">
+                                <td>{{x.pointsItem}}</td>
+                                <td style="width:240px;" title="{{x.remark}}">{{x.remark}}</td>
+                                <td class="operate overflow-normal textAlignCenter">
+                                    <span class="clickText" ng-click="setRule('edit',x)">编辑</span>
+                                    <span class="clickText" ng-click="deleteRule(x)">删除</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center_body" ng-if="visitNavJud==4">
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th width='250px'>功能</th>
+                            <th>功能描述</th>
+                            <th width="200px" class="textAlignCenter">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr>
+                            <td>请假时间</td>
+                            <td>
+                                请假申请需提前
+                                <input type="text" class="form-control width45" ng-model="$parent.warnLeaveNum" ng-blur="confirm_Set()" autocomplete="off" yzn-filter="num" /> 天
+                            </td>
+                            <td class="textAlignCenter">-</td>
+                        </tr>
+                        <tr>
+                            <td>请假自动确认</td>
+                            <td>
+                                开启后，学员请假后由系统自动确认请假记录
+                            </td>
+                            <td class="textAlignCenter">
+                                <span style="cursor: pointer;" ng-class='{"isEnable":leaveConfirmStatus,"isDisable":!leaveConfirmStatus}' ng-click="confirm_Set(true)"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--系统规则-->
+    <div class="popup_" id="submitHk">
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="confirm_submitHk()">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" ng-if="rules.pointsItemId<=7">
+                        <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                            <span>{{(rules.pointsItemId == 5||rules.pointsItemId==6)?"每日首次":"每次"}}{{rules.pointsItem}}，{{(rules.pointsItemId == 3||rules.pointsItemId==4)?"减":"加"}} </span>
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                            <span> 分</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="rules.pointsItemId==13">
+                        <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                            <span>学员每次完成打卡后，加  </span>
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                            <span> 分</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="rules.pointsItemId==14">
+                        <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                            <span>学员完成当天打卡后,加  </span>
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                            <span> 分</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="rules.pointsItemId==8 || rules.pointsItemId==9">
+                        <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                            <span>每满 </span>
+                            <input class="form-control" type="text" yzn-filter="num_" ng-model="x.limitValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                            <span> 元，{{rules.pointsItemId == 9?"减":"加"}} </span>
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                            <span> 分</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom:0;" ng-if="rules.pointsItemId==10 || rules.pointsItemId==11">
+                        <div class="textAlignLf" style="width: 200px;margin: 0 auto 10px;" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                            <span>等级{{$index+1}}，加 </span>
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                            <span>分</span>
+                            <span class="clickText" ng-click="deleteItem(rules.pointsRuleDetailList,$index)"> 删除</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="rules.pointsItemId==10 || rules.pointsItemId==11">
+                        <div class="textAlignLf" style="width: 200px;margin: 0 auto;">
+                            <span class="icon_name_add" ng-click="addItem(rules.pointsRuleDetailList)">添加规则</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--机构规则-->
+    <div class="popup_" id="change_organRule">
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="confirm_organRule()">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label for="" class="form-label required">积分项:</label>
+                        <div class="col-xs-10">
+                            <input class="form-control" type="text" ng-model="ruleData.pointsItem" maxlength="20" autocomplete="off" placeholder="请输入积分项" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">说明:</label>
+                        <div class="col-xs-10 ">
+                            <span class="input_words">{{ruleData.remark?ruleData.remark.length:0}}/50</span>
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="ruleData.remark" maxlength="50" placeholder="请输入说明" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>

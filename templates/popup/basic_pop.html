@@ -1,0 +1,70 @@
+<!--学校管理-->
+<div class="popup_ schoolManage" id="schoolManage">
+    <h6>周边学校管理<span ng-click="reloadSchool()" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content"  style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                     <div class="pot_pop_peo_nav clearfix">
+                        <div class="common_tab_btn fontRed_BgWhite" ng-click="addOreditSchool('add')">
+                            <i class="icon_addcourse"></i>新增周边学校
+                        </div>
+                    </div>
+                   <div class="popup_table">
+                    <table class="popup_table_head" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>学校名称</th>
+                                <th class="textAlignCenter">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="width:102%;">
+                        <table>
+                            <tbody class="roll_tbody" ng-if="SchoolList==''||!SchoolList">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="roll_tbody" ng-if="SchoolList">
+                                <tr ng-repeat="x in SchoolList">
+                                    <td>{{x.schoolName}}</td>
+                                    <td class="operate overflow-normal textAlignCenter">
+                                        <span class="clickText" ng-click="addOreditSchool('edit',x)">编辑</span>
+                                        <span class="clickText" ng-click="deleteSchool(x)">删除</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+                </div>
+            </div>
+            <!--<div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('schoolManage')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="confirm_selSchool()">确定</button>
+            </div>-->
+        </form>
+    </div>
+</div>
+<!--新增时间-->
+<div class="popup_ add_SetSchool" id="add_SetSchool">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_set()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label">学校名称:</label>
+                        <div class="col-xs-5" style="height:30px;">
+                            <input type="text" class="form-control" maxlength="24" placeholder="请输入学校名称" ng-model="schoolInfo.schoolName" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

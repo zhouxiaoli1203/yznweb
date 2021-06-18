@@ -1,0 +1,314 @@
+@charset "utf-8";
+.summer_2_con {
+    position: relative;
+    width: 100%;
+    background-color: #add451;
+    font-size: 0.28rem;
+}
+.b_bg {
+    display: block;
+    width: 100%;
+}
+.b_bg_fengche1 {
+    position: absolute;
+    top: 5.52rem;
+    left: 0.6rem;
+    width: 0.9rem;
+    height: 1.34rem;
+}
+.b_bg_fengche2 {
+    position: absolute;
+    top: 4.6rem;
+    left: 0.15rem;
+    width: 1.8rem;
+    animation: mu_sport 10s linear 0s infinite;
+    -webkit-animation: mu_sport 10s linear 0s infinite;
+    -o-animation: mu_sport 10s linear 0s infinite;
+}
+.b_bg_jiwo {
+    position: absolute;
+    top: 9.55rem;
+    left: 0.66rem;
+    width: 3.4rem;
+    height: 0.64rem;
+}
+.b_bg_hen1 {
+    position: absolute;
+    top: 7rem;
+    left: 0.5rem;
+    width: 7.1rem;
+}
+.chicks img:nth-of-type(1){
+    width: 0.84rem;
+    height: 0.74rem;
+    position: absolute;
+    top: 10.3rem;
+    left: 0.12rem;
+}
+.chicks img:nth-of-type(2){
+    width: 0.91rem;
+    height: 0.82rem;
+    position: absolute;
+    top: 9.5rem;
+    left: 5.5rem;
+}
+.chicks img:nth-of-type(3){
+    width: 0.88rem;
+    height: 0.71rem;
+    position: absolute;
+    top: 8.7rem;
+    left: 6.4rem;
+}
+.b_bg_cloud1{
+    width: 2.39rem;
+    height: 0.53rem;
+    position: absolute;
+    top: 1.62rem;
+    left: 4.12rem;
+}
+.b_bg_cloud2{
+    width: 1.17rem;
+    height: 0.27rem;
+    position: absolute;
+    top: 2.7rem;
+    left: 5.5rem;
+}
+.b_bg_cloud3{
+    width: 1.17rem;
+    height: 0.27rem;
+    position: absolute;
+    top: 3.52rem;
+    left: 0.18rem;
+}
+.b_banner_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.b_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin: 0.22rem;
+    border-radius: 50%;
+}
+.b_peo div {
+    color: #fff;
+    padding-top: 0.15rem;
+    line-height: 0.35rem;
+}
+.b_peo div span {
+    font-size: 0.36rem;
+    font-weight: bold;
+}
+.b_tit {
+    margin: 0.47rem 0 0.3rem;
+}
+.b_tit p {
+    font-size: 0.42rem;
+    color: #fff;
+    text-align: center;
+    padding: 0 0.9rem;
+}
+.b_time {
+    width: 4.8rem;
+    margin: 0 auto;
+    color: #fff;
+}
+.b_time p {
+    font-size: 0.24rem;
+}
+.b_time p span {
+    display: inline-block;
+    margin: 0 0.03rem;
+    color: #FDFF56;
+    font-size: 0.24rem;
+}
+.pos_imgs {
+    position: relative;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+.b_btn {
+    position: absolute;
+    top: 10.8rem;
+    left: 0;
+    width: 100%;
+}
+.b_btn_1 {
+    display: block;
+    width: 2.36rem;
+    height: 0.92rem;
+    margin: 0 auto;
+    padding-bottom: 0.05rem;
+    border: none;
+    background: url("../img/btn.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    text-align: center;
+    line-height: 0.87rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-size:0.36rem;
+}
+.b_prize, .b_rule, .b_logs, .b_joins, .b_organ {
+    position: relative;
+    width: 6.4rem;
+    margin: 1.4rem auto 0;
+    background: url("../img/boxbg.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_box {
+    position: relative;
+    width: 100%;
+    min-height: 4.2rem;
+    padding: 0.3rem 0.51rem 0.1rem 0.3rem;
+    border-radius: 0.32rem;
+}
+.b_box p {
+    margin-bottom: 0.25rem;
+    color: #86BB4C;
+    font-size: 0.28rem;
+}
+.b_box img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+.b_con_tit_prize {
+    position: absolute;
+    top: -0.73rem;
+    left: 1.9rem;
+    width: 2.3rem;
+    height: 0.47rem;
+    margin: 0 auto;
+    background: url("../img/prize.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_role {
+    position: absolute;
+    top: -0.73rem;
+    left: 1.9rem;
+    width: 2.3rem;
+    height: 0.47rem;
+    margin: 0 auto;
+    background: url("../img/role.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_bang {
+    position: absolute;
+    top: -0.73rem;
+    left: 1.9rem;
+    width: 2.3rem;
+    height: 0.47rem;
+    margin: 0 auto;
+    background: url("../img/bang.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_rank {
+    position: absolute;
+    top: -0.73rem;
+    left: 1.9rem;
+    width: 2.3rem;
+    height: 0.47rem;
+    margin: 0 auto;
+    background: url("../img/rankList.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_organ {
+    position: absolute;
+    top: -0.73rem;
+    left: 1.9rem;
+    width: 2.3rem;
+    height: 0.47rem;
+    margin: 0 auto;
+    background: url("../img/organ.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_nodata {
+    width: 100%;
+    height: 4.2rem;
+    color: #F280A7;
+    line-height: 4.2rem;
+    text-align: center;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #fff;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

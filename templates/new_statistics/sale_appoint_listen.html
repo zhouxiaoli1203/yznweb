@@ -1,0 +1,195 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">工作概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+     <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工作概况</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">工作记录</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">试听统计</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr class="head-tr-col">
+                    <th style="border-right:none;"></th>
+                    <th></th>
+                    <th colspan="2" class="textAlignCenter">到课人数</th>
+                    <th colspan="2" style="border-right:none;"></th>
+                    <th></th>
+                    <th colspan="2" class="textAlignCenter">到课人次</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="rightBorder">预约人数</th>
+                    <th>应到</th>
+                    <th class="rightBorder">实到</th>
+                    <th>成单人数</th>
+                    <th>成单率</th>
+                    <th class="rightBorder">预约人次</th>
+                    <th>应到</th>
+                    <th class="rightBorder">实到</th>
+                    <th>到课率</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td>本周</td>
+                    <td class="rightBorder">{{dataTotal.weekAuditionAppointTotal}}</td>
+                    <td>{{dataTotal.weekAuditionStudentTotal}}</td>
+                    <td class="rightBorder">{{dataTotal.weekAuditionToClassTotal}}</td>
+                    <td class="">{{dataTotal.weekAuditionContractTotal}}</td>
+                    <td class="">{{(dataTotal.weekAuditionContractTotal|_getRate:dataTotal.weekAuditionToClassTotal |number:2)||"0.00"}}%</td>
+                    <td class="rightBorder">{{dataTotal.weekAuditionAppointTimes}}</td>
+                    <td>{{dataTotal.weekAuditionStudentTimes}}</td>
+                    <td class="rightBorder">{{dataTotal.weekAuditionToClassTimes}}</td>
+                    <td class="">{{(dataTotal.weekAuditionToClassTimes|_getRate:dataTotal.weekAuditionStudentTimes|number:2)||"0.00"}}%</td>
+                </tr>
+                <tr>
+                    <td>本月</td>
+                    <td class="rightBorder">{{dataTotal.monthAuditionAppointTotal}}</td>
+                    <td>{{dataTotal.monthAuditionStudentTotal}}</td>
+                    <td class="rightBorder">{{dataTotal.monthAuditionToClassTotal}}</td>
+                    <td class="">{{dataTotal.monthAuditionContractTotal}}</td>
+                    <td class="">{{(dataTotal.monthAuditionContractTotal|_getRate:dataTotal.monthAuditionToClassTotal|number:2)||"0.00"}}%</td>
+                    <td class="rightBorder">{{dataTotal.monthAuditionAppointTimes}}</td>
+                    <td>{{dataTotal.monthAuditionStudentTimes}}</td>
+                    <td class="rightBorder">{{dataTotal.monthAuditionToClassTimes}}</td>
+                    <td class="">{{(dataTotal.monthAuditionToClassTimes|_getRate:dataTotal.monthAuditionStudentTimes|number:2)||"0.00"}}%</td>
+                </tr>
+                <tr>
+                    <td>上周</td>
+                    <td class="rightBorder">{{dataTotal.lastWeekAuditionAppointTotal}}</td>
+                    <td>{{dataTotal.lastWeekAuditionStudentTotal}}</td>
+                    <td class="rightBorder">{{dataTotal.lastWeekAuditionToClassTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekAuditionContractTotal}}</td>
+                    <td class="">{{(dataTotal.lastWeekAuditionContractTotal|_getRate:dataTotal.lastWeekAuditionToClassTotal|number:2)||"0.00"}}%</td>
+                    <td class="rightBorder">{{dataTotal.lastWeekAuditionAppointTimes}}</td>
+                    <td>{{dataTotal.lastWeekAuditionStudentTimes}}</td>
+                    <td class="rightBorder">{{dataTotal.lastWeekAuditionToClassTimes}}</td>
+                    <td class="">{{(dataTotal.lastWeekAuditionToClassTimes|_getRate:dataTotal.lastWeekAuditionStudentTimes|number:2)||"0.00"}}%</td>
+                </tr>
+                <tr>
+                    <td>上月</td>
+                    <td class="rightBorder">{{dataTotal.lastMonthAuditionAppointTotal}}</td>
+                    <td>{{dataTotal.lastMonthAuditionStudentTotal}}</td>
+                    <td class="rightBorder">{{dataTotal.lastMonthAuditionToClassTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthAuditionContractTotal}}</td>
+                    <td class="">{{(dataTotal.lastMonthAuditionContractTotal|_getRate:dataTotal.lastMonthAuditionToClassTotal|number:2)||"0.00"}}%</td>
+                    <td class="rightBorder">{{dataTotal.lastMonthAuditionAppointTimes}}</td>
+                    <td>{{dataTotal.lastMonthAuditionStudentTimes}}</td>
+                    <td class="rightBorder">{{dataTotal.lastMonthAuditionToClassTimes}}</td>
+                    <td class="">{{(dataTotal.lastMonthAuditionToClassTimes|_getRate:dataTotal.lastMonthAuditionStudentTimes|number:2)||"0.00"}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="changeAdviser(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="新增潜客" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" list-defalut="{{typeName}}"></my-select>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1" >
+                    <span>单位:&nbsp;{{(typeName=="预约人次"||typeName=="到课人次（应到）"||typeName=="到课人次（实到）")?"人次":"人"}}&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" class="help_icon noneWidth" data-tips="预约人数：按预约时间统计，已安排试听的人数之和<br>
+到课人数(应到)：按上课时间统计，已安排试听课的学员人数之和<br>
+到课人数(实到)：按上课时间统计，已安排试听且点名结果为“到课”的人数之和<br>
+成单人数：按签约时间统计，预约试听后并报名试听课程的人数之和<br>
+成单率：成单人数÷到课人数(实到)<br>
+预约人次：按预约时间统计，已安排试听的人次之和<br>
+到课人次(应到)：按上课时间统计，已安排试听课的学员人次之和<br>
+到课人次(实到)：按上课时间统计，已安排试听且点名结果为“到课”的人次之和<br>
+到课率：到课人次(实到)÷到课人次(应到)"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0;">
+                <thead>
+                    <tr class="head-tr-col">
+                        <th style="border-right:none;"></th>
+                        <th></th>
+                        <th colspan="2" class="textAlignCenter">到课人数</th>
+                        <th colspan="2" style="border-right:none;"></th>
+                        <th></th>
+                        <th colspan="2" class="textAlignCenter">到课人次</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <thead my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="10">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionAppointTotal}}</td>
+                        <td class="textAlignCenter">{{x.auditionStudentTotal}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionToClassTotal}}</td>
+                        <td class="textAlignCenter">{{x.auditionContractTotal}}</td>
+                        <td class="textAlignCenter">{{x.auditionContractRate|number:2}}%</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionAppointTimes}}</td>
+                        <td class="textAlignCenter">{{x.auditionStudentTimes}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.auditionToClassTimes}}</td>
+                        <td class="textAlignCenter">{{x.auditionToClassRate|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td>总计</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionAppointTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{"auditionStudentTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionToClassTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{"auditionContractTotal" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{(("auditionContractTotal" |_total :tableList)/("auditionToClassTotal" |_total :tableList)*100|number:2)||"0.00"}}%</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionAppointTimes" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{"auditionStudentTimes" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color rightBorder">{{"auditionToClassTimes" |_total :tableList}}</td>
+                    <td class="textAlignCenter main_color">{{(("auditionToClassTimes" |_total :tableList)/("auditionStudentTimes" |_total :tableList)*100|number:2)||"0.00"}}%</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

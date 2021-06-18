@@ -1,0 +1,255 @@
+<!--导出学员-->
+<div class="popup_ exportAllData">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="export_config()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">选择时间:</label>
+                        <div class="col-xs-9">
+                            <input class="form-control dateIcon" autocomplete="off" id="pCallTime" ng-model="derTime" placeholder="请选择导出时间段" type="text" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--费用记录的新增、编辑-->
+<div class="popup_ expense_record">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="expense_record_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">费用名称:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" maxlength="200" autocomplete="off" placeholder="请输入费用名称" ng-model="expenseDetail.recordName" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">费用分类:</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" ng-model="expenseDetail.shopCostTypeId" required>
+                                <option value="">请选择费用分类</option>
+                                <option value="{{x.shopCostTypeId}}" ng-repeat="x in classifyList">{{x.shopCostTypeName}}</option>
+                            </select>
+                        </div>
+                        <span class="clickText pull-left mt5" ng-click="add_expense()">新增分类</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">费用金额:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" yzn-filter="num_" autocomplete="off" placeholder="请输入费用金额" ng-model="expenseDetail.shopCostRecordPrice" required>
+                        </div>
+                    </div>
+                    <!--支付方式-->
+                    <div class="popup_line">
+                        <label for="" class="form-label">支付方式:</label>
+                        <div class="col-xs-10">
+                            <ul class="pay_type_icon clearfix">
+                                <li ng-repeat="x in payTypeObj" ng-class="{'pay_type_icon_show': expenseDetail.payType==x.val}" ng-click="clickPayTypeIcon(x.val)"><span class="pay_type_icon_{{x.val+1}}"></span>{{x.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">收支时间:</label>
+                        <div class="col-xs-5">
+                            <input class="form-control dateIcon" type="text" id="recordTime" ng-model="expenseDetail.shopCostRecordDate" autocomplete="off" placeholder="请选择时间" required>
+                        </div>
+                    </div>
+
+                    <div class="popup_line">
+                        <label for="" class="form-label">经办人:</label>
+                        <div class="col-xs-5">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择经办人" my-id="_addTeacher" list-data="{{HandlerList}}" list-field="teacherName" list-click="clickTeacher(n)" list-search="true" list-all="no" list-default="{{expenseDetail.handleName?expenseDetail.handleName:''}}"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">上传凭证:</label>
+                        <div class="col-xs-8">
+                            <div class="clearfix">
+                                <div ng-repeat="x in expenseDetail.shopCostRecordImg track by $index">
+                                    <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''" style="width: 90px;height: 90px;margin-right: 20px;">
+                                        <a ng-href="{{x.imageUrl}}" target="_blank">
+                                            <img ng-src="{{x.imageUrl}}" alt="" />
+                                        </a>
+                                        <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                            <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                            <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                        </a>
+                                        <i ng-click="delete_showInfo($index,expenseDetail.shopCostRecordImg)"></i>
+                                    </div>
+                                </div>
+                                <div ng-show="expenseDetail.shopCostRecordImg.length!==8" class="min_official_img icon_noimg shop_img mt5" style="width: 90px;height: 90px;line-height: 90px;" ng-click="add_organInfo(expenseDetail.shopCostRecordImg)"></div>
+                            </div>
+                            <ul class="printTips">
+                                <li class="c999 mt5">最多上传8张图片</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{expenseDetail.shopCostRecordDesc?expenseDetail.shopCostRecordDesc.length:0}}/500</span>
+                            <textarea class="form-control" style="max-width:100%;max-height:100px;" maxlength="500" rows="3" ng-model="expenseDetail.shopCostRecordDesc" placeholder="请输入备注"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--新增费用类型-->
+<div class="popup_ add_preSetClassify" id="add_preSetClassify">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirmClassify()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">分类名称:</label>
+                        <div class="col-xs-5" style="height:30px;">
+                            <input type="text" class="form-control" maxlength="20" placeholder="请输入分类名称" ng-model="expense.shopCostTypeName" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">分类类型:</label>
+                        <div class="col-xs-5" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="expense.shopCostPayType" value="0" required ng-disabled="operateType=='edit'"/>支出
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="expense.shopCostPayType" value="1" required ng-disabled="operateType=='edit'"/>收入
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{expense.shopCostTypeDesc?expense.shopCostTypeDesc.length:0}}/500</span>
+                            <textarea class="form-control" style="max-width:100%;max-height:100px;" maxlength="500" rows="3" ng-model="expense.shopCostTypeDesc" placeholder="请输入备注"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="common_tab">
+        <ul class="ul_left clearfix mb10">
+            <li>
+                <kindsearch class="vagueSearch" my-id="searchId" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+            </li>
+            <li class="common_tab_libtn drop">
+                <div class="common_tab_btn fontRed_BgWhite" data-toggle="dropdown">
+                    <i class="icon_more">更多</i>
+                </div>
+                <div class="dropdown-menu drop-list">
+                    <span class="mark"></span>
+                    <ul>
+                        <li ng-click="goCommonPop('import-pop','import_popup','860px',{page:'收支'})">导入费用</li>
+                        <li ng-click="export_config()" ng-show="isDaochu">导出费用</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="openExpenseRecd('add')" ng-show="operateExpense"><i class="icon_addRecord"></i>新增记录</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageOther',{tab:6,before:'expense'})" ng-show="'185' | _authId"><i class="icon_classify"></i>费用分类</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix">
+            <li>
+                <my-select list-name="费用分类" list-data="{{classifyList}}" list-field="shopCostTypeName" list-click="searchByExpense(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="收支方式" list-data="{{payTypeObj}}" list-field="name" list-click="searchByType(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="type0" ng-click="searchChangeType(false)">支出
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="type1" ng-click="searchChangeType(true)">收入
+                </label>
+            </li>
+            <li>
+                <button class="common_tab_reset clickText" ng-click="onReset()">重置</button>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix" style="margin-top:10px;">
+            <li>
+                <span>支出金额 : </span><span class="bigTitle" style="color: #fa575d;">￥{{(expenseTotal.payOut | number:2) || 0.00}}</span>
+            </li>
+            <li>
+                <span>收入金额 : </span><span class="bigTitle" style="color: #fa575d;">￥{{(expenseTotal.inCome  | number:2) || 0.00}}</span>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover" style="table-layout:inherit">
+                <thead my-thead="{{orderListThead}}"></thead>
+                <tbody class="demo_tbody" ng-show="expenseList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in expenseList">
+                        <td>{{x.recordName}}</td>
+                        <td>{{x.shopCostType.shopCostTypeName}}<span class="shopCostType {{x.shopCostType.shopCostPayType!=1?'out':''}}"></span></td>
+                        <!-- <td class="textAlignCenter">{{x.shopCostType.shopCostPayType==1?"收入":"支出"}}</td> -->
+                        <!--0支付宝、1微信、2现金、3网银转账、4 POS机刷卡-->
+                        <td>{{x.payType==0?"支付宝":x.payType==1?"微信":x.payType==2?"现金":x.payType==3?"网银转账":x.payType==4?"POS机刷卡":"-"}}</td>
+                        <td class="textAlignRt">￥{{x.shopCostType.shopCostPayType!=1?'-':''}}{{x.shopCostRecordPrice | number:2}}</td>
+                        <td class="textAlignCenter">{{x.shopCostRecordDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.handleName}}</td>
+                        <td ng-hide="x.shopCostRecordImg">
+                            <span>-</span>
+                        </td>
+                        <td ng-show="x.shopCostRecordImg" ng-click='openPhotos(x.shopCostRecordImg,x.shopCostRecordImgList)'>
+                            <span class="fileIcon image"></span>
+                            <span class="clickText">{{x.shopCostRecordImgList.length}}</span>
+                        </td>
+                        <td title="{{x.shopCostRecordDesc}}">{{x.shopCostRecordDesc}}</td>
+                        <td class="textAlignCenter operate overflow-normal">
+                            <span class="clickText" ng-click="openExpenseRecd('edit',x)" ng-show="operateExpense && x.shopCostType.system != 1">编辑</span>
+                            <span class="clickText" ng-click="deleteRecord(x)" ng-show="operateExpense && x.shopCostType.system != 1">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

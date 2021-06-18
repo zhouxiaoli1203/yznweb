@@ -1,0 +1,165 @@
+<div class="help_turntable">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/help/gashapon/css/index.css"/>
+    <div class="turntable">
+        <div class="contain_1">
+            <div class="contain_1_con">
+                <audio id="bacMusic" src=""></audio>
+                <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+                <!--<div class="t_peo">-->
+                    <!--<img src="templates/show_template/help/gashapon/img/peo.jpg" alt="" />-->
+                    <!--<p>FLY</p>-->
+                    <!--<p>剩余名额500份</p>-->
+                    <!--<p>原价1200元,活动价200元,已钓<span>3</span>/10斤鱼</p>-->
+                <!--</div>-->
+                <img src="templates/show_template/help/gashapon/img/t_title.png" alt="">
+                <!--<div class="t_title pos_ele_1">-->
+                    <!--<p>麦兜成长教育春招大优惠</p>-->
+                    <!--<div class="t_time">-->
+                        <!--活动截止时间：<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="gashapon_wrapper">
+                    <div class="replaceDiv">
+                        <p>剩余名额500份</p>
+                        <p>麦兜成长第三季度你看育春招大优惠</p>
+                        <div class="t_time">
+                            活动截止时间：<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒
+                        </div>
+                        <p>原价1200元,活动价200元</p>
+                        <p>总共<span>3</span>枚扭蛋,已扭到<span>3</span>枚扭蛋</p>
+                        <p>FLY</p>
+                        <img src="templates/show_template/help/gashapon/img/peo.jpg" alt="" />
+                    </div>
+                    <img src="templates/show_template/help/gashapon/img/gashapon.png" alt="">
+                    <img src="templates/show_template/help/gashapon/img/gashapon_bottom.png" alt="">
+                    <img src="templates/show_template/help/gashapon/img/light_l.png" alt="">
+                    <img src="templates/show_template/help/gashapon/img/light_r.png" alt="">
+                </div>
+                <button class="t_btn" btnType="add"></button>
+
+            </div>
+            <img src="templates/show_template/help/gashapon/img/bac_1.png" alt="" />
+        </div>
+        <div class="contain_2 pos_ele_2">
+            <h2 class="t_tit t_tit1"></h2>
+            <div class="t_context">
+                <p>麦兜成长教育原价1000元幼儿小班课低至200元，累计助力达到10个助力包即可成功领取奖品。</p>
+                <img src="templates/show_template/help/gashapon/img/prizeimg.png" alt="" />
+            </div>
+        </div>
+        <div class="contain_3 pos_ele_3">
+            <h2 class="t_tit t_tit2"></h2>
+            <div class="t_context">
+                <p></p>
+            </div>
+        </div>
+        <div class="contain_4">
+            <h2 class="t_tit t_tit3"></h2>
+            <div class="t_context" style="min-height: 2.28rem;">
+                <span class="nodata">暂无人助力</span>
+            </div>
+        </div>
+        <div class="contain_5 pos_ele_4">
+            <h2 class="t_tit t_tit4"></h2>
+            <div class="t_context">
+                
+            </div>
+        </div>
+        <div class="copyright pos_ele_5">
+            <p class="copyright_erweima"></p>
+            <p class="copyright_organ">易知鸟教育培训</p>
+            <p class="copyright_phone">0571-85789582</p>
+            <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+            <p style="margin-top: 0.5rem;"></p>
+        </div>
+    </div>
+    <script>
+        //数据渲染
+        function getShowData(data) {
+            if(!data) {
+                var data = h5_tempalteData['help/gashapon'];
+            }
+            console.log('修改了数据', data);
+            var organHtml = '';
+            var music_url = '';
+            var activityName = data.basicInfo.activityName?data.basicInfo.activityName:"";
+            var peoHtml =  "<p>剩余名额"+data.prizeInfo.num+"份</p>"+
+            "<p>"+activityName+"</p>"+
+            "<div class='t_time'>活动截止时间：<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒 </div>"+
+            "<p>原价"+data.prizeInfo.originalPrice+"元,活动价"+data.prizeInfo.floorPrice+"元</p>"+
+            "<p>总共<span>"+data.prizeInfo.totalNumber+"</span>枚扭蛋,已扭到<span>0</span>枚扭蛋</p>"+
+            "<p>FLY</p><img src='templates/show_template/help/gashapon/img/peo.jpg' />";
+
+
+            $('.replaceDiv').html(peoHtml);
+            $('.contain_3 .t_context p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>"));
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if(data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>'+ data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    prizeHtml += '<img src='+ data.prizeInfo.describeList[i].value +' alt="奖品描述图片">';
+                }
+            }
+            $('.contain_2 .t_context').html(prizeHtml);
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            //渲染底部信息
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src='+ data.organ.code +'> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            console.log("fuckyou")
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: '+data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: '+data.organ.address);
+            
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+                if(data.organInfo[i].type == 'text') {
+                    organHtml += '<p>'+ data.organInfo[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    organHtml += '<img src='+ data.organInfo[i].value +' alt="校区介绍图片">';
+                }
+            };
+            $('.contain_5 .t_context').html(organHtml);
+        }
+    </script>
+</div>

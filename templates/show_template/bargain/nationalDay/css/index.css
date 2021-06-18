@@ -1,0 +1,365 @@
+@charset "utf-8";
+.summer_2_con {
+    position: relative;
+    width: 100%;
+    background-color: #E65655;
+    font-size: 0.28rem;
+}
+.b_bg {
+    display: block;
+    width: 100%;
+}
+.b_banner_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.b_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin: 0.53rem  0.22rem;
+    border-radius: 50%;
+}
+.b_peo div {
+    color: #fff;
+    padding-top: 0.48rem;
+    line-height: 0.4rem;
+}
+.b_peo div span {
+    color: #F9FF52;
+}
+.b_tit {
+    margin: 0.47rem 0 0.3rem;
+}
+.b_tit p {
+    width:5.74rem;
+    margin: 0 auto;
+    font-size: 0.42rem;
+    text-align: center;
+    background:url("../img/title_bg.png") no-repeat;
+    background-size: 100% 100%;
+    height:1.55rem;
+    line-height: 1.55rem;
+    color: #448117;
+}
+.b_time {
+    width: 5.4rem;
+    height: 0.6rem;
+    margin: 0 auto;
+    color: #fff;
+}
+.b_time span{
+    color: #3E829E;
+}
+.pos_imgs {
+    position: relative;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.b_btn {
+    position: absolute;
+    top: 10.9rem;
+    left: 0;
+    width: 100%;
+}
+.b_btn_1 {
+    display: block;
+    width: 2.2rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    padding-bottom: 0.05rem;
+    border: none;
+    background: url("../img/btn.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    text-align: center;
+    line-height: 0.87rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.b_prize, .b_rule, .b_logs, .b_joins, .b_organ {
+    position: relative;
+    width: 7rem;
+    margin: 1.6rem auto 0;
+    padding: 0.2rem;
+    background-color: #fff;
+    border-radius: 0.2rem;
+}
+.pos_ele_2{
+    margin-top:2rem;
+}
+.b_box {
+    position: relative;
+    width: 100%;
+    min-height: 4.2rem;
+}
+.b_box p {
+    color: #E65655;
+    font-size: 0.3rem;
+    margin-top: 0.15rem;
+    line-height: 0.48rem;
+}
+.b_box img {
+    display: block;
+    width: 100%;
+    margin:0.25rem 0;
+}
+.b_con_tit_prize {
+    width: 1.63rem;
+    height: 0.31rem;
+    margin: 0 auto;
+    background: url("../img/prize.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_role {
+    width: 1.63rem;
+    height: 0.31rem;
+    margin: 0 auto;
+    background: url("../img/role.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_bang {
+    width: 1.63rem;
+    height: 0.31rem;
+    margin: 0 auto;
+    background: url("../img/bang.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_rank {
+    width: 1.63rem;
+    height: 0.31rem;
+    margin: 0 auto;
+    background: url("../img/rankingList.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_organ {
+    width: 1.63rem;
+    height: 0.31rem;
+    margin: 0 auto;
+    background: url("../img/organ.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_box p[class = b_nodata] {
+    width: 100%;
+    height: 4.2rem;
+    color: #E65655;
+    line-height: 4.2rem;
+    text-align: center;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #fff;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.linght1{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 0.2rem;
+}
+.linght2{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 1.47rem;
+}
+.linght3{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 2.75rem;
+}
+.linght4{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 3.98rem;
+}
+.linght5{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 5.25rem;
+}
+.linght6{
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    width:1.06rem;
+    height:1.19rem;
+    background: url("../img/qi@2x.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 5.55rem;
+    left: 6.5rem;
+}
+.icon1{
+    width: 0.82rem;
+    height:0.82rem;
+    position: absolute;
+    top: 1.64rem;
+    left: 0.11rem;
+    background: url("../img/icon1.png") no-repeat;
+    background-size: 100% 100%;
+}
+.icon2{
+    width: 0.39rem;
+    height:0.39rem;
+    position: absolute;
+    top: 2.24rem;
+    left: 1.28rem;
+    background: url("../img/icon2.png") no-repeat;
+    background-size: 100% 100%;
+}
+.icon3{
+    width: 0.51rem;
+    height:0.51rem;
+    position: absolute;
+    top: 2.14rem;
+    right: 0.68rem;
+    background: url("../img/icon3.png") no-repeat;
+    background-size: 100% 100%;
+}
+.icon4{
+    width: 0.28rem;
+    height:0.28rem;
+    position: absolute;
+    top: 3.04rem;
+    right: 0.34rem;
+    background: url("../img/icon4.png") no-repeat;
+    background-size: 100% 100%;
+}
+.cloud{
+    width: 0.97rem;
+    height:0.32rem;
+    position: absolute;
+    top:3rem;
+    left:0.3rem;
+    background: url("../img/cloud.png") no-repeat;
+    background-size: 100% 100%;
+}
+.cloud1{
+    width: 1.76rem;
+    height:0.37rem;
+    position: absolute;
+    top:0.48rem;
+    right:-0.8rem;
+    background: url("../img/cloud1.png") no-repeat;
+    background-size: 100% 100%;
+}
+.dengxaing{
+    width:3.81rem;
+    height:1.45rem;
+    background: url("../img/dengxiang1.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 2.78rem;
+    left: 1.7rem;
+}
+.dengxaing.on{
+    background: url("../img/dengxiang2.png") no-repeat;
+    background-size: 100% 100%;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

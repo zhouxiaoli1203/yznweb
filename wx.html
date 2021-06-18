@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript">
+		var linkUrl = window.location.href;
+        console.log(linkUrl)
+        $.ajax({
+            contentType:'application/json',
+            type : "post",
+            url: 'http://192.168.2.112:8080' + "/api/wx/getWxToken",
+            data : JSON.stringify({
+                'linkUrl': linkUrl
+            }),
+            dataType : "json",
+            success : function(res) {
+                console.log(linkUrl);
+                alert(linkUrl)
+                console.log(res);
+        //      WXConfig(res.context);
+            },
+            error: function(res) {
+                console.log(res, '网络错误');
+            }
+        });
+        
+        WXConfig()
+        function WXConfig() {
+            wx.config({
+                debug: true,
+                appId: 'wx89b83cc142b989d5',
+                timestamp: '1516180656',
+                nonceStr: 'b34a318d-8750-4e3c-8757-740fba9b2381',
+                signature: '192b0ae87bbfdc3ce5a497c40c36d97b0774ce13',
+                jsApiList: [
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage'
+                  ]
+            });
+            wx.ready(function () {
+        //      var shareData = {
+        //          title: '预约报名',  //  标题
+        //          desc: '校区分享预约报名',    //  描述
+        //          link: window.location.href,   //  分享的URL，必须和当前打开的网页的URL是一样的
+        ////              imgUrl: 'img/title.png'  //  缩略图地址
+        //      };
+        //      wx.onMenuShareAppMessage(shareData);
+        //      wx.onMenuShareTimeline(shareData);
+            });
+            wx.error(function (res) {
+                alert(res.errMsg);//错误提示
+            });
+        }
+	</script>
+</body>
+</html>

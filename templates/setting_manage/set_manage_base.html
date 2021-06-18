@@ -1,0 +1,88 @@
+<div class="common_body visit_common">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">功能设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">校区信息</span>
+    </div>
+
+    <div class="center_body">
+        <div ng-show="visitNavJud==1">
+            <div class="common_content">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>功能</th>
+                                <th>功能描述</th>
+                                <th class="textAlignCenter">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in list">
+                                <td>{{x.name}}</td>
+                                <td>
+                                    <span ng-if="x.name != '点名设置'">{{x.desc}}</span>
+                                    <span ng-if="x.name == '点名设置'">
+                                        上课结束时间过后 <input type='text' class='form-control width58' ng-model='x.rollcallLimitDay' ng-disabled='!checkEnable(x)' ng-blur = "setDays(x.rollcallLimitDay)" yzn-filter="num"> 天不允许老师操作点名
+                                    </span>
+                                </td>
+                                <td class="textAlignCenter">
+                                    <span ng-class='{"isEnable":checkEnable(x),"isDisable":!checkEnable(x)}' ng-click="changeBtn(x)"></span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div ng-show="visitNavJud==2">
+            <div class="center_body">
+                <form ng-submit="submit_official()" onkeydown="if(event.keyCode==13){return false;}">
+                    <div class="min_official" style="padding-left: 0;">
+                        <div class="popup_line">
+                            <label for="" class="form-label">校区名称:</label>
+                            <div class="pop_float_l">
+                                <input type="text" class="form-control" ng-model="officialData.organName" style="width: 690px;" maxlength="30" placeholder="请输入校区名称" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">校区简称:</label>
+                            <div class="pop_float_l">
+                                <input type="text" class="form-control" ng-model="officialData.shopShortName" style="width: 690px;" maxlength="30" placeholder="请输入校区简称" required/>
+                                <span class="line28">(用于机构内区分各校区)</span>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">校区地址:</label>
+                            <div class="zcity_group pop_float_l">
+                                <select ng-model="officialData.address.province" ng-change="sel_province(officialData.address.province)" name="省" class="form-control">
+                                    <option value="{{x}}" ng-repeat="x in provinceList['0']">{{x}}</option>
+                                </select>
+                                <select ng-model="officialData.address.city" name="市" class="form-control">
+                                    <option value="{{y}}" ng-repeat="y in cityList">{{y}}</option>
+                                </select>
+                                <input type="text" class="form-control" ng-keyup="onSearch($event)" ng-model="officialData.address.detaild" maxlength="128" style="width: 429px;" placeholder="请输入校区地址" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label"></label>
+                            <div id="map" style="width: 690px; height: 280px;"></div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">营业时间:</label>
+                            <div class="pop_float_l">
+                                <input type="text" class="form-control" ng-model="officialData.busTime" style="width: 420px;" placeholder="请输入营业时间" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">联系电话:</label>
+                            <div class="pop_float_l">
+                                <input type="text" ng-repeat="p in officialData.phone track by $index" ng-model="officialData.phone[$index]" class="form-control" style="width: 205px;" maxlength="15" placeholder="请输入联系电话" />
+                            </div>
+                        </div>
+                        <button type="submit" class="min_official_btn">保存</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,358 @@
+@charset "utf-8";
+/*特殊字体*/
+/*@font-face{
+    font-family: 'FZQKBYSJW';
+    src: url('font/FZQKBYSJW.ttf')format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}*/
+#show_contain {
+    font-size: 100px;
+}
+.tp2 dt, .tp2 dd, .tp2 li, .tp2 span, .tp2 p {
+    font-family: 'SimSun';
+}
+.tp1 {
+    overflow: hidden;
+    width: 100%;
+    color: #5e5e5e;
+}
+.tp1_header {
+    width: 100%;
+}
+.tp1_header img {
+    display: block;
+    width: 100%;
+}
+.tp1_organ, .tp1_teacher, .tp1_course, .tp1_yuyue {
+    padding: 1rem 0.42rem 0;
+    background-color: #efefef;
+}
+.tp1_yuyue {
+    padding-bottom: 0.5rem;
+}
+.tp1_course_detail {
+    background-color: #efefef;
+}
+.tp1_title {
+    width: 1.5rem;
+    height: 1.44rem;
+    margin: 0 auto 0.5rem;
+    padding: 0.25rem 0.36rem;
+    border-radius: 0.04rem;
+    background-color: #006897;
+    color: #fff;
+    font-size: 0.36rem;
+}
+.tp1_organName {
+    font-family: 'SimSun';
+    margin: 0.1rem 0;
+}
+.tp1_organ_lis{
+    margin-top:0.4rem;
+}
+.tp1_organ_lis dd, .tp1_organ_lis dt {
+    margin-bottom: 0.1rem;
+}
+.tp1_organ_lis dt {
+    box-shadow:5px 5px 5px #fff inset;
+}
+.tp1_organ_lis dt img {
+    display: block;
+    width: 100%;
+}
+.tp1_teacher_con {
+    overflow: hidden;
+    width: 6.7rem;
+    height: 4.77rem;
+    margin: 0 auto;
+}
+.tp1_teacher_lis {
+    height: 4.77rem;
+    background-color: #ddd;
+}
+.tp1_teacher_lis li {
+    float: left;
+    width: 6.7rem;
+    height: 4.77rem;
+}
+.tp1_teacher_lis dl {
+    height: 4.77rem;
+    padding: 0.42rem 0.22rem;
+}
+.tp1_teacher_lis dt {
+    float: left;
+    width: 2.52rem;
+    height: 3.6rem;
+    margin-right: 0.15rem;
+}
+.tp1_teacher_lis dt img {
+    display: block;
+    width: 100%;
+}
+.tp1_teacher_lis dd {
+    float: left;
+    width: 3.5rem;
+}
+.teachers_point {
+    overflow: hidden;
+    margin: 0.4rem auto 0;
+}
+.teachers_point p {
+    width: 200%;
+    height: 0.1rem;
+}
+.teachers_point span {
+    float: left;
+    width: 0.1rem;
+    height: 0.1rem;
+    border-radius: 50%;
+    background-color: #919191;
+    margin-right: 0.12rem;
+}
+.teachers_point .sp_show {
+    background-color: #006897;
+}
+.tp1_course_lis li {
+    width: 100%;
+    height: 3.36rem;
+    margin-bottom: 0.5rem;
+}
+.tp1_course_lisimg {
+    overflow: hidden;
+    width: 3.36rem;
+    height: 3.36rem;
+}
+.tp1_course_lisimg img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.tp1_course_lisname {
+    width: 0.5rem;
+    height: 3.36rem;
+    color: #006897;
+    font-size: 0.36rem;
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+.tp1_course_lis li p {
+    overflow: hidden;
+    width: 2.2rem;
+    height: 3.36rem;
+    margin-right: 0.2rem;
+    padding-top: 0.2rem;
+    font-size: 0.28rem;
+    color: #5e5e5e;
+    text-overflow:ellipsis;
+}
+.tp1_courselis_rt .tp1_course_lisname {
+    float: right;
+}
+.tp1_course_lis .tp1_courselis_rt p {
+    float: right;
+    writing-mode: tb-rl;
+}
+.tp1_courselis_rt .tp1_course_lisimg {
+    float: left;
+}
+.tp1_courselis_lf .tp1_course_lisname {
+    float: left;
+}
+.tp1_course_lis .tp1_courselis_lf p {
+    float: left;
+    writing-mode: vertical-lr;
+}
+.tp1_courselis_lf .tp1_course_lisimg {
+    float: right;
+}
+.tp1_yuyue_lis {
+    width: 100%;
+    padding: 0.85rem 0 0.68rem 0.4rem;
+    background-color: #ddd;
+}
+.tp1_yuyue_lis li {
+    width: 100%;
+    height: 0.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 0.5rem;
+}
+.tp1_yuyue_lis li label {
+    position: relative;
+    float: left;
+    margin: 0;
+    margin: 0.1rem 0.3rem 0 0;
+}
+.tp1_yuyue_lis li input {
+    float: left;
+    width: 4.1rem;
+    padding-left: 0.2rem;
+    border: none;
+    border-bottom: 1px solid #006897;
+    background-color: #ddd;
+}
+.yuyue_course {
+    float: left;
+    width: 4.1rem;
+    height: 0.5rem;
+    border-bottom: 1px solid #006897;
+}
+.yuyue_course select {
+    display: block;
+    width: 4.1rem;
+    height: 0.4rem;
+    border: none;
+    padding-left: 0.2rem;
+    background-color: #ddd;
+}
+.show_required:before {
+    position: absolute;
+    top: 0;
+    left: -0.2rem;
+    content: '*';
+    color: #f45a4e;
+}
+.yuyue_sumbit {
+    display: block;
+    width: 3.67rem;
+    height: 0.79rem;
+    border: none;
+    margin: 0.6rem auto 0;
+    background-color: #006897;
+    color: #fff;
+    line-height: 0.79rem;
+}
+.copyright {
+    width: 100%;
+    margin-top: 0.6rem;
+}
+.copyright p {
+    text-align: center;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.show_none {
+    display: none;
+}
+.return_page {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    background-size: contain;
+    cursor: pointer;
+    text-align: center;
+}
+.return_page:before {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.3rem;
+}
+.tp1_course_detail {
+    position: relative;
+    display: none;
+}
+/*课程详情*/
+.course_detail_img {
+    overflow: hidden;
+    width: 100%;
+    /*height: 3.75rem;*/
+    margin-bottom: 0.6rem;
+}
+.course_detail_img img {
+    display: block;
+    width: 100%;
+}
+.course_detail_name {
+    padding-left: 0.5rem;
+    color: #006897;
+    font-size: 0.36rem;
+}
+.course_detail_name span {
+    display: inline-block;
+    padding-left: 0.2rem;
+    font-size: 0.36rem;
+    font-family: "微软雅黑";
+}
+.course_detail_tit {
+    padding: 0.2rem 0 0.1rem 0.5rem;
+    color: #006897;
+    font-size: 0.32rem;
+}
+.course_detail_text {
+    padding: 0 0.5rem;
+    color: #333333;
+    font-size: 0.28rem;
+}
+.course_detail_con li {
+    padding: 0 0.5rem 0.2rem;
+}
+.course_detail_con li img {
+    display: block;
+    width: 100%;
+}
+.course_detail_con p {
+    font-size: 0.28rem;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.8rem;
+    top: 1.6rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}

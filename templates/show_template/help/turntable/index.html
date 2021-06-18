@@ -1,0 +1,167 @@
+<div class="help_turntable">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/help/turntable/css/index.css"/>
+    <div class="turntable">
+        <div class="contain_1">
+            <div class="contain_1_con">
+                <audio id="bacMusic" src=""></audio>
+                <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+                <div class="t_peo">
+                    <img src="templates/show_template/help/turntable/img/peo.jpg" alt="" />
+                    <p>FLY</p>
+                    <p>原价1200元,活动价200元</p>
+                    <p>剩余名额500份，已助力<span>3</span>/10个助力包</p>
+                </div>
+                <div class="t_title pos_ele_1">
+                    <p>麦兜成长教育春招大优惠</p>
+                </div>
+                <div class="t_time">
+                    <p>活动截止时间：<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒</p>
+                </div>
+                <div class="t_turntable" lampType="1">
+                    <ul>
+                        <li><span><i>1<var>个</var></i><b>助力包</b><em></em></span><span><i>2<var>个</var></i><b>助力包</b><em></em></span><span><i>3<var>个</var></i><b>助力包</b><em></em></span></li>
+                        <li><span><i>8<var>个</var></i><b>助力包</b><em></em></span><span class="turntable_btn"></span><span><i>4<var>个</var></i><b>助力包</b><em></em></span></li>
+                        <li><span><i>7<var>个</var></i><b>助力包</b><em></em></span><span><i>6<var>个</var></i><b>助力包</b><em></em></span><span><i>5<var>个</var></i><b>助力包</b><em></em></span></li>
+                    </ul>
+                </div>
+                <button class="t_btn" btnType="add"></button>
+            </div>
+            <img src="templates/show_template/help/turntable/img/bac_1.png" alt="" />
+        </div>
+        <div class="contain_2 pos_ele_2">
+            <h2 class="t_tit t_tit1"></h2>
+            <div class="t_context">
+                <p>麦兜成长教育原价1000元幼儿小班课低至200元，累计助力达到10个助力包即可成功领取奖品。</p>
+                <img src="templates/show_template/help/turntable/img/prizeimg.png" alt="" />
+            </div>
+        </div>
+        <div class="contain_3 pos_ele_3">
+            <h2 class="t_tit t_tit2"></h2>
+            <div class="t_context">
+                <p></p>
+            </div>
+        </div>
+        <div class="contain_4">
+            <h2 class="t_tit t_tit3"></h2>
+            <div class="t_context" style="min-height: 2.28rem;">
+                <span class="nodata">暂无人助力</span>
+            </div>
+        </div>
+        <div class="contain_5 pos_ele_4">
+            <h2 class="t_tit t_tit4"></h2>
+            <div class="t_context">
+                
+            </div>
+        </div>
+        <div class="copyright pos_ele_5">
+            <span class="d_cloud d_cloud_4"></span>
+            <span class="d_cloud d_cloud_5"></span>
+            <span class="d_cloud d_cloud_6"></span>
+            <p class="copyright_erweima"></p>
+            <p class="copyright_organ">易知鸟教育培训</p>
+            <p class="copyright_phone">0571-85789582</p>
+            <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+            <p style="margin-top: 0.5rem;"></p>
+        </div>
+    </div>
+    <script>
+        var timer1 = setInterval(function() {
+            lampChange();
+        }, 500);
+        
+        //数据渲染
+        function getShowData(data) {
+            if(!data) {
+                var data = h5_tempalteData['help/turntable'];
+            }
+            console.log('修改了数据', data);
+            var organHtml = '';
+            var music_url = '';
+            var peoHtml = '<img src="templates/show_template/help/turntable/img/peo.jpg"><p>FLY</p><p>原价'+data.prizeInfo.originalPrice+'元,活动价'+data.prizeInfo.floorPrice+'元</p>';
+            peoHtml += '<p>剩余名额'+data.prizeInfo.num+'份，已助力<span>0</span>/'+data.prizeInfo.totalNumber+'个助力包</p>';
+            $('.t_peo').html(peoHtml);
+            
+            $('.t_title p').html(data.basicInfo.activityName);
+            $('.contain_3 .t_context p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>"));
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if(data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>'+ data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    prizeHtml += '<img src='+ data.prizeInfo.describeList[i].value +' alt="奖品描述图片">';
+                }
+            }
+            $('.contain_2 .t_context').html(prizeHtml);
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            
+            //渲染底部信息
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src='+ data.organ.code +'> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: '+data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: '+data.organ.address);
+            
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+                if(data.organInfo[i].type == 'text') {
+                    organHtml += '<p>'+ data.organInfo[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    organHtml += '<img src='+ data.organInfo[i].value +' alt="校区介绍图片">';
+                }
+            };
+            $('.contain_5 .t_context').html(organHtml);
+        }
+        
+        //跑马灯亮和灭的效果
+        function lampChange() {
+            if($('.t_turntable').attr('lampType') == 1) {
+                $('.t_turntable').addClass('t_turntable_bac2');
+                $('.t_turntable').attr('lampType', '2');
+            } else {
+                $('.t_turntable').removeClass('t_turntable_bac2');
+                $('.t_turntable').attr('lampType', '1');
+            }
+        };
+    </script>
+</div>

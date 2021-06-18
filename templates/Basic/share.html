@@ -1,0 +1,104 @@
+<div class="common_body visit_common">
+    <!-- <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+        <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+        <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+    </div> -->
+    <div class="tab_nav">
+        <!-- <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">约课预警</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">积分设置</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">教室管理</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">请假设置</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">周边学校</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">分享设置</span> -->
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+    <div>
+        <div ng-repeat="x in temList track by $index" class="shareTemItem">
+            <div>
+                <img ng-src="{{x.longUrl}}" alt="模板图" />
+            </div>
+            <div class="shareMsk">
+                <div ng-click="openDialog(x)">编辑</div><br>
+                <div ng-click="del(x)">删除</div>
+            </div>
+        </div>
+        <div class="shareTemAdd" ng-click="openDialog()">
+            <div>+</div>
+            <div>新增模板</div>
+        </div>
+    </div>
+</div>
+
+<!--创建模板-->
+<div class="popup_ share_template_pop">
+    <div class="popup_scroll" isScroll="false">
+        <div class="popup_content">
+            <div class="popup_line noneMargin">
+                <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;模板设置</label>
+            </div>
+            <!--顶部图片-->
+            <div class="popup_line">
+                <label class="form-label required">顶部图片：</label>
+                <div class="col-xs-9">
+                    <dl class="show_title" style="height: 95px;">
+                        <dt style="height: 90px; line-height: 90px;" class="icon_noimg imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                            <img ng-if="longUrl" ng-src="{{longUrl}}" alt="顶部图片" />
+                            <div class="msk_changeimg"><span style="margin-top: 31px" ng-click="add_organInfo()">{{longUrl?'更换图片':'添加图片'}}</span></div>
+                        </dt>
+                    </dl>
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label required">背景颜色：</label>
+                <div class="col-xs-10">
+                    <div class="picker inline_dm" ng-style="{'background-color':color}"></div>
+                    <span class="line28 c999">（点击取色器上半部分选取想要的颜色）</span>
+                </div>
+            </div>
+            <div class="popup_line c999">
+                <p>上传模板须知：</p>
+                <p>1、图片支持jpg、png格式，不大于5M;</p>
+                <p>2、顶部图片：可用于机构宣传（例如：机构logo、名称等）；</p>
+                <p>3、背景颜色：可手动选择顶部图片下方颜色；</p>
+            </div>
+            <div class="popup_line noneMargin">
+                <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;预览模板</label>
+            </div>
+            <div class="popup_line">
+                <label class="form-label">预览示例：</label>
+                <div class="col-xs-10 line28">
+                    <span class="clickText" ng-click="preview(0)">课堂展示</span>
+                    <span class="clickText" ng-click="preview(1)">课堂点评</span>
+                    <span class="clickText" ng-click="preview(2)">作业点评</span>
+                    <span class="clickText" ng-click="preview(3)">打卡分享</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup_btn">
+        <button class="btn cancel" ng-click="closeDialog()" type="button">取消</button>
+        <button class="btn sure" ng-click="submitTem()">确定</button>
+    </div>
+</div>
+<!--预览-->
+<div class="popup_ template_pop_review">
+    <div class="popup_content" style="height: 434px;">
+        <div class="phone_template" style="left:145px">
+            <div class="phone_template_contain" id="show_contain" ng-style="{'background-color':color}">
+                <img class="bg_top" ng-if="longUrl" ng-src="{{longUrl}}" />
+                <div class="bg_msk"></div>
+                <div class="bg_content">
+                    <span>{{shopName}}</span>
+                    <img ng-src="{{bg}}" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

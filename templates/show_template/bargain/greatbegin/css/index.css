@@ -1,0 +1,251 @@
+@charset "utf-8";
+.bargain_con {
+    background-color: #FF3D3B;
+    background-size: 100% auto;
+}
+.bargain_con span,  .bargain_con p, .bargain_con h3, .bargain_con em, .bargain_con strong {
+    font-size: 0.28rem;
+}
+.con_1 {
+    position: relative;
+    width: 100%;
+}
+.con_1_bg {
+    display: block;
+    width: 100%;
+}
+.con_1_bg2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.con_1_c {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.con_1_text {
+    width: 6.86rem;
+    height: 3.21rem;
+    margin: 7.25rem auto 0;
+    color: #fff;
+}
+.s_peo {
+    height: 1.4rem;
+    margin-bottom: 0.05rem;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.con_1_tit {
+    height: 1.75rem;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.s_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin: 0.21rem 0.18rem 0 0.02rem;
+    border-radius: 50%;
+}
+.s_peo_info {
+    float: left;
+    padding-top: 0.19rem;
+}
+.s_peo_info p {
+    line-height: 0.36rem;
+}
+.con_1_tit h3 {
+    width: 5.74rem;
+    margin: 0 auto;
+    min-height: 1.2rem;
+    position: relative;
+}
+.con_1_tit h3 span{
+    display: block;
+    width: 100%;
+    line-height: 0.52rem;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    font-size: 0.42rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.con_1_time {
+    width: 5.1rem;
+    margin: 0.05rem auto 0;
+    height: 0.25rem;
+    line-height: 0.25rem;
+}
+.con_1_time span {
+    display: inline-block;
+    margin: 0 0.08rem;
+}
+.con_1_btn {
+    display: block;
+    width: 3.24rem;
+    height: .96rem;
+    margin: 0.35rem auto 0;
+    border: none;
+    background: url("../img/btn1.png");
+    background-size: contain;
+}
+.con_2, .con_3, .con_4, .con_5, .con_6 {
+    padding-top: 0.6rem;
+}
+.con_tit {
+    width: 4.96rem;
+    height: 0.66rem;
+    margin: 0 auto 0.3rem;
+    background: url("../img/tit (1).png") no-repeat;
+    background-size: contain;
+}
+.con_tit_2 {
+    background: url("../img/tit (2).png") no-repeat;
+    background-size: contain;
+}
+.con_tit_3 {
+    width: 4.47rem;
+    background: url("../img/tit (3).png") no-repeat;
+    background-size: contain;
+}
+.con_tit_4 {
+    width: 4.47rem;
+    background: url("../img/tit (4).png") no-repeat;
+    background-size: contain;
+}
+.con_tit_5 {
+    background: url("../img/tit (5).png") no-repeat;
+    background-size: contain;
+}
+.con_box {
+    width: 7.12rem;
+    padding: 0.25rem;
+    margin: 0 auto;
+    background-color: #FF3D3B;
+    border-left: 0.01rem solid #B80028;
+    border-right: 0.01rem solid #B80028;
+    position: relative;
+}
+.con_box:after{
+    content: "";
+    display: block;
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:0.51rem;
+    background: url("../img/con_box_after.png") no-repeat;
+    background-size: 100% 100%;
+}
+.con_box:before{
+    content: "";
+    display: block;
+    position: absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:0.51rem;
+    background: url("../img/con_box_before.png") no-repeat;
+    background-size: 100% 100%;
+}
+.con_text {
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.2rem 0;
+    color: #fff;
+}
+.con_text .s_nodata {
+    display: block;
+    text-align: center;
+    line-height: 3.5rem;
+}
+.con_text p {
+    margin-bottom: 0.1rem;
+    font-size: 0.28rem;
+}
+.con_text img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.1rem;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.6rem;
+    color: #fff;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

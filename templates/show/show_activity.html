@@ -1,0 +1,1762 @@
+<div class="common_body stud_common" style="padding-bottom: 30px;">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1, 1)" ng-class="{tab_nav_show: studNavJud==1}">活动列表</span>
+        <span ng-click="switchStudNav(2, 1)" ng-class="{tab_nav_show: studNavJud==2}">模板库</span>
+        <span ng-click="switchStudNav(3, 1)">去新版</span>
+    </div>
+    <div class="tab_nav_2" ng-if="studNavJud==1">
+        <!--        <span ng-click="switchStudNav(1, 2)" ng-class="{tab_nav_2_show: studNavJud_==1}">预约</span>-->
+        <span ng-click="switchStudNav(5, 2)" ng-class="{tab_nav_2_show: studNavJud_==5}">微传单</span>
+        <span ng-click="switchStudNav(2, 2)" ng-class="{tab_nav_2_show: studNavJud_==2}">砍价</span>
+        <span ng-click="switchStudNav(3, 2)" ng-class="{tab_nav_2_show: studNavJud_==3}">助力</span>
+        <span ng-click="switchStudNav(4, 2)" ng-class="{tab_nav_2_show: studNavJud_==4}">拼团</span>
+        <span ng-click="switchStudNav(6, 2)" ng-class="{tab_nav_2_show: studNavJud_==6}">抢购</span>
+    </div>
+    <div class="tab_nav_3" ng-if="studNavJud==2">
+        <ul>
+            <li class="tab_nav_3_n">类型:</li>
+            <li ng-click="switchStudNav(x.value, 3)" ng-class="{'tab_nav_3_c': studNavJud_3 == x.value}" ng-repeat="x in templateTypeList">{{x.name}}</li>
+        </ul>
+        <ul>
+            <li class="tab_nav_3_n">节假:</li>
+            <li ng-click="switchStudNav(x.activityStyleId, 5)" ng-class="{'tab_nav_3_c': studNavJud_5 == x.activityStyleId}" ng-repeat="x in templateStyleList_2">{{x.activityStyleName}}</li>
+        </ul>
+        <ul>
+            <li class="tab_nav_3_n">风格:</li>
+            <li ng-click="switchStudNav(x.activityStyleId, 4)" ng-class="{'tab_nav_3_c': studNavJud_4 == x.activityStyleId}" ng-repeat="x in templateStyleList">{{x.activityStyleName}}</li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content" ng-show="studNavJud == 1">
+        <!-- 搜索 -->
+        <div class="common_tab">
+            <ul class="ul_left clearfix">
+                <li>
+                    <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                </li>
+                <!--                <li class="dropdown dropdown110">-->
+                <!--                    <input type="text" class="form-control dateIcon" id="activityTime" size="30" value="" placeholder="请选择活动时间"  autocomplete="off" >-->
+                <!--                </li>-->
+                <!--                <li>-->
+                <!--                    <label class="search_checkbox">-->
+                <!--                        <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$upDownStatus == 1" ng-click="screenSel($event, 1)">上架-->
+                <!--                    </label>-->
+                <!--                </li>-->
+                <!--                <li>-->
+                <!--                    <label class="search_checkbox">-->
+                <!--                        <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$upDownStatus == 0" ng-click="screenSel($event, 2)">下架-->
+                <!--                    </label>-->
+                <!--                </li>-->
+                <!--                <li class="screen_onreset clickText" ng-click="onReset()">重置</li>-->
+                <li class="common_tab_libtn">
+                    <div class="common_tab_btn" ng-click="newCreatAct()"><i class="icon_addcourse"></i>新建活动</div>
+                </li>
+            </ul>
+        </div>
+        <div class="table-responsivecharge_table">
+            <!--            微传单-->
+            <table class="table table-hover" ng-if="studNavJud_ == 5">
+                <thead my-thead="{{nameListThead_1}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td class="clickText" ng-click="operation(4, x)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+                        <td>{{x.reservation}}</td>
+                        <td ng-if="x.upDownStatus==0" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=0" title="未下架">{{x.activityStatus==2?'已结束':(x.activityStatus==0?'未开始':(x.upDownStatus==2?'待发布':'进行中'))}}</td>
+                        <!--                        <td style="cursor: pointer;"><span ng-click="operation(6, x)" ng-class="{isEnable: x.synchronization==1, isDisable: x.synchronization==0}"></span></td>-->
+                        <td class="textAlignCenter">{{x.referralSwitch == 0?"否":"是"}}</td>
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal" style="padding-left: 40px;">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <!--<span ng-hide="x.upDownStatus==0 || x.activityStatus == 2" class="clickText" ng-click="operation(1, x)">编辑</span>-->
+                            <span ng-hide="x.upDownStatus==0" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span ng-hide="x.upDownStatus==0" class="clickText" ng-click="operation(5, x)">{{x.upDownStatus==2?'发布':(x.upDownStatus==0?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--            抢购-->
+            <table class="table table-hover" ng-if="studNavJud_ == 6">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td class="clickText" ng-click="operation(4, x)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+                        <td>{{x.validatedUser}}</td>
+                        <td ng-if="x.upDownStatus==0" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=0" title="未下架">{{x.activityStatus==2?'已结束':(x.activityStatus==0?'未开始':(x.upDownStatus==2?'待发布':'进行中'))}}</td>
+                        <!--                        <td style="cursor: pointer;"><span ng-click="operation(6, x)" ng-class="{isEnable: x.synchronization==1, isDisable: x.synchronization==0}"></span></td>-->
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal" style="padding-left: 40px;">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <span ng-hide="x.upDownStatus==0 || x.activityStatus == 2" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span ng-hide="x.upDownStatus==0" class="clickText" ng-click="operation(5, x)">{{x.upDownStatus==2?'发布':(x.upDownStatus==0?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--            砍价-->
+            <table class="table table-hover" ng-if="studNavJud_ == 2">
+                <thead my-thead="{{nameListThead_2}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="10">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td class="clickText" ng-click="operation(4, x)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+                        <td style="text-align: center;">{{x.validatedUser?x.validatedUser:0}}</td>
+                        <td style="text-align: center;">{{x.usedNumber?x.usedNumber:0}}</td>
+                        <td ng-if="x.upDownStatus==0" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=0" title="未下架">{{x.activityStatus==2?'已结束':(x.activityStatus==0?'未开始':(x.upDownStatus==2?'待发布':'进行中'))}}</td>
+                        <!--                        <td style="cursor: pointer;"><span ng-click="operation(6, x)" ng-class="{isEnable: x.synchronization==1, isDisable: x.synchronization==0}"></span></td>-->
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal" style="padding-left: 40px;">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <span ng-hide="x.upDownStatus==0 || x.activityStatus == 2" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span class="clickText" ng-hide="x.upDownStatus==0" ng-click="operation(5, x)">{{x.upDownStatus==2?'发布':(x.upDownStatus==0?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-hover" ng-if="studNavJud_ == 3">
+                <thead my-thead="{{nameListThead_3}}"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="11">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td class="clickText" ng-click="operation(4, x)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+                        <td style="text-align: center;">{{x.validatedUser?x.validatedUser:0}}</td>
+                        <td style="text-align: center;">{{x.successNumber?x.successNumber:0}}</td>
+                        <td style="text-align: center;">{{x.usedNumber?x.usedNumber:0}}</td>
+                        <td ng-if="x.upDownStatus==0" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=0" title="未下架">{{x.activityStatus==2?'已结束':(x.activityStatus==0?'未开始':(x.upDownStatus==2?'待发布':'进行中'))}}</td>
+                        <!--                        <td style="cursor: pointer;"><span ng-click="operation(6, x)" ng-class="{isEnable: x.synchronization==1, isDisable: x.synchronization==0}"></span></td>-->
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal" style="padding-left: 40px;">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <span ng-hide="x.upDownStatus==0 || x.activityStatus == 2" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span class="clickText" ng-hide="x.upDownStatus==0" ng-click="operation(5, x)">{{x.upDownStatus==2?'发布':(x.upDownStatus==0?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-hover" ng-if="studNavJud_ == 4">
+                <thead my-thead="{{nameListThead_4}}"></thead>
+                <tbody class="demo_tbody" ng-if="activityList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="activityList">
+                    <tr ng-repeat="x in activityList">
+                        <td class="clickText" ng-click="operation(4, x)" title="{{x.activityName}}">{{x.activityName}}</td>
+                        <td>{{x.beginTime | yznDate:'yyyy-MM-dd':'HHmm'}}</td>
+                        <td>{{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd':'HHmm'):''}}</td>
+                        <td style="text-align: center;">{{x.validatedUser?x.validatedUser:0}}</td>
+                        <td style="text-align: center;">{{x.successNumber?x.successNumber:0}}</td>
+                        <td ng-if="x.upDownStatus==0" title="已下架">已下架</td>
+                        <td ng-if="x.upDownStatus!=0" title="未下架">{{x.activityStatus==2?'已结束':(x.activityStatus==0?'未开始':(x.upDownStatus==2?'待发布':'进行中'))}}</td>
+                        <td style="cursor: pointer;"><span ng-click="operation(7, x)" ng-class="{isEnable: x.syncWebStatus==1, isDisable: x.syncWebStatus==0}"></span></td>
+                        <td class="operate overflow-normal" style="padding-left: 40px;">
+                            <span class="clickText" ng-click="seeDataBrowsing(x)">数据</span>
+                            <span ng-hide="x.upDownStatus==0 || x.activityStatus == 2" class="clickText" ng-click="operation(1, x)">编辑</span>
+                            <span class="clickText" ng-click="operation(2, x)">复制</span>
+                            <span class="clickText" ng-hide="x.upDownStatus==0" ng-click="operation(5, x)">{{x.upDownStatus==2?'发布':(x.upDownStatus==0?'':'下架')}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3 M-box3_1"></div>
+        </div>
+    </div>
+    <div class="common_content" ng-show="studNavJud == 2">
+        <ul class="show_template clearfix">
+            <li ng-repeat="x in templateList">
+                <span class="template_name">{{x.templateName}}</span>
+                <dl>
+                    <dt class="template_img">
+                	    <span class="template_new_icon" ng-if="x.newFlag"></span>
+                	    <img ng-src="https://cdn.yizhiniao.com/{{x.templateImageUrl}}.png" alt="模板图" />
+                	</dt>
+                    <dd>
+                        <div class="template_code" id="templateCode_{{$index}}"></div>
+                        <span class="template_btn"><span ng-click="addTemplate(x, 'add')">创建活动</span></span>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--创建模板-->
+<div class="popup_ template_pop">
+    <h6>模板<span ng-click="closeLayer('template')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="phone_template">
+            <div class="phone_template_contain" id="show_contain"></div>
+        </div>
+        <form class="popup_form" ng-submit="submit_template()">
+            <div class="popup_form_content" style="height: 455px; position: relative;">
+                <div class="popup_scroll clearfix" isScroll="true">
+                    <div class="popup_line activity_set_nav" ng-show="templateTab != 3">
+                        <span ng-class="{'sp_active': templateTab == 1}" ng-click="changeTemplate(1)">更换模板</span>
+                        <span ng-class="{'sp_active': templateTab == 2}" ng-click="changeTemplate(2)">活动设置</span>
+                    </div>
+                    <div class="activity_share" ng-show="templateTab == 3">
+                        <div class="share_con">
+                            <div class="share_con_img">
+                                <strong><img ng-src="{{templateData.shareInfo.titlesrc}}" alt="分享图片" /></strong>
+                                <span>封面</span>
+                            </div>
+                            <div class="share_con_tit">
+                                <strong>分享标题：{{templateData.shareInfo.title}}</strong>
+                                <span>分享描述：{{templateData.shareInfo.desc}}</span>
+                            </div>
+                        </div>
+                        <div class="share_con_code">
+                            <div id="shareCode"></div>
+                            <span>{{clickLineData.upDownStatus !== 2?"扫一扫分享活动":"扫一扫预览活动"}}</span>
+                        </div>
+                        <div class="share_con_copy">
+                            <label>链接分享</label>
+                            <input type="text" id="shareCopyText" ng-model="templateData.shareInfo.url" />
+                            <span ng-click="clickShareCopy()">复制链接</span>
+                        </div>
+                        <div class="share_con_btn clearfix" ng-style="{'width': clickLineData.upDownStatus==2?'170px':'65px'}">
+                            <span ng-hide="clickLineData.upDownStatus==0 || clickLineData.activityStatus == 2" ng-click="clickShareEdit()"><i class="icon_edit"></i>编辑</span>
+                            <strong ng-if="clickLineData.upDownStatus == 2" ng-click="operation(5, clickLineData)"><i class="icon_shangban"></i>发布活动</strong>
+                        </div>
+                    </div>
+                    <div class="change_template" ng-show="templateTab == 1">
+                        <div class="change_template_con">
+                            <ul class="change_template_lis clearfix">
+                                <li ng-repeat="x in templateList_" ng-click="addTemplate(x, 'change')">
+                                    <div>
+                                        <img ng-src="static/img/showimg/{{x.templateImageUrl}}.png" alt="模板图" />
+                                    </div>
+                                    <span>{{x.templateName}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="activity_set" ng-show="templateTab == 2">
+                        <div class="popup_line">
+                            <span class="form-span basic_info">基础信息</span>
+                        </div>
+                        <div class="popup_line" posEle="pos_ele_1">
+                            <label for="" class="form-label required">活动名称：</label>
+                            <div class="col-xs-6">
+                                <input class="form-control" ng-model="templateData.basicInfo.activityName" ng-change="defaultInto('name')" maxlength="25" type="text" placeholder="填写活动名称" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label required">活动开始时间：</label>
+                            <div class="col-xs-6">
+                                <input ng-if="templateData.activityType != 4" type="text" class="form-control dateIcon" autocomplete="off" id="act_startTime" ng-model="templateData.basicInfo.startTime" required />
+                                <input ng-if="templateData.activityType == 4" type="text" class="form-control dateIcon" autocomplete="off" id="act_startTime_4" ng-model="templateData.basicInfo.startTime" required />
+                            </div>
+                        </div>
+                        <!--预约and微传单and抢购-->
+                        <div class="popup_line" ng-if="templateData.activityType == 1 || templateData.activityType == 5 || templateData.activityType == 6">
+                            <label for="" class="form-label required">活动结束时间：</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control dateIcon" autocomplete="off" id="act_endTime" ng-model="templateData.basicInfo.endTime" required/>
+                            </div>
+                        </div>
+                        <!--微传单封面图-->
+                        <div class="popup_line" ng-if="templateData.activityType == 5 || templateData.activityType == 6">
+                            <label class="form-label required">封面图：</label>
+                            <div class="col-xs-9">
+                                <dl class="show_title" style="height: 95px;">
+                                    <dt style="width:90px;height: 90px; line-height: 90px;" class="icon_noimg imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                        <img ng-if="templateData.basicInfo.coverImg" ng-src="{{templateData.basicInfo.coverImg}}" alt="封面图片" />
+                                        <div class="msk_changeimg"><span style="margin-top: 31px" ng-click="add_organInfo('coverImg')">{{templateData.organ.code?'更换图片':'添加图片'}}</span></div>
+                                    </dt>
+                                    <dd style="height: 100%;position: relative;">
+                                        <p class="clickText" ng-click="templateData.basicInfo.coverImg = templateData.shareInfo.titlesrc = templateData.basicInfo.coverImginit" style="position: absolute;top: 0px;left: 0px;" ng-show="templateData.basicInfo.coverImg !== templateData.basicInfo.coverImginit;">重置</p>
+                                        <div class="popup_line" style="margin-top: 55px;">
+                                            <span>可自定义封面图</span>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <p class="img_tagging2" style="padding-left: 116px;">（建议尺寸800:{{isflight? '1280':'800'}}像素，图片支持JPG、PNG格式）</p>
+                        </div>
+                        <!--砍价助力-->
+                        <div class="popup_line" ng-if="templateData.activityType == 2 || templateData.activityType == 3 || templateData.activityType == 4">
+                            <label for="" class="form-label required">活动结束时间：</label>
+                            <div class="col-xs-6">
+                                <input ng-if="templateData.activityType != 4" type="text" class="form-control dateIcon" autocomplete="off" id="act_endTime" ng-model="templateData.basicInfo.endTime" required />
+                                <input ng-if="templateData.activityType == 4" type="text" class="form-control dateIcon" autocomplete="off" id="act_endTime_4" ng-model="templateData.basicInfo.endTime" required />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">背景音乐：</label>
+                            <div class="col-xs-6">
+                                <select class="form-control" ng-model="templateData.basicInfo.bacMusic.musicId" ng-options="m.musicId as m.musicName for m in templateData.musicList" style="float:left; width: 120px;border-radius: 0px;">
+                                    <option value="">请选择</option>
+                                </select>
+                                <span class="add_info" id="audition_music" ng-click="auditionMusic($event)" btnType="off" style="width: 40px; height: 28px; line-height: 28px;"></span>
+                            </div>
+                            <!--<div class="col-xs-6" ng-show="templateData.basicInfo.musicType==1">
+                                <input type="text" class="form-control" ng-model="templateData.basicInfo.musicUrl" placeholder="可添加音乐链接"/>
+                            </div>-->
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">机构电话：</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control" ng-model="templateData.basicInfo.telephone" maxlength="11" yzn-filter="num" placeholder="请设置机构电话" />
+                            </div>
+                        </div>
+                        <p class="img_tagging2" style="padding-left: 116px;">设置机构电话后，学员可快速拨打电话进行咨询。不设置，则不显示</p>
+                        <!--微传单的设置信息-->
+                        <div ng-if="templateData.activityType == 5">
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">活动说明</span>
+                            </div>
+                            <p class="img_tagging2" style="margin-top: -12px">可自由添加和删除模块，自定义模块中的标题和内容描述</p>
+                            <div class="popup_line">
+                                <div class="leaflet_mod">
+                                    <ul class="leaflet_mod_nav clearfix">
+                                        <li ng-class="{'leaflet_mod_nav_show': templateData.activityDesShow == $index}" ng-repeat="a in templateData.activityDes" ng-click="templateData.activityDesShow = $index"><span>模块{{$index + 1}}</span><i ng-click="delete_organInfo($index, 'leafletMod')" class="icon_drop_x"></i><em></em></li>
+                                        <li ng-hide="templateData.activityDes.length >= 6" style="border: none;line-height: initial;width: 90px"><span class="icon_name_add" ng-click="add_organInfo('leafletMod')"></span></li>
+                                    </ul>
+                                    <div class="leaflet_mod_con">
+                                        <div class="popup_line">
+                                            <label class="form-label required" style="width: 75px">标题：</label>
+                                            <div class="col-xs-9">
+                                                <input type="text" class="form-control" ng-model="templateData.activityDes[templateData.activityDesShow].title" placeholder="请设置模块标题" required/>
+                                            </div>
+                                        </div>
+                                        <div class="popup_line">
+                                            <label class="form-label required" style="width: 75px">内容描述：</label>
+                                            <div class="col-xs-9">
+                                                <div ng-repeat="x in templateData.activityDes[templateData.activityDesShow].content">
+                                                    <div style="width: 100%;margin: 0 0 10px 0" class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                                        <div class="msk_changeimg"><span ng-click="add_organInfo('leafletimg', x)">更换图片</span></div>
+                                                        <div><img ng-src="{{x.value}}" alt="图片" /></div>
+                                                        <i class="icon_newdelete" ng-click="delete_organInfo($index, 'leafletCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                                        <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                            <i ng-click="moveUpDown(templateData.activityDes[templateData.activityDesShow].content, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                            <i ng-click="moveUpDown(templateData.activityDes[templateData.activityDesShow].content, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                                        </var>
+                                                    </div>
+                                                    <div class="organ_info" ng-if="x.type == 'text'" style="width: 100%;margin: 0 0 10px 0">
+                                                        <textarea style="white-space: pre-wrap; word-wrap: break-word; break-word;resize:vertical;" ng-change="defaultInto('textarea',templateData.activityDes[templateData.activityDesShow].content)" class="form-control" ng-model="x.value" rows="3" placeholder="详情："
+                                                            maxlength="500"></textarea>
+                                                        <i class="icon_newdelete" ng-click="delete_organInfo($index, 'leafletCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                                        <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                            <i ng-click="moveUpDown(templateData.activityDes[templateData.activityDesShow].content, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                            <i ng-click="moveUpDown(templateData.activityDes[templateData.activityDesShow].content, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                                        </var>
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line" style="margin-left: -10px">
+                                                    <span class="add_info" ng-click="add_organInfo('leaflettext')">+ 添加文字</span>
+                                                    <span class="add_info" ng-click="add_organInfo('leafletimg')">+ 添加图片</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">高级设置</span>
+                            </div>
+                            <div class="popup_line">
+                                <div class="clearfix" style="height: 23px">
+                                    <div class="col-xs-4">
+                                        <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.advancedSetting.peoMax"/>开启报名人数上限</label>
+                                    </div>
+                                    <div class="col-xs-5" style="margin-top: -5px" ng-if="templateData.advancedSetting.peoMax">
+                                        <label class="form-label">限制报名人数：</label>
+                                        <input type="text" style="width: 65px" ng-model="templateData.advancedSetting.peoMaxNum" class="form-control" yzn-filter="num">
+                                    </div>
+                                </div>
+                                <!--                                <p class="img_tagging2" style="padding: 0 0 0 36px;">开启后，报名人数达到上限，活动停止</p>-->
+                            </div>
+                            <div class="popup_line">
+                                <div class="col-xs-10">
+                                    <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.advancedSetting.peoLimit"/>开启新老学员报名门槛</label>
+                                    <p class="img_tagging2" style="padding: 0 0 0 20px;">开启后，仅允许未签约的学员或已签约的学员参与活动报名</p>
+                                </div>
+                                <div class="col-xs-10" style="padding-left: 34px">
+                                    <label class="checkbox-inline labelLeft checkbox-padding">
+                                        <input type="radio" ng-model="templateData.advancedSetting.peoLimitType" value="1" ng-disabled="!templateData.advancedSetting.peoLimit">仅允许未签约的学员参与活动报名
+                                    </label>
+                                </div>
+                                <div class="col-xs-10" style="padding-left: 34px">
+                                    <label class="checkbox-inline labelLeft checkbox-padding">
+                                        <input type="radio" ng-model="templateData.advancedSetting.peoLimitType" value="2" ng-disabled="!templateData.advancedSetting.peoLimit">仅允许已签约的学员参与活动报名
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="parting_solidline popup_line"></div>
+                                <div class="popup_line">
+                                    <span class="form-span basic_info">转介绍设置</span>
+                                    <span style="display:inline-block;margin:3px 0 0 5px;"><img src="./static/img/referralTip.png" alt="" /></span>
+                                </div>
+                                <div class="popup_line">
+                                    <div class="clearfix">
+                                        <div class="col-xs-10">
+                                            <label class="checkbox-inline pull-left" ng-click="openTips()">
+                                                <input type="checkbox" ng-disabled="clickLineData.upDownStatus && clickLineData.upDownStatus!==2" ng-model="templateData.referralSwitch"/>开启转介绍
+                                            </label>
+                                            <span class="clickText ml5" ng-click="gotoAritle()">转介绍功能使用攻略</span>
+                                        </div>
+                                        <p class="img_tagging2 col-xs-10 mt5" style="padding-left: 34px">开启转介绍后，系统会记录推荐人邀请了多少个新学员参与活动以及多少个被推荐学员最终完成报课。</p>
+                                    </div>
+                                </div>
+                                <div class="popup_line" ng-if="templateData.referralSwitch">
+                                    <label class="form-label required" style="width: 85px">转介绍奖励：</label>
+                                    <div class="col-xs-9 noPadding">
+                                        <div ng-repeat="x in templateData.prizeBigIntro track by $index">
+                                            <div style="width: 100%;margin: 0 0 10px 0" class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                                <div class="msk_changeimg"><span ng-click="add_organInfo('leafletimg', x)">更换图片</span></div>
+                                                <div><img ng-src="{{x.value}}" alt="图片" /></div>
+                                                <i class="icon_newdelete" ng-click="delete_organInfo($index, 'leafletCon_referral')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                                <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                    <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                    <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                                </var>
+                                            </div>
+                                            <div class="organ_info" ng-if="x.type == 'text'" style="width: 100%;margin: 0 0 10px 0">
+                                                <textarea style="white-space: pre-wrap; word-wrap: break-word; break-word;resize:vertical;" ng-change="defaultInto('textarea',templateData.prizeBigIntro)" class="form-control" ng-model="x.value" rows="3" placeholder="有更多福利，老学员更愿意帮忙转发哦～" maxlength="500"
+                                                    required></textarea>
+                                                <i class="icon_newdelete" ng-click="delete_organInfo($index, 'leafletCon_referral')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                                <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                    <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                    <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                                </var>
+                                            </div>
+                                        </div>
+                                        <div class="popup_line" style="margin-left: -10px">
+                                            <span class="add_info" ng-click="add_organInfo('leaflettext_referral')">+ 添加文字</span>
+                                            <span class="add_info" ng-click="add_organInfo('leafletimg_referral')">+ 添加图片</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line" ng-if="templateData.referralSwitch">
+                                    <label class="form-label required" style="width:85px">奖励规则：</label>
+                                    <div class="col-xs-9 noPadding">
+                                        <textarea style="white-space: pre-wrap; word-wrap: break-word; break-word;resize:vertical;min-height: 115px;" class="form-control" ng-model="templateData.activityRule" rows="3" placeholder="说明奖励规则" maxlength="500" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">报名信息</span>
+                            </div>
+                            <div class="popup_line padding_lf_9">
+                                <label for="" class="form-label text_al_lf required" style="width: 81px;">学员姓名</label>
+                                <label for="" class="form-label text_al_lf required" style="width: 81px;">联系电话</label>
+                            </div>
+                            <div class="popup_line info_optional padding_lf_9">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-model="templateData.appoinInfo.sex" ng-change="signOptions('sex')" class="checkbox-inline labelLeft">性别
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-model="templateData.appoinInfo.age" ng-change="signOptions('age')" class="checkbox-inline labelLeft">年龄
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-model="templateData.appoinInfo.birthday" ng-change="signOptions('birthday')" class="checkbox-inline labelLeft">出生日期
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-model="templateData.appoinInfo.schoolname" ng-change="signOptions('schoolname')" class="checkbox-inline labelLeft">在读学校
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-model="templateData.appoinInfo.gradle" ng-change="signOptions('gradle')" class="checkbox-inline labelLeft">年级
+                                </label>
+                            </div>
+                            <p class="img_tagging2" style="margin-top: -12px;padding-left: 10px;width: 90%">勾选的字段为学员报名时必填的内容，填写项过多可能会影响学员报名，最多设置5项。</p>
+                            <div class="parting_solidline popup_line"></div>
+                        </div>
+
+                        <!--抢购模块参数-->
+                        <div ng-if="templateData.activityType == 6">
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">课程设置</span>
+                            </div>
+                            <!--选择课程-->
+                            <div class="popup_line">
+                                <div class="buy_mod">
+                                    <ul class="buy_mod_nav clearfix">
+                                        <li ng-class="{'buy_mod_nav_show': templateData.activityPrizeListShow == $index}" ng-repeat="a in templateData.activityPrizeList" ng-click="templateData.activityPrizeListShow = $index"><span class="mr10">课程{{$index + 1}}</span><i ng-hide="templateData.type == 'edit' && operationLine.upDownStatus!=2" ng-click="delete_organInfo($index, 'buyMod')" class="icon_drop_x"></i><em></em></li>
+                                        <li ng-click="goCommonPop(  'course-sel', 'choseCourse', '800px', {name: 'course', type: 'radio', callBackName: '抢购活动',form:'activity'})" ng-hide="(templateData.type == 'edit' && operationLine.upDownStatus!=2) || templateData.activityPrizeList.length >= 10"
+                                            style="color: #ff595e;"><span class="icon_addcourse"></span>添加课程</li>
+                                    </ul>
+                                    <div class="buy_mod_con clearfix">
+                                        <!--课程未选-->
+                                        <div class="buy_mod_con_nodata" ng-show="templateData.activityPrizeList.length == 0">
+                                            <img src="./static/img/empty2.png" alt="" />
+                                            <p class="textAlignCenter mt10">您尚未添加课程</p>
+                                        </div>
+                                        <div ng-if="templateData.activityPrizeList.length > 0">
+                                            <div class="popup_line">
+                                                <label class="form-label">课程名称：</label>
+                                                <div class="col-xs-8 line28">
+                                                    {{templateData.activityPrizeList[templateData.activityPrizeListShow].courseName}}
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label">套餐：</label>
+                                                <div class="col-xs-8">
+                                                    <mix-sel my-id="norepeat_mix" is-disabed="{{templateData.type == 'edit' && operationLine.upDownStatus!=2}}" sel-data="{{templateData.activityPrizeList[templateData.activityPrizeListShow].packageList}}" type-for='{"type":"buy"}' selected-fn="sel_package(n)"
+                                                        default-seleted="{{templateData.activityPrizeList[templateData.activityPrizeListShow].package_}}"></mix-sel>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType == 1">
+                                                <label class="form-label required">学年/学期:</label>
+                                                <div class="col-xs-8">
+                                                    <select style="width: 65px; margin-right: 5px; float: left;" class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].schoolYear" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" required>
+                                                    <option value="">学年</option>
+                                                    <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                                    </select>
+                                                    <select style="width: 71px; float: left;" class="form-control" ng-change="selSchoolTerm(templateData.activityPrizeList[templateData.activityPrizeListShow])" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].schoolTerm"
+                                                        ng-options="p as p.schoolTermName for p in schoolTermList" required>
+                                                        <option value="">学期</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType == 2">
+                                                <label class="form-label required">开始时间：</label>
+                                                <div class="col-xs-8">
+                                                    <input type="text" id="course_begin_time" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].beginTime" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control dateIcon" placeholder="选择开始时间"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType == 2">
+                                                <label class="form-label required">结束时间：</label>
+                                                <div class="col-xs-8">
+                                                    <select style="float: left;margin-right: 5px;" ng-change="inputPackageTime(templateData.activityPrizeList[templateData.activityPrizeListShow], 2)" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].chargeType" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2"
+                                                        class="form-control width55">
+                                                        <option value="">天</option>
+                                                        <option value="1">月</option>
+                                                    </select>
+                                                    <span class="sign_td_span" ng-show="templateData.activityPrizeList[templateData.activityPrizeListShow].chargeType==1">
+                                                        <input style="width: 79px;" type="text" class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].monthNum" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" ng-change="inputPackageTime(templateData.activityPrizeList[templateData.activityPrizeListShow], 2)"  yzn-filter="num"/>月
+                                                    </span>
+                                                    <span class="sign_td_span" ng-show="templateData.activityPrizeList[templateData.activityPrizeListShow].chargeType!=1">
+                                                        <input style="width: 137px;" id="course_end_time" type="text" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].endTime"  ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control dateIcon" index="{{$index}}" placeholder="选择结束时间" />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType == 2">
+                                                <label class="form-label">赠送天数：</label>
+                                                <div class="col-xs-8">
+                                                    <input type="text" class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.giveTime" placeholder="赠送天数" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" yzn-filter="num_" />
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType != 2">
+                                                <label class="form-label required">购买课时：</label>
+                                                <div class="col-xs-8">
+                                                    <input type="text" class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.packageTime" ng-change="inputPackageTime(templateData.activityPrizeList[templateData.activityPrizeListShow], 1)" placeholder="请输入购买课时"
+                                                        ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" yzn-filter="num_" required/>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType != 2">
+                                                <label class="form-label">赠送课时：</label>
+                                                <div class="col-xs-8">
+                                                    <input class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.giveTime" yzn-filter="num_" type="text" placeholder="请输入赠送课时" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" />
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label required">原价（元）：</label>
+                                                <div class="col-xs-8">
+                                                    <input class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.packagePrice" ng-change="inputPackageTime(templateData.activityPrizeList[templateData.activityPrizeListShow], 3)" yzn-filter="num_" type="text"
+                                                        ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" placeholder="请输入原价" required/>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label">单课价：</label>
+                                                <div class="col-xs-8 line28" style="color:#ECB37E">
+                                                    <span ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType != 2">{{templateData.activityPrizeList[templateData.activityPrizeListShow].package.packageUnitPrice | m}}元/课时</span>
+                                                    <span ng-if="templateData.activityPrizeList[templateData.activityPrizeListShow].package.feeType == 2">{{(templateData.activityPrizeList[templateData.activityPrizeListShow].chargeType=="1"?templateData.activityPrizeList[templateData.activityPrizeListShow].package.packageUnitPrice:templateData.activityPrizeList[templateData.activityPrizeListShow].package.packageUnitPrice/30) | m}}{{templateData.activityPrizeList[templateData.activityPrizeListShow].chargeType=="1"?"元/月":"元/天"}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label required">活动价（元）：</label>
+                                                <div class="col-xs-8">
+                                                    <input class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.activityPrice" yzn-filter="num_" type="text" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2" placeholder="请输入活动价"
+                                                        required/>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label required">活动名额：</label>
+                                                <div class="col-xs-8">
+                                                    <input style="width: 80px;display: inline-block;" class="form-control" ng-model="templateData.activityPrizeList[templateData.activityPrizeListShow].package.activityPlaces" yzn-filter="num" type="text" required/>
+                                                    <span ng-show="templateData.type == 'edit'">（已售：{{templateData.activityPrizeList[templateData.activityPrizeListShow].package.soldCopies || 0}}份）</span>
+                                                </div>
+                                            </div>
+                                            <p style="padding-left: 114px;" class="img_tagging2">活动发布后，活动名额只可增加不可减少</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--课程描述-->
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">课程描述</span>
+                            </div>
+                            <div class="popup_line">
+                                <div class="col-xs-11">
+                                    <div ng-repeat="x in templateData.prizeBigIntro">
+                                        <div style="width: 100%;margin: 0 0 10px 0" class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                            <div class="msk_changeimg"><span ng-click="add_organInfo('buyimg', x)">更换图片</span></div>
+                                            <div><img ng-src="{{x.value}}" alt="图片" /></div>
+                                            <i class="icon_newdelete" ng-click="delete_organInfo($index, 'buyCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                            </var>
+                                        </div>
+                                        <div class="organ_info" ng-if="x.type == 'text'" style="width: 100%;margin: 0 0 10px 0">
+                                            <textarea style="white-space: pre-wrap; word-wrap: break-word; break-word;resize:vertical;" ng-change="defaultInto('textarea',templateData.prizeBigIntro)" class="form-control" ng-model="x.value" rows="3" maxlength="500"></textarea>
+                                            <i class="icon_newdelete" ng-click="delete_organInfo($index, 'buyCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                <i ng-click="moveUpDown(templateData.prizeBigIntro, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                            </var>
+                                        </div>
+                                    </div>
+                                    <div class="popup_line" style="margin-left: -10px">
+                                        <span class="add_info" ng-click="add_organInfo('buytext')">+ 添加文字</span>
+                                        <span class="add_info" ng-click="add_organInfo('buyimg')">+ 添加图片</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--高级设置-->
+                            <div class="parting_solidline popup_line"></div>
+                            <div class="popup_line">
+                                <span class="form-span basic_info">高级设置</span>
+                            </div>
+                            <div class="popup_line">
+                                <div class="clearfix" style="height: 23px">
+                                    <div class="col-xs-10">
+                                        <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.advancedSetting.courseLimit"/>开启限购</label>
+                                    </div>
+                                    <div class="col-xs-10" style="margin-right:5px;padding-left: 34px" ng-if="templateData.advancedSetting.courseLimit == 1">
+                                        <label class="form-label mr5" style="width: initial;">每个学员最多选购的课程数量</label>
+                                        <input type="text" style="width: 65px" ng-model="templateData.advancedSetting.limitNum" ng-change="courseLimitFn()" placeholder="个数" class="form-control" yzn-filter="num">
+                                    </div>
+                                    <p class="img_tagging2 col-xs-10 mt5" style="padding-left: 34px">开启后，限制同一活动链接内每个学员最多能选购多少个课程</p>
+                                </div>
+                            </div>
+                            <!--新老学员报名门槛-->
+                            <div class="popup_line">
+                                <div class="col-xs-10">
+                                    <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.advancedSetting.groupLimit"/>开启新老学员报名门槛</label>
+                                    <p class="img_tagging2" style="padding: 0 0 0 20px;">开启后，仅允许未签约的学员或已签约的学员参与活动报名</p>
+                                </div>
+                                <div class="col-xs-10" style="padding-left: 34px">
+                                    <label class="checkbox-inline labelLeft checkbox-padding">
+                                        <input type="radio" ng-model="templateData.advancedSetting.limitItems" value="1" ng-disabled="!templateData.advancedSetting.groupLimit">仅允许未签约的学员参与活动报名
+                                    </label>
+                                </div>
+                                <div class="col-xs-10" style="padding-left: 34px">
+                                    <label class="checkbox-inline labelLeft checkbox-padding">
+                                        <input type="radio" ng-model="templateData.advancedSetting.limitItems" value="2" ng-disabled="!templateData.advancedSetting.groupLimit">仅允许已签约的学员参与活动报名
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="parting_solidline popup_line" ng-if="templateData.activityType != 5 && templateData.activityType != 6"></div>
+
+                        <!--砍价 助力 拼团 课程信息-->
+                        <div class="kanjia_activity" ng-if="templateData.activityType == 2 || templateData.activityType == 3 || templateData.activityType == 4">
+                            <div class="popup_line">
+                                <span class="form-span basic_info">{{templateData.activityType==4?'活动设置':'活动设置'}}</span>
+                            </div>
+                            <!--<p class="img_tagging2" style="margin-top: -12px" ng-if="templateData.activityType != 4">可直接关联课程作为活动奖品，也可不关联课程，单独描述活动奖品。</p>-->
+                            <!--<p class="img_tagging2" style="margin-top: -12px" ng-if="templateData.activityType == 4">请关联课程作为活动课程，拼团成功后，将自动生成订单。</p>-->
+                            <div class="popup_line">
+                                <label class="form-label" ng-class="{'required': templateData.activityType==4}">活动课程：</label>
+                                <div class="col-xs-8">
+                                    <div style="margin-bottom: 5px" class="addParent icon_name_add addData" ng-hide="templateData.type == 'edit' && operationLine.upDownStatus!=2" ng-click="goCommonPop( 'course-sel','choseCourse', '800px', {name: 'course', type: 'radio', callBackName: '砍价活动-课程',form:'activity'})">选择活动课程</div>
+                                    <ul class="kanjia_course">
+                                        <li ng-repeat="c in templateData.prizeInfo.course">
+                                            <div class="popup_line" style="margin: 5px 0;">
+                                                <label class="form-label">课程名称：</label>
+                                                <span class="col-xs-8 form-span">{{c.courseName}}</span>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label">套餐：</label>
+                                                <div class="col-xs-6">
+                                                    <mix-sel my-id="{{c.mixid}}" is-disabed="{{templateData.type == 'edit' && operationLine.upDownStatus!=2 && templateData.activityType==4}}" sel-data="{{c.packageList}}" type-for='{"type":"kj","index":"{{$index}}","activityType":"{{templateData.activityType}}"}'
+                                                        selected-fn="sel_package(n)" default-seleted="{{c.package_}}"></mix-sel>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line" ng-if="c.package.feeType == 1">
+                                                <label class="form-label">学年/学期：</label>
+                                                <div style="float: left;padding-left: 15px;">
+                                                    <select style="width: 65px; margin-right: 5px; float: left;" class="form-control" ng-model="c.schoolYear" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" required>
+                                                    <option value="">学年</option>
+                                                    <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                                    </select>
+                                                    <select style="width: 71px; float: left;" ng-change="selSchoolTerm(c,true)" class="form-control" ng-model="c.schoolTerm" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" ng-options="p as p.schoolTermName for p in schoolTermList"
+                                                        required>
+                                                        <option value="">学期</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div ng-if="c.package.feeType != 2">
+                                                <div class="popup_line">
+                                                    <label class="form-label">购买课时：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-change="inputPackageTime(c, 1)" ng-model="c.package.packageTime" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2
+                                                       " class="form-control" yzn-filter="num_" />
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label class="form-label">赠送课时：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-model="c.package.giveTime" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="c.package.feeType == 2">
+                                                <div class="popup_line">
+                                                    <label class="form-label">开始时间：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-model="c.beginTime" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" ng-mouseover="selTimeFrame_(c, $event, 1, $index)" class="form-control dateIcon" index="{{$index}}" placeholder="选择开始时间"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label class="form-label">结束时间：</label>
+                                                    <div class="col-xs-8">
+                                                        <select style="float: left;margin-right: 5px;" ng-change="inputPackageTime(c, 2)" ng-model="c.chargeType" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2
+                                                       " class="form-control width55">
+                                                            <option value="">天</option>
+                                                            <option value="1">月</option>
+                                                        </select>
+                                                        <span class="sign_td_span" ng-show="c.chargeType==1">
+                                                        <input style="width: 79px;" type="text" class="form-control" ng-model="c.monthNum" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2
+                                                       " ng-change="inputPackageTime(c, 2)"  yzn-filter="num"/>月
+                                                    </span>
+                                                        <span class="sign_td_span" ng-show="c.chargeType!=1">
+                                                        <input style="width: 137px;" type="text" ng-model="c.endTime" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" ng-mouseover="selTimeFrame_(c,$event, 2, $index)" class="form-control dateIcon" index="{{$index}}" placeholder="选择结束时间" />
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label class="form-label">赠送天数：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-model="c.package.giveTime" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label">课程价格(元)：</label>
+                                                <div class="col-xs-6">
+                                                    <input type="text" ng-model="c.package.packagePrice" ng-change="inputPackageTime(c, 3)" ng-disabled="templateData.activityType==4 && templateData.type=='edit' && operationLine.upDownStatus!=2
+                                                       " class="form-control" yzn-filter="num_" />
+                                                </div>
+                                            </div>
+                                            <div class="popup_line">
+                                                <label class="form-label">单课价(元)：</label>
+                                                <span class="col-xs-6 form-span color_f59256" ng-if="c.package.feeType !=2">{{c.package.packageUnitPrice | m}}元/课时</span>
+                                                <span class="col-xs-6 form-span color_f59256" ng-if="c.package.feeType==2">{{(c.chargeType=="1"?c.package.packageUnitPrice:c.package.packageUnitPrice/30) | m}}{{c.chargeType=="1"?"元/月":"元/天"}}</span>
+                                                <!--<span class="col-xs-6 form-span color_f59256">￥{{c.package.packagePrice / c.package.packageTime | m}}</span>-->
+                                            </div>
+                                            <i class="icon_newdelete" ng-hide="templateData.type=='edit' && operationLine.upDownStatus!=2" ng-click="delete_kanjia($index, 'course')" ng-mouseover="imgover($event, 'delete')" ng-mouseout="imgout($event,
+                                                        'delete')"><var>删除课程</var></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--改动  无需学杂-->
+                            <!--<div class="popup_line" ng-if="templateData.prizeInfo.course.length> 0">
+                                    <label class="form-label"></label>
+                                    <div class="col-xs-8">
+                                        <ul class="kanjia_course">
+                                            <li ng-repeat="g in templateData.prizeInfo.goods">
+                                                <div class="popup_line" style="margin: 5px 0;">
+                                                    <label for="" class="form-label">物品名称：</label>
+                                                    <span class="col-xs-8 form-span">{{g.goodsName}}</span>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label for="" class="form-label">单价(元)：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-model="g.goodsPrice" ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" />
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label for="" class="form-label">数量：</label>
+                                                    <div class="col-xs-6">
+                                                        <input type="text" ng-model="g.num" ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num" />
+                                                    </div>
+                                                </div>
+                                                <div class="popup_line">
+                                                    <label for="" class="form-label">学杂价格：</label>
+                                                    <span class="col-xs-6 form-span">￥{{g.goodsPrice * g.num | m}}</span>
+                                                </div>
+                                                <i class="icon_newdelete" ng-hide="templateData.type == 'edit' && operationLine.upDownStatus!=2" ng-click="delete_kanjia($index, 'goods')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除学杂</var></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>-->
+                            <div class="popup_line">
+                                <label class="form-label required">课程描述：</label>
+                                <div class="col-xs-9">
+                                    <div ng-repeat="x in templateData.prizeInfo['describeList']">
+                                        <div style="width: 100%;margin: 0 0 10px 0" class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                            <div class="msk_changeimg"><span ng-click="add_organInfo('prizeListImg', x)">更换图片</span></div>
+                                            <div><img ng-src="{{x.value}}" alt="图片" /></div>
+                                            <i class="icon_newdelete" ng-click="delete_organInfo($index, 'prizeListCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(templateData.prizeInfo['describeList'], $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(templateData.prizeInfo['describeList'], $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                                        </div>
+                                        <div class="organ_info" ng-if="x.type == 'text'" style="width: 100%;margin: 0 0 10px 0">
+                                            <textarea ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word;resize:vertical;" ng-change="defaultInto('textarea',templateData.prizeInfo['describeList'])" class="form-control" ng-model="x.value" rows="3" placeholder="详情：" maxlength="500"></textarea>
+                                            <i class="icon_newdelete" ng-click="delete_organInfo($index, 'prizeListCon')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(templateData.prizeInfo['describeList'], $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(templateData.prizeInfo['describeList'], $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                                        </div>
+                                    </div>
+                                    <div class="popup_line" style="margin-left: -10px">
+                                        <span class="add_info" ng-click="add_organInfo('prizeListText')">+ 添加文字</span>
+                                        <span class="add_info" ng-click="add_organInfo('prizeListImg')">+ 添加图片</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="popup_line" ng-if="templateData.activityType == 2 || templateData.activityType == 3">
+                                <label for="" class="form-label required">活动名额：</label>
+                                <div class="col-xs-5">
+                                    <input type="text" ng-model="templateData.prizeInfo.num" class="form-control" yzn-filter="num" required/>
+                                </div>
+                                <p class="img_tagging2" style="padding: 32px 0 0 123px;">活动发布后，活动名额只可增加不能减少</p>
+                            </div>
+                            <div class="popup_line">
+                                <label for="" class="form-label required">原价(元)：</label>
+                                <div class="col-xs-5">
+                                    <input type="text" ng-model="templateData.prizeInfo.originalPrice" class="form-control" yzn-filter="num_" ng-disabled="templateData.prizeInfo.course.length > 0 || templateData.prizeInfo.goods.length > 0" required/>
+                                </div>
+                                <p class="img_tagging2" style="padding: 32px 0 0 123px;">活动发布后，原价不可更改</p>
+                            </div>
+                            <div ng-if="templateData.activityType == 2">
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">底价(元)：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.floorPrice" class="form-control" yzn-filter="num_" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">活动发布后，底价不可更改</p>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">砍价次数：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.totalNumber" class="form-control" yzn-filter="num" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">从原价到底价一共要砍价的次数</p>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">自砍次数：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.selfNumber" class="form-control" yzn-filter="num" required/>
+                                        <div class="kan_tips">自己每日能砍次数，每日0点更新</div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">帮砍次数：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.friendNumber" class="form-control" yzn-filter="num" required/>
+                                        <div class="kan_tips">朋友每日帮砍次数，每日0点更新</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="templateData.activityType == 3">
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">活动价(元)：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.floorPrice" class="form-control" yzn-filter="num_" required/>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">助力包数量：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.totalNumber" class="form-control" yzn-filter="num" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">达到助力包数量之后，表示助力成功</p>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required" style="width: 127px; margin-left: -20px;">单次最大助力包数：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.selfNumber" class="form-control" yzn-filter="num" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">每人单次最大助力包数，最多可设置8个助力包</p>
+                                </div>
+                            </div>
+                            <div ng-if="templateData.activityType == 4">
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">拼团价(元)：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.floorPrice" ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" required/>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label"></label>
+                                    <div class="col-xs-8">
+                                        <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.prizeInfo.prepaymentFlag"  ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2"/>开启预付金额</label>
+                                        <span class="form-span" style="color: #999;">开启后，线上预付一定的费用，剩余费用线下补缴。活动发布后，不可更改</span>
+                                    </div>
+                                </div>
+                                <div class="popup_line" ng-if="templateData.prizeInfo.prepaymentFlag">
+                                    <label for="" class="form-label">预付金额(元)：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.prepayment" ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" />
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">几人成团：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.totalNumber" ng-disabled="templateData.activityType == 4 && templateData.type == 'edit' && operationLine.upDownStatus!=2" class="form-control" yzn-filter="num_" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">可设置2人以上成团。活动发布后，不可更改。建议2-3人成团，提高成团率</p>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">成团数上限：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" ng-model="templateData.prizeInfo.selfNumber" class="form-control" yzn-filter="num_" required/>
+                                    </div>
+                                    <p class="img_tagging2" style="padding: 32px 0 0 123px;">成团数达到上限后，活动结束</p>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label">活动名额：</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" value="{{templateData.prizeInfo.friendNumber?(templateData.prizeInfo.totalNumber * templateData.prizeInfo.selfNumber - templateData.prizeInfo.friendNumber):(templateData.prizeInfo.totalNumber * templateData.prizeInfo.selfNumber)}}"
+                                            ng-disabled="true" class="form-control" yzn-filter="num_" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="parting_solidline popup_line"></div>
+                            <div ng-if="templateData.activityType == 4">
+                                <div class="popup_line">
+                                    <span class="form-span basic_info">高级设置</span>
+                                </div>
+                                <div class="popup_line">
+                                    <div class="col-xs-10">
+                                        <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.prizeInfo.viewFlag"/>开启凑团</label>
+                                        <span class="form-span" style="color: #999;">开启后，页面显示未成团的团列表，用户可以任选一个参团，提高成团率。</span>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <div class="col-xs-10">
+                                        <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.prizeInfo.groupLimit"/>开启参团限制</label>
+                                        <span class="form-span" style="color: #999;">老带新拼团专用，开启后，限制学员或已有潜客只能开团不能参团。</span>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <label class="checkbox-inline labelLeft checkbox-padding">
+                            <input type="radio" ng-model="templateData.prizeInfo.limitItems" value="1" ng-disabled="!templateData.prizeInfo.groupLimit">已签约学员只能开团不能参团
+                        </label>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <label class="checkbox-inline labelLeft checkbox-padding">
+                            <input type="radio" ng-model="templateData.prizeInfo.limitItems" value="2" ng-disabled="!templateData.prizeInfo.groupLimit">已有潜客、已签约学员只能开团不能参团
+                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="templateData.activityType == 2 || templateData.activityType == 3">
+                            <div class="popup_line">
+                                <span class="form-span basic_info">高级设置</span>
+                            </div>
+                            <div class="popup_line">
+                                <div class="col-xs-10">
+                                    <label class="checkbox-inline"><input type="checkbox" name="" ng-model="templateData.prizeInfo.paySwitch" ng-change="paySwitch_()" ng-disabled="templateData.type == 'edit' && operationLine.upDownStatus!=2"/>开启线上支付功能</label>
+                                </div>
+                            </div>
+                            <p class="img_tagging2" style="margin-top: -12px;padding-left: 35px;width: 90%">添加活动课程后，才能开启线上支付。开启后，学员线上付费参与活动，无需线下单独报名</p>
+                        </div>
+                        <div class="parting_solidline popup_line" ng-if="templateData.activityType != 5"></div>
+                        <div posEle="pos_ele_3" ng-if="templateData.activityType != 5">
+                            <div class="popup_line">
+                                <span class="form-span basic_info">活动规则</span>
+                            </div>
+                            <div class="popup_line" style="padding-left: 8px">
+                                <textarea ng-trim="false" class="form-control" ng-model="templateData.prizeInfo.activityRule" style="resize: none; height: 230px;" required></textarea>
+                            </div>
+                            <div class="parting_solidline popup_line"></div>
+                        </div>
+                        <!--                        除了微传单其他都显示-->
+                        <div ng-if="templateData.activityType != 5">
+                            <div class="popup_line">
+                                <span class="form-span basic_info">校区介绍</span>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_4" ng-repeat="x in templateData.organInfo">
+                                <div class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                    <div class="msk_changeimg"><span ng-click="add_organInfo('organimg', x)">更换图片</span></div>
+                                    <div><img ng-src="{{x.value}}" alt="校区图片" /></div>
+                                    <i class="icon_newdelete" ng-click="delete_organInfo($index, 'organ')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                    <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                        <i ng-click="moveUpDown(templateData.organInfo, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                        <i ng-click="moveUpDown(templateData.organInfo, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                    </var>
+                                </div>
+                                <div class="organ_info" ng-if="x.type == 'text'">
+                                    <textarea ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word; break-word;resize:vertical;" class="form-control" ng-model="x.value" rows="3" placeholder="校区详情：" maxlength="500"></textarea>
+                                    <i class="icon_newdelete" ng-click="delete_organInfo($index, 'organ')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                    <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                        <i ng-click="moveUpDown(templateData.organInfo, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                        <i ng-click="moveUpDown(templateData.organInfo, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                    </var>
+                                </div>
+                            </div>
+                            <div class="popup_line">
+                                <span class="add_info" ng-click="add_organInfo('organtext')">+ 添加文字</span>
+                                <span class="add_info" ng-click="add_organInfo('organimg')">+ 添加图片</span>
+                            </div>
+                            <p class="img_tagging2">（建议尺寸750:420像素，图片支持JPG、PNG格式）</p>
+                            <div class="parting_solidline popup_line"></div>
+                        </div>
+                        <div class="popup_line" ng-hide="templateData.activityType == 5">
+                            <span class="form-span basic_info">报名信息</span>
+                        </div>
+                        <div ng-hide="templateData.activityType == 5">
+                            <div class="popup_line padding_lf_9">
+                                <label for="" class="form-label text_al_lf required" style="width: 81px;">学员姓名</label>
+                                <label for="" class="form-label text_al_lf required" style="width: 81px;">联系电话</label>
+                            </div>
+                            <div class="popup_line info_optional padding_lf_9">
+                                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="templateData.appoinInfo.sex" ng-change="signOptions('sex')" class="checkbox-inline labelLeft">性别
+                </label>
+                                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="templateData.appoinInfo.age" ng-change="signOptions('age')" class="checkbox-inline labelLeft">年龄
+                </label>
+                                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="templateData.appoinInfo.birthday" ng-change="signOptions('birthday')" class="checkbox-inline labelLeft">出生日期
+                </label>
+                                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="templateData.appoinInfo.schoolname" ng-change="signOptions('schoolname')" class="checkbox-inline labelLeft">在读学校
+                </label>
+                                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="templateData.appoinInfo.gradle" ng-change="signOptions('gradle')" class="checkbox-inline labelLeft">年级
+                </label>
+                            </div>
+                            <p class="img_tagging2" style="margin-top: -12px;padding-left: 10px;width: 90%">勾选的字段为学员报名时必填的内容，填写项过多可能会影响学员报名，最多设置5项。</p>
+                        </div>
+                        <div class="parting_solidline popup_line" ng-hide="templateData.activityType == 5"></div>
+                        <div ng-if="templateData.activityType != 5">
+                            <div class="popup_line" posEle="pos_ele_5">
+                                <span class="form-span basic_info">校区信息</span>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_5">
+                                <label for="" class="form-label">校区名称：</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" ng-model="templateData.organ.name" type="text" placeholder="填写校区名称" maxlength="20" />
+                                </div>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_5">
+                                <label for="" class="form-label">校区电话：</label>
+                                <div class="col-xs-4" ng-repeat="p in templateData.organ.phone track by $index">
+                                    <input class="form-control" ng-model="templateData.organ.phone[$index]" type="text" placeholder="填写校区电话" maxlength="15" yzn-filter="phone" />
+                                </div>
+                                <span ng-if="templateData.organ.phone.length < 2" class="add_organ_phone icon_addcourse" ng-click="add_organInfo('organPhone')"></span>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_5">
+                                <label for="" class="form-label">校区地址：</label>
+                                <div class="col-xs-9">
+                                    <textarea class="form-control" style="resize: none; width: 345px; height: 60px;" ng-model="templateData.organ.address" rows="3" maxlength="50" placeholder="填写校区地址"></textarea>
+                                </div>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_5">
+                                <label for="" class="form-label">二维码：</label>
+                                <div class="col-xs-9">
+                                    <dl class="show_title">
+                                        <dt class="icon_noimg imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                            <img ng-if="templateData.organ.code" ng-src="{{templateData.organ.code}}" alt="二维码图片" />
+                            <div class="msk_changeimg"><span ng-click="add_organInfo('organcode')">{{templateData.organ.code?'更换图片':'添加图片'}}</span></div>
+                            <i ng-if="templateData.organ.code" class="icon_newdelete" ng-click="delete_organInfo($index, 'organcode')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除二维码</var></i>
+                        </dt>
+                                        <dd>
+                                            <div class="popup_line" style="margin-top: 85px;">
+                                                <span>可上传微信公众号二维码</span>
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <p class="img_tagging2" style="padding-left: 115px;">（建议尺寸200:200像素，图片支持JPG、PNG格式）</p>
+                            <div class="parting_solidline popup_line"></div>
+                        </div>
+                        <div class="popup_line">
+                            <span class="form-span basic_info">分享信息</span>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label required">分享图片：</label>
+                            <div class="col-xs-9">
+                                <dl class="show_title">
+                                    <dt class="imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                        <img ng-if="templateData.shareInfo.titlesrc" ng-src="{{templateData.shareInfo.titlesrc}}" alt="分享图片" />
+                        <div class="msk_changeimg"><span ng-click="add_organInfo('titleimg')">{{templateData.shareInfo.titlesrc?'更换图片':'添加图片'}}</span></div>
+                    </dt>
+                                    <dd>
+                                        <div class="popup_line" style="margin-top: 85px;">
+                                            <span>封面显示在微信分享窗口</span>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <p class="img_tagging2" style="padding-left: 115px;">（建议尺寸200:200像素，图片支持JPG、PNG格式）</p>
+                        <div class="popup_line">
+                            <label for="" class="form-label required">分享标题：</label>
+                            <div class="col-xs-9">
+                                <span class="input_words">{{templateData.shareInfo.title.length?templateData.shareInfo.title.length:0}}/30</span>
+                                <input class="form-control" style="padding-right: 38px;" ng-model="templateData.shareInfo.title" type="text" maxlength="30" placeholder="展示在分享页对话窗口" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label required">分享描述：</label>
+                            <div class="col-xs-9">
+                                <span class="input_words">{{templateData.shareInfo.desc.length?templateData.shareInfo.desc.length:0}}/50</span>
+                                <textarea class="form-control" style="resize: none; overflow: hidden;" ng-model="templateData.shareInfo.desc" maxlength="50" placeholder="展示在分享页对话窗口" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button ng-hide="templateTab == 3" class="btn cancel" ng-click="closeLayer('template')" type="button">取消</button>
+                <button ng-hide="templateTab == 3" class="btn sure" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--数据概览-->
+<div class="popup_" id="show_dataBrowsing">
+    <!--<h6>数据概览（{{browsing_lineData.activityName}}）<span ng-click="closeLayer('dataBrowsing')" class="popup_x icon_drop_x"></span></h6>-->
+    <div class="popup_content">
+        <div class="popup_form_content">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_line browsing_nav">
+                    <span ng-class="{browsing_nav_show: browsingShow==1}" ng-click="browsingNav(1)">数据总览</span>
+                    <span ng-if="browsing_lineData.activityType==6" ng-class="{browsing_nav_show: browsingShow==4}" ng-click="browsingNav(4)">售课情况</span>
+                    <span ng-class="{browsing_nav_show: browsingShow==2}" ng-click="browsingNav(2)">有效用户</span>
+                    <span ng-if="browsing_lineData.activityType==5 && browsing_lineData.referralSwitch" ng-class="{browsing_nav_show: browsingShow==5}" ng-click="browsingNav(5)">转介绍汇总</span>
+                    <span ng-if="browsing_lineData.activityType==4" ng-class="{browsing_nav_show: browsingShow==3}" ng-click="browsingNav(3)">拼团列表</span>
+                </div>
+                <div class="browsing_con" ng-show="browsingShow==1">
+                    <div class="overview_tit">总览：</div>
+                    <div class="overview_data">
+                        <ul class="overview_data_con">
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总浏览量(PV)</strong>
+                                    <em>{{overViewData.totalPV | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayPV | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayPV | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总访客量(UV)</strong>
+                                    <em>{{overViewData.totalVisitors | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayVisitors | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayVisitors | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总分享数</strong>
+                                    <em>{{overViewData.totalShares | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayShares | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayShares | _wf}}人</i></em>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="overview_num">
+                                    <strong>总有效用户</strong>
+                                    <em>{{overViewData.totalUsers | _wf}}</em>
+                                </div>
+                                <p class="overview_day">
+                                    <span>今日:<i>{{overViewData.todayUsers | _wf}}人</i></span><em>昨日:<i>{{overViewData.yestodayUsers | _wf}}人</i></em>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="overview_tit">数据趋势：</div>
+                    <div class="overview_map_nav">
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==0}" ng-click="getOverViewTrendData(0, '访问量')">访问量</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==1}" ng-click="getOverViewTrendData(1, '访客量')">访客量</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==2}" ng-click="getOverViewTrendData(2, '分享数')">分享数</span>
+                        <span ng-class="{overview_map_nav_show: overViewMapTab.type==3}" ng-click="getOverViewTrendData(3, '有效用户')">有效用户</span>
+                        <input type="text" class="form-control dateIcon" id="overViewTime" placeholder="活动时间" />
+                        <em>{{overViewMapTab.name}}趋势图</em>
+                    </div>
+                    <div class="overview_map" id="mainechart"></div>
+                </div>
+                <div class="browsing_con signUp-popup" ng-if="browsingShow==2">
+                    <div class="reInfos" ng-if="browsing_lineData.activityType==4" style="width:100%;text-align: left;padding-left:10px;margin: 0 0 10px;">
+                        <span class="icon_warning"></span>由于易收宝升级，2020年11月2日11:10之后参与拼团的用户，拼团失败后，支付金额将自动原路退回给用户，不需要线下单独退款。
+                    </div>
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch list-clicks="SearchData_browsing(n)" list-keyup="SearchData_browsing(n)" list-data="{{searchData_browsing}}" select-name="{{selectInfoNameId_browsing}}"></kindsearch>
+                        </li>
+                        <li ng-show="browsing_lineData.activityType==6">
+                            <my-select my-id="courseChoose" list-name="课程" list-default="{{deafautPrizeId}}" list-data="{{courseDataList}}" list-field="prizeName" list-click="searchByHandle(n)" list-search="true" list-sort="false"></my-select>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="potentialCustomerType == 1" ng-click="changeState($event, 1)">新潜客
+                            </label>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="potentialCustomerType == 2" ng-click="changeState($event, 2)">老潜客
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==3">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 0" ng-click="changeState($event, 5)">未成功
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==3">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 1" ng-click="changeState($event, 6)">成功
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==2 || browsing_lineData.activityType==3">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="prizeUseStatus == 0" ng-click="changeState($event, 3)">未使用
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==2 || browsing_lineData.activityType==3">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="prizeUseStatus == 1" ng-click="changeState($event, 4)">已使用
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==4">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 0" ng-click="changeState($event, 5)">拼团中
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==4">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 1" ng-click="changeState($event, 6)">拼团成功
+                            </label>
+                        </li>
+                        <li ng-if="browsing_lineData.activityType==4">
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 2" ng-click="changeState($event, 7)">拼团失败
+                            </label>
+                        </li>
+                        <li class="common_tab_btn" style="float: right;" ng-if="browsing_lineData.activityType==5" ng-click="browsing_operate(null, 1)">导出</li>
+                        <li ng-click="actData_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                    </ul>
+                    <div class="popup_line browsing_table_header" ng-if="browsing_lineData.activityType==2">
+                        <!--                        <span>奖品有效期至：{{browsing_lineData.prizeEndTime | yznDate:'yyyy年MM月dd日':'MM:ss'}}</span>-->
+                        <span>活动名额{{browsing_lineData.prizeNumber}}份</span>
+                        <span>奖品原价{{browsing_lineData.originalPrice}}元</span>
+                        <span>底价{{browsing_lineData.floorPrice}}元</span>
+                        <span>砍价次数{{browsing_lineData.totalNumber}}次</span>
+                    </div>
+                    <div class="popup_line browsing_table_header" ng-if="browsing_lineData.activityType==3">
+                        <!--                        <span>奖品有效期至：{{browsing_lineData.prizeEndTime | yznDate:'yyyy年MM月dd日':'MM:ss'}}</span>-->
+                        <span>活动名额{{browsing_lineData.prizeNumber}}份</span>
+                        <span>奖品原价{{browsing_lineData.originalPrice}}元</span>
+                        <span>活动价{{browsing_lineData.floorPrice}}元</span>
+                        <span>助力包数{{browsing_lineData.totalNumber}}个</span>
+                        <span>单次最大助力包数{{browsing_lineData.selfNumber}}个</span>
+                    </div>
+                    <div class="popup_line browsing_table_header" ng-if="browsing_lineData.activityType==4">
+                        <span>活动名额{{browsing_lineData.prizeNumber}}份，{{browsing_lineData.successNumber}}人成团，成团数上限{{browsing_lineData.selfNumber}}，成团价格{{browsing_lineData.floorPrice}}元{{browsing_lineData.prepayment?('，预付'+ browsing_lineData.prepayment + '元'): ''}}</span>
+                    </div>
+                    <div class="metadata metadatadown" ng-if="overViewDataList.length <= 0"><span class="font_metadata">没有相关数据</span></div>
+                    <div class="popup_table" ng-if="browsing_lineData.activityType==6 && overViewDataList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>联系电话</th>
+                                    <th>参与时间</th>
+                                    <th style="width: 40%;">购买课程</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td><span class="clickText" ng-click="browsing_showPeoInfo(a, 'yuyue')">{{a.potentialCustomer.name}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <!--                                        <td style="width: 158px;">{{a.age}}</td>-->
+                                        <td>{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td>{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 40%;">[{{a.prizeName}}] {{a.chargeType == 2?(a.buyTime+"天"):(a.buyTime +"课时")}} {{a.activityPrice | _qf}}元</td>
+                                        <td>
+                                            <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})">查看订单</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="browsing_lineData.activityType==5 && overViewDataList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 214px;">姓名</th>
+                                    <!--                                    <th style="width: 158px;">年龄</th>-->
+                                    <th style="width: 218px;">联系电话</th>
+                                    <th>提交时间</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td style="width: 214px;"><span class="clickText" ng-click="browsing_showPeoInfo(a, 'yuyue')">{{a.name}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <!--                                        <td style="width: 158px;">{{a.age}}</td>-->
+                                        <td style="width: 218px;">{{a.potentialCustomerParentPhone}}</td>
+                                        <td>{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="browsing_lineData.activityType==2 && overViewDataList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 127px;">姓名</th>
+                                    <!--                                    <th style="width: 80px;">年龄</th>-->
+                                    <th style="width: 124px;">联系电话</th>
+                                    <th style="width: 140px;">参与时间</th>
+                                    <th style="width: 115px;">已砍次数</th>
+                                    <th style="width: 115px;">已砍金额</th>
+                                    <th style="width: 115px;">使用状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td style="width: 127px;"><span class="clickText" ng-click="browsing_showPeoInfo(a, 'kanjia')">{{a.potentialCustomer.name}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <!--                                        <td style="width: 80px;">{{a.potentialCustomer.age}}</td>-->
+                                        <td style="width: 124px;">{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 140px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 115px;">{{a.downNumber}}</td>
+                                        <td style="width: 115px;">{{(a.originalPrice - a.currentPrice).toFixed(2)}}</td>
+                                        <td style="width: 115px;">{{a.prizeUseStatus==0?'未使用':'已使用'}}</td>
+                                        <td>
+                                            <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.prizeUseStatus==1 && a.prizeOnlineStatus==1">查看订单</span>
+                                            <span class="clickText" ng-if="a.prizeUseStatus==0 && a.prizeOnlineStatus==0" ng-click="changeStatus(a)">更改状态</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="browsing_lineData.activityType==3 && overViewDataList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 127px;">姓名</th>
+                                    <!--                                    <th style="width: 80px;">年龄</th>-->
+                                    <th style="width: 124px;">联系电话</th>
+                                    <th style="width: 140px;">参与时间</th>
+                                    <th style="width: 115px;">剩余包数</th>
+                                    <th style="width: 115px;">是否成功</th>
+                                    <th style="width: 115px;">使用状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td style="width: 127px;"><span class="clickText" ng-click="browsing_showPeoInfo(a, 'kanjia')">{{a.potentialCustomer.name}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <!--                                        <td style="width: 80px;">{{a.potentialCustomer.age}}</td>-->
+                                        <td style="width: 124px;">{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 140px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 115px;">{{a.totalNumber - a.currentNumber}}</td>
+                                        <td style="width: 115px;">{{a.activitySuccess == 0? '否': '是'}}</td>
+                                        <td style="width: 115px;" ng-if="a.activitySuccess == 0"></td>
+                                        <td style="width: 115px;" ng-if="a.activitySuccess == 1">{{a.prizeUseStatus==0?'未使用':'已使用'}}</td>
+                                        <td>
+                                            <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess == 1 && a.prizeUseStatus == 1">查看订单</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="browsing_lineData.activityType==4 && overViewDataList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 190px; padding-left: 44px;">姓名</th>
+                                    <!--                                    <th style="width: 125px;">年龄</th>-->
+                                    <th style="width: 170px;">联系电话</th>
+                                    <th style="width: 185px;">参与时间</th>
+                                    <th style="width: 125px;">拼团状态</th>
+                                    <th style="text-align: center;">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="a in overViewDataList track by $index">
+                                        <td style="width: 190px; padding-left: 44px;"><span class="clickText" ng-click="browsing_showPeoInfo(a, 'kanjia')">{{a.potentialCustomer.name}}</span><span class="browsing_peo_icon" ng-if="a.potentialCustomerType==1">新</span></td>
+                                        <!--                                        <td style="width: 125px;">{{a.potentialCustomer.age}}</td>-->
+                                        <td style="width: 170px;">{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 185px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 125px;"><span ng-if="a.groupStatus==0">拼团中</span><span ng-if="a.groupStatus==1">拼团成功</span><span ng-if="a.groupStatus==2">{{a.refundsStatus == 1?'拼团失败(已退款)':'拼团失败'}}</span><span ng-if="a.groupStatus==3">拼团失败（手动成单）</span></td>
+                                        <td class="operate overflow-normal textAlignCenter" ng-if="browsing_lineData.activityStatus != 2">
+                                            <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                        </td>
+                                        <td class="operate overflow-normal textAlignCenter" ng-if="browsing_lineData.activityStatus == 2">
+                                            <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                            <span class="clickText" ng-click="browsing_viewOrder(2, a)" ng-if="a.groupStatus==2 && !a.refundsStatus">退款</span>
+                                            <!-- <span class="clickText" ng-click="browsing_viewOrder(3, a)" ng-if="a.activitySuccess == 0">手动成单</span> -->
+                                            <span ng-if="a.groupStatus==2 && a.refundsStatus == 1" class="clickText" ng-click="browsing_viewOrder(4, a)">退款详情</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="browsing_con" ng-if="browsingShow==3">
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch list-clicks="SearchData_browsing(n)" list-keyup="SearchData_browsing(n)" list-data="{{searchData_browsing}}" select-name="{{selectInfoNameId_browsing}}"></kindsearch>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 0" ng-click="changeState($event, 5)">拼团中
+                            </label>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 1" ng-click="changeState($event, 6)">拼团成功
+                            </label>
+                        </li>
+                        <li>
+                            <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="groupStatus == 2" ng-click="changeState($event, 7)">拼团失败
+                            </label>
+                        </li>
+                        <li ng-click="actData_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 190px; padding-left: 44px;">团编号</th>
+                                    <th style="width: 125px;">团长</th>
+                                    <th style="width: 170px;">开团时间</th>
+                                    <th style="width: 185px;">还差人数</th>
+                                    <th style="width: 125px;">拼团状态</th>
+                                    <th style="text-align: center;">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!overViewDataList.length">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="a in overViewDataList">
+                                        <td style="width: 190px; padding-left: 44px;">{{a.groupId}}</td>
+                                        <td style="width: 125px;">{{a.potentialCustomer.name}}</td>
+                                        <td style="width: 170px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 185px;">{{a.totalNumber - a.currentNumber}}</td>
+                                        <td style="width: 125px;"><span ng-if="a.groupStatus==0">拼团中</span><span ng-if="a.groupStatus==1">拼团成功</span><span ng-if="a.groupStatus==2">拼团失败</span><span ng-if="a.groupStatus==3">拼团失败</span></td>
+                                        <td class="operate overflow-normal textAlignCenter">
+                                            <span style="cursor: pointer;" ng-click="browsingFun.operate(1, a)">查看详情</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="browsing_con" ng-if="browsingShow==4">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 190px; padding-left: 44px;">课程名称</th>
+                                    <th style="width: 125px;">课时/天数</th>
+                                    <th style="width: 170px;">活动价</th>
+                                    <th style="width: 185px;">活动名额</th>
+                                    <th style="width: 125px;">已售（份数）</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!courseDataList.length">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="a in courseDataList">
+                                        <td style="width: 190px; padding-left: 44px;">{{a.prizeName}}</td>
+                                        <td style="width: 125px;">{{a.buyTime}}{{a.feeType == 2?"天":"课时"}}</td>
+                                        <td style="width: 170px;">{{a.activityPrice | _qf}}</td>
+                                        <td style="width: 185px;">{{a.activityPlaces}}</td>
+                                        <td style="width: 125px;">
+                                            <span ng-click="gototheUserList(a)" ng-class="{true:'clickText'}[a.soldCopies>0]">{{a.soldCopies}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="browsing_con" ng-if="browsingShow==5">
+                    <ul class="ul_left browsing_con_sel_li clearfix" style="margin-bottom: 10px;">
+                        <li>
+                            <kindsearch class="vagueSearch" list-clicks="SearchData_browsing(n,'zhuanJieshao')" list-keyup="SearchData_browsing(n,'zhuanJieshao')" list-data="{{searchData_browsing_jies}}" select-name="{{selectInfoNameId_browsing_jies}}" select-input="false"></kindsearch>
+                        </li>
+                        <li class="common_tab_btn" style="float: right;" ng-if="browsing_lineData.activityType==5" ng-click="browsing_operate(null, 2)">导出</li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">推荐人姓名</th>
+                                    <th style="width: 20%;">联系方式</th>
+                                    <th style="width: 170px;">参与推广时间</th>
+                                    <th style="width: 20%;">浏览人次</th>
+                                    <th style="width: 20%;">有效邀请/人</th>
+                                    <th style="width: 20%;">推荐报课/人</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 934px; max-height: 280px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!referralList.length">
+                                        <td colspan="6" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                    <tr ng-repeat="x in referralList">
+                                        <td style="width: 20%;">{{x.studentName}}</td>
+                                        <td style="width: 20%;">{{x.phoneNum}}</td>
+                                        <td style="width: 170px;">{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                        <td style="width: 20%;">{{x.views}}</td>
+                                        <td style="width: 20%;" class="clickText" ng-click="x.inviteNumber>0?operatePop(x,3):return;">{{x.inviteNumber}}</td>
+                                        <td style="width: 20%;" class="clickText" ng-click="x.recommendedNumber?operatePop(x,4):return;">{{x.recommendedNumber}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagitionDiv mr_bm_10" style="margin-top: 10px;" ng-if="browsingShow==2 || browsingShow==3 || browsingShow==5" ng-hide="overViewDataList.length <= 0">
+                    <div class="M-box3 browsing_box3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="popup_btn">
+            <button class="btn sure" ng-click="closeLayer('dataBrowsing')" type="button">关闭</button>
+        </div>
+    </div>
+</div>
+<!--有效邀请-->
+<div class="popup_ validInvit" id="validInvit">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>提交时间</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!youxiaoList || youxiaoList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="youxiaoList && youxiaoList.length > 0">
+                            <tr ng-repeat="x in youxiaoList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--推荐报课-->
+<div class="popup_ referralSignup" id="referralSignup">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>报课时间</th>
+                            <th>报课金额</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!tuijianList || tuijianList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="tuijianList && tuijianList.length > 0">
+                            <tr ng-repeat="x in tuijianList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>￥{{x.amount|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--退款详情-->
+<div class="popup_ groupFailDetail" id="groupFailDetail">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款金额：</label>
+                <div class="col-xs-9 line28">
+                    ¥ {{(0 > groupFailDetail.paymentMoney)?0-groupFailDetail.paymentMoney:groupFailDetail.paymentMoney | _qf}} </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款状态：</label>
+                <div class="col-xs-9 line28">
+                    已退款
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款时间：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentTime | yznDate:'yyyy-MM-dd HH:mm'}}
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">退款方式：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentMode}}
+                </div>
+            </div>
+            <div class="popup_line">
+                <label class="form-label" style="width:85px">交易号：</label>
+                <div class="col-xs-9 line28">
+                    {{groupFailDetail.paymentBillId}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--查看拼团详情-->
+<div class="popup_" id="show_dataBrowsing_detail">
+    <div class="popup_content">
+        <div class="popup_form_content" style="height: 480px;">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_table">
+                    <table class="popup_table_head">
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">姓名</th>
+                                <th style="width: 75px;">年龄</th>
+                                <th style="width: 150px;">联系电话</th>
+                                <th style="width: 150px;">参与时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="width: 735px; max-height: 280px;">
+                        <table>
+                            <tbody class="roll_tbody">
+                                <tr ng-if="!browsingPTList.length">
+                                    <td colspan="5" style="text-align: center;">暂无数据</td>
+                                </tr>
+                                <tr ng-repeat="a in browsingPTList">
+                                    <td style="width: 150px;"><span>{{a.potentialCustomer.name}}</span><span style="width: 40px;" class="browsing_peo_icon" ng-if="a.headFlag==1">团长</span></td>
+                                    <td style="width: 75px;">{{a.potentialCustomer.age}}</td>
+                                    <td style="width: 150px;">{{a.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                    <td style="width: 150px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td class="operate overflow-normal" ng-if="browsing_lineData.activityStatus != 2">
+                                        <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                    </td>
+                                    <td class="operate overflow-normal" ng-if="browsing_lineData.activityStatus == 2">
+                                        <span class="clickText" ng-click="browsing_viewOrder('orderInfo', '960px', {data: a.studentOrder, page: '订单管理', 'sourceType': 0})" ng-if="a.activitySuccess != 0">查看订单</span>
+                                        <!-- <span class="clickText" ng-click="browsing_viewOrder(2, a)" ng-if="a.activitySuccess == 0">退款</span> -->
+                                        <!-- <span class="clickText" ng-click="browsing_viewOrder(3, a)" ng-if="a.activitySuccess == 0">手动成单</span> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

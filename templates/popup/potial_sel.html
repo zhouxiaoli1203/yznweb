@@ -1,0 +1,101 @@
+<!--潜客选择-->
+<div class="popup_ select_pop potial_sel" id="potial_sel">
+    <h6>{{props.form && props.form == 'survey'?'选择潜客':'潜客公池'}}<span ng-click="closePopup('potial_sel')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="selectPtial_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="searchHead">
+                            <li ng-show="!props.form">
+                                <input type="text" style="width:200px;" id="searchByDatePop" class="form-control dateIcon" placeholder="请选择时间段"  autocomplete="off" />
+                            </li>
+                            <li ng-show="props.form && props.form == 'survey'">
+                                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"  select-input="false"></kindsearch>
+                            </li>
+                            <li ng-show="!props.form">
+                                <my-select list-name="状态" list-data="{{screen_status}}" list-field="name" list-click="click_status(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="意向课程" list-data="{{screen_course}}" list-field="courseName" list-click="click_course(n)" list-search="true"></my-select>
+                            </li>
+                            <li ng-show="props.form && props.form == 'survey'">
+                                <my-select list-name="意向度" list-data="{{intentList}}" list-field="name" list-click="searchByIntent(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                               <search-age age-id="screen_potiental" age-click="click_age(n)"></search-age>
+                            </li>
+                            <li>
+                                <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="userName" list-click="click_adviser(n)" list-search="true"></my-select>
+                            </li>
+                            <li ng-show="props.form && props.form == 'survey'">
+                                <my-select list-name="标签" list-data="{{markList}}" list-field="name" list-click="click_mark(n)" list-sort="false" list-search="true"></my-select>
+                            </li>
+                            <li ng-show="!props.form">
+                                <my-select list-name="渠道类型" list-data="{{screen_chanType}}" list-field="channelTypeName" list-click="click_chanType(n)" list-sort="false"></my-select>
+                            </li>
+                            <li ng-show="isActivity">
+                                <my-select list-name="活动" list-data="{{activityList}}" list-field="activityName" list-click="click_activity(n)" list-sort="true" list-search="true"></my-select>
+                            </li>
+                            <li ng-show="hasSecondType">
+                                <my-select list-name="来源渠道" list-data="{{channelList}}" list-field="channelName" list-click="click_channel(n)" list-sort="false"></my-select>
+                            </li>
+                            <li ng-show="!props.form">
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="$sign" ng-click="completeSign($event)">完成签约
+                                </label>
+                            </li>
+                            <li ng-show="!props.form">
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="noneGuwen" ng-click="checkNoneGuwen($event)">无顾问
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="noChannelStatus" ng-change="checkNoneChanel()">无渠道
+                                </label>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="click_reset()">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"checkbox"},{"name":"姓名","width":"13%"},{"name":"年龄","width":"13%"},{"name":"联系方式","width":"13%"},{"name":"顾问","width":"13%"},{"name":"分配时间","width":"30%","issort":true,"sort":"desc"},{"name":"状态","width":"13%"}]' che-clicks="potial_checkboxClick(data)" list-clicks="potial_sortCllict(data)"></thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;max-height:320px;" id="selectPotialList">
+                            <table style="width: 915px;">
+                                <tbody class="roll_tbody" ng-if="!potialList">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="potialList">
+                                    <tr ng-repeat="x in potialList" ng-click="sel_potial(x)">
+                                        <td style="text-align: center;"><input type="checkbox" ng-checked="x.hasChecked" /></td>
+                                        <td style="width: 13%;">{{x.name}}</td>
+                                        <td style="width: 13%;">{{x.age}}岁</td>
+                                        <td style="width: 13%;">{{x.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 13%;">{{x.oaUserName}}</td>
+                                        <td style="width: 30%;">{{x.allotTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                        <td style="width: 13%;">{{$returnPotentialStatus(x.potentialCustomerStatus)}}</td>
+                                        <!--<td style="width: 13%;" ng-if="x.potentialCustomerStatus=='1'">流失客户</td>
+                                        <td style="width: 13%;" ng-if="x.potentialCustomerStatus=='2'">完成签约</td>
+                                        <td style="width: 13%;" ng-if="x.potentialCustomerStatus=='3'">冻结客户</td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 potialSel"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params">已选中<span>{{params_potials.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('potial_sel')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_potial()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

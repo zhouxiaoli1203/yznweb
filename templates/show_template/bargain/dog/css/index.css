@@ -1,0 +1,366 @@
+@charset "utf-8";
+.d_con_1 {
+    position: relative;
+    width: 100%;
+    height: 12.06rem;
+    background: url("../img/bac_1.jpg") no-repeat;
+    background-size: contain;
+}
+.d_ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 12.06rem;
+    padding-top: 0.4rem;
+    background: url("../img/ribbon.gif") no-repeat;
+    background-size: contain;
+}
+.d_peo {
+    padding-left: 0.95rem;
+    height: 0.95rem;
+}
+.d_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin-right: 0.18rem;
+    border-radius: 50%;
+}
+.d_peo_info {
+    float: left;
+    height: 0.95rem;
+    color: #FDF57C;
+    font-size: 0.28rem;
+    line-height: 0.32rem;
+}
+.d_title {
+    width: 6.71rem;
+    height: 3.06rem;
+    margin: 0.1rem auto 0;
+    padding-top: 1.04rem;
+    background: url("../img/d_title.png") no-repeat;
+    background-size: contain;
+}
+.d_title p {
+    width: 4.3rem;
+    margin:  0 auto;
+    color: #f7d719;
+    text-align: center;
+    font-size: 0.42rem;
+    font-weight: bold;
+}
+.d_window {
+    position: relative;
+    width: 100%;
+    height: 5rem;
+}
+.d_dog {
+    position: relative;
+    margin: -0.1rem 1rem 0;
+    height: 3.4rem;
+}
+.d_dog span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2.4rem;
+    height: 3.4rem;
+}
+.d_dog .dog_sta_1 {
+    background: url("../img/dog1.png") no-repeat;
+    background-size: contain;
+}
+.d_dog .dog_sta_2 {
+    background: url("../img/dog2.png") no-repeat;
+    background-size: contain;
+}
+.d_dog .dog_sta_3 {
+    background: url("../img/dog3.png") no-repeat;
+    background-size: contain;
+}
+.d_dog .dog_sta_4 {
+    background: url("../img/dog1.png") no-repeat;
+    background-size: contain;
+}
+.d_dog .dog_sta_5 {
+    background: url("../img/dog4.png") no-repeat;
+    background-size: contain;
+}
+.d_win_cloud {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4.4rem;
+    background: url("../img/cloud_win.png") no-repeat;
+    background-size: contain;
+}
+.d_bone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.72rem;
+    height: 0.62rem;
+    background: url("../img/bone.png") no-repeat;
+    background-size: contain;
+}
+.d_bone:nth-child(3) {
+    top: 2.04rem;
+    left: 0.84rem;
+}
+.d_bone:nth-child(4) {
+    top: 2.25rem;
+    left: 1.94rem;
+}
+.d_bone:nth-child(5) {
+    top: 2.18rem;
+    left: 2.82rem;
+}
+.d_bone:nth-child(6) {
+    top: 2.01rem;
+    left: 3.49rem;
+}
+.d_bone:nth-child(7) {
+    top: 2.07rem;
+    left: 4.32rem;
+}
+.d_bone:nth-child(8) {
+    top: 2.16rem;
+    left: 5.22rem;
+}
+.d_bone:nth-child(9) {
+    top: 2.16rem;
+    left: 6.12rem;
+}
+.d_btn_con {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3.1rem;
+    background: url("../img/house.png") no-repeat;
+    background-size: contain;
+}
+.d_btn {
+    display: block;
+    width: 2.7rem;
+    height: 0.9rem;
+    margin: 0.8rem auto 0;
+    background: url("../img/btn1.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+.d_bone_hide {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+.d_bone_hideing {
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0)
+}
+.win_time {
+    width: 3.71rem;
+    height: 1.07rem;
+    margin: 2.8rem auto;
+    padding-top: 0.1rem;
+    color: #fdf57b;
+    font-size: 0.28rem;
+    text-align: center;
+}
+.win_time span {
+    display: inline-block;
+    color: #fff;
+    margin: 0 0.1rem;
+}
+.d_con_2 {
+    width: 100%;
+    padding-top: 3rem;
+    background: #E3473A url("../img/bac_2.png");
+    background-size: 100% auto;
+}
+.d_con_3 {
+    position: relative;
+    width: 6.8rem;
+    margin: 0 auto;
+    background-color: #FF9708;
+    border-radius: 0.2rem;
+    padding: 0.18rem;
+}
+.d_con_4 {
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    background: #500204 url("../img/bac_2.png");
+    background-size: 100% auto;
+}
+.d_mod_title {
+    position: absolute;
+    top: -2.65rem;
+    left: 0;
+    width: 6.78rem;
+    height: 2.74rem;
+    background: url("../img/mod_title.png") no-repeat;
+    background-size: contain;
+}
+.d_con_tit {
+    width: 5rem;
+    height: 0.95rem;
+    margin: 0 auto;
+}
+.tit1 {
+    background: url("../img/tit1.png") center center no-repeat;
+    background-size: contain;
+}
+.tit2 {
+    background: url("../img/tit2.png") center center no-repeat;
+    background-size: contain;
+}
+.tit3 {
+    background: url("../img/tit3.png") center center no-repeat;
+    background-size: contain;
+}
+.tit4 {
+    background: url("../img/tit4.png") center center no-repeat;
+    background-size: contain;
+}
+.tit5 {
+    background: url("../img/tit5.png") center center no-repeat;
+    background-size: contain;
+}
+.d_prizeInfo {
+    position: relative;
+    width: 6rem;
+    margin: 0 auto 0.2rem;
+    padding: 0.24rem;
+    background-color: #d92726;
+    color: #ffcc87;
+    border-radius: 0.08rem;
+    font-size: 0.28rem;
+}
+.d_prizeInfo p, .d_prizeInfo img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.1rem;
+}
+.d_help, .d_rank {
+    min-height: 4.6rem;
+}
+.d_nodata {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 4.6rem;
+    text-align: center;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #ffcc87;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.d_cloud {
+    position: absolute;
+    width: 1.45rem;
+    height: 0.9rem;
+    background: url("../img/clouds.png") no-repeat;
+    background-size: contain;
+    z-index: 9;
+}
+.d_cloud_1 {
+    right: 0;
+    top: -0.46rem;
+}
+.d_cloud_2 {
+    top: 5.5rem;
+    right: -0.3rem;
+}
+.d_cloud_3 {
+    top: 7.54rem;
+    left: -0.6rem;
+}
+.d_cloud_4 {
+    top: 0.5rem;
+    right: 0.85rem;
+}
+.d_cloud_5 {
+    bottom: 0.8rem;
+    left: 0.2rem;
+}
+.d_cloud_6 {
+    bottom: 0.4rem;
+    right: 0.1rem;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

@@ -1,0 +1,309 @@
+<!--查看引导海报-->
+<div class="popup_ checkStudent_pop" id="checkStudent_pop">
+    <div class="popup_content" style="padding-top:27px;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll clearfix" isScroll="false" style="padding:0 60px 25px;">
+                    <div class="pull-left">
+                        <div class="textAlignCenter f14" style="margin-bottom:8px;">前台展示二维码</div>
+                        <div style="width: 265px;height:380px;overflow-y: auto;overflow-x: hidden;position: relative;">
+                            <img style="width: 100%;" src="./static/img/qiantai.png" />
+                            <img id="PosterCode1" />
+                        </div>
+                        <div class="footer mt20 clearfix" style="position: relative;">
+                            <div class="pull-left textAlignLf">
+                                <p class="line20">使用说明：</p>
+                                <p class="line20">下载后可打印放在前台，快速引导家<br>长微信扫码绑定家长端。</p>
+                            </div>
+                            <div class="pull-right" style="position: absolute;right: 0;bottom:0;">
+                                <div style="width:64px;height:24px;line-height:24px;text-align:center;color:#fff;background:rgba(255,89,94,1);border-radius:2px; cursor:pointer;" ng-click="saveThePoster()">下载</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <div class="textAlignCenter f14" style="margin-bottom:8px;">微信分享海报</div>
+                        <div style="width: 265px;height:380px;overflow-y: auto;overflow-x: hidden;position: relative;">
+                            <img style="width: 100%;" src="./static/img/haibao.png" />
+                            <img id="PosterCode" />
+                        </div>
+                        <p class="f12 c999 textAlignCenter">（滚动查看完整海报）</p>
+                        <div class="footer mt20 clearfix" style="position: relative;">
+                            <div class="pull-left textAlignLf">
+                                <p class="line20">使用说明：</p>
+                                <p class="line20">微信扫一扫右侧二维码，分享链接<br>或长按保存图片发送给家长。</p>
+                            </div>
+                            <div class="pull-right" style="position: absolute;right: 0;bottom:0;">
+                                <div style="width:64px;height:64px;" id="PosterCodeH5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav_big(1)" ng-class="{tab_nav_show: studNavJud_big==1}">学员列表</span>
+        <span ng-click="switchStudNav_big(2)" ng-class="{tab_nav_show: studNavJud_big==2}">报课明细</span>
+    </div>
+    <div class="second_nav" ng-show="studNavJud_big==1">
+        <span ng-click="switchStudNav(1)" ng-class="{show_sp: studNavJud==1}">在读</span>
+        <span ng-click="switchStudNav(2)" ng-class="{show_sp: studNavJud==2}">历史</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" select-id="studentSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li ng-show="studNavJud == 2">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择结业时间" autocomplete="off">
+            </li>
+            <li class="common_tab_libtn" ng-show="addPotientalPop_daochu && studNavJud == 1">
+                <div class="common_tab_btn" ng-click="export_config()"><i class="icon_export"></i>导出学员</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="addPotientalPop_daoru">
+                <div class="common_tab_btn" ng-click="goCommonPop('import-pop','import_popup','860px',{page:'学员'})"><i class="icon_import"></i>导入学员</div>
+                <!--<div class="common_tab_btn" ng-click="load_student()"><i class="icon_import"></i>导入学员</div>-->
+            </li>
+            <li class="common_tab_libtn" ng-show="addPotientalPop">
+                <div class="common_tab_btn" ng-click="newStudSignup()"><i class="icon_newStudSign"></i>新生报名</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="addPotientalPop">
+                <div class="common_tab_btn fontRed_BgWhite" ng-click="bindParent()">自助绑定家长端</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="changeYear(n)" list-all="no" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="changeTerm(n)" list-all="no" list-sort="false"></my-select>
+            </li>
+            <li ng-show="studNavJud == 1">
+                <my-select list-name="班级" list-data="{{screen_class}}" list-field="className" list-click="changeClass(n)" list-search="true"></my-select>
+            </li>
+            <!--<li ng-show="studNavJud == 1">
+                <my-select list-name="剩余课时" list-data="{{screen_classHour}}" list-field="field" list-click="changeSurplusTime(n)" list-sort="false"></my-select>
+            </li>-->
+            <li>
+                <my-select my-id="screen_birthMonth" list-name="学员生日" list-data="{{screen_months}}" list-field="name" list-click="changeMonth(n)" list-sort="false"></my-select>
+            </li>
+            <li>
+                <search-age age-id="student" age-click="searchByAge(n)"></search-age>
+            </li>
+            <li>
+                <my-select list-name="年级" list-data="{{screen_grades}}" list-field="name" list-click="changeGrade(n)" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="标签" list-data="{{markList}}" list-field="name" list-click="searchByMark(n)" list-sort="false" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="学校" list-data="{{schoolList}}" list-field="schoolName" list-click="searchBySchool(n)" list-sort="false" list-search="true"></my-select>
+            </li>
+            <li ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="qianke == 1" ng-click="changeQianke($event,1)">欠课
+                </label>
+            </li>
+            <li ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="dividClass" ng-change="changeByfenban()">待分班
+                </label>
+            </li>
+            <li ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="onClass" ng-change="changeByOnclass()">已分班
+                </label>
+            </li>
+            <!--<li class="part_leftLine" ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="an_keshi" ng-click="changeType(true)">按课时
+                </label>
+            </li>
+            <li ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="an_tian" ng-click="changeType(false)">按月
+                </label>
+            </li>-->
+            <li class="part_leftLine" ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="xiuke" ng-click="changeBind()">已休课
+                </label>
+            </li>
+            <li class="part_leftLine" ng-show="studNavJud == 1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="bindingWxApp" ng-click="changeBind()">未绑定服务号通知
+                </label>
+            </li>
+
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content table-box" ng-show="studNavJud == 1">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-id="studentHead" my-thead="{{nameListThead_}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="StudentList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="{{nameListThead_.length}}">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" my-id="studentTdChange" ng-show="StudentList" my-tr='<tr ng-repeat="x in StudentList">' my-td td-head="{{checkedHead}}" td-list="{{nameListThead}}">
+                    <!--<tr  ng-repeat="x in StudentList">
+                        <td></td>
+                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                        <td ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)">{{x.potentialCustomerParentPhone}}
+                            <div class="openPop"  ng-show="$index == showInd">
+                                <span class="popMark"></span>
+                                <ul class="popContent">
+                                    <li ng-if="x.potentialCustomerParentTowPhone">
+                                        <span>{{x.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                        <span>{{x.typeTwoPhone}}&nbsp;</span>
+                                        <span>{{x.potentialCustomerParentTowName}}</span>
+                                    </li>
+                                    <li ng-if="x.potentialCustomerParentThreePhone">
+                                        <span>{{x.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                        <span>{{x.typeThreePhone}}&nbsp;</span>
+                                        <span>{{x.potentialCustomerParentThreeName}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="remarks overflow-normal">
+                            <remark-view view-data="{{x.potentialCustomerDesc}}"></remark-view>
+                            <remark-edit edit-id="{{x.potentialCustomerId}}" ng-show="addPotientalPop" edit-title="备注" edit-text="{{x.potentialCustomerDesc}}" edit-length="100" edit-otext="{{x.potentialCustomerDesc}}" edit-click="editRemark(n)"></remark-edit>
+                        </td>
+                        <td class="textAlignCenter"><span ng-if="x.wxAppId"><img src="static/img/bindWeixin.png" alt="" /></span></td>
+                        <td class="textAlignCenter">{{x.dater}}</td>
+                        <td class="textAlignRt">{{an_tian?(x.buyAllDateNum+"天"):(x.buyAllTime|number:2)}}</td>
+                        <td class="textAlignRt">{{an_tian?(x.giveAllDateNum+"天"):(x.giveTime|number:2)}}</td>
+                        <td class="textAlignRt">{{an_tian?(x.buyAllDateNum + x.giveAllDateNum - x.totalSurplusDayNum+"天"):((x.buyAllTime + x.giveTime - x.totalSurplusTime)|number:2)}}</td>
+                        <td class="textAlignRt">{{an_tian?(x.totalSurplusDayNum+"天"):(x.totalSurplusTime|number:2)}}</td>
+                        <td></td>
+                    </tr>-->
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:210px;">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>联系方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in StudentList">
+                        <td ng-click="goCommonPop('pot-pop','potential_pop','1060px',{'page':page,'fromPage':'studentPop','item':x,'tab':1})" title='{{x.name}} {{x.nickname?"("+x.nickname+")":""}}'>
+                            <span class="clickText">{{x.name}}</span>
+                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                        </td>
+                        <td>
+                            <span>{{x.potentialCustomerParentPhone}}</span>
+                            <div ng-show="x.potentialCustomerParentTowPhone || x.potentialCustomerParentThreePhone" class="icon_more" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)">
+                                <div class="openPop" ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                            <span>{{x.typeTwoPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentTowName}}</span>
+                                        </li>
+                                        <li ng-if="x.potentialCustomerParentThreePhone">
+                                            <span>{{x.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                            <span>{{x.typeThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentThreeName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r">
+            <table style="width:130px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter cursor_pointer" ng-click="goCommonPop('custom-pop','customTable','560px',{data:checkedHead,customTagId:getHeads.customTagId,customTagType:3,callBackName:'学员表头-自定义'})">自定义显示列<i class="icon_setHead"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in StudentList">
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-show="addPotientalPop" ng-click="openSignUp(x)">报名</span>
+                            <span class="clickText" ng-show="addPotientalPop" ng-click="editStudent(x)">编辑</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="common_content" ng-show="studNavJud == 2">
+
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-id="studentHead_" my-thead="{{nameListThead2}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="StudentList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="StudentList">
+                    <tr ng-repeat="x in StudentList">
+                        <td ng-click="goCommonPop('pot-pop','potential_pop','1060px',{'page':page,'fromPage':'studentPop','item':x,'tab':1})">
+                            <span class="clickText">{{x.name}}</span>
+                            <span>{{x.nickname?"("+x.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                        </td>
+
+                        <!--<td>{{x.nickname}}</td>-->
+                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                        <td>{{x.grade| _grade }}</td>
+                        <td>
+                            <span>{{x.potentialCustomerParentPhone}}</span>
+                            <div ng-show="x.potentialCustomerParentTowPhone || x.potentialCustomerParentThreePhone" class="icon_more" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)">
+                                <div class="openPop" ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                            <span>{{x.typeTwoPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentTowName}}</span>
+                                        </li>
+                                        <li ng-if="x.potentialCustomerParentThreePhone">
+                                            <span>{{x.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                            <span>{{x.typeThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomerParentThreeName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="remarks overflow-normal">
+                            <remark-view view-data="{{x.potentialCustomerDesc}}"></remark-view>
+                            <remark-edit edit-id="{{x.potentialCustomerId}}" ng-show="addPotientalPop" edit-title="备注" edit-text="{{x.potentialCustomerDesc}}" edit-length="100" edit-otext="{{x.potentialCustomerDesc}}" edit-click="editRemark(n)"></remark-edit>
+                        </td>
+                        <td>{{x.lastContractTime | yznDate:'yyyy-MM-dd'}}</td>
+                        <td title="{{x.lastCourseName}}">{{x.lastCourseName}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-show="addPotientalPop" ng-click="openSignUp(x)">报名</span>
+                            <span class="clickText" ng-show="addPotientalPop" ng-click="editStudent(x)">编辑</span>
+                            <!--<span class="clickText" ng-click="deleteStud(x)">删除</span>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css?t=20180412" />
+    <link rel="stylesheet" type="text/css" href="css/index.css?t=20180412" />
+    <link rel="stylesheet" type="text/css" href="../libs/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../libs/libsCss/pagination.css" />
+    <title>帮助中心</title>
+</head>
+
+<body ng-app="myApp" ng-cloak hasscroll="true">
+    <div class="msk_img">
+        <div class="msk_img_con">
+
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="helpTop">
+            <img src="./img/top.png" ng-click="toIndex()" alt="" />
+        </div>
+        <div class="search">
+            <p>欢迎使用易知鸟帮助中心</p>
+            <input id="searchVal" type="text" placeholder="请输入搜索关键字" / ng-keydown="searchTit($event)">
+            <span ng-click="searchTit()"><i></i></span>
+        </div>
+        <div ui-view></div>
+    </div>
+</body>
+<script src="../static/js/config.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-ui-router.min.js"></script>
+<script src="../libs/libsJs/jquery.pagination.js"></script>
+<script src="../libs/bootstrap/bootstrap.min.js"></script>
+<script src="../libs/libsJs/jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module('myApp', ['ui.router']);
+
+    app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {      
+            $urlRouterProvider.otherwise('/index');
+            $stateProvider.state('index', {
+                url: '/index',
+                  //浏览器显示的地址
+                templateUrl: 'view/index.html',
+                  //模板，页面显示
+                controller: 'indexCtrl' //控制器，业务处理
+            }).state('manage', {
+                url: '/manage',
+                  //浏览器显示的地址
+                templateUrl: 'view/manage.html',
+                  //模板，页面显示
+                controller: 'manageCtrl' //控制器，业务处理
+            }).state('manage.results', {
+                url: '/results?wd',
+                  //浏览器显示的地址
+                templateUrl: 'view/results.html',
+                  //模板，页面显示
+                controller: 'resultsCtrl' //控制器，业务处理
+            }).state('manage.detail', {
+                url: '/detail?tid?T?qid',
+                  //浏览器显示的地址
+                templateUrl: 'view/detail.html',
+                  //模板，页面显示
+                controller: 'detailCtrl' //控制器，业务处理
+            })
+
+        }])
+        .run(['$rootScope', '$state', function($rootScope, $state) {
+            $rootScope.searchTit = function(evt) {
+
+                if (!$('#searchVal').val()) return;
+                if (evt) {
+                    var keycode = window.event ? evt.keyCode : evt.which; //获取按键编码  
+                    if (keycode == 13) {
+                        $state.go('manage.results', {
+                            wd: $('#searchVal').val()
+                        });
+                    }
+                } else {
+                    $state.go('manage.results', {
+                        wd: $('#searchVal').val()
+                    });
+                }
+            };
+            $rootScope.toIndex = function() {
+                $state.go('index');
+            }
+        }])
+        .controller('resultsCtrl', function($scope, $state, $rootScope, $stateParams) {
+            $('#searchVal').val($stateParams.wd);
+            var start = 0,
+                eachPage = 10,
+                pagerRender = false;
+            getQuesList(start);
+            //搜索结果获取
+            function getQuesList(start) {
+                if (!$stateParams.wd) return;
+                $.ajax({
+                    type: "get",
+                    url: CONFIG.URL + "/api/oa/help/listQuestion",
+                    async: true,
+                    data: {
+                        'helpCenterTitle': $stateParams.wd ? $stateParams.wd : undefined,
+                        'start': start,
+                        'count': eachPage,
+                        'clientType': 'pc',
+                    },
+                    success: function(res) {
+                        if (res.status == 200) {
+                            $('.titleWrapper.result').html('搜索<span> ‘' + $stateParams.wd + '’ </span>的相关结果' + '，共' + res.context.totalNum + '条')
+                            $scope.quesList = res.context.items;
+                            $scope.totalNum = res.context.totalNum;
+                            makePage(res.context.totalNum)
+                            $scope.$apply();
+                        }
+                    }
+                });
+            }
+            $scope.addQid = function(id) {
+                $state.go('manage.detail', {
+                    tid: null,
+                    qid: id,
+                    T: null
+                });
+            }
+
+            function makePage(total) {
+                if (pagerRender) {
+                    return;
+                } else {
+                    pagerRender = true;
+                }
+                var $M_box3 = $('.M-box3.classPage');
+                $M_box3.pagination({
+                    totalData: total || 0, // 数据总条数
+                    showData: eachPage, // 显示几条数据
+                    jump: true,
+                    coping: true,
+                    count: 2, // 当前页前后分页个数
+                    homePage: '首页',
+                    endPage: '末页',
+                    prevContent: '上页',
+                    nextContent: '下页',
+                    callback: function(api) {
+                        if (api.getCurrentEach() != eachPage) { //本地存储记下每页多少条
+                            eachPage = api.getCurrentEach();
+                        }
+                        start = (api.getCurrent() - 1) * eachPage; // 分页从0开始
+                        getQuesList(start); //回调
+                    }
+                });
+            }
+
+        })
+        .controller('detailCtrl', function($scope, $state, $rootScope, $stateParams) {
+            //tid:二级菜单id qid:问题id
+            if ($stateParams.tid) $rootScope.currentTid = $stateParams.tid;
+            //默认关闭拓展阅读
+            $scope.isCenteron = true;
+            //获取详情内容
+            $scope.getlistCenterRelation = function(id, fl) {
+                $.ajax({
+                    type: "get",
+                    url: CONFIG.URL + "/api/oa/help/listCenterRelation",
+                    async: true,
+                    data: {
+                        'helpCenterId': id,
+                    },
+                    success: function(res) {
+                        if (res.status == 200) {
+                            //是否需要定位左侧菜单
+                            if (fl) {
+                                $scope.findPosition(res.context);
+                            }
+                            $scope.relationInfo = res.context;
+                            $scope.$apply();
+                        }
+
+                    }
+                });
+            };
+            //获取问题列表
+            $scope.getQuesList = function(tid) {
+                $.ajax({
+                    type: "get",
+                    url: CONFIG.URL + "/api/oa/help/listQuestion",
+                    async: true,
+                    data: {
+                        'helpCenterParentId': tid || ($stateParams.tid ? $stateParams.tid : $rootScope.currentTid),
+                        'pageType': 0,
+                        'clientType': 'pc',
+                    },
+                    success: function(res) {
+                        if (res.status == 200) {
+                            $scope.quesList = res.context;
+                            $scope.$apply();
+                        }
+                    }
+                });
+            }
+
+            $scope.addQid = function(id) {
+                $state.go('manage.detail', {
+                    tid: $stateParams.tid ? $stateParams.tid : $rootScope.currentTid ? $rootScope.currentTid : null,
+                    qid: id ? id : null,
+                    T: null
+                });
+            };
+            //展示问题详情
+            $scope.showDetail = function(x) {
+                $scope.isCenteron = false;
+                $('.quesDetailWrapper').html(x.htmlCenterText);
+                $scope.helpCenterTitle3 = x.helpCenterTitle; //问题名称
+                //图片点击效果
+                $('.quesDetailWrapper p img').off().on('click', function(event) {
+                    $('.msk_img').show();
+                    $('.msk_img_con').html('<img src="' + $(this).attr('src') + '">');
+                });
+            }
+
+            //找寻组织
+            $scope.findPosition = function(x) {
+                angular.forEach($scope.firList, function(item) {
+                    if (item.helpCenterId == x.firstLevelId) {
+                        $scope.helpCenterTitle1 = item.helpCenterTitle;
+                        item.isopen = true;
+                        angular.forEach(item.helpCenterList, function(cell) {
+                            if (cell.helpCenterId == x.secondLevelId) {
+                                $scope.helpCenterTitle2 = cell.helpCenterTitle;
+                                $rootScope.currentTid = cell.helpCenterId;
+                            }
+                        })
+                        $scope.showDetail(x)
+                    } else {
+                        item.isopen = false;
+                    }
+                })
+            }
+
+            $scope.init = function() {
+                var title1 = '',
+                    title2 = '',
+                    temPid = '';
+                if (!$stateParams.tid) {
+                    angular.forEach($rootScope.firList, function(item, index) {
+                        if (!title2) title1 = item.helpCenterTitle;
+                        item.isopen = false;
+                        angular.forEach(item.helpCenterList, function(cell, index_) {
+                            if (index_ == 0 && index == 0) {
+                                title2 = cell.helpCenterTitle;
+                                item.isopen = true;
+                                temPid = cell.helpCenterId;
+                            }
+                        })
+                    })
+                } else {
+                    angular.forEach($rootScope.firList, function(item, index) {
+                        if (!title2) title1 = item.helpCenterTitle;
+                        item.isopen = false;
+                        angular.forEach(item.helpCenterList, function(cell, index_) {
+                            if (cell.helpCenterId == $stateParams.tid) {
+                                title2 = cell.helpCenterTitle;
+                                item.isopen = true;
+                            }
+                        })
+                    })
+                }
+
+                $scope.helpCenterTitle1 = title1; //一级菜单名称
+                $scope.helpCenterTitle2 = title2; //二级菜单名称
+                if ($stateParams.qid) {
+                    //存在问题id
+                    $scope.getlistCenterRelation($stateParams.qid, true)
+                } else {
+                    if (temPid) $rootScope.currentTid = temPid;
+                    //通过菜单点击需展示问题列表
+                    $scope.getQuesList(temPid);
+                }
+                if (timer) clearInterval(timer)
+            }
+            if ($rootScope.firList) {
+                $scope.init();
+            } else {
+                var timer = setInterval(function() {
+                    $scope.init();
+                }, 100)
+            }
+            $('.msk_img').on('click', function() {
+                $(this).hide();
+            })
+            $(window).on('scroll', function() {    
+                var  st  =  $(document).scrollTop();    
+                if ( st > 800 ) {        
+                    $('.toTop').fadeIn(300);
+                    //                  $('.share').fadeIn(300);
+                        
+                } else {        
+                    $('.toTop').fadeOut(300);
+                    //                  $('.share').fadeIn(300);
+                        
+                }  
+            });
+            $(".toTop").click(function() {    
+                if (scroll == "off") {        
+                    return;    
+                }    
+                $("html,body").animate({
+                    scrollTop:  0
+                },  600);
+            });
+            $('.qrcodeWrapper').click(function(e) {
+                e.stopPropagation();
+            })
+            $('.share').mouseleave(function(e) {
+                $(".qrcodeWrapper").hide();
+            })
+            $(".share").mouseenter(function(e) {
+                e.stopPropagation();
+                $('#qrcode').html('');
+                jQuery('#qrcode').qrcode({
+                    render: "canvas", //也可以替换为table
+                    width: 150,
+                    height: 150,
+                    text: CONFIG.URL + '/h5/common/help_center/index.html#/detail?ct=pc&qid=' + $stateParams.qid
+                });
+                $('.qrcodeWrapper').show();
+            });
+        })
+        .controller('manageCtrl', function($scope, $state, $rootScope, $stateParams) {
+            getFirTitList(); //菜单列表
+            $scope.collesFn = function($event, x) {
+                angular.forEach($scope.firList, function(item) {
+                    if (item.helpCenterId == x.helpCenterId && !x.isopen) {
+                        item.isopen = true;
+                    } else {
+                        item.isopen = false;
+                    }
+                })
+            };
+            //获取菜单
+            function getFirTitList() {
+                if ($rootScope.firList && $rootScope.firList.length) {
+                    return;
+                }
+                $.ajax({
+                    type: "get",
+                    url: CONFIG.URL + "/api/oa/help/listMenu",
+                    async: true,
+                    data: {
+                        'clientType': 'pc',
+                    },
+                    success: function(res) {
+                        if (res.status == 200) {
+                            $rootScope.firList = res.context;
+                            $scope.$apply();
+                        }
+                    }
+                });
+            }
+            //点击二级标题
+            $scope.getSecTitList = function(d, x) {
+                $('#searchVal').val('')
+                $state.go('manage.detail', {
+                    tid: d.helpCenterId,
+                    T: new Date().getTime(),
+                    qid: null
+                });
+            }
+        })
+        .controller('indexCtrl', function($scope, $state) {
+            $("body").css("width", $(window).width());
+            var width = document.body.clientWidth < 1000 ? 1000 : document.body.clientWidth;
+            $scope.partWidth = parseInt((width - 24) / 3);
+            window.onresize = function() {
+                $("body").css("width", $(window).width());
+                width = document.body.clientWidth < 1000 ? 1000 : document.body.clientWidth;
+                $scope.partWidth = parseInt((width - 24) / 3);
+                $scope.$apply();
+            }
+            $scope.getlistHotTopic = function() {
+                $.ajax({
+                    type: "get",
+                    url: CONFIG.URL + "/api/oa/help/listHotTopic",
+                    async: true,
+                    data: {
+                        'clientType': 'pc',
+                    },
+                    success: function(res) {
+                        if (res.status == 200) {
+                            $scope.listHotTopicList = res.context;
+                            $scope.$apply();
+                            //设置最高高度
+                            setTimeout(function() {
+                                var h_max = 0;
+                                $('.partWrapper>div').each(function() {
+                                    var h = $(this).height();
+                                    h_max = h > h_max ? h : h_max;
+                                });
+                                $scope.partHeight = h_max;
+                                $scope.$apply();
+                            }, 0)
+                        }
+                    }
+                });
+            }
+            $scope.toMore = function() {
+                $state.go('manage.detail', {
+                    tid: null,
+                    qid: null,
+                    T: null
+                });
+            }
+            $scope.getlistHotTopic();
+            $scope.addQid = function(id) {
+                $state.go('manage.detail', {
+                    tid: null,
+                    qid: id,
+                    T: null
+                });
+            }
+        });
+</script>
+
+</html>

@@ -1,0 +1,117 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">教务分析详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">出勤率</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">满班率</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">在读趋势</span>
+        <span ng-click="switchStudNav(4)" ng-class="{tab_nav_show: studNavJud==4}">带班人数</span>
+    </div>
+    <div class="">
+        <div class="icon_warn" style="margin-bottom: 15px;">本数据截止至昨日</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>出勤率</th>
+                    <th>满班率</th>
+                    <th>在读人数</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td class="">{{dataTotal.attendanceRate|number:2}}%</td>
+                    <td class="">{{dataTotal.fullClassRate|number:2}}%</td>
+                    <td class="">{{dataTotal.studentTotal}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pot_pop_peo_nav clearfix">
+        <div class="tab_course_history">
+            <div ng-class="{bg_active:isactive==1}" ng-click="tab_course_history(1)">按班主任</div>
+            <div ng-class="{bg_active:isactive==2}" ng-click="tab_course_history(2)">按课程</div>
+        </div>
+    </div>
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+                </li>
+                <li class="line28" style="color:#999;">
+                    (不包含一对一课程、班级和活动班数据)
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left" style="margin:0;" ng-show="isactive==2">
+                        <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-defalut="{{xiaoKe.time}}" list-search="true"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15" ng-show="isactive==2">
+                        <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="changeYear(n)" list-sort="false"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15" ng-show="isactive==2">
+                        <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="changeTerm(n)" list-sort="false"></my-select>
+                    </li>
+                    <li class="li_left" style="margin:0;" ng-show="isactive==1">
+                        <my-select list-name="班主任" list-data="{{screen_teacher}}" list-field="teacherName" list-click="changeByTeach(n)" list-search="true"></my-select>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;%&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;line-height: 30px;">
+                    <span>统计规则 </span>
+                    <div style="top:7px;" class="help_icon noneWidth" data-tips="班级数量：按班级创建时间统计班级数量之和（包含已结业班级）<br>
+满班率：所有班级在读人数÷所有班级设置的最大人数（包含已结业班级）"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <div style="width: 100%;padding: 0;">
+                <div>满班率明细（{{detailDate}}）</div>
+            </div>
+            <table class="table" style="margin-bottom:0;">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.classMax}}</td>
+                        <td class="textAlignCenter">{{x.fullClassRate|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0">
+                <tbody>
+                    <tr>
+                        <td width="20%">总计</td>
+                        <td class="main_color textAlignCenter" width="40%">{{totalData.classMax_total}}</td>
+                        <td class="main_color textAlignCenter" width="40%">{{(totalData.studentTotal_total/totalData.studentAllTotal_total)*100|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

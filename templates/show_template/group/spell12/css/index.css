@@ -1,0 +1,307 @@
+@charset "utf-8";
+.flicker div, .flicker p, .flicker span {
+    font-size: 0.28rem;
+}
+.flicker {
+    position: relative;
+    width: 100%;
+}
+.g_bg_2 {
+    position: relative;
+    padding-top: 0.01rem;
+    background-color: #CB1357;
+}
+.g_1, .g_1_img {
+    width: 100%;
+}
+.g_1_img img {
+    display: block;
+    width: 100%;
+}
+.g_1_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.g_peo {
+    margin: 0.15rem 0 0 0.2rem;
+    height: 1.1rem;
+}
+.g_peo img {
+    float: left;
+    width: 1.01rem;
+    height: 1.01rem;
+    margin: 0.1rem 0.21rem 0 0;
+    border-radius: 50%;
+}
+.g_peo div {
+    float: left;
+}
+.g_peo p {
+    height: 0.38rem;
+    color: #fff;
+}
+.g_peo span, .g_tit span {
+    color: #F7EF46;
+}
+.g_tit {
+    color: #fff;
+}
+.g_tit span {
+    display: inline-block;
+    margin: 0 0.06rem;
+}
+.g_1_font {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.g_1_font {
+    top: 1.2rem;
+}
+.g_1_font img {
+    display: block;
+    width: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.g_1_tit p {
+    overflow: hidden;
+    width: 100%;
+    height: 0.61rem;
+    margin-top: 6rem;
+    color: #fff;
+    text-align: center;
+    font-size: 0.4rem;
+    font-weight: bold;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-shadow: 0 0 0.05rem #000;
+}
+.g_fun {
+    width: 6.93rem;
+    height: 3.85rem;
+    margin: 0.5rem auto 0;
+    padding-top: 0.37rem;
+    background: url("../img/base1.png") no-repeat;
+    background-size: contain;
+}
+.g_fun h3 {
+    margin-top: 0.4rem;
+    color: #0D0D0D;
+    font-size: 0.36rem;
+    text-align: center;
+    font-weight: bold;
+    line-height: 0.6rem;
+}
+.g_fun h3 span {
+    display: inline-block;
+    margin: 0 0.1rem;
+    color: #D3D3D3;
+    text-decoration: line-through;
+    font-size: 0.24rem;
+}
+.g_fun p {
+    color: #0D0D0D;
+    text-align: center;
+}
+.g_fun p span {
+    color: #ccc;
+    font-weight: bold;
+}
+.g_fun_ul {
+    width: 100%;
+    height: 0.8rem;
+}
+.g_fun_ul ul {
+    width: 4.3rem;
+    height: 0.8rem;
+    margin: 0 auto;
+}
+.g_fun li {
+    position: relative;
+    float: left;
+    width: 0.8rem;
+    height: 0.8rem;
+    padding: 0.04rem;
+    border: 0.03rem solid #E11023;
+    margin-right: 0.23rem;
+    border-radius: 50%;
+}
+.g_fun li img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.g_fun li span {
+    position: absolute;
+    top: 0.62rem;
+    left: -0.08rem;
+    width: 0.9rem;
+    height: 0.3rem;
+    border-radius: 0.15rem;
+    background-color: #E11023;
+    color: #fff;
+    text-align: center;
+    line-height: 0.3rem;
+    font-size: 0.24rem;
+}
+.g_fun button {
+    display: block;
+    width: 5.3rem;
+    height: 0.66rem;
+    margin: 0.3rem auto 0;
+    border: none;
+    border-radius: 0.32rem;
+    background-color: #E11023;
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    line-height: 0.56rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.crumbs_1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3.01rem;
+    height: 4.44rem;
+    background: url("../img/crumbs_1.png") no-repeat;
+    background-size: contain;
+}
+.g_text {
+    width: 7.1rem;
+    margin: 0 auto 0.27rem;
+}
+.g_head {
+    position: relative;
+    width: 3.17rem;
+    height: 1.66rem;
+    margin: 0 auto;
+    background: url("../img/head1.png") no-repeat;
+    background-size: contain;
+}
+.g_head_2 {
+    background: url("../img/head2.png") no-repeat;
+    background-size: contain;
+}
+.g_head_3 {
+    background: url("../img/head3.png") no-repeat;
+    background-size: contain;
+}
+.g_text_con {
+    position: relative;
+    padding: 0.3rem 0.3rem 0.43rem;
+    border: 0.05rem solid #000;
+    background-color: #fff;
+}
+.g_text_con:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0.08rem;
+    border-top: 0.05rem solid #000;
+    background-color: #3BD3DE;
+}
+.g_text_con p {
+    color: #000;
+    margin-bottom: 0.15rem;
+}
+.g_text_con img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.15rem;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #fff;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.copyright span {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.22rem;
+    width: 1.03rem;
+    height: 1.28rem;
+}
+.copyright em {
+    position: absolute;
+    top: 0;
+    right: 0.22rem;
+    width: 1.02rem;
+    height: 1rem;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

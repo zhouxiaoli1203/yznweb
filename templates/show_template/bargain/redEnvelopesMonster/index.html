@@ -1,0 +1,234 @@
+<div class="red_envelopes_monster">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/bargain/redEnvelopesMonster/css/index.css"/>
+    <div class="red_envelopes_monster">
+        <div class="r_msk">
+            <div class="r_yuyue r_hide">
+                <span class="r_yuyue_tit"></span>
+                <i class="r_yuyue_x r_x"></i>
+                <ul class="r_yuyue_ul">
+                    <li><label class="show_required" for="">学员姓名：</label><input type="text" placeholder="请输入学员姓名"/></li>
+                    <li><label class="show_required" for="">学员年龄：</label><input type="text" placeholder="请输入学员年龄"/></li>
+                    <li><label class="show_required" for="">学员电话：</label><input type="text" placeholder="请输入学员电话"/></li>
+                </ul>
+                <p class="r_yuyue_btn"><span class="r_x">取消</span><em>确定</em></p>
+            </div>
+        </div>
+        <div class="con_1">
+            <div class="con_1_cloud">
+                <div class="con_1_leaf">
+                    <div class="con_1_kancon">
+                        <img class="con_1_kanimg" src="templates/show_template/bargain/redEnvelopesMonster/img/kan.png" alt="砍动作" />
+                        <audio id="bacMusic" src=""></audio>
+                        <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+                        <dl class="peo_info">
+                            <dt>
+                                <img src="templates/show_template/bargain/redEnvelopesMonster/img/peo.jpg" alt="头像" />
+                            </dt>
+                            <dd>
+                                <p>FLY</p>
+                                <p>剩余名额<span>100</span>份</p>
+                                <p>原价<span>1200</span>元，底价<em>200</em>，已砍0元</p>
+                            </dd>
+                        </dl>
+                        <div class="r_tit">
+                            <div class="r_tit_sun">
+                                <span class="rotate"></span><em></em>
+                            </div>
+                            <div class="r_tit_name pos_ele_1">麦兜成长教育春招大促砍砍砍！！！</div>
+                            <div class="r_tit_time">
+                                <p>活动截止时间：<span>10</span>天<span>21</span>时<span>55</span>分<span>55</span>秒</p>
+                            </div>
+                        </div>
+                        <button class="r_tit_btn" type="button" btnType="part"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="con_2 pos_ele_2">
+            <h2 class="con_header"></h2>
+            <div class="con_2_con">
+                <p>麦兜成长教育原价1000元幼儿小班课低至200元。</p>
+                <img src="templates/show_template/bargain/redEnvelopesMonster/img/prizeimg.png" alt="" />
+            </div>
+        </div>
+        <div class="con_3 pos_ele_3">
+            <div class="con_header"></div>
+            <div class="con_2_con">
+                <p>1、直接点击“我要参加”，即可自己报名参加游戏哦。2、点击好友分享页面进入后，点击帮TA砍一刀即可帮忙好友砍价。帮忙后点击“我要参加”即可自己参加游戏。3、自己只有一次帮自己砍价的机会，邀请好友帮忙砍价，每位好友活动时间内可以帮忙砍一次价格。4、到底价后方可领奖。数量有限，先到先得哦。5、在活动奖品内成功领取奖品后，需联系本校区或者到店领取实物礼品呢。6、本活动新老会员不限。7、每一位用户只能参加一次，如多个账号报名，不累计。8、本活动内奖品仅用于体验，所有奖品均不能进行兑换。</p> 
+            </div>
+        </div>
+        <div class="con_4">
+            <div class="con_header"></div>
+            <div class="con_2_con con_4_con">
+                <p class="no_data">暂无人砍价</p>
+            </div>
+        </div>
+        <div class="con_5">
+            <div class="con_header"></div>
+            <div class="con_2_con con_4_con">
+                <p class="no_data">暂无排行</p>
+            </div>
+        </div>
+        <div class="con_6 pos_ele_4">
+            <div class="con_header"></div>
+            <div class="con_2_con">
+                <p>麦兜成长教育创办于2000年，专注于少年儿童的兴趣教育，致力于让孩子更快乐、更轻松的学习，采用师生优化配对，根据学员年龄、性格特点、等实际情况推荐合适的老师，制定适合学员的教学方案及辅导考级。</p>
+                <img src="templates/show_template/bargain/redEnvelopesMonster/img/organ_lis.png" alt="校区图片" />
+            </div>
+        </div>
+        <div class="copyright pos_ele_5">
+            <p class="copyright_erweima"></p>
+            <p class="copyright_organ">易知鸟教育培训</p>
+            <p class="copyright_phone">0571-85789582</p>
+            <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+            <p style="margin-top: 0.2rem;"></p>
+        </div>
+    </div>
+    <script>
+        
+        function getShowData(data) {
+            // 如果没有数据则使用show.js里面的初始数据
+            if(!data) {
+                var data = h5_tempalteData['bargain/redEnvelopesMonster'];
+            }
+            console.log('修改了数据', data);
+            
+            var organHtml = '';
+            var yuyueHtml = '';
+            var music_url = '';
+            $('.peo_info p:eq(1) span').html(data.prizeInfo.num);
+            $('.peo_info p:eq(2) span').html(data.prizeInfo.originalPrice);
+            $('.peo_info p:eq(2) em').html(data.prizeInfo.floorPrice);
+            $('.r_tit_name').html(data.basicInfo.activityName);
+            $('.con_3 .con_2_con p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>"));
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if(data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>'+ data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    prizeHtml += '<img src='+ data.prizeInfo.describeList[i].value +' alt="奖品描述图片">';
+                }
+            }
+            $('.con_2 .con_2_con').html(prizeHtml);
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            
+            //渲染底部信息
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src='+ data.organ.code +'> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html(data.organ.phone.join('  '));
+            $('.copyright_dress').html(data.organ.address);
+            
+            //渲染预约模块数据
+            yuyueHtml += '<li><label class="show_required" for="">学员姓名：</label><input type="text" placeholder="请输入学员姓名" maxlength="12" required/></li>';
+            yuyueHtml += '<li><label class="show_required" for="">学员年龄：</label><input type="text" placeholder="请输入学员年龄" maxlength="3" oninput="inputLimit(this)" required/></li>';
+            yuyueHtml += '<li><label class="show_required" for="">学员电话：</label><input type="text" placeholder="请输入学员电话" maxlength="11" oninput="inputLimit(this)" required/></li>';
+            if (data.appoinInfo.nickname) {
+                yuyueHtml += '<li><label for="">学员昵称：</label><input type="text" placeholder="请输入学员昵称" maxlength="12"></li>';
+            }
+            if (data.appoinInfo.sex) {
+                yuyueHtml += '<li><label for="">学员性别：</label><div class="yuyue_select"><select class="up_sex"><option value="1">男</option><option value="0">女</option><select></div></li>';
+            }
+            if (data.appoinInfo.parentname) {
+                yuyueHtml += '<li><label for="">家长姓名：</label><input type="text" placeholder="请输入家长姓名" maxlength="12"></li>';
+            }
+            if (data.appoinInfo.address) {
+                yuyueHtml += '<li><label for="">学员地址：</label><input type="text" placeholder="请输入学员地址"></li>';
+            }
+            
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+            	if(data.organInfo[i].type == 'text') {
+            	    organHtml += '<p>'+ data.organInfo[i].value.replace(/\n/g, "<br/>") +'</p>';
+            	} else {
+            	    organHtml += '<img src='+ data.organInfo[i].value +' alt="校区介绍图片">';
+            	}
+            };
+            
+            $('.con_6 .con_2_con').html(organHtml);
+            $('.r_yuyue_ul').html(yuyueHtml);
+            
+            
+        };
+        
+        $('.r_msk').on('mousewheel DOMMouseScrol', function(event) {
+            event.stopPropagation();
+        });
+        
+        //小叉叉
+        $('.r_x').on('click', function() {
+            $('.r_msk').hide();
+        })
+        
+        //我要参加
+        $('.r_tit_btn').on('click', function() {
+            var btnType = $(this).attr('btnType');
+            $('.r_msk').show();
+            $('.r_msk .r_hide').hide();
+            $('.r_msk').css({'top': $('#show_contain').scrollTop()+'px'});
+            console.log(btnType);
+            switch(btnType) {
+                case 'part':
+                console.log($('#show_contain').scrollTop());
+                    $('.r_msk .r_yuyue').show();
+                    break;
+            }
+        });
+        
+        //点击音乐图标
+//      $('#bacMusicBtn').on('click', function() {
+//          if($('#bacMusic').attr('src')) {
+//              if($(this).attr('btnType') == 'on') {
+//                  $('#bacMusic')[0].pause();
+//                  $(this).removeClass('music_rotate');
+//                  $(this).attr('btnType', 'off');
+//              } else {
+//                  $('#bacMusic')[0].play();
+//                  $(this).addClass('music_rotate');
+//                  $(this).attr('btnType', 'on');
+//              }
+//          }
+//      });
+    </script>
+</div>

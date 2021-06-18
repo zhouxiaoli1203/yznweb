@@ -1,0 +1,129 @@
+<!--主弹框-->
+<div class="popup_ main_staff_pop" id="main_staff_pop">
+    <h6>员工详情<var class="color_nameState">（{{staffInfo.teacherName}}）</var><span ng-click="closePopup('main_staff_pop')" class="popup_x icon_drop_x"></span></h6>
+    <!--员工信息-->
+    <div class="popup_form_content huge">
+        <div class="popup_scroll" isScroll="false">
+            <div class="pot_pop_peo">
+                <div class="pot_pop_peo_l">
+                    <div class="signup_pic"><img ng-src="{{staffInfo.teacherLongUrl}}" width="100%" height="100%" ng-if="staffInfo.teacherLongUrl" /></div>
+                    <strong>{{staffInfo.teacherName}}
+                        <span ng-class="{'0':'icon_female','1':'icon_male'}[staffInfo.teacherSex]" class="pot_pop_peo_sex"></span>
+                    </strong>
+                    <div class="btn" ng-click='open_edit()' ng-if="isOperatePop" style="margin-top: 20px;"><i class="icon_edit"></i>编辑</div>
+                </div>
+                <div class="pot_pop_peo_r">
+                    <p class="pot_pop_peo_line">
+                        <strong>身份证号:</strong>
+                        <span>{{staffInfo.teacherIdCard}}</span>
+                    </p>
+                    <p class="pot_pop_peo_line">
+                        <strong>工号:</strong>
+                        <span>{{staffInfo.workId}}</span>
+                    </p>
+                    <p class="pot_pop_peo_line">
+                        <strong>联系方式:</strong>
+                        <span>{{staffInfo.teacherPhone}}</span>
+                    </p>
+                    <p class="pot_pop_peo_line">
+                        <strong>工作性质:</strong>
+                        <span>{{staffInfo.teacherType==0?"兼职":"全职"}}</span>
+                    </p>
+                    <p class="pot_pop_peo_line">
+                        <strong>入职时间:</strong>
+                        <span>{{staffInfo.workBeginDate}}</span>
+                    </p>
+                    <p class="pot_pop_peo_line">
+                        <strong>岗位:</strong>
+                        <span class="separate_list"><span ng-repeat="x in staffInfo.quarters">{{x.quartersName}}</span></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--新增员工--编辑员工-->
+<div class="popup_ add_staff" id="add_staff">
+    <h6>{{staffHead}}<span ng-click="closePopup('add_staff')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="staff_confirm()">
+            <div class="popup_form_content" style="max-height:460px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line" style="margin-bottom: 25px;">
+                        <label class="form-label" style="line-height:60px;">头像</label>
+                         <div class="col-xs-10">
+                            <div class="signup_pic"><img ng-if="staffDetail.teacherLongUrl" width="100%" height="100%" ng-src="{{staffDetail.teacherLongUrl}}"/></div>
+                            <div class="signup_file" ng-click="openCopper()"><span>浏览...</span><input type="file" style="display: none;" id="imgUpId" name="upload-file" accept="image/gif, image/jpeg, image/png"/></div>
+                            <div class="img_ruleInfo" style="bottom:-16px;">建议上传尺寸：200*200，图片支持JPG、PNG格式，图片小于1MB.</div>
+                         </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">姓名:</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" ng-model="staffDetail.teacherName" placeholder="选择输入员工姓名" maxlength="12" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">性别:</label>
+                        <div class="col-xs-7" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="choseGender" value="1" ng-model="staffDetail.teacherSex" required>男
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="choseGender" value="0" ng-model="staffDetail.teacherSex" required>女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">身份证:</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" ng-model="staffDetail.teacherIdCard"  yzn-filter="staffCode"  maxlength="18" placeholder="选择输入身份证号" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">工号:</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" ng-model="staffDetail.workId" yzn-filter="num" maxlength="12"placeholder="选择输入工号"/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">联系方式:</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" ng-model="staffDetail.teacherPhone" yzn-filter="phone" maxlength="11" placeholder="选择输入联系方式" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">工作性质:</label>
+                        <div class="col-xs-7">
+                            <select  class="form-control" ng-model="staffDetail.teacherType">
+                                <option value="{{x.value}}" ng-repeat="x in teacherType">{{x.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label marging-rt-15">岗位:</label>
+                        <div class="col-xs-8 padLeftNone">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in staffDetail.quarters">{{x.quartersName}}<i ng-click="delTeachers(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select  my-id="addStaffSel" list-name="添加岗位" list-data="{{teachersList}}" list-field="quartersName" list-click="sel_teachers(n)" list-headname="noChange" list-search="true"  list-sort="false" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">入职时间:</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control dateIcon" id="dateIcon" ng-model="staffDetail.workBeginDate" placeholder="请输入入职时间" readonly="readonly"  autocomplete="off"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('add_staff')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>  

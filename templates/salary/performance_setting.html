@@ -1,0 +1,166 @@
+<!--生成绩效-->
+<div class="popup_ createPerformance">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="createPerformance_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line" style="margin-bottom: 0;">
+                        <label class="form-label required">选择时间:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control dateIcon" type="text" id="recordTime" ng-model="createPerformance.time" autocomplete="off" placeholder="请选择绩效结算时间" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-10">
+                            <span class="marginTop_7" style="color:#999;display: inline-block;">注：点击即可生成老师绩效工资，单次导出绩效时间范围不可超过三个月（所算绩效不含：
+按月合同消课以及补课消课、试听消课）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure">生成绩效</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--设置绩效-->
+<div class="popup_ setPerformance">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="setPerformance_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">绩效规则:</label>
+                        <div class="col-xs-6">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select my-id="myPerforRule" list-name="请选择绩效规则" list-data="{{perRules}}" list-field="performanceRuleName" list-click="clickPerRule(n)" list-search="true" list-all="no"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工资单</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">绩效设置</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">绩效规则</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="teacherStatus1" ng-change="teacherStatus(true)">在职
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="teacherStatus2" ng-change="teacherStatus(false)">离职
+                </label>
+            </li>
+            <!--<li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="classStatus" ng-change="s_classStatus()">在课班级
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="perRstatus" ng-change="s_perRstatus()">未设置绩效
+                </label>
+            </li>-->
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="openPerformance()" ng-if="operatePerformance"><i class="icon_creatPerformance"></i>生成绩效</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content performanceRuleTable">
+        <div class="table-left">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover">
+                    <thead my-thead="{{performanceRuleRListThead_left}}"></thead>
+                    <tbody class="demo_tbody" ng-if="performanceSettingList==''">
+                        <tr>
+                            <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="course_tbody">
+                        <tr ng-click="getRightDataById(x)" ng-repeat="x in performanceSettingList" style="cursor: pointer;" ng-class="{'post_active_tr':x.isActive}">
+                            <td>{{x.teacherName}}</td>
+                            <td>{{x.teacherPhone}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagitionDiv">
+                <div class="M-box3"></div>
+            </div>
+        </div>
+        <div class="table-right">
+            <div>
+                <p>
+                            注：若生成绩效发生报错且在本界面搜索不到该员工时，请为该员工添加“授课老师”岗位；<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;班级未设置绩效时，班级绩效与课程绩效一致，保存后即时生效，但不会改变已结算的数据；
+                </p>
+                <ul>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="classStatus" ng-change="s_classStatus()">在课班级
+                        </label>
+                    </li>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="perRstatus" ng-change="s_perRstatus()">未设置绩效
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-responsivecharge_table">
+                <table style="width:101%;border:none;">
+                     <thead my-thead="{{performanceRuleRListThead_right}}"></thead>
+                </table>
+                <div class="performanceSetTable">
+                    <table class="table table-hover tableNoneRightborder">
+                        <tbody class="demo_tbody" ng-if="performanceLists==''">
+                            <tr>
+                                <td class="textAl ignCenter" colspan="6">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="course_tbody" ng-repeat="x in performanceLists">
+                            <tr ng-repeat="y in x.performanceRuleRInfoList track by $index">
+                                <td width="20%" ng-if="$index === 0" rowspan={{x.performanceRuleRInfoList.length}} title="{{x.course.courseName}}">{{x.course.courseName}}</td>
+                                <td width="15%" ng-if="$index === 0" rowspan={{x.performanceRuleRInfoList.length}} ng-class='{"font-Red":!x.performanceRule}'>{{x.performanceRule?x.performanceRule.performanceRuleName:"未设置"}}</td>
+                                <td style="width:130px;" ng-if="$index === 0" rowspan={{x.performanceRuleRInfoList.length}} ng-class="{'borderRt':$index === 0}" class="textAlignCenter">
+                                    <span class="clickText" ng-click="openSetPerformance(x,'course')" ng-if="operatePerformance">设置</span>
+                                </td>
+                                <td width="20%" title="{{y.classInfo.className}}">{{y.classInfo.className}}</td>
+                                <td width="15%" ng-class='{"font-Red":!x.performanceRule&&!y.performanceRule}'>{{x.performanceRule&&!y.performanceRule?"同课程":y.performanceRule?y.performanceRule.performanceRuleName:"未设置"}}</td>
+                                <td style="width:150px;" class="operate overflow-normal textAlignCenter">
+                                    <span class="clickText" ng-click="openSetPerformance(y,'class')" ng-if="operatePerformance">设置</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

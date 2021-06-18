@@ -1,0 +1,126 @@
+<!--预约来访-->
+<div class="popup_ pop_yuyueCome" id="pop_yuyueCome">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_yuyueCome()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">预约来访时间:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control dateIcon" name="name" ng-model="appointTime" placeholder="预约时间" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{appointDesc?appointDesc.length:0}}/500</span>
+                            <textarea class="form-control fixedTextareaWidth" maxlength="500" ng-model="appointDesc" placeholder="意向或其他备注信息" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">下次跟进时间:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control dateIcon" ng-model="appointalkTime" autocomplete="off" placeholder="回访提醒时间" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body visit_common">
+    <!--下拉选择-->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <my-select list-name="预约来访时间" list-data="{{screen_visitTime}}" list-field="name"  list-click="selectTimeType(n)" list-sort="false"></my-select>
+            </li>
+            <li ng-show='"164"|_authId'>
+	            <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser(n)" list-search="true" list-sort="false"></my-select>
+	        </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasCome == 0" ng-click="changeBycome($event, 0)">待签到
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasCome == 1" ng-click="changeBycome($event, 1)">已签到
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasCome == 2" ng-click="changeBycome($event, 2)">已取消
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover abnormal">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)" che-clicks="sel_allFun(data)"></thead>
+                <tbody class="demo_tbody" ng-if="visitingList=='' || visitingList==undefined">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="demo_tbody" ng-if="visitingList">
+                    <tr ng-repeat="x in visitingList">
+                    	<td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'potentialCustomerRecord.potentialCustomerRecordId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked"/></td>
+                        <td title='{{x.potentialCustomer.name}} {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}'>
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                             <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                        </td>
+                        <td>
+                        	<span>{{x.potentialCustomer.potentialCustomerParentPhone}}</span>
+                        	<span ng-show="x.potentialCustomer.potentialCustomerParentTowPhone || x.potentialCustomer.potentialCustomerParentThreePhone" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)" class="icon_more" style="color:#fa575d;margin-left:5px;position: absolute;">
+                                <div class="openPop"  ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomer.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomer.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentTowType |_relation}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentTowName}}</span>
+                                        </li>
+                                        <li  ng-if="x.potentialCustomerParentThreePhone">
+                                            <span>{{x.potentialCustomer.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentThreeType|_relation}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentThreeName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </td>
+                        <td>{{x.teacherName}}</td>
+                        <td>{{x.potentialCustomerRecord.workTime|yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.potentialCustomerRecord.potentialCustomerRecordDesc}}">{{x.potentialCustomerRecord.potentialCustomerRecordDesc}}</td>
+                        <td>{{x.potentialCustomerRecord.workStatus == 0?"待签到":x.potentialCustomerRecord.workStatus == 1?"已签到":x.potentialCustomerRecord.workStatus==2?"已取消":""}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <!--10 重新预约13 取消签到15 签到25 取消来访--> 
+                            <span class="clickText" ng-if="x.potentialCustomerRecord.workStatus == 0" ng-click="operatePop(x,1,15)">签到</span>
+                            <span class="clickText" ng-if="x.potentialCustomerRecord.workStatus == 0" ng-click="operatePop(x,4,10)">重新预约</span>
+                            <span class="clickText" ng-if="x.potentialCustomerRecord.workStatus == 0" ng-click="operatePop(x,2,25)">取消预约</span>
+                            <span class="clickText" ng-if="x.potentialCustomerRecord.workStatus == 1" ng-click="operatePop(x,3,13)">取消签到</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagitionDiv">
+                <div class="M-left">
+		            <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+		            <div class="M-button common_tab_btn fontRed_BgWhite" ng-click="patchChange()">取消预约</div>
+		        </div>
+                <div class="M-box3"></div>
+            </div>
+        </div>
+    </div>
+</div>

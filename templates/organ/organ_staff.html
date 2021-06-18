@@ -1,0 +1,283 @@
+<div class="common_content">
+    <!--表格-->
+    <div class="common_body post_content">
+        <div class="table-responsivecharge_table">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li>
+                        <kindsearch class="vagueSearch" list-clicks="Fns.SearchData(n)" list-keyup="Fns.bindKeyEnter(n)" list-data='{"searchName":"姓名、联系方式"}' select-name="searchName" select-input="false"></kindsearch>
+                    </li>
+                    <li>
+                        <my-select list-name="所属校区" list-data="{{constants.listShop}}" list-field="shopShortName" list-click="Fns.screenClick(n)" list-search="false" list-sort="false"></my-select>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="Fns.onReset()">重置</li>
+                    <li class="common_tab_libtn">
+                        <div class="common_tab_btn" ng-click="Fns.operate('add')"><i class="icon_Addpost"></i>新增员工</div>
+                    </li>
+
+                </ul>
+            </div>
+            <table class="table table-hover" width="100%">
+                <thead>
+                    <tr>
+                        <th width="100px">姓名</th>
+                        <th width="100px">性别</th>
+                        <th width="100px">联系方式</th>
+                        <th width="100px">所属校区</th>
+                    </tr>
+                </thead>
+                <tbody class="demo_tbody" ng-if="!constants.list.length">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="post_tbody" ng-if="constants.list.length">
+                    <tr ng-repeat="x in constants.list track by $index" class="cursor" ng-class="{'post_active_tr':x.isActive}" ng-click="Fns.getreeSingle(x)">
+                        <td class="clickText" ng-click="Fns.operate('add',x)">{{x.teacherName}}</td>
+                        <td>{{x.teacherSex == 1?'男':'女'}}</td>
+                        <td>{{x.teacherPhone}}</td>
+                        <td>{{x.shopNameStr || ''}}<span ng-show="x.shopList && x.shopList.length>2">等<span class="clickText" title="{{x.shopNameStrAll}}">{{x.shopList.length}}家</span>校区</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3 M_box3_1"></div>
+        </div>
+    </div>
+</div>
+<!-- 新增员工 -->
+<div class="popup_ organ_staff_main">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.requByOrg()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label {{isedit?'':'required'}}">姓名:</label>
+                        <div class="col-xs-5">
+                            <span ng-if="isedit" class="line28">{{constants.subParams.teacherName}}</span>
+                            <span ng-if="isedit" class="icon_name_edit cursor ml5" ng-click="Fns.operate('edit',constants.subParams)"></span>
+                            <input ng-if="!isedit" class="form-control" type="text" autocomplete="off" ng-model="constants.subParams.teacherName" maxlength="12" placeholder="请输入员工姓名" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label {{isedit?'':'required'}}">性别:</label>
+                        <div class="col-xs-5" ng-if="isedit">
+                            <span class="line28">{{constants.subParams.teacherSex == 1?'男':'女'}}</span>
+                        </div>
+                        <div class="col-xs-5" ng-if="!isedit">
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="1" ng-model="constants.subParams.teacherSex">男
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="0" ng-model="constants.subParams.teacherSex">女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label {{isedit?'':'required'}}">联系方式:</label>
+                        <div class="col-xs-5">
+                            <span ng-if="isedit" class="line28">{{constants.subParams.teacherPhone}}</span>
+                            <input ng-if="!isedit" class="form-control" type="text" autocomplete="off" yzn-filter="num" ng-model="constants.subParams.teacherPhone" maxlength="11" placeholder="请输入联系方式" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label {{isedit?'':'required'}}">校区岗位:</label>
+                        <div class="col-xs-10">
+                            <div class="line28 cursor" ng-click="Fns.operate('job_setting')">
+                                <i class="icon_name_add"></i>
+                                <span class="openopText">岗位设置</span>
+                            </div>
+                            <div class="popup_table" ng-if="constants.subParams.shopTeacherList && constants.subParams.shopTeacherList.length">
+                                <table class="popup_table_head" style="width: 101.8%;">
+                                    <thead>
+                                        <tr class="order_course">
+                                            <th>所属校区</th>
+                                            <th>岗位</th>
+                                            <th>工作性质</th>
+                                            <th>在职状态</th>
+                                            <th class="textAlignCenter">操作</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                                    <table>
+                                        <tbody class="roll_tbody">
+                                            <tr ng-repeat="x in constants.subParams.shopTeacherList track by $index" class="cursor" ng-click="Fns.getreeSingle(x)">
+                                                <td title="{{x.shop.shopShortName}}">{{x.shop.shopShortName}}</td>
+                                                <td title="{{x.quartersNames}}">{{x.quartersNames}}</td>
+                                                <td>{{x.teacherType == 1?'全职':'兼职'}}</td>
+                                                <td>
+                                                    <span ng-click="Fns.operate('status_switch', x)" ng-class="{isEnable: x.shopTeacherStatus==1, isDisable: x.shopTeacherStatus==2}"></span>
+                                                </td>
+                                                <td class="textAlignCenter operate">
+                                                    <span class="clickText" ng-click="Fns.operate('job_setting',x,$index)">编辑</span>
+                                                    <span class="clickText" ng-click="Fns.deleteByShopTeacher(x.shopTeacherId,$index)">删除</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn" ng-if="!isedit">
+                <button class="btn cancel" ng-click="Fns.closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 修改员工主要信息 -->
+<div class="popup_ organ_staff_main_edit">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.updateByOrg()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">姓名:</label>
+                        <div class="col-xs-5">
+                            <input class="form-control" type="text" autocomplete="off" ng-model="constants.editParams.teacherName" maxlength="20" placeholder="请输入员工姓名" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">性别:</label>
+                        <div class="col-xs-5">
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="1" ng-model="constants.editParams.teacherSex">男
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="0" ng-model="constants.editParams.teacherSex">女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">联系方式:</label>
+                        <div class="col-xs-5">
+                            <input class="form-control" type="text" autocomplete="off" yzn-filter="num" ng-model="constants.editParams.teacherPhone" maxlength="11" placeholder="请输入联系方式" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 校区列表 -->
+<div class="popup_ organ_staff_list">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="common_tab">
+                        <ul class="ul_left clearfix">
+                            <li>
+                                <kindsearch select-id="temporary_popup" class="vagueSearch" list-clicks="Fns.SearchData_popup(n)" list-keyup="Fns.bindKeyEnter_popup(n)" list-data='{"searchName":"校区简称"}' select-name="searchName
+                                                       " select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <my-select list-name="省" list-data="{{provincesList[ '0']}}" list-field="" list-click="Fns.searchByProv(n, i)" list-search="false" list-sort="false"></my-select>
+                            </li>
+                            <li ng-show="cityList.length">
+                                <my-select list-name="市" list-data="{{cityList}}" list-field="" list-click="Fns.searchByCity(n)" list-search="false" list-sort="false"></my-select>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="Fns.onReset(true)">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.8%;">
+                            <thead>
+                                <tr class="order_course">
+                                    <th style="width:40px;" class="textAlignCenter">
+
+                                    </th>
+                                    <th>所属省份</th>
+                                    <th>所属城市</th>
+                                    <th>校区简称</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height:312px;overflow-x: hidden;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!constants.listShop_popup || !constants.listShop_popup.length">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">暂无校区</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="constants.listShop_popup">
+                                    <tr class="order_course" ng-repeat="x in constants.listShop_popup" ng-click="Fns.operate( 'shop_choose_click',x)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input type="radio" name="sel_stu" value="{{x.shopId}}" ng-model="choosedShop.shopId" />
+                                        </td>
+                                        <td>{{x.province}}</td>
+                                        <td>{{x.city}}</td>
+                                        <td>{{x.shopShortName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="button" ng-click="Fns.operate( 'shop_choose_confirm')">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 岗位设置 -->
+<div class="popup_ organ_staff_setting">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">所属校区:</label>
+                        <div class="col-xs-5">
+                            <span ng-if="currentJob.shop" class="line28 mr5">{{currentJob.shop.shopShortName}}</span>
+                            <div ng-hide="currentJob.shopTeacherId" class="line28 cursor inline_dm" ng-click="Fns.operate( 'shop_choose')">
+                                <i class="icon_name_add"></i>
+                                <span class="openopText">{{currentJob.shop?'重新选择':'选择校区'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">岗位名称:</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in quarter_">{{x.quartersName}}<i ng-click="Fns.delQuarter(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="_organquarter" list-name="添加岗位" list-data="{{quartersList}}" list-field="quartersName" list-click="Fns.selQuarter(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">工作性质:</label>
+                        <div class="col-xs-5">
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="1" ng-model="currentJob.teacherType">全职
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" value="0" ng-model="currentJob.teacherType">兼职
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="button" ng-click="Fns.jobSeted()">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

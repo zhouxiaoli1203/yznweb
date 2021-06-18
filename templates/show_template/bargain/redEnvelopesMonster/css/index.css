@@ -1,0 +1,380 @@
+@charset "utf-8";
+#show_contain {
+    font-size: 100px;
+}
+.red_envelopes_monster {
+    position: relative;
+    background-color: #E37A31;
+}
+.con_1, .con_1_cloud, .con_1_leaf, .con_1_kan {
+    height: 13.2rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/bac.png") no-repeat;
+    background-size: 100% 100%;
+}
+.con_1_cloud {
+    background: url("../../../bargain/redEnvelopesMonster/img/bac_cloud.gif") no-repeat;
+    background-size: contain;
+}
+.con_1_leaf {
+    background: url("../../../bargain/redEnvelopesMonster/img/bac_leaf.gif") no-repeat;
+    background-size: contain;
+}
+.con_1_kancon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.con_1_kanimg {
+    position: absolute;
+    top: 6rem;
+    width: 100%;
+    height: 4.57rem;
+}
+.peo_info {
+    height: 1.93rem;
+    padding: 0.41rem 0 0 0.3rem;
+}
+.peo_info dt {
+    overflow: hidden;
+    float: left;
+    width: 1rem;
+    height: 1rem;
+    margin: 0.06rem 0.15rem 0 0;
+    border-radius: 50%;
+}
+.peo_info dt img {
+    display: block;
+    width: 100%;
+}
+.peo_info dd p {
+    color: #f96900;
+    font-size: 0.28rem;
+    line-height: 0.38rem;
+}
+.peo_info dd p strong , .peo_info dd p em {
+    font-style: normal;
+    font-weight: normal;
+}
+.r_tit {
+    position: relative;
+    margin-left: -0.6rem;
+    height: 6.3rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/tit_cloud.png") no-repeat;
+    background-size: contain;
+}
+.r_tit_sun {
+    overflow: hidden;
+    position: absolute;
+    top: 0.7rem;
+    left: 0.85rem;
+    width: 2rem;
+    height: 2rem;
+}
+.r_tit_sun span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url("../../../bargain/redEnvelopesMonster/img/sun.png") no-repeat;
+    background-size: contain;
+}
+.r_tit_sun em {
+    position: absolute;
+    bottom: 0.2rem;
+    right: -0.2rem;
+    width: 1.4rem;
+    height: 0.64rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/tit_cloud2.png") no-repeat;
+    background-size: contain;
+}
+/*旋转*/
+.rotate {
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: sport 20s linear 0s infinite;
+    -webkit-animation: sport 20s linear 0s infinite;
+    -o-animation: sport 20s linear 0s infinite;
+}
+
+@keyframes sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.r_tit_name {
+    position: absolute;
+    top: 1rem;
+    left: 2.8rem;
+    width: 3.6rem;
+    height: 1rem;
+    color: #e99f23;
+    font-size: 0.36rem;
+    text-align: center;
+}
+.r_tit_time {
+    position: absolute;
+    top: 2.48rem;
+    left: 1.6rem;
+    width: 5.5rem;
+    height: 1rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/tit_time.png") no-repeat;
+    background-size: contain;
+}
+.r_tit_time p {
+    height: 0.5rem;
+    margin-top: 0.32rem;
+    padding: 0.06rem 0 0 0.17rem;
+    color: #fff;
+    font-size: 0.24rem;
+    line-height: 0.35rem;
+}
+.r_tit_time p span {
+    display: inline-block;
+    width: 0.42rem;
+    height: 0.3rem;
+    margin: 0.1rem 0.05rem 0;
+    background-color: #000;
+    text-align: center;
+    font-size: 0.24rem;
+}
+.r_tit_btn {
+    display: block;
+    width: 2.6rem;
+    height: 1.02rem;
+    margin: 2.1rem auto 0;
+    border: none;
+    background: url("../../../bargain/redEnvelopesMonster/img/tit_btn.png") no-repeat;
+    background-size: contain;
+}
+.con_header {
+    height: 1.8rem;
+    margin-top: 0.6rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/header_1.png") no-repeat;
+    background-size: contain;
+}
+.con_3 .con_header {
+    background: url("../../../bargain/redEnvelopesMonster/img/header_2.png") no-repeat;
+    background-size: contain;
+}
+.con_4 .con_header {
+    background: url("../../../bargain/redEnvelopesMonster/img/header_3.png") no-repeat;
+    background-size: contain;
+}
+.con_5 .con_header {
+    background: url("../../../bargain/redEnvelopesMonster/img/header_4.png") no-repeat;
+    background-size: contain;
+}
+.con_6 .con_header {
+    background: url("../../../bargain/redEnvelopesMonster/img/header_5.png") no-repeat;
+    background-size: contain;
+}
+.con_2_con {
+    width: 7.06rem;
+    padding: 0.32rem 0.5rem;
+    margin: 0 auto;
+    border-radius: 0.24rem;
+    border: 0.05rem solid #681a13;
+    background-color: #fdc268;
+}
+.con_2_con p {
+    margin-bottom: 0.15rem;
+    color: #382b2a;
+    font-size: 0.32rem;
+}
+.con_2_con img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.15rem;
+}
+.con_4_con {
+    min-height: 4.6rem;
+}
+.con_4_con .no_data {
+    display: block;
+    height: 100%;
+    line-height: 4.6rem;
+    text-align: center;
+}
+.copyright {
+    width: 100%;
+    font-size: 0.24rem;
+    padding: 0.5rem 0;
+    color: #68130A;
+}
+.copyright p {
+    text-align: center;
+    font-size: 0.24rem;
+    line-height: 0.34rem;
+    margin-top: 0.2rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*砍价蒙版*/
+.r_msk {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+}
+.r_yuyue {
+    position: relative;
+    width: 6.37rem;
+    margin: 3.7rem auto 0;
+    padding: 0.62rem 0 0 0.7rem;
+    border-radius: 0.32rem;
+    border: 0.09rem solid #e27934;
+    background-color: #f3c553;
+}
+.r_yuyue_ul li, .r_yuyue p {
+    height: 0.9rem;
+}
+.r_yuyue label {
+    float: left;
+    font-size: 0.28rem;
+}
+.r_yuyue input, .yuyue_select {
+    float: left;
+    width: 3.24rem;
+    height: 0.62rem;
+    border: 0.02rem solid #452317;
+    text-indent: 0.22rem;
+    font-size: 0.28rem;
+}
+.yuyue_select {
+    padding-top: 0.005rem;
+}
+.yuyue_select select {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.show_required {
+    position: relative;
+    color: #333333;
+    font-size: 0.28rem;
+}
+.show_required:before {
+    position: absolute;
+    top: 0.05rem;
+    left: -0.25rem;
+    content: '*';
+    color: #f45a4e;
+}
+.r_yuyue_btn {
+    margin-left: -0.2rem;
+}
+.r_yuyue_btn span, .r_yuyue_btn em {
+    float: left;
+    width: 2.37rem;
+    height: 0.69rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/r_yuyue_btn.png") no-repeat;
+    background-size: 100% 100%;
+    color: #333;
+    font-size: 0.32rem;
+    font-style: normal;
+    text-align: center;
+    line-height: 0.69rem;
+    cursor: pointer;
+}
+.r_yuyue_btn span {
+    margin-right: 0.43rem;
+}
+.r_yuyue_tit {
+    position: absolute;
+    top: -2.35rem;
+    left: 1.68rem;
+    width: 3.06rem;
+    height: 2.8rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/r_yuyue_tit.png") no-repeat;
+    background-size: contain;
+}
+.r_yuyue_x {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.37rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: url("../../../bargain/redEnvelopesMonster/img/x.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

@@ -1,0 +1,695 @@
+@charset "utf-8";
+.border {
+    border: 1px solid #d6d6d6;
+}
+
+.navigation_bar {
+    height: 27px;
+    margin: 0 auto;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.navigation_bar>div {
+    width: 33.333%;
+    height: 100%;
+    text-align: center;
+    line-height: 28px;
+    float: left;
+}
+
+.navigation_bar.navigation_twobar>div {
+    width: 45%;
+}
+
+.colorFFF {
+    color: #fff;
+}
+
+.navigation_bar_bgm1 {
+    background-image: url(../img/must/navbar1.png);
+}
+
+.navigation_bar_bgm2 {
+    background-image: url(../img/must/navbar2.png);
+}
+
+.navigation_bar_bgm3 {
+    background-image: url(../img/must/navbar3.png);
+}
+
+.navigation_twobar_bgm1 {
+    background-image: url(../img/must/two_navbar1.png);
+}
+
+.navigation_twobar_bgm2 {
+    background-image: url(../img/must/two_navbar2.png);
+}
+
+.signUp_width {
+    width: 835px;
+    margin: 0 auto;
+    margin-bottom: 13px;
+}
+
+.noneMargin {
+    margin: 0;
+}
+
+.width45 {
+    width: 45px;
+    display: inline-block;
+}
+
+.width65 {
+    width: 65px;
+    display: inline-block;
+}
+
+.width53 {
+    width: 53px;
+    display: inline-block;
+}
+
+.contentMoney:after {
+    content: "元";
+    position: absolute;
+    right: -17px;
+    top: 5px;
+}
+
+.hopeTimeBtn {
+    height: 100%;
+    width: 100%;
+    background: #f7f7f7;
+    color: #d6d6d6;
+    font-size: 30px;
+    line-height: 13px;
+    padding: 4px 12px 6px 12px;
+}
+
+
+/*潜客弹窗*/
+
+.pot_pop_nav {
+    margin: 0 18px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.pot_pop_nav li {
+    float: left;
+    width: 57px;
+    height: 50px;
+    margin-right: 32px;
+    line-height: 50px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pot_pop_nav_li {
+    position: relative;
+    color: #fa575d;
+}
+
+.pot_pop_nav_li em {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #fa575d;
+}
+
+.pot_pop_peo {
+    padding: 30px 18px 0 36px;
+    position: relative;
+}
+
+.pot_pop_peo .studentAccount {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.pot_pop_peo_l {
+    float: left;
+    width: 138px;
+    padding-left: 17px;
+    padding-top: 10px;
+    height: 330px;
+    border-right: 1px solid #d6d6d6;
+}
+
+.pot_pop_peo_l strong {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.pot_pop_peo_l p {
+    line-height: 35px;
+}
+
+.pot_pop_peo_l .btn {
+    width: 90px;
+    border: 1px solid #ff595e;
+    color: #ff595e;
+    border-radius: 2px;
+}
+
+.pot_pop_peo_r {
+    padding-top: 10px;
+    float: left;
+}
+
+.pot_pop_peo_r .pot_pop_peo_r_ul li {
+    line-height: 20px;
+}
+
+.pot_pop_peo_r .pot_pop_peo_r_ul li label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    color: #999;
+}
+
+.pot_pop_peo_nav {
+    min-height: 30px;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.pot_pop_peo_nav .common_tab_btn {
+    float: right;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.yiduiyiIcon {
+    width: 100%;
+    height: 16px;
+    margin-top: 4px;
+    background: url("../img/yiduiyi.png") no-repeat center center;
+}
+
+.yiduiduoIcon {
+    width: 100%;
+    height: 16px;
+    margin-top: 4px;
+    background: url("../img/yiduiduo.png") no-repeat center center;
+}
+
+.tooktable {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #d6d6d6;
+    margin-bottom: 13px;
+}
+
+.tooktable .tooktable_l {
+    width: 10%;
+    line-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.tooktable .tooktable_l .tooktable_course {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    padding: 0 5px;
+    transform: translate(-50%, -50%);
+}
+
+.tooktable .tooktable_r {
+    float: right;
+    width: 90%;
+    border: none;
+    border-left: 1px solid #d6d6d6;
+}
+
+.clickText .icon_edit {
+    color: #7d7d7d;
+}
+
+.bgGray {
+    color: #ccc;
+}
+
+.refundTable {
+    border-right: 1px solid #d6d6d6;
+    color: #444;
+}
+
+.refundTable p label {
+    width: 65px;
+    text-align: right;
+    padding-right: 6px;
+}
+
+.tab_course_history {
+    float: left;
+    overflow: hidden;
+    border: 1px solid #d6d6d6;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+.tab_course_history div {
+    float: left;
+    padding: 0 10px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.tab_course_history .bg_active {
+    background: #ff595e;
+    color: #fff;
+}
+
+.enrollmouse {
+    display: none;
+    padding: 10px;
+    position: fixed;
+    z-index: 2;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 0 2px #565555;
+    white-space: normal;
+}
+
+.enrollmouse .enrollmouse_ul {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.enrollmouse .enrollmouse_ul li {
+    width: 100%;
+    line-height: 20px;
+    color: #444;
+    overflow: hidden;
+}
+
+.enrollmouse .enrollmouse_ul li label {
+    text-align: right;
+    margin: 0;
+    width: 70px;
+    float: left;
+}
+
+.enrollmouse .enrollmouse_ul li .info_span {
+    width: 170px;
+    float: right;
+}
+
+.enrollmouse .enrollmouse_ul .operate {
+    text-align: right;
+}
+
+.enrollmouse .enrollmouse_ul .operate .icon_edit {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.enrollmouse .enrollmouse_ul .operate .icon_delete {
+    cursor: pointer;
+}
+
+.enrollmouse .popMark {
+    left: 90px;
+}
+
+.pop_date_time {
+    box-shadow: 0 0 8px #999;
+    position: fixed;
+    background: #fff;
+    width: 400px;
+}
+
+.pop_date_time .form-label {
+    width: 60px;
+}
+
+.pop_date_time .popMark {
+    left: 187px;
+}
+
+.signup_pic {
+    width: 64px;
+    height: 64px;
+    border: 2px solid #F5F6FA;
+    background-image: url(../img/headerimg/staff.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.signup_file {
+    width: 55px;
+    height: 28px;
+    position: absolute;
+    bottom: 2px;
+    left: 85px;
+    border-radius: 4px;
+    border: 1px solid #d6d6d6;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.signup_file span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 26px;
+    text-align: center;
+}
+
+.signup_file input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    height: 28px;
+}
+
+.hope_time .popup_table_head {
+    width: 100%!important;
+}
+
+.hope_time .popup_table_head thead th {
+    text-align: center;
+}
+
+.hope_time .popup_table_body {
+    width: 100%!important;
+}
+
+.hope_time .popup_table_body tr td {
+    text-align: center;
+}
+
+.hope_time .roll_tbody .delete {
+    line-height: 7px;
+    position: absolute;
+    top: -4px;
+    right: -11px;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 10px;
+    background-color: #cfcfcf;
+}
+
+.hope_time .roll_tbody td span {
+    position: relative;
+}
+
+#float-panel {
+    width: 500px;
+    border: 1px solid #d6d6d6;
+    background-color: #fff;
+    position: fixed;
+    z-index: 198910150;
+    margin-top: 15px;
+    display: none;
+    box-shadow: 1px 1px 12px rgba(43, 59, 73, 0.3);
+    -webkit-box-shadow: 1px 1px 12px rgba(43, 59, 73, 0.3);
+    -moz-box-shadow: 1px 1px 12px rgba(43, 59, 73, 0.3);
+}
+
+.time-panel {
+    width: 299px;
+}
+
+#float-panel .float-panel-arrow:before {
+    width: 0;
+    height: 0;
+    content: '';
+    border-width: 10px;
+    border-color: transparent transparent #e6eaf7 transparent;
+    border-style: solid;
+    position: absolute;
+    top: -12px;
+    left: -10px;
+    z-index: -1;
+}
+
+#float-panel .float-panel-arrow {
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-color: transparent transparent #e6eaf7 transparent;
+    border-style: solid;
+    float: left;
+    margin-top: -16px;
+    margin-left: 25px;
+    position: relative;
+}
+
+#float-panel .float-panel-header {
+    height: 40px;
+    background: #e6eaf7;
+    padding: 10px 15px;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#float-panel .float-panel-header .title {
+    font-size: 12px;
+    line-height: 20px;
+    float: left;
+}
+
+#float-panel .float-panel-header .float-panel-close {
+    height: 20px;
+    float: right;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+#float-panel .float-panel-content,
+.time-panel .float-panel-content {
+    padding: 25px 15px;
+}
+
+#float-panel .select-time,
+.time-panel .select-time {
+    float: left;
+    width: 70px;
+    position: relative;
+    border: 1px solid #d6d6d6;
+    height: 30px;
+    transition: border-color 0.3s;
+}
+
+.time-panel .select-time {
+    width: 55px;
+}
+
+#float-panel .select-time .select-time-data,
+.time-panel .select-time .select-time-data {
+    float: left;
+    width: 38px;
+    height: 28px;
+    line-height: 28px;
+    border: none;
+    text-align: center;
+    border-right: 1px solid #d6d6d6;
+    transition: border-right-color 0.3s;
+}
+
+.time-panel .select-time .select-time-data {
+    width: 30px;
+}
+
+#float-panel .select-time .select-time-drop,
+.time-panel .select-time .select-time-drop {
+    float: left;
+    width: 29px;
+    height: 29px;
+    position: relative;
+    font-size: 22px;
+    text-align: center;
+}
+
+.time-panel .select-time .select-time-drop {
+    width: 21px;
+}
+
+#float-panel .select-time .select-time-list,
+.time-panel .select-time .select-time-list {
+    position: absolute;
+    top: 29px;
+    left: -1px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    width: 70px;
+    border: 1px solid #d6d6d6;
+    border-top: none;
+    display: none;
+    z-index: 9;
+}
+
+.time-panel .select-time .select-time-list {
+    width: 53px;
+    overflow-x: hidden;
+}
+
+#float-panel .select-time:hover .select-time-list,
+.time-panel .select-time:hover .select-time-list {
+    display: block;
+    animation: fadeIn .3s;
+}
+
+#float-panel .select-time .select-time-list li,
+.time-panel .select-time .select-time-list li {
+    line-height: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#float-panel .select-time .select-time-list li:hover,
+.time-panel .select-time .select-time-list li:hover {
+    background-color: #eee;
+}
+
+#float-panel .select-time .select-time-list li.active,
+.time-panel .select-time .select-time-list li.active {
+    background-color: #ff595e;
+    color: #fff;
+}
+
+#float-panel .select-time .select-time-list li span,
+.time-panel .select-time .select-time-list li span {
+    float: left;
+    width: 38px;
+    text-align: center;
+}
+
+#float-panel .split,
+.time-panel .split {
+    float: left;
+    padding: 0 10px;
+    line-height: 30px;
+}
+
+#float-panel .btn-add {
+    width: 80px;
+    padding: 0;
+    line-height: 30px;
+    background-color: #fa575d;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    float: right;
+    margin: 0;
+    border: 0;
+}
+
+
+/* -- float-panel.to-upward -- */
+
+#float-panel.to-upward .select-time .select-time-drop:after,
+.time-panel.to-upward .select-time .select-time-drop:after {
+    content: '∧';
+}
+
+#float-panel.to-upward .select-time .select-time-list,
+.time-panel.to-upward .select-time .select-time-list {
+    top: -102px;
+    border-top: 1px solid #F6846B;
+    border-bottom: none;
+}
+
+.common_tab_box {
+    flex: 1;
+}
+
+.common_tab_box>li {
+    float: left;
+    height: 100%;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.maskWarp {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 28910180;
+    display: none;
+}
+
+.switch_sign {
+    display: inline-block;
+    width: 34px;
+    height: 18px;
+    background: #C0C0C0;
+    border-radius: 9px;
+    padding: 1px;
+    cursor: pointer;
+    position: relative;
+    transition: all .2s;
+    overflow: hidden;
+}
+
+.switch_sign .switch_sign_spot {
+    display: inline-block;
+    text-align: center;
+    line-height: 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    color: #C0C0C0;
+    transform: translateX(0px);
+    -moz-transform: translateX(0px);
+    -webkit-transform: translateX(0px);
+    transition: all .2s;
+}
+
+.open_switch {
+    background: #ff595e;
+}
+
+.open_switch .switch_sign_spot {
+    transform: translateX(16px);
+    -moz-transform: translateX(16px);
+    -webkit-transform: translateX(16px);
+    color: #ff595e;
+}
+
+.repeat_delete {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url(../img/x.png) no-repeat;
+    margin-top: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.metadatadown {
+    background-position: 45% 76%;
+}
+
+.metadatadown .font_metadata {
+    top: 60.4%;
+}
+
+#potential_pop .signup_pic {
+    width: 90px;
+    height: 90px;
+}

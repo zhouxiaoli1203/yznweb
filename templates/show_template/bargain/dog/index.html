@@ -1,0 +1,334 @@
+<div class="red_envelopes_monster">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/bargain/dog/css/index.css"/>
+    <div class="dog">
+        <div class="d_con_1">
+            <div class="d_btn_con"></div>
+            <div class="d_ribbon">
+                <audio id="bacMusic" src=""></audio>
+                <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+                <div class="d_peo">
+                    <img src="templates/show_template/bargain/dog/img/header.jpg" alt="" />
+                    <div class="d_peo_info">
+                        <p>FLY</p>
+                        <p>剩余名额500份</p>
+                        <p>原价1200元,底价200元,已旺0元</p>
+                    </div>
+                </div>
+                <div class="d_title">
+                    <p>麦兜成长教育春招大促旺旺旺！！！</p>
+                </div>
+                <div class="d_window">
+                    <div class="d_dog"><span class="dog_sta_1" imgType="1" state="move"></span></div>
+                    <div class="d_win_cloud">
+                        <div class="win_time">
+                            <p style="margin-bottom: 0.1rem;">活动截止时间：</p>
+                            <p><span>10</span>天<span>21</span>时<span>55</span>分<span>55</span>秒</p>
+                        </div>
+                    </div>
+                    <span class="d_bone"></span>
+                    <span class="d_bone"></span>
+                    <span class="d_bone"></span>
+                    <span class="d_bone d_bone_hide"></span>
+                    <span class="d_bone"></span>
+                    <span class="d_bone"></span>
+                    <span class="d_bone"></span>
+                </div>
+                <span class="d_btn"></span>
+            </div>
+        </div>
+        <div class="d_con_2">
+            <div class="d_con_3">
+                <span class="d_mod_title"></span>
+                <span class="d_cloud d_cloud_1"></span>
+                <span class="d_cloud d_cloud_2"></span>
+                <span class="d_cloud d_cloud_3"></span>
+                <div class="d_con_4">
+                    <h2 class="d_con_tit tit1"></h2>
+                    <div class="d_prizeInfo d_prizeimg">
+                        <p>麦兜成长教育原价1000元幼儿小班课低至200元。</p>
+                        <img src="templates/show_template/bargain/dog/img/prizeimg.jpg" alt="" />
+                    </div>
+                    <h2 class="d_con_tit tit2"></h2>
+                    <div class="d_prizeInfo d_rule">
+                        <p></p>
+                    </div>
+                    <h2 class="d_con_tit tit3"></h2>
+                    <div class="d_prizeInfo d_help">
+                        <span class="d_nodata">暂无人砍价</span>
+                    </div>
+                    <h2 class="d_con_tit tit4"></h2>
+                    <div class="d_prizeInfo d_rank">
+                        <span class="d_nodata">暂无排行</span>
+                    </div>
+                    <h2 class="d_con_tit tit5"></h2>
+                    <div class="d_prizeInfo d_organ">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="copyright pos_ele_5">
+                <span class="d_cloud d_cloud_4"></span>
+                <span class="d_cloud d_cloud_5"></span>
+                <span class="d_cloud d_cloud_6"></span>
+                <p class="copyright_erweima"></p>
+                <p class="copyright_organ">易知鸟教育培训</p>
+                <p class="copyright_phone">0571-85789582</p>
+                <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+                <p style="margin-top: 0.5rem;"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        //狗狗动画数据
+        var step_x = 10;    //狗狗横向移动速度
+        var step_y = 6; //狗狗纵向移动速度
+        var start_y = 0;
+        var start_x = 0;
+        var isEnd = true;
+        
+        //数据渲染
+        function getShowData(data) {
+            // 如果没有数据则使用show.js里面的初始数据
+            if(!data) {
+                var data = h5_tempalteData['bargain/dog'];
+            }
+            console.log('修改了数据', data);
+            var organHtml = '';
+            var yuyueHtml = '';
+            var music_url = '';
+            var peoHtml = '<p>FLY</p><p>剩余名额'+data.prizeInfo.num+'份</p>';
+            peoHtml += '<p>原价'+data.prizeInfo.originalPrice+'元,底价'+data.prizeInfo.floorPrice+'元,已旺0元</p>';
+            $('.d_peo_info').html(peoHtml);
+            
+            $('.d_title p').html(data.basicInfo.activityName);
+            $('.d_rule p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>"));
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if(data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>'+ data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    prizeHtml += '<img src='+ data.prizeInfo.describeList[i].value +' alt="奖品描述图片">';
+                }
+            }
+            $('.d_prizeimg').html(prizeHtml);
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            
+            //渲染底部信息
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src='+ data.organ.code +'> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: '+data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: '+data.organ.address);
+            
+            //渲染预约模块数据
+            yuyueHtml += '<li><label class="show_required" for="">学员姓名：</label><input type="text" placeholder="请输入学员姓名" maxlength="12" required/></li>';
+            yuyueHtml += '<li><label class="show_required" for="">学员年龄：</label><input type="text" placeholder="请输入学员年龄" maxlength="3" oninput="inputLimit(this)" required/></li>';
+            yuyueHtml += '<li><label class="show_required" for="">学员电话：</label><input type="text" placeholder="请输入学员电话" maxlength="11" oninput="inputLimit(this)" required/></li>';
+            if (data.appoinInfo.nickname) {
+                yuyueHtml += '<li><label for="">学员昵称：</label><input type="text" placeholder="请输入学员昵称" maxlength="12"></li>';
+            }
+            if (data.appoinInfo.sex) {
+                yuyueHtml += '<li><label for="">学员性别：</label><div class="yuyue_select"><select class="up_sex"><option value="1">男</option><option value="0">女</option><select></div></li>';
+            }
+            if (data.appoinInfo.parentname) {
+                yuyueHtml += '<li><label for="">家长姓名：</label><input type="text" placeholder="请输入家长姓名" maxlength="12"></li>';
+            }
+            if (data.appoinInfo.address) {
+                yuyueHtml += '<li><label for="">学员地址：</label><input type="text" placeholder="请输入学员地址"></li>';
+            }
+            
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+            	if(data.organInfo[i].type == 'text') {
+            	    organHtml += '<p>'+ data.organInfo[i].value.replace(/\n/g, "<br/>") +'</p>';
+            	} else {
+            	    organHtml += '<img src='+ data.organInfo[i].value +' alt="校区介绍图片">';
+            	}
+            };
+            
+            $('.d_organ').html(organHtml);
+            $('.r_yuyue_ul').html(yuyueHtml);
+        };
+        
+        $('.r_msk').on('mousewheel DOMMouseScrol', function(event) {
+            event.stopPropagation();
+        });
+        
+        //小叉叉
+        $('.r_x').on('click', function() {
+            $('.r_msk').hide();
+        })
+        
+        //我要参加
+        $('.r_tit_btn').on('click', function() {
+            var btnType = $(this).attr('btnType');
+            $('.r_msk').show();
+            $('.r_msk .r_hide').hide();
+            $('.r_msk').css({'top': $('#show_contain').scrollTop()+'px'});
+            console.log(btnType);
+            switch(btnType) {
+                case 'part':
+                console.log($('#show_contain').scrollTop());
+                    $('.r_msk .r_yuyue').show();
+                    break;
+            }
+        });
+        
+        setTimeout(function() {
+            dogInit();
+        }, 1000)
+        
+        //小狗动画初始化
+        function dogInit() {
+            midDis = $('.d_dog').width() / 2 - ($('.d_dog span').width() / 2);
+            dogMove();
+            if(dogTimer) {
+                clearInterval(dogTimer);
+            }
+            dogTimer = setInterval(function() {
+                imgMove();
+            }, 800);
+            
+            //小狗狗吃东西
+            $('.d_btn').on('click', function() {
+                dogEat();
+            })
+        }
+        
+        //小狗狗移动
+        function dogMove() {
+            if(!$('.d_dog span')[0]) {
+                clearInterval(dogTimer);
+                return;
+            };
+            start_x = $('.d_dog span').position().left + step_x;
+            if(start_y >= 6) {
+                start_y = 0;
+            } else {
+                start_y = 6
+            }
+            if(start_x <= 0 || start_x >= ($('.d_dog').width() - $('.d_dog span').width())) {
+                step_x = -step_x
+            }
+            $('.d_dog span').stop().animate({'left': start_x + 'px', 'top': start_y + 'px'}, 250, 'linear', function() {
+                if($('.d_dog span').attr('state') == 'stop') {
+                    
+                } else {
+                    dogMove();
+                }
+            });
+        };
+        
+        //小狗狗吐舌头
+        function imgMove() {
+            $('.d_dog span').removeClass('dog_sta_' + $('.d_dog span').attr('imgType'));
+            switch($('.d_dog span').attr('imgType')) {
+                case '1': 
+                    $('.d_dog span').attr('imgType', '2');
+                    $('.d_dog span').addClass('dog_sta_2');
+                    break;
+                case '2':
+                    $('.d_dog span').attr('imgType', '1');
+                    $('.d_dog span').addClass('dog_sta_1');
+                    break;
+                case '3': 
+                    $('.d_dog span').attr('imgType', '4');
+                    $('.d_dog span').addClass('dog_sta_4');
+                    break;
+                case '4': 
+                    $('.d_dog span').attr('imgType', '3');
+                    $('.d_dog span').addClass('dog_sta_3');
+                    break;
+            }
+        }
+        
+        //小狗狗吃骨头过程动画
+        function dogEat() {
+            if(!isEnd) {
+                return;
+            } else {
+                isEnd = false;
+            };
+            $('.d_dog span').attr('state', 'stop');
+            $('.d_dog span').css({'left': 70});
+            $('.d_dog span')[0].className = 'dog_sta_5';
+            clearInterval(dogTimer);   //清除切换图片计时器
+            
+            //小狗变大
+            $('.d_bone_hide').addClass('d_bone_hideing');
+            $('.d_dog span').stop().animate({
+                'width': $('.d_dog span').width() + 30,
+                'height': $('.d_dog span').height() + 30,
+                'left': $('.d_dog span').position().left - 15,
+                'top': $('.d_dog span').position().top - 20
+            }, 600, function() {
+                //小狗变小
+                $('.d_dog span').stop().animate({
+                    'width': $('.d_dog span').width() - 30,
+                    'height': $('.d_dog span').height() - 30,
+                    'left': $('.d_dog span').position().left + 15,
+                    'top': $('.d_dog span').position().top + 20
+                }, 600, function() {
+                    //小狗舔舌头
+                    $('.d_dog span')[0].className = 'dog_sta_4';
+                    $('.d_dog span').attr('imgType', '4');
+                    //换图片的计时器又开始运行
+                    dogTimer = setInterval(function() {
+                        imgMove();
+                    }, 800);
+                    //3秒过后小狗恢复移动
+                    setTimeout(function() {
+                        $('.d_bone_hide').removeClass('d_bone_hideing');
+                        $('.d_dog span')[0].className = 'dog_sta_1';
+                        $('.d_dog span').attr('imgType', '1');
+                        $('.d_dog span').attr('state', 'move');
+                        dogMove();
+                        isEnd = true;
+                    }, 5000)
+                });
+            })
+        }
+        
+    </script>
+</div>

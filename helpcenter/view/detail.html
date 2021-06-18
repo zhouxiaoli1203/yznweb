@@ -1,0 +1,23 @@
+<!--中间内容-->
+        <div class="contain_ct {{isCenteron || (relationInfo.listCenterRelation.length == 0)?'on':''}}">
+            <div class="titleWrapper">{{helpCenterTitle1}}<em ng-click="addQid()">{{helpCenterTitle2?'>'+helpCenterTitle2:''}}</em>{{helpCenterTitle3?'>'+helpCenterTitle3:''}}</div>
+            <div ng-show="isCenteron">
+                <div class="quesItem" ng-repeat="x in quesList track by $index" ng-if="x.helpCenterStatus == 1" ng-click="addQid(x.helpCenterId)">{{$index+1}}.{{x.helpCenterTitle}}</div>
+                <div class="quesItem" ng-if="quesList.length == 0">无</div>
+            </div>
+            <div class="quesDetailWrapper" ng-show="!isCenteron"></div>
+            <div class="share" ng-show="!isCenteron"></div><div class="toTop" ng-show="!isCenteron"></div>
+            <div class="qrcodeWrapper {{isCenteron || (relationInfo.listCenterRelation.length == 0)?'':'on'}}">
+                <p>打开微信‘扫一扫’转发给朋友</p>
+                <div id="qrcode"></div>
+            </div>
+        </div>
+        <!--拓展阅读-->
+        <div class="contain_rg_wrapper {{isCenteron || (relationInfo.listCenterRelation.length == 0)?'':'on'}}">
+            <div class="contain_rg">
+                <p>拓展阅读</p>
+                <ul>
+                    <li ng-repeat="x in relationInfo.listCenterRelation track by $index" ng-click="addQid(x.relationId)">{{x.helpCenterTitle}}</li>
+                </ul>
+            </div>
+        </div>

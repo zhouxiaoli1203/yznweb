@@ -1,0 +1,396 @@
+<div class="common_body visit_common">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">系统服务</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">技术支持</span>
+    </div>
+    <div class="center_body">
+        <div ng-if="visitNavJud==1">
+            <div class="common_body" style="min-height:inherit;">
+                <!-- 搜索 -->
+                <div class="common_tab">
+                    <ul class="ul_left clearfix">
+                        <li>
+                            <div style="font-size: 14px;">系统信息</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 列表 -->
+                <div class="common_content">
+                    <div class="table-responsivecharge_table">
+                        <table class="table table-hover">
+                            <thead my-thead="{{serviceListThead}}" list-clicks="sortCllict(data)"></thead>
+                            <tbody class="demo_tbody" ng-if="serviceListThead==''">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="course_tbody">
+                                <!--<tr ng-repeat="x in serviceListThead">-->
+                                <tr>
+                                    <td>{{systemInfo.shop.shopName}}</td>
+                                    <!--<td>{{systemInfo.shop.studentMax}}</td>-->
+                                    <td>{{systemInfo.shop.deadline | yznDate:"yyyy-MM-dd" | dataNull}}</td>
+                                    <td>{{systemInfo.shop.serveChosienName | dataNull}}</td>
+                                    <td class="operate overflow-normal textAlignCenter">
+                                        <span class="clickText" ng-if="adminInfo.status == 1" ng-click="openClearPop()">申请清空数据</span>
+                                        <span class="clickText" ng-if="adminInfo.status == 1" ng-click="openRecordPop()">申请记录</span>
+                                        <span ng-if="adminInfo.status != 1">-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="common_body" style="margin-top:10px;min-height:inherit;" ng-show="systemInfo.shop.faceDeviceStatus==2">
+                <!-- 搜索 -->
+                <div class="common_tab">
+                    <ul class="ul_left clearfix">
+                        <li>
+                            <div style="font-size: 14px;">设备信息</div>
+                        </li>
+                        <li class="common_tab_libtn">
+                            <div class="common_tab_btn" ng-click="openGobuy()"><i class="icon_buy"></i>继续购买</div>
+                        </li>
+                        <li class="common_tab_libtn">
+                            <div class="common_tab_btn" ng-click="openMybill()"><i class="icon_bill"></i>我的账单</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 列表 -->
+                <div class="common_content">
+                    <div class="table-responsivecharge_table">
+                        <table class="table table-hover">
+                            <thead my-thead="{{equipListThead}}" list-clicks="sortCllict(data)"></thead>
+                            <tbody class="demo_tbody" ng-if="!systemInfo.faceDeviceList || !systemInfo.faceDeviceList.length">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="9">暂未购买人脸识别设备</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="course_tbody">
+                                <tr ng-repeat="x in systemInfo.faceDeviceList track by $index">
+                                    <td class="textAlignCenter">{{$index+1}}</td>
+                                    <td>{{x.activationCode | dataNull}}</td>
+                                    <td>{{x.gmtCreate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>￥{{x.money|number:2}}*{{x.period}}期</td>
+                                    <td>￥{{x.amount|number:2}}</td>
+                                    <td>￥{{x.deposit | number:2}}</td>
+                                    <td>{{x.periodNumber}}/{{x.period}}</td>
+                                    <td>{{x.status==1?"使用中":"已终止"}}</td>
+                                    <td class="operate overflow-normal textAlignCenter">
+                                        <span class="clickText" ng-click="payInfo(x)">缴费详情</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="systemInfo.wxShopBind" class="common_body" style="margin-top:10px;min-height:inherit;">
+                <!-- 搜索 -->
+                <div class="common_tab">
+                    <ul class="ul_left clearfix">
+                        <li>
+                            <div style="font-size: 14px;">专属服务号</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 列表 -->
+                <div class="common_content">
+                    <div class="table-responsivecharge_table">
+                        <table class="table table-hover">
+                            <thead my-thead="{{wxOpenThead}}" list-clicks="sortCllict(data)"></thead>
+                            <tbody class="demo_tbody" ng-if="wxOpenThead==''">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="course_tbody">
+                                <tr ng-if="systemInfo.wxShopBind">
+                                    <td>{{systemInfo.shop.shopName}}</td>
+                                    <td>{{systemInfo.wxShopBind.deadline | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td>{{systemInfo.wxShopBind.wxappid | dataNull}}</td>
+                                    <td>{{systemInfo.wxShopBind.wxappName | dataNull}}</td>
+                                    <td>{{systemInfo.wxShopBind.appAuthored==1?"已授权":"未授权"}}</td>
+                                    <td class="operate overflow-normal textAlignCenter">
+                                        <span class="clickText" ng-if="systemInfo.wxShopBind.appAuthored == 0" ng-click="getPreAuthUrl()">授权</span>
+                                        <span ng-if="systemInfo.wxShopBind.appAuthored != 0">-</span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="visitNavJud==2" class="clearfix textAlignCenter">
+            <img src=" ./static/img/set_manage_sys.png" style="width: 39.67%;">
+            <div class="theadleft" style="display: inline-block;margin-left:7.68%;width:24.59%;vertical-align: middle;">
+                <p class="c6 f16" style="line-height: 32px;" ng-if="currentShop.shopSupportStatus == 0">很抱歉在您使用的过程中给您带来不便，点击下方“申请技术支持”由专属售后人员协助您解决问题。感谢您对“易知鸟”智慧教育云服务平台的支持与谅解！</p>
+                <p class="c6 f16" style="line-height: 32px;" ng-if="currentShop.shopSupportStatus == 1">很高兴为您解决使用过程中遇到的问题，点击下方“关闭技术支持”即可限制售后人员登录您的系统。感谢您对“易知鸟”智慧教育云服务平台 的支持与谅解！
+                </p>
+                <div class="common_tab_btn" ng-click='updateShopSupportStatus(currentShop.shopSupportStatus)' style="margin-left:0;display: inline-block;margin-top:18px;">{{currentShop.shopSupportStatus == 1?'关闭技术支持':'申请技术支持'}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!--扫码支付-->
+    <div class="popup_ onlinePay" id="onlinePay">
+        <h2>扫一扫付款</h2>
+        <h3>¥{{onlindPayData.amount|number:2}}</h3>
+        <div class="onlinePay_code">
+
+        </div>
+        <p ng-click="reOnlinePay()">点击刷新支付状态</p>
+        <div class="onlinePay_order">
+            <strong>浙江筑森网络科技有限公司</strong>
+            <!--<em>订单号：{{onlindPayData.externalOrderId}}</em>-->
+        </div>
+    </div>
+    <!--我的账单-->
+    <div class="popup_ mybill_pop">
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div style="color: #F6B352;">每月1日出账当月账单，每月15日为还款截至时间，逾期则按当月租金每日支付1%的滞纳金</div>
+                        <div class="popup_table marginTop_10">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>还款截止时间</th>
+                                        <th style="width:240px;">金额</th>
+                                        <th>状态</th>
+                                        <th class="textAlignCenter">操作</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:101.5%;max-height:420px;">
+                                <table>
+                                    <tbody class="demo_tbody" ng-if="listMyDeviceBill=='' || listMyDeviceBill==[ ]">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody" ng-if="listMyDeviceBill.length>0">
+                                        <tr ng-repeat="x in listMyDeviceBill track by $index">
+                                            <td class="clickText" ng-click="openbillInfo(x)">{{x.deadline | yznDate:"yyyy-MM-dd"}}
+                                            </td>
+                                            <td style="width:240px;">￥{{x.amount|number:2}}
+                                                <span class="main_color" ng-if="x.overdueFine>0">(含滞纳金￥{{x.overdueFine|number:2}})</span>
+                                            </td>
+                                            <td>
+                                                <span ng-class='{"main_color":x.status =="3"}'>{{x.status =="0"?"待还":x.status =="1"?"已出账":x.status =="2"?"已还款":x.status =="3"?"已逾期":""}}</span>
+                                            </td>
+                                            <td class="textAlignCenter">
+                                                <span class="clickText" ng-if="x.status == '1' || x.status == '3'" ng-click="toPay(x)">付款</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--付款弹框-->
+    <div class="popup_ pay_pop">
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="confirmPay()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_line">
+                            <label class="form-label">支付金额:</label>
+                            <span class="col-xs-10 form-span main_color">￥{{deviceBillDetail.amount|number:2}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">支付方式</label>
+                            <div class="col-xs-10">
+                                <ul class="pay_type_icon clearfix">
+                                    <li ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.paymentMoney==x.value}" ng-click="clickPayTypeIcon(x.value)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePayPop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确认支付</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--缴费详情-->
+    <div class="popup_ payInfo_pop">
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_table marginTop_10">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>还款截止时间</th>
+                                        <th style="width:240px;">金额</th>
+                                        <th>还款时间</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:101.5%;max-height:420px;">
+                                <table>
+                                    <tbody class="demo_tbody" ng-if="listDeviceBill=='' || listDeviceBill == []">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody" ng-if="listDeviceBill.length>0">
+                                        <tr ng-repeat="x in listDeviceBill track by $index">
+                                            <td>{{x.deadline | yznDate:"yyyy-MM-dd"}}</td>
+                                            <td style="width:240px;">￥{{x.amount|number:2}}
+                                                <span class="main_color" ng-if="x.overdueFine>0">(含滞纳金￥{{x.overdueFine|number:2}})</span>
+                                            </td>
+                                            <td>
+                                                {{x.paytime?(x.paytime | yznDate:"yyyy-MM-dd"):""}}
+                                            </td>
+                                            <td>
+                                                <span ng-class='{"main_color":x.status =="3"}'>{{x.status =="0"?"待还":x.status =="1"?"已出账":x.status =="2"?"已还款":x.status =="3"?"已逾期":""}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--账单详情-->
+    <div class="popup_ billInfo_pop">
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_line">
+                            金额：<span class="main_color">￥{{deviceBillDetail.amount|number:2}}</span>,对应<span class="main_color">{{deviceBillList.length}}</span>台设备
+                        </div>
+                        <div class="popup_table marginTop_10">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th width="50px;">编号</th>
+                                        <th width="30%">设备序列号</th>
+                                        <th width="22%">购买时间</th>
+                                        <th width="18%">分期</th>
+                                        <th width="50px;">期次</th>
+                                        <th width="35%">本次还款</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:101.5%;max-height:420px;">
+                                <table>
+                                    <tbody class="demo_tbody" ng-if="deviceBillList=='' || deviceBillList == []">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody" ng-if="deviceBillList.length>0">
+                                        <tr ng-repeat="x in deviceBillList track by $index">
+                                            <td width="50px;">{{$index+1}}</td>
+                                            <td width="30%">{{x.activationCode}}</td>
+                                            <td width="22%">{{x.gmtCreate | yznDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td width="18%">￥{{x.money|number:2}}*{{x.period}}期</td>
+                                            <td width="50px;">{{x.periodNumber}}/{{x.period}}</td>
+                                            <td width="35%">￥{{x.amount|number:2}}
+                                                <span class="main_color" ng-if="x.overdueFine>0">(含滞纳金￥{{x.overdueFine|number:2}})</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--申请清空数据-->
+    <div class="popup_ clearApplyPop" id="clearApplyPop">
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="confirm_clearApply()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_line main_color" style="background: #FFF0DB;border:1px solid #FCDCB1;padding:9px;line-height: 20px;">
+                            <i class="main_color icon_warning"></i> 该申请仅系统管理员有权限操作。申请提交后，我们的工作人员会电话和您联系确认。确认后将为您清空系统中的数据。数据清空后无法还原，请谨慎操作。
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label width_100">您的手机号码 :</label>
+                            <span class="col-xs-4 form-span">{{adminInfo.phoneNum}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label width_100">验证码 :</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control" ng-model="authCode" required/>
+                            </div>
+                            <div class="col-xs-3 line28 noPadding">
+                                <span class="get_testCode" ng-click="getTestCode(adminInfo.phoneNum)" ng-bind="description" ng-disabled="canClick">发送验证码</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--申请记录-->
+    <div class="popup_ apply_record" id="apply_record">
+        <div class="popup_content noPadding">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_table marginTop_10">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th width="230px">申请时间</th>
+                                        <th width="50%">申请人</th>
+                                        <th width="50%">状态</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body">
+                                <table>
+                                    <tbody class="demo_tbody" ng-if="recordList=='' || recordList == []">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody">
+                                        <tr ng-repeat="x in recordList">
+                                            <td width="230px;">{{x.applyTime | yznDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td width="50%">{{x.proposer}}</td>
+                                            <td width="50%">{{x.status =="0"?"待处理":x.status =="1"?"已处理":x.status =="2"?"已拒绝":""}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

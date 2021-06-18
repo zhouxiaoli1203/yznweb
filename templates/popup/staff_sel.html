@@ -1,0 +1,65 @@
+<!--选择员工-->
+<div class="popup_ choseStaff" id="choseStaff">
+    <h6>选择员工<span ng-click="closePopup('choseStaff')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="screen_charge(4, n)" list-keyup="screen_charge(4, n)" list-data="{{searchData.ksn}}" select-name="{{searchData.ksId}}" select-input="true"></kindsearch>
+                            </li>
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="screenData.workType==1" ng-click="screen_charge(1, $event)">全职
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="screenData.workType==0" ng-click="screen_charge(2, $event)">兼职
+                                </label>
+                            </li>
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="screenData.fenzu==0" ng-click="screen_charge(3, $event)">未分组
+                                </label>
+                            </li>
+                            <li ng-click="screen_charge(5)" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 50px;"><input type="checkbox" ng-checked="screenData.allChecked" ng-click="operateList(1)" /></th>
+                                    <th style="width: 120px;">姓名</th>
+                                    <th style="width: 425px;">岗位</th>
+                                    <th>考勤组</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-show="!staffList">
+                                    <td colspan="4" style="text-align: center;">暂无课程</td>
+                                </tr>
+                                <tr ng-repeat="x in staffList" ng-click="operateList(2, x)">
+                                    <td style="text-align: center;"><input type="checkbox" ng-checked="x.hasChecked" /></td>
+                                    <td>{{x.shopTeacher.teacherName}}</td>
+                                    <td><span ng-repeat="i in x.shopTeacher.quarters">{{i.quartersName}}；</span></td>
+                                    <td>{{x.attendanceRules?x.attendanceRules.name:''}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 staffSel"></div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('choseCourse')" type="button">取消</button>
+                <button class="btn sure" ng-click="operateList(3)" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

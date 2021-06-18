@@ -1,0 +1,1559 @@
+<!--订单详情主弹框-->
+<div class="popup_ orderInfo" id="orderInfo">
+    <h6>订单详情<span class="color_nameState">{{orderDetail.orderStatus==1?"":orderDetail.confirmStatus==0?"（未确认）":"（已确认）"}}{{orderDetail.orderStatus==1?'【已废除】':''}}</span><span ng-click="closePopup('orderInfo')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content order">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label">订单号:</label>
+                        <!--<a class="col-xs-2 form-span" target="_blank" href="http://127.0.0.1:8020/webnew/relationOrder/index.html?orderId={{orderDetail.orderId}}">{{orderDetail.orderId}}</a>-->
+                        <span class="col-xs-2 form-span">{{orderDetail.externalOrderId}}</span>
+                        <label class="form-label">类型:</label>
+                        <span class="col-xs-1 form-span">{{orderDetail.type}}</span>
+                        <label class="form-label">订单时间:</label>
+                        <span class="col-xs-2 form-span" style="width:150px;">{{orderDetail.orderTime | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                        <div class="pot_pop_peo_nav clearfix" style="width: 330px;" ng-hide="page== '关联订单'">
+                            <div class="common_tab_btn" ng-click="printReceipt()" ng-if="!(orderType == 4 || orderType == 8 || orderType == 9 || orderType==10)  && orderDetail.orderStatus == 0">
+                                <i class="icon_print"></i>打印收据
+                            </div>
+                            <!--<div class="common_tab_btn delete" ng-click="recieveConfirm()" ng-if="isConfirmOrderPop && orderType == 11 && orderDetail.orderStatus == 0 && !orderFrozen_miss && orderDetail.checkStatus == 0 && (orderDetail.orderGoods && orderDetail.orderGoods[0].goodsType == 1)">
+                                <i class="icon_confirRecieve"></i>确认归还
+                            </div>-->
+                            <div>
+                                <!--<div class="common_tab_btn delete" ng-click="recieveConfirm()" ng-if="isConfirmOrderPop && orderDetail.orderStatus == 0 && !orderFrozen_miss && orderDetail.checkStatus == 0">
+                                    <i class="icon_confirRecieve"></i>确认领取
+                                </div>-->
+                                <div ng-if="showOrderConfirmBtn() && orderType != 4 && isConfirmOrderPop && orderDetail.orderStatus == 0" class="common_tab_btn delete" ng-click="confirOrder()">
+                                    <i class="icon_orderConfirm"></i>确认订单
+                                </div>
+                                <div class="common_tab_btn delete" ng-click="deleteOrder()" ng-if="orderType!=10 && orderDetail.orderStatus == 0 && isConfirmOrderPop" ng-hide="orderDetail.orderType==12&&orderDetail.inOrOut==1">
+                                    <i class="icon_delete"></i>废除
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">姓名:</label>
+                        <span class="col-xs-2 form-span">{{orderDetail.studentInfo.name}}<span
+                                ng-class="{'1':'icon_male','0':'icon_female'}[relation.sex]"></span></span>
+                        <label class="form-label">家长:</label>
+                        <span class="col-xs-4 form-span parent">
+                            <span>{{relation.potentialCustomerParentPhone}}</span>
+                        <span>{{relation.type}}</span>
+                        <span>{{relation.potentialCustomerParentName}}</span>
+                        <div ng-show="relation.potentialCustomerParentTowPhone || relation.potentialCustomerParentThreePhone" class="icon_more" ng-mouseover="mouseoverOd($event)" ng-mouseleave="mouseleaveOd($event)">
+                            <div class="openPop" style="display:none;">
+                                <ul class="popContent">
+                                    <li ng-if="relation.potentialCustomerParentTowPhone">
+                                        <span>{{relation.potentialCustomerParentTowPhone}}&ensp;&ensp;</span>
+                                        <span>{{relation.typeTwo}}&ensp;&ensp;</span>
+                                        <span>{{relation.potentialCustomerParentTowName}}</span>
+                                    </li>
+                                    <li ng-if="relation.potentialCustomerParentThreePhone">
+                                        <span>{{relation.potentialCustomerParentThreePhone}}&ensp;&ensp;</span>
+                                        <span>{{relation.typeThree}}&ensp;&ensp;</span>
+                                        <span>{{relation.potentialCustomerParentThreeName}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对内备注:</label>
+                        <span class="col-xs-10 form-span">{{orderDetail.remark}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对外备注:</label>
+                        <span class="col-xs-10 form-span">{{orderDetail.externalRemark}}</span>
+                    </div>
+                    <div class="parting_line_2"></div>
+                    <!--1:"新签", 2:"续签",3:"转课",4:"结课",5:"退课",6:"充值",7:"退款"-->
+                    <!--转出课程-->
+                    <div ng-if="(orderType == 3 || orderType == 12)&& orderDetail.outOrderCourseList.length > 0">
+                        <div class="table_title clearfix">
+                            <span class="span_title" ng-if="orderType == 3">转出课程</span>
+                            <span class="span_title" ng-if="orderType == 12">转出校区 ({{orderDetail.outShopName}})</span>
+                        </div>
+                        <div class="course_title">
+                            <span title="{{orderDetail.courseName}}">{{orderDetail.courseName}}</span>
+                        </div>
+
+                        <div class="popup_table" ng-if="orderDetail_order_keshi.length>0">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th width="60px"><span class="courseType_status keshi">课时</span></th>
+                                        <th>原订单号</th>
+                                        <th>学年学期</th>
+                                        <!--<th class="textAlignRt">剩余购买课时</th>
+                                    <th class="textAlignRt">剩余赠送课时</th>
+                                    <th class="textAlignRt">剩余学费</th>
+                                    <th class="textAlignRt">欠费金额</th>-->
+                                        <th class="textAlignRt">转购买课时</th>
+                                        <th class="textAlignRt">转赠送课时</th>
+                                        <th class="textAlignRt">可转学费</th>
+                                        <th class="textAlignRt">转出金额</th>
+                                        <th class="textAlignRt">手续费</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:100%;max-height:none;">
+                                <table class="order_table">
+                                    <tbody class="roll_tbody">
+                                        <tr ng-repeat="x in orderDetail_order_keshi">
+                                            <td width="60px"></td>
+                                            <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                            </td>
+                                            <td>
+                                                <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                                <span ng-if="x.feeType==0">-</span>
+                                            </td>
+                                            <!--<td class="textAlignRt">{{x.surplusTime|number:2}}</td>
+                                        <td class="textAlignRt">{{x.surplusGiveTime|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.surplusFee|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.arrearage|number:2}}</td>-->
+                                            <td class="textAlignRt">{{x.outHour|number:2}}</td>
+                                            <td class="textAlignRt">{{x.returnGiveTime|number:2}}</td>
+                                            <td class="textAlignRt">¥{{x.returnMoney|number:2}}</td>
+                                            <td class="textAlignRt">¥{{x.amount|number:2}}</td>
+                                            <td class="textAlignRt">¥{{(x.serviceChange|number:2) || "0.00"}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="popup_table mt10" ng-if="orderDetail_order_tian.length>0">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th width="60px"><span class="courseType_status tian">按月</span></th>
+                                        <th>原订单号</th>
+                                        <!--<th class="textAlignRt">购买天数</th>
+                                    <th class="textAlignRt">赠送天数</th>
+                                    <th class="textAlignRt">签约金额</th>-->
+                                        <th class="textAlignRt">转购买天数</th>
+                                        <th class="textAlignRt">转赠送天数</th>
+                                        <th class="textAlignRt">可转学费</th>
+                                        <!--<th class="textAlignRt">剩余学费</th>
+                                    <th class="textAlignRt">欠费金额</th>-->
+                                        <th class="textAlignRt">转出金额</th>
+                                        <th class="textAlignRt">手续费</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:100%;max-height:none;">
+                                <table class="order_table">
+                                    <tbody class="roll_tbody">
+                                        <tr ng-repeat="x in orderDetail_order_tian">
+                                            <td width="60px"></td>
+                                            <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                            </td>
+                                            <!--<td class="textAlignRt">{{x.buyTime}}天</td>
+                                        <td class="textAlignRt">{{x.giveTime}}天</td>
+                                        <td class="textAlignRt">¥{{x.coursePrice|number:2}}</td>-->
+                                            <td class="textAlignRt">{{x.outHour}}天</td>
+                                            <td class="textAlignRt">{{x.returnGiveTime}}天</td>
+                                            <td class="textAlignRt">¥{{x.returnMoney|number:2}}</td>
+                                            <!--<td class="textAlignRt">¥{{x.surplusFee|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.arrearage|number:2}}</td>-->
+                                            <td class="textAlignRt">¥{{x.amount|number:2}}</td>
+                                            <td class="textAlignRt">¥{{(x.serviceChange|number:2) || "0.00"}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="(orderType == 1 || orderType == 2 || orderType == 3 || orderType == 12) && orderDetail.orderCourseList.length > 0">
+                        <div class="table_title clearfix">
+                            <span class="span_title" ng-if="orderType == 3">转入课程:</span>
+                            <span class="span_title" ng-if="orderType == 12">转入校区 ({{orderDetail.inShopName}})</span>
+                            <span class="span_title" ng-if="orderType != 3 && orderType != 12">订单内容:</span>
+                            <span class="coupon_img1" style="margin: 0 0 0 10px;" ng-if="orderDetail.coupon" ng-mouseover="orderDetail.showOrder=true" ng-mouseout="orderDetail.showOrder=false"><em ng-if="orderDetail.showOrder">{{orderDetail.coupon.discountType == 1?(orderDetail.coupon.discounts + '元'): (orderDetail.coupon.discounts / 10 + '折')}} 【{{orderDetail.coupon.couponName}}】</em></span>
+                        </div>
+                        <div ng-repeat="x in orderDetail.orderCourseList track by $index" ng-class='{marginTop_10:$index!=0}'>
+                            <div class="table_course_order">
+                                <div class="course_title course">
+                                    <span class="icon_order_type" ng-class="{'sign_type_2': x.courseType==2, 'sign_type_3': x.courseType==3}">{{x.courseType == 1?"新报":x.courseType == 2?"续报":"扩科"}}</span>
+                                    <span title="{{x.course.courseName}} {{x.schoolYear}} {{x.schoolTermName}} {{x.packageInfo.packageName}}">{{x.course.courseName}}{{x.feeType == 1&&x.schoolYear?(&nbsp;&nbsp;x.schoolYear):''}}&nbsp;&nbsp;{{x.schoolTermName}} {{x.packageInfo.packageName}}</span>
+                                    <span ng-if="x.activityId" class="activity" ng-mouseover="mouseoverOd_ac($event,x.activityId,orderDetail.orderCourseList)" ng-mouseleave="mouseleaveOd_ac($event)">
+                                        <div class="openPop" style="display:none;">
+                                            <span class="popMark"></span>
+                                    <ul class="popContent">
+                                        <li>
+                                            <span>活动名称：</span>
+                                            <span>{{x.activityName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </span>
+                            </div>
+                            <div class="pull-right" ng-show="x.consumeTime>0">导入时已用课时：<span class="main_color">{{x.consumeTime|number:2}}</span>课时
+                            </div>
+                        </div>
+                        <div class="popup_table">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <!--<th style="width:  212px;">课程</th>-->
+                                        <th style="width: 88px;" class="textAlignRt">单课价</th>
+                                        <th style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">开始时间</th>
+                                        <th style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">结束时间</th>
+                                        <th style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">赠送时间</th>
+                                        <th style="width: 15%;" class="textAlignRt" ng-if="x.feeType != 2">购买课时</th>
+                                        <th style="width: 19%;" class="textAlignRt" ng-if="x.feeType != 2">赠送课时</th>
+                                        <th style="width: 88px;" class="textAlignRt">课程价格</th>
+                                        <th style="width: 150px;" class="textAlignRt">优惠</th>
+                                        <th style="width: 88px;" class="textAlignCenter">签约金额</th>
+                                        <th style="width: 88px;" class="textAlignRt">均课价</th>
+                                        <th style="width: 15%;" class="textAlignCenter" ng-if="x.feeType != 2">有效期至</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="width:100%;max-height:none;">
+                                <table class="order_table">
+                                    <tbody class="roll_tbody">
+                                        <tr>
+                                            <!--<td class="course" style="width:  212px;">
+                                                    <span  title="{{x.course.courseName}} {{x.schoolYear}} {{x.schoolTermName}} {{x.packageInfo.packageName}}">{{x.course.courseName}}&nbsp;&nbsp;{{x.schoolYear}}&nbsp;&nbsp;{{x.schoolTermName}} {{x.packageInfo.packageName}}</span>
+                                                    <span  ng-if="x.activityId" class="activityIcon" ng-mouseover="mouseoverOd_ac($event,x.activityId,orderDetail.orderCourseList)" ng-mouseleave="mouseleaveOd_ac($event)">
+                                                            <div class="openPop" style="display:none;">
+                                                                <span class="popMark"></span>
+                                                                <ul class="popContent">
+                                                                    <li>
+                                                                        <span>活动名称：</span>
+                                                                        <span>{{x.activityName}}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                    </span>
+                                                </td>-->
+                                            <td style="width: 88px;" class="textAlignRt" title='¥{{x.singleCoursePrice|number:2}}{{x.feeType == 2?"/天":""}}'>
+                                                ¥{{x.singleCoursePrice|number:2}}{{x.feeType == 2?"/天":""}}
+                                            </td>
+                                            <td style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">
+                                                {{x.beginTime|yznDate:'yyyy-MM-dd'}}
+                                            </td>
+                                            <td style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">
+                                                {{x.endTime|yznDate:'yyyy-MM-dd'}}
+                                            </td>
+                                            <td style="width: 15%;" class="textAlignRt" ng-if="x.feeType == 2">
+                                                {{x.giveTime>0?(x.endTime | _addDate: x.giveTime: 'yyyy-MM-dd'):"-"}}
+                                            </td>
+                                            <td style="width: 15%;" class="textAlignRt" ng-if="x.feeType != 2">
+                                                {{x.buyTime|number:2}}
+                                            </td>
+                                            <td style="width: 19%;" class="textAlignRt" ng-if="x.feeType != 2">
+                                                {{x.giveTime|number:2}}
+                                            </td>
+                                            <td style="width: 88px;" class="textAlignRt">¥{{x.coursePrice|number:2}}
+                                            </td>
+                                            <td style="width: 150px;" class="textAlignRt">
+                                                <div ng-show="x.discounts && x.discountType=='1'">
+                                                    课程优惠:￥{{x.discounts}}
+                                                </div>
+                                                <div ng-show="x.discounts && x.discountType=='2'">课程优惠:{{x.discounts/10 + '折'}}
+                                                </div>
+                                                <div ng-show="orderDetail.coupon">优惠券:{{orderDetail.coupon.discountType == 1?("￥"+x.couponDiscountAmount):(orderDetail.coupon.discounts/10+"折")}}
+                                                </div>
+                                                <div ng-show="!x.discounts && !orderDetail.coupon">-</div>
+                                            </td>
+                                            <!--<td style="width: 88px;" class="textAlignRt" ng-if="x.discountType==1">¥{{x.discounts?(x.discounts|number:2):"0.00"}}</td>
+                                                <td style="width: 88px;" class="textAlignRt" ng-if="x.discountType==2">{{x.discounts/10}}折</td>-->
+                                            <td style="width: 88px;" class="textAlignCenter">¥{{x.amount|number:2}}</td>
+                                            <td style="width: 88px;" class="textAlignRt" title='¥{{x.averageCoursePrice|number:2}}{{x.feeType == 2?"/天":""}}'>
+                                                ¥{{x.averageCoursePrice|number:2}}{{x.feeType == 2?"/天":""}}
+                                            </td>
+                                            <td style="width: 15%;" class="textAlignCenter" ng-if="x.feeType != 2">
+                                                {{x.endTime?(x.endTime | yznDate:'yyyy-MM-dd'):"-"}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="popup_table" ng-if="orderType != 3">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">课程</th>
+                                        <th style="width: 88px;" class="textAlignRt">单课价</th>
+                                        <th style="width: 18%;" class="textAlignRt">购买课时</th>
+                                        <th style="width: 19%;" class="textAlignRt">赠送课时</th>
+                                        <th style="width: 88px;" class="textAlignRt">课程价格</th>
+                                        <th style="width: 88px;" class="textAlignRt">优惠</th>
+                                        <th style="width: 88px;" class="textAlignRt">均课价</th>
+                                        <th style="width: 88px;" class="textAlignRt">签约金额</th>
+                                        <th style="width: 25%;">有效期</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="max-height:none;">
+                                <table class="order_table">
+                                    <tbody class="roll_tbody">
+                                        <tr ng-repeat="x in orderDetail.orderCourseList">
+                                            <td class="course" style="width: 40%;">
+                                                <span  title="{{x.course.courseName}} {{x.schoolYear}} {{x.schoolTermName}} {{x.packageInfo.packageName}}">{{x.course.courseName}}&nbsp;&nbsp;{{x.schoolYear}}&nbsp;&nbsp;{{x.schoolTermName}} {{x.packageInfo.packageName}}</span>
+                                                <span  ng-if="x.activityId" class="activityIcon" ng-mouseover="mouseoverOd_ac($event,x.activityId,orderDetail.orderCourseList)" ng-mouseleave="mouseleaveOd_ac($event)">
+                                                        <div class="openPop" style="display:none;">
+                                                            <span class="popMark"></span>
+                                                <ul class="popContent">
+                                                    <li>
+                                                        <span>活动名称：</span>
+                                                        <span>{{x.activityName}}</span>
+                                                    </li>
+                                                </ul>
+                            </div>
+                            </span>
+                            </td>
+                            <td style="width: 88px;" class="textAlignRt">¥{{x.singleCoursePrice|number:2}}
+                            </td>
+                            <td style="width: 20%;" class="textAlignRt">{{x.buyTime|number:2}}</td>
+                            <td style="width: 20%;" class="textAlignRt">{{x.giveTime|number:2}}</td>
+                            <td style="width: 88px;" class="textAlignRt">¥{{x.coursePrice|number:2}}</td>
+                            <td style="width: 88px;" class="textAlignRt" ng-if="x.discountType==1">
+                                ¥{{x.discounts?(x.discounts|number:2):"0.00"}}
+                            </td>
+                            <td style="width: 88px;" class="textAlignRt" ng-if="x.discountType==2">
+                                {{x.discounts}}折
+                            </td>
+                            <td style="width: 88px;" class="textAlignRt">¥{{x.averageCoursePrice|number:2}}
+                            </td>
+                            <td style="width: 88px;" class="textAlignRt">¥{{x.amount|number:2}}</td>
+                            <td style="width: 25%;">{{x.beginTime | yznDate:'yyyy-MM-dd'}}-<br>{{x.endTime | yznDate:'yyyy-MM-dd'}}
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                </div>
+                <!--结课-->
+                <div ng-if="orderType == 4 && orderDetail.orderCourseList.length > 0">
+                    <div class="table_title clearfix">
+                        <span class="span_title">结课课程</span>
+                    </div>
+                    <div class="course_title">
+                        <span title="{{orderDetail.courseName}}">{{orderDetail.courseName}}</span>
+                        <span class="coupon_img1" style="margin: 0 0 0 10px;" ng-if="orderDetail.coupon" ng-mouseover="orderDetail.showOrder=true" ng-mouseout="orderDetail.showOrder=false"><em ng-if="orderDetail.showOrder">优惠券名称：{{orderDetail.coupon.couponName}};    优惠金额：{{orderDetail.coupon.discountType == 1?(orderDetail.coupon.discounts + '元'): (orderDetail.coupon.discounts / 10 + '折')}}</em></span>
+                    </div>
+                    <!--课时、按期-->
+                    <div class="popup_table" ng-if="orderDetail_order_keshi.length>0">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="60px"><span class="courseType_status keshi">课时</span></th>
+                                    <th>原订单号</th>
+                                    <th>学年学期</th>
+                                    <th class="textAlignRt">剩余购买课时</th>
+                                    <th class="textAlignRt">剩余赠送课时</th>
+                                    <th class="textAlignRt">欠费金额</th>
+                                    <th class="textAlignRt">结算金额</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table class="order_table">
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail_order_keshi">
+                                        <td width="60px"></td>
+                                        <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                        </td>
+                                        <td>
+                                            <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                            <span ng-if="x.feeType==0">-</span>
+                                        </td>
+                                        <td class="textAlignRt">{{x.buyTime |number:2}}</td>
+                                        <td class="textAlignRt">{{x.giveTime |number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.arrearage|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.serviceChange|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--按月-->
+                    <div class="popup_table mt10" ng-if="orderDetail_order_tian.length>0">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="60px"><span class="courseType_status tian">按月</span></th>
+                                    <th>原订单号</th>
+                                    <th class="textAlignRt">剩余购买天数</th>
+                                    <th class="textAlignRt">剩余赠送天数</th>
+                                    <th class="textAlignRt">欠费金额</th>
+                                    <th class="textAlignRt">结算金额</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table class="order_table">
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail_order_tian">
+                                        <td width="60px"></td>
+                                        <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                        </td>
+                                        <td class="textAlignRt">{{x.buyTime|tian}}</td>
+                                        <td class="textAlignRt">{{x.giveTime|tian}}</td>
+                                        <td class="textAlignRt">¥{{x.arrearage|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.serviceChange|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--欠课处理-->
+                <div ng-if="orderType == 4 &&orderDetail.surplusTime">
+                    <div class="table_title clearfix">
+                        <span>欠费处理</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>欠课课程</th>
+                                    <th>欠课课时</th>
+                                    <th>单课价</th>
+                                    <th>结算金额</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr>
+                                    <td>{{orderDetail.ownCourseName}}</td>
+                                    <td>{{orderDetail.surplusTime|abs|number:2}}</td>
+                                    <td>{{orderDetail.unitPrice}}元/课时</td>
+                                    <td>￥{{orderDetail.money|number:2}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--退课信息:-->
+                <div ng-if="orderType == 5 && orderDetail.orderCourseList.length > 0">
+                    <div class="table_title clearfix">
+                        <span class="span_title">退课课程</span>
+                    </div>
+                    <div class="course_title">
+                        <span title="{{orderDetail.courseName}}">{{orderDetail.courseName}}</span>
+                    </div>
+                    <div class="popup_table" ng-if="orderDetail_order_keshi.length>0">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="60px"><span class="courseType_status keshi">课时</span></th>
+                                    <th>原订单号</th>
+                                    <th>学年学期</th>
+                                    <!--<th class="textAlignRt">剩余购买课时</th>
+                                        <th class="textAlignRt">剩余赠送课时</th>
+                                        <th class="textAlignRt">剩余学费</th>
+                                        <th class="textAlignRt">欠费金额</th>-->
+                                    <th class="textAlignRt">退购买课时</th>
+                                    <th class="textAlignRt">退赠送课时</th>
+                                    <th class="textAlignRt">可退金额</th>
+                                    <th class="textAlignRt">退课金额</th>
+                                    <th class="textAlignRt">手续费</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table class="order_table">
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail_order_keshi">
+                                        <td width="60px"></td>
+                                        <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                        </td>
+                                        <td>
+                                            <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                            <span ng-if="x.feeType==0">-</span>
+                                        </td>
+                                        <!--<td class="textAlignRt">{{x.surplusTime|number:2}}</td>
+                                            <td class="textAlignRt">{{x.surplusGiveTime|number:2}}</td>
+                                            <td class="textAlignRt">¥{{x.surplusFee|number:2}}</td>
+                                            <td class="textAlignRt">¥{{x.arrearage|number:2}}</td>-->
+                                        <td class="textAlignRt">{{x.returnHour|number:2}}</td>
+                                        <td class="textAlignRt">{{x.returnGiveTime|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.returnMoney|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.amount|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.serviceChange|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table mt10" ng-if="orderDetail_order_tian.length>0">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="60px"><span class="courseType_status tian">按月</span></th>
+                                    <th>原订单号</th>
+                                    <!--<th class="textAlignRt">购买天数</th>
+                                        <th class="textAlignRt">赠送天数</th>
+                                        <th class="textAlignRt">签约金额</th>-->
+                                    <th class="textAlignRt">退购买天数</th>
+                                    <th class="textAlignRt">退赠送天数</th>
+                                    <th class="textAlignRt">可退金额</th>
+                                    <th class="textAlignRt">退课金额</th>
+                                    <th class="textAlignRt">手续费</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table class="order_table">
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail_order_tian">
+                                        <td width="60px"></td>
+                                        <td ng-class='{"clickText":props.page!="关联订单"}' ng-click="props.page!='关联订单'?goCommonPop(x):''">{{x.externalOrderId}}
+                                        </td>
+                                        <!--<td class="textAlignRt">{{x.buyTime}}天</td>
+                                            <td class="textAlignRt">{{x.giveTime}}天</td>
+                                            <td class="textAlignRt">¥{{x.coursePrice|number:2}}</td>-->
+                                        <td class="textAlignRt">{{x.returnHour}}天</td>
+                                        <td class="textAlignRt">¥{{x.returnGiveTime|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.returnMoney|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.amount|number:2}}</td>
+                                        <td class="textAlignRt">¥{{x.serviceChange|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="(orderType == 6 || orderType == 7 || orderType == 8 || orderType == 9) && orderDetail.orderCourseList.length > 0">
+                    <div class="table_title clearfix">
+                        <span class="span_title">订单内容：</span>
+                        <span class="coupon_img1" style="margin: 0 0 0 10px;" ng-if="orderDetail.coupon" ng-mouseover="orderDetail.showOrder=true" ng-mouseout="orderDetail.showOrder=false"><em ng-if="orderDetail.showOrder">优惠券名称：{{orderDetail.coupon.couponName}};    优惠金额：{{orderDetail.coupon.discountType == 1?(orderDetail.coupon.discounts + '元'): (orderDetail.coupon.discounts / 10 + '折')}}</em></span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="textAlignCenter">{{orderType == 6?"充值":orderType == 7?"退款":orderType == 8?"支出":"返还"}}金额
+                                    </th>
+                                    <th class="textAlignCenter">账户余额</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail.orderCourseList">
+                                        <td class="textAlignCenter" ng-if="x.amount<0">{{(0-x.amount)|number:2}}</td>
+                                        <td class="textAlignCenter" ng-if="x.amount>=0">{{x.amount|number:2}}</td>
+                                        <td class="textAlignCenter">{{x.accountBalance | number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="orderType == 10">
+                    <div class="table_title clearfix">
+                        <span class="span_title">优惠券内容：</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>优惠券名称</th>
+                                    <th>类型</th>
+                                    <th>优惠</th>
+                                    <th>使用门槛</th>
+                                    <th>价格</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail.orderCourseList">
+                                        <td>{{x.coupon.couponName}}</td>
+                                        <td>{{x.coupon.discountType == 1?'满减券':'折扣券'}}</td>
+                                        <td>{{x.coupon.discounts == 1?(x.coupon.discounts + '元'): (x.coupon.discounts / 10 + '折')}}
+                                        </td>
+                                        <td>{{x.coupon.useLimits == 0?'不限制':('满'+x.coupon.useMoney+'可用')}}</td>
+                                        <td>{{x.coupon.number?x.coupon.number:0}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--学杂---->
+                <div ng-if="orderDetail.orderGoods.length>0" style="margin-top:15px;">
+                    <div class="table_title clearfix" ng-if="orderDetail.orderCourseList.length<=0">
+                        <span class="span_title">{{orderType == 11?"退学杂:":"学杂内容:"}}</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="25%">学杂名称</th>
+                                    <th width="15%" class="textAlignRt">学杂原价</th>
+                                    <th width="20%" class="textAlignRt">购买单价</th>
+                                    <th width="20%" class="textAlignRt">购买数量</th>
+                                    <th width="25%" class="textAlignCenter">购买价格</th>
+                                    <th width="25%" class="textAlignCenter" ng-if="orderType == 11">退出数量</th>
+                                    <th width="25%" class="textAlignCenter" ng-if="orderType == 11">退款金额</th>
+                                    <th width="25%" class="textAlignCenter" ng-if="orderType == 11">手续费</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table class="order_table">
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail.orderGoods">
+                                        <td width="25%" class="course"><span title="{{x.goodsName}}" class="goodsName">&nbsp;&nbsp;{{x.goodsName}}{{x.goodsSpec?'*'+ x.goodsSpec.name:''}}</span>
+                                            <span ng-if="x.activityId" class="activityIcon" ng-mouseover="mouseoverOd_ac($event,x.activityId,orderDetail.orderGoods)" ng-mouseleave="mouseleaveOd_ac($event)">
+                                                                    <div class="openPop" style="display:none;">
+                                                                        <span class="popMark"></span>
+                                            <ul class="popContent">
+                                                <li>
+                                                    <span>活动名称：</span>
+                                                    <span>{{x.activityName}}</span>
+                                                </li>
+                                            </ul>
+                        </div>
+                        </span>
+                        </td>
+                        <td width="15%" class="textAlignRt">
+                            ¥{{x.goodsPriceOld?(x.goodsPriceOld|number:2):"0.00"}}
+                        </td>
+                        <td width="20%" class="textAlignRt">
+                            ¥{{x.goodsPrice?(x.goodsPrice|number:2):"0.00"}}
+                        </td>
+                        <td width="20%" class="textAlignRt">{{x.goodsNumber?(x.goodsNumber):"0"}}</td>
+                        <td width="25%" class="textAlignCenter">
+                            ¥{{x.goodsTotalPrice?(x.goodsTotalPrice|number:2):"0.00"}}
+                        </td>
+                        <td width="25%" class="textAlignCenter" ng-if="orderType == 11">
+                            ¥{{x.outNum?(x.outNum):"0"}}
+                        </td>
+                        <td width="25%" class="textAlignCenter" ng-if="orderType == 11">¥{{x.amount ?(x.amount |number:2):"0.00"}}
+                        </td>
+                        <td width="25%" class="textAlignCenter" ng-if="orderType == 11">
+                            ¥{{x.serviceChange?(x.serviceChange|number:2):"0.00"}}
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="orderInfos">
+                <div class="settle">
+                    <div class="table_title clearfix">
+                        <span class="span_title"> 结算</span>
+                    </div>
+                    <!--1:"报名", 2:"续签",  3:"转课",4:"结课", 5:"退课", 6:"充值",7:"退款", 11:"退学杂",-->
+                    <ul>
+                        <li ng-show="orderType !=4">
+                            <span>合计:</span>
+                            <span>¥{{(orderDetail.receivable*1+orderDetail.studentAccount*1)|abs|number:2}}</span>
+                        </li>
+                        <li ng-show="orderDetail.studentAccount*1 !==0" ng-hide="orderType == 6 ||orderType == 7">
+                            <span>学员账户:</span>
+                            <span ng-if="orderDetail.studentAccount*1>0">-¥{{orderDetail.studentAccount*1 | abs |number:2}}</span>
+                            <span ng-if="orderDetail.studentAccount*1<0">+¥{{orderDetail.studentAccount*1 | abs |number:2}}</span>
+                        </li>
+                        <li ng-if="orderType != 4">
+                            <span ng-if="orderDetail.receivable>=0">应&ensp;&ensp;收: </span>
+                            <span ng-if="orderDetail.receivable<0">应&ensp;&ensp;退: </span>
+                            <span style="display: inline-block !important;padding-right: 20px;">
+                                                                                                   ¥{{orderDetail.receivable|abs|number:2}}
+                                    </span>
+                        </li>
+                        <li ng-if="orderType != 4">
+                            <span ng-if="orderDetail.received>=0">实&ensp;&ensp;收: </span>
+                            <span ng-if="orderDetail.received<0">实&ensp;&ensp;退: </span>
+                            <span>¥{{orderDetail.received|abs|number:2}}</span>
+                        </li>
+                        <li ng-if="!(orderType == 4 || orderType == 5 || orderType == 11)" ng-hide="orderDetail.arrearage*1 == 0 || page== '关联订单'">
+                            <span ng-if="orderDetail.arrearage*1 > 0">欠&ensp;&ensp;费: </span>
+                            <span class="main_color" ng-if="orderDetail.arrearage*1 > 0">¥{{orderDetail.arrearage| abs |number:2 }}</span>
+                            <!--<span ng-if="orderDetail.arrearage<=0">¥{{orderDetail.arrearage|number:2}}</span>-->
+                            <span ng-hide="page== '关联订单'">
+                                        <span class="clickText" ng-click="toRepay()"
+                                              ng-if="orderDetail.arrearage>0 && isConfirmOrderPop && orderDetail.orderStatus == 0">补交</span>
+                            </span>
+                        </li>
+                        <li ng-show="orderDetail.serviceChange">
+                            <span>{{orderType == 4?'结课':'手续费'}}: </span><span>¥{{orderDetail.serviceChange}}&nbsp;{{orderDetail.serviceChange>=0?"(盈收)":"(亏损)"}}</span>
+                        </li>
+                        <li ng-if="!(orderType == 4 || orderType == 5 ||  orderType == 6 || orderType == 7 || orderType == 11)" style="height: inherit;">
+                            <span style="float: left;">业绩归属: </span>
+                            <div class="clearfix" style="padding-left: 50px;">
+                                <div class="col-xs-9 noPadding" ng-if="orderDetail.studentOrderDivides.length>0">
+                                    <div style="margin-bottom: 5px;margin-left:5px;" ng-repeat="x in orderDetail.studentOrderDivides">
+                                        <span style="width: 55px;display: inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;vertical-align: top;">{{x.teacherName}}</span>&nbsp;&nbsp;&nbsp;
+                                        <span style="vertical-align: top;" ng-if="orderDetail.orderCourseList.length > 0">占比{{x.percentage}}%</span>
+                                    </div>
+                                </div>
+                                <div ng-hide="page== '关联订单'">
+                                    <span class="clickText" ng-click="otherFun.operate(1)" ng-if="orderDetail.orderStatus == 0 && orderDetail.orderCourseList.length > 0 && isConfirmOrderPop && orderType !== 5">编辑</span>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li><span>经办人: </span><span>{{orderDetail.teacherInfo.teacherName}}</span></li>
+                        <li ng-if="orderDetail.confirmor">
+                            <span>确认人: </span><span>{{orderDetail.confirmor}}</span></li>
+                    </ul>
+                </div>
+                <div class="orderRecord">
+                    <div class="table_title clearfix">
+                        <span class="span_title">订单记录</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 90px;">{{orderDetail.receivable>=0?"交费时间":"退款时间"}}</th>
+                                    <th style="width: 110px;">{{orderDetail.receivable>=0?"付款方式":"退款方式"}}</th>
+                                    <th style="width: 120px;" class="textAlignRt addPaddingRight_20">金额</th>
+                                    <th style="width: 40%;">经办人</th>
+                                    <!--<th style="width: 60%;">备注</th>-->
+                                    <th style="width: 80px;">状态</th>
+                                    <th style="width: 80px;">确认人</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:none;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="orderDetail.orderPaymentList==''||orderDetail.orderPaymentList==[]">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderDetail.orderPaymentList">
+                                        <td style="width: 90px;">{{x.paymentTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 110px;">{{x.paymentMode}}</td>
+                                        <td style="width:120px;" class="textAlignRt addPaddingRight_20">
+                                            <span title="¥{{x.paymentMoney |number:2}}">¥{{(orderDetail.receivable>=0?x.paymentMoney:(x.paymentMoney|abs))|number:2}}</span>
+                                        </td>
+                                        <td style="width: 40%;">{{x.teacherName}}</td>
+                                        <td style="width: 80px;">{{x.checkStatus==0?"未收款":"已收款"}}</td>
+                                        <td style="width: 80px;">{{x.confirmor}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</form>
+</div>
+</div>
+
+<!--收据打印win-->
+<div class="popup_" id="printrecript">
+    <h6>收据打印<span ng-click="closePopup('printrecript')" class="popup_x icon_drop_x" style="font-family: 'icomoon' !important;"></span></h6>
+    <div class="popup_content">
+        <div class="popup_scroll" style="overflow: hidden">
+            <div class="popup_line">
+                <span>选择打印:</span>
+                <label class="ml30 cursor" for="tip"><input name="receipt" ng-checked="isTip.flag == 0"
+                                                            ng-click="isTip.click($event)"
+                                                            id="tip"
+                                                            type="radio" value=""/>小票</label>
+                <label class="ml30 cursor" for="receipt"><input name="receipt" ng-checked="isTip.flag == 1"
+                                                                ng-click="isTip.click($event)"
+                                                                id="receipt" type="radio" value=""/>收据</label>
+                <label class="ml30 cursor" for="a4"><input name="receipt" ng-checked="isTip.flag == 2"
+                                                           ng-click="isTip.click($event)"
+                                                           id="a4" type="radio" value=""/>A4</label>
+                <!--打印编辑按钮-->
+                <div class="pull_right">
+                    <div class="common_tab_btn inline_dm mr0" ng-click="isTip.print()">
+                        <i class="icon_print"></i>打印
+                    </div>
+                </div>
+            </div>
+            <div class="parting_line_2" style="margin-bottom:0;"></div>
+            <!--startprint-->
+            <div id="printArea">
+                <div id="lodop_install"></div>
+                <!---------------小票---------------->
+                <div ng-if="isTip.flag == 0" class="receipt_wrap mt25">
+                    <div class="text-center pb10" ng-if="billInfo.logo">
+                        <img class="printLogo" ng-src="{{billInfo.logo}}" />
+                    </div>
+                    <div class="text-center">
+                        <p class="f14 text-center">{{billInfo.billSettingTitle}}</p>
+                    </div>
+                    <div class="tipLine nobor mt10">
+                        <p style="word-break: break-all;word-wrap: break-word">订单号:<span ng-bind="tipData.externalOrderId"></span></p>
+                        <p>经办人:<span ng-bind="tipData.teacherInfo.teacherName"></span></p>
+                        <p>
+                            {{tipData.orderType || tipData.orderType == 0?dateType[tipData.orderType]:"订单日期"}}:<span>{{tipData.orderTime | yznDate:'yyyy/MM/dd'}}</span>
+                        </p>
+                        <p>姓名:<span ng-bind="tipData.studentInfo.name"></span></p>
+                        <!--<p>电话: <span ng-bind="isTip.numFor(tipData.studentInfo.potentialCustomerParentPhone)"></span></p>-->
+                    </div>
+                    <!--课程-->
+                    <div class="tipLine courseWrapper" style="padding-top:7px;" ng-if="tipData.orderType !== 6 && tipData.orderType !== 7 && tipData.orderCourseList && tipData.orderCourseList.length!==0">
+                        <!--转课课时-->
+                        <div ng-if="tipData.orderType == 3 || tipData.orderType == 12" ng-repeat="x in arr_time_out">
+                            <div>
+                                <p class="mt5">
+                                    <span>转出课程:</span>
+                                    <span>{{tipData.courseName}}</span>
+                                    <span ng-if="x.feeType == 1"> {{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                </p>
+                                <p>
+                                    <span>转出课时:</span>
+                                    <span>{{x.outHour + x.returnGiveTime}}课时</span>
+                                </p>
+                                <p>
+                                    <span>转出金额:</span>
+                                    <span>¥{{x.amount | number:2}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--转课按月-->
+                        <div ng-if="tipData.orderType == 3 || tipData.orderType == 12" ng-repeat="x in arr_mouth_out">
+                            <div>
+                                <p class="mt5">
+                                    <span>转出课程:</span>
+                                    <span>{{tipData.courseName}}</span>
+                                </p>
+                                <p>
+                                    <span>剩余天数:</span>
+                                    <span>{{x.surplusTime + x.surplusGiveTime}}天</span>
+                                </p>
+                                <p>
+                                    <span>转出金额:</span>
+                                    <span>¥{{x.amount | number:2}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--新签/续签/转入  按课时-->
+                        <div ng-if="(tipData.orderType == 1 || tipData.orderType == 2 || tipData.orderType == 3 || tipData.orderType == 12) && x.feeType != 2" ng-repeat="x in arr_time">
+                            <div>
+                                <p class="mt5">
+                                    <span>{{tipData.orderType == 3 || tipData.orderType == 12?"转入课程":"报名课程"}}:</span>
+                                    <span>{{x.course.courseName}}</span>
+                                    <span ng-if="x.feeType == 1"> {{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                </p>
+                                <p>
+                                    <span>购买课时:</span>
+                                    <span>{{x.buyTime}}课时</span>
+                                </p>
+                                <p ng-if="x.giveTime>0">
+                                    <span>赠送课时:</span>
+                                    <span>{{x.giveTime}}课时</span>
+                                </p>
+                                <p>
+                                    <span>签约金额:</span>
+                                    <span>¥{{x.amount | number:2}}</span>
+                                </p>
+                                <p ng-if="x.endTime">
+                                    <span>有效期至:</span>
+                                    <span>{{x.endTime | yznDate:'yyyy/MM/dd'}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--新签/续签/转入  按月-->
+                        <div ng-if="(tipData.orderType == 1 || tipData.orderType == 2 || tipData.orderType == 3 || tipData.orderType == 12) && x.feeType == 2" ng-repeat="x in arr_mouth">
+                            <div>
+                                <p class="mt5">
+                                    <span>{{tipData.orderType == 3 || tipData.orderType == 12?"转入课程":"报名课程"}}:</span>
+                                    <span>{{x.course.courseName}}</span>
+                                </p>
+                                <p>
+                                    <span>上课时间:</span>
+                                    <span class="textAlignLf">{{x.beginTime | yznDate:'yyyy/MM/dd'}}至{{x.endTime | _addDate: x.giveTime: 'yyyy/MM/dd'}}</span>
+                                </p>
+                                <p>
+                                    <span>签约金额:</span>
+                                    <span>¥{{x.amount | number:2}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--课时退课 -->
+                        <div ng-if="tipData.orderType == 5" ng-repeat="x in arr_time">
+                            <p class="mt5">
+                                <span>退课课程:</span>
+                                <span>{{tipData.courseName}}</span>
+                                <span ng-if="x.feeType == 1"> {{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                            </p>
+                            <p>
+                                <span>退课课时:</span>
+                                <span>{{x.returnHour + x.returnGiveTime | number:2}}课时</span>
+                            </p>
+                            <p>
+                                <span>退课金额:</span>
+                                <span>¥{{x.amount | number:2}}</span>
+                            </p>
+                        </div>
+                        <!--按月退课 -->
+                        <div ng-if="tipData.orderType == 5" ng-repeat="x in arr_mouth">
+                            <p class="mt5">
+                                <span>退课课程:</span>
+                                <span>{{tipData.courseName}}</span>
+                            </p>
+                            <p>
+                                <span>退课天数:</span>
+                                <span>{{x.returnHour}}天</span>
+                            </p>
+                            <p>
+                                <span>退课金额:</span>
+                                <span>¥{{x.amount | number:2}}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!--充值或者退费-->
+                    <div class="tipLine" ng-if="tipData.orderType == 6 || tipData.orderType == 7">
+                        <p>
+                            <span>{{orderType == 6?"充值":"退款"}}金额:</span><span ng-repeat="x in tipData.orderCourseList">¥{{x.amount | number:2}}</span>
+                        </p>
+                        <p>
+                            <span>账户金额:</span><span ng-repeat="x in tipData.orderCourseList">¥{{x.accountBalance | number:2}}</span>
+                        </p>
+                    </div>
+
+                    <!--学杂-->
+                    <div class="tipLine" style="padding-top:7px;" ng-if="tipData.orderType != 11 && tipData.orderGoods && tipData.orderGoods.length !== 0">
+                        <div class="goodsWrapper" ng-repeat="x in tipData.orderGoods">
+                            <p class="mt5">
+                                <span>学杂:</span><span>{{x.goodsName}}{{x.goodsSpec?'*'+x.goodsSpec.name:''}}</span>
+                            </p>
+                            <p>
+                                <span>数量:</span><span>{{x.goodsNumber | number:2}}</span>
+                            </p>
+                            <p>
+                                <span>价格:</span><span>¥{{x.goodsTotalPrice | number:2}}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 退学杂 -->
+                    <div class="tipLine" style="padding-top:7px;" ng-if="tipData.orderType == 11 && tipData.orderGoods && tipData.orderGoods.length !== 0">
+                        <div class="goodsWrapper" ng-repeat="x in tipData.orderGoods">
+                            <p class="mt5">
+                                <span>学杂名称:</span><span>{{x.goodsName}}{{x.goodsSpec?'*'+x.goodsSpec.name:''}}</span>
+                            </p>
+                            <p>
+                                <span>退出数量:</span><span>{{x.outNum | number:2}}</span>
+                            </p>
+                            <p>
+                                <span>退出金额:</span><span>¥{{x.amount | number:2}}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <!--合计-->
+                    <div class="tipLine" style="width:100%;">
+                        <p>
+                            <span class="fontweight900">合计:</span><span>¥{{(orderDetail.receivable*1+orderDetail.studentAccount*1)|abs|number:2}}</span>
+                        </p>
+                        <p ng-if="orderDetail.studentAccount*1 !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6">
+                            <span class="fontweight900">学员账户:</span>
+                            <span>{{orderDetail.studentAccount*1 > 0?"-":"+"}}¥{{orderDetail.studentAccount*1 | abs |number:2}}</span>
+                        </p>
+                        <!--<p>
+                            <span class="fontweight900">{{0 > tipData.receivable?"应退:":"应收:"}}</span><span>¥{{isTip.changeStyle(tipData.receivable) | number:2}}</span>
+                        </p>-->
+                        <!--<p ng-if="tipData.orderType == 5 || tipData.orderType == 3">
+                            <span class="fontweight900">手续费:</span><span>¥{{tipData.serviceChange | number:2}}</span>
+                        </p>-->
+                        <p>
+                            <span class="fontweight900">{{0 > tipData.received ?"实退:":"实收:"}}</span><span>¥{{isTip.changeStyle(tipData.received) | number:2}}</span>
+                        </p>
+                        <p ng-if="tipData.orderType !== 7 && tipData.orderType !== 6 && isTip.changeStyle(tipData.arrearage)>0">
+                            <span class="fontweight900">欠费:</span><span>¥{{isTip.changeStyle(tipData.arrearage) | number:2}}</span>
+                        </p>
+                    </div>
+
+                    <!--交费记录-->
+                    <div class="tipLine relative_dm" style="margin-top: 18px;padding-top: 18px;" ng-if="tipData.orderPaymentList && tipData.orderPaymentList.length !== 0">
+                        <div class="printTop">{{(tipData.orderType == 5 || tipData.orderType == 7)?"退款记录":"交费记录"}}</div>
+                        <div ng-repeat="item in tipData.orderPaymentList" ng-if="isTip.payments.indexOf(item.paymentMode)>-1">
+                            <div>
+                                <span>{{item.paymentTime | yznDate:'yyyy/MM/dd'}}</span>
+                                <span class="pull_right">{{item.paymentMode}}</span>
+                            </div>
+                            <div>
+                                金额:<span>¥{{(tipData.orderType == 5 || tipData.orderType == 7)?-item.paymentMoney:item.paymentMoney | number:2}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tipLine">
+                        <p ng-if="tipData.externalRemark">备注:{{tipData.externalRemark}}</p>
+                        <p ng-if="billInfo.billSettingPhone">电话:{{billInfo.billSettingPhone}}</p>
+                        <p ng-if="billInfo.billSettingAddress">地址:{{billInfo.billSettingAddress}}</p>
+                        <p ng-if="billInfo.billSettingDesc" style="white-space: pre-wrap;" class="mt10">
+                            {{billInfo.billSettingDesc}}</p>
+                        <div ng-if="billInfo.miniWebsite" style="text-align:center;margin-top:12px;">
+                            <img class="printLogo120" ng-src="{{billInfo.miniWebsite}}" alt="" />
+                        </div>
+                    </div>
+                </div>
+
+                <!---------------A4/收据--------------->
+                <div ng-if="isTip.flag == 2 || isTip.flag == 1" class="a4_wrap mt25">
+                    <div class="f20 text-center fontweight900">
+                        <div style="margin: 18px auto 0;max-width: 75%;min-height: 46px;display: inline-block;" class="relative_dm">
+                            <img ng-if="billInfo.logo" class="printLogo_s mr10 pull-left" ng-src="{{billInfo.logo}}" />
+                            <span class="mr10 f20 fontweight900" ng-if="billInfo.billSettingTitle">{{billInfo.billSettingTitle}}</span>
+                            <span class="f20 fontweight900">收据</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:6px;margin-bottom:6px;">
+                        <div class="f12 inline_dm" style="width:33.33%">
+                            {{tipData.orderType || tipData.orderType == 0?dateType[tipData.orderType]:"订单日期"}}: <span>{{tipData.orderTime | yznDate:'yyyy/MM/dd'}}</span>
+                        </div>
+                        <div class="f14 inline_dm textAlignCenter" style="width:30%;">
+                            <span>学员名称: </span><span ng-bind="tipData.studentInfo.name"></span>
+                        </div>
+                        <div class="f14 pull_right TextRight" style="width:33.33%;">
+                            <span>订单号: </span><span ng-bind="tipData.externalOrderId"></span>
+                        </div>
+
+                    </div>
+
+                    <!--课程信息-->
+                    <div ng-if="((tipData.orderCourseList && tipData.orderCourseList.length !== 0) || (tipData.orderGoods && tipData.orderGoods.length !== 0)) && tipData.orderType !== 7 && tipData.orderType !== 6" class="mb10">
+                        <div class="table-responsivecharge_table">
+                            <table border="" cellspacing="" cellpadding="" class="shouju" style="width:100%;">
+                                <!--新签&续签 课时-->
+                                <tr class="innerTdcenter" ng-if="arr_time && arr_time.length !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6 && tipData.orderType !== 5 && tipData.orderType !== 3 && tipData.orderType != 12">
+                                    <td style="width:156px;">报名课程</td>
+                                    <!--<td>单课价</td>-->
+                                    <td class="w80">购买课时</td>
+                                    <td class="w80">赠送课时</td>
+                                    <td class="w80">课程价格</td>
+                                    <td class="w120">&nbsp;优惠&nbsp;</td>
+                                    <td class="w80">有效期至</td>
+                                    <td class="w80">签约金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_time" ng-if="x.feeType!==2 && tipData.orderCourseList && tipData.orderCourseList.length !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6 && tipData.orderType !== 5 && tipData.orderType !== 3 && tipData.orderType != 12">
+                                    <td>
+                                        {{x.course.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <td>{{x.buyTime}}</td>
+                                    <td>{{x.giveTime || '-'}}</td>
+                                    <td>¥{{x.coursePrice | number:2}}</td>
+                                    <!--<td ng-if="x.discountType==1">{{x.discounts > 0?"¥" + (x.discounts | number:2):"-"}}</td>
+                                    <td ng-if="x.discountType==2">{{x.discounts/10}}折</td>-->
+                                    <td>
+                                        <div ng-if="x.discounts && x.discountType == 1">课程优惠:{{x.discounts > 0?"¥" + (x.discounts | number:2):"-"}}
+                                        </div>
+                                        <div ng-if="x.discounts && x.discountType == 2">课程折扣:{{x.discounts/10 + '折'}}</div>
+                                        <div ng-if="orderDetail.coupon">优惠券:{{orderDetail.coupon.discountType == 1?"¥"+ (x.couponDiscountAmount | number:2):(orderDetail.coupon.discounts/10+"折")}}
+                                        </div>
+                                        <div ng-if="!x.discounts && !orderDetail.coupon">-</div>
+                                    </td>
+
+                                    <td>{{(x.endTime | yznDate:'yyyy/MM/dd') || '-'}}</td>
+                                    <td>¥{{x.amount | number:2}}</td>
+                                </tr>
+                                <!--新签&续签 按月-->
+                                <tr class="innerTdcenter" ng-if="arr_mouth && arr_mouth.length !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6 && tipData.orderType !== 5 && tipData.orderType !== 3 && tipData.orderType != 12">
+                                    <td style="width:156px;">报名课程</td>
+                                    <td class="w80">开始时间</td>
+                                    <td class="w80">结束时间</td>
+                                    <td class="w80">课程价格</td>
+                                    <td class="w120">&nbsp;优惠&nbsp;</td>
+                                    <td class="w80">有效期至</td>
+                                    <td class="w80">签约金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_mouth" ng-if="x.feeType ==2 && tipData.orderCourseList && tipData.orderCourseList.length !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6 && tipData.orderType !== 5 && tipData.orderType !== 3 && tipData.orderType != 12">
+                                    <td>
+                                        {{x.course.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <td>{{x.beginTime | yznDate:'yyyy/MM/dd'}}</td>
+                                    <td>{{(x.endTime | _addDate: x.giveTime: 'yyyy/MM/dd') || '-'}}</td>
+                                    <td>¥{{x.coursePrice | number:2}}</td>
+                                    <td>
+                                        <div ng-if="x.discounts && x.discountType == 1">课程优惠:{{x.discounts > 0?"¥" + (x.discounts | number:2):"-"}}
+                                        </div>
+                                        <div ng-if="x.discounts && x.discountType == 2">课程折扣:{{x.discounts/10 + '折'}}</div>
+                                        <div ng-if="orderDetail.coupon">优惠券:{{orderDetail.coupon.discountType == 1?"¥"+ (x.couponDiscountAmount | number:2):(orderDetail.coupon.discounts/10+"折")}}
+                                        </div>
+                                        <div ng-if="!x.discounts && !orderDetail.coupon">-</div>
+                                    </td>
+                                    <td ng-if="!x.discountType">-</td>
+                                    <td>{{(x.endTime | _addDate: x.giveTime: 'yyyy/MM/dd') || '-'}}</td>
+                                    <td>¥{{x.amount | number:2}}</td>
+                                </tr>
+
+                                <!--转出为课时-->
+                                <tr class="innerTdcenter" ng-if="arr_time_out && arr_time_out.length !== 0 && tipData.orderType !== 7 && tipData.orderType !== 6">
+                                    <td style="width:156px;">转出课程</td>
+                                    <td class="w80">转出课时</td>
+                                    <!--<td>剩余课时</td>-->
+                                    <td style="width:160px;" colspan='2'>可转学费</td>
+                                    <td class="w80">手续费</td>
+                                    <!--<td>欠费金额</td>-->
+                                    <!--<td>转出学费</td>-->
+                                    <td style="width:160px;" colspan="2">转出金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_time_out">
+                                    <td>
+                                        {{tipData.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <td>{{x.outHour + x.returnGiveTime}}</td>
+                                    <!--<td>{{(x.surplusTime + x.surplusGiveTime) | number:2}}</td>-->
+                                    <td colspan="2">¥{{x.returnMoney | number:2}}</td>
+                                    <td>{{x.serviceChange != 0?"¥" + (x.serviceChange | number:2):"-"}}</td>
+                                    <!--<td>¥{{x.arrearage | number:2}}</td>-->
+                                    <!--<td>¥{{x.outFee|number:2}}</td>-->
+                                    <td colspan="2">¥{{x.amount|number:2}}</td>
+                                </tr>
+                                <!--转出为月-->
+                                <tr class="innerTdcenter" ng-if="arr_mouth_out && arr_mouth_out.length !== 0 && tipData.orderType == 3">
+                                    <td style="width:156px;">转出课程</td>
+                                    <td class="w80">剩余天数</td>
+                                    <td style="width:160px;" colspan='2'>剩余学费</td>
+                                    <!--<td>购买天数</td>-->
+                                    <!--<td colspan="{{arr_mouth_out.length>0?'2':''}}">签约金额</td>-->
+                                    <!--<td>剩余天数</td>-->
+                                    <!--<td>剩余学费</td>-->
+                                    <!--<td>欠费金额</td>-->
+                                    <td class="w80">手续费</td>
+                                    <td style="width:160px;" colspan="2">转出金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_mouth_out">
+                                    <td>
+                                        {{tipData.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <td>{{x.surplusTime + x.surplusGiveTime}}</td>
+                                    <td colspan='2'>¥{{x.surplusFee|number:2}}</td>
+                                    <!--<td>{{x.buyTime + x.giveTime}}天</td>-->
+                                    <!--<td colspan="{{arr_mouth_out.length>0?'2':''}}">¥{{x.coursePrice|number:2}}</td>-->
+                                    <!--<td>¥{{(x.arrearage)|number:2}}</td>-->
+                                    <td>{{x.serviceChange != 0?"¥" + (x.serviceChange | number:2):"-"}}</td>
+                                    <td colspan="2">¥{{x.amount|number:2}}</td>
+
+                                </tr>
+
+                                <!--转入为月-->
+                                <tr class="innerTdcenter" ng-if="arr_mouth && arr_mouth.length !== 0 && (tipData.orderType == 3 || tipData.orderType == 12)">
+                                    <td style="width:156px;">转入课程</td>
+                                    <!--<td>单课价</td>-->
+                                    <td class="w80">开始时间</td>
+                                    <td class="w80">结束时间</td>
+                                    <!--<td>赠送时间</td>-->
+                                    <td class="w80">课程价格</td>
+                                    <td class="w120">&nbsp;优惠&nbsp;</td>
+                                    <td class="w80">有效期至</td>
+                                    <td class="w80">签约金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_mouth" ng-if="x.feeType == 2 && arr_mouth.length !== 0 && (tipData.orderType == 3 || tipData.orderType == 12)">
+                                    <td>
+                                        {{x.course.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <!--<td>¥{{x.singleCoursePrice | number:2}}元/天</td>-->
+                                    <td>{{x.beginTime | yznDate:'yyyy/MM/dd'}}</td>
+                                    <td>{{(x.endTime | _addDate: x.giveTime: 'yyyy/MM/dd') || '-'}}</td>
+                                    <!--<td ng-if="x.giveTime == 0">{{x.giveTime | number:2}}</td>-->
+                                    <!--<td ng-if="x.giveTime>0">{{x.endTime | _addDate: x.giveTime: 'yyyy-MM-dd'}}</td>-->
+                                    <td>¥{{x.coursePrice | number:2}}</td>
+                                    <td>
+                                        <div ng-if="x.discounts && x.discountType == 1">课程优惠:{{x.discounts > 0?"¥" + (x.discounts | number:2):"-"}}
+                                        </div>
+                                        <div ng-if="x.discounts && x.discountType == 2">课程折扣:{{x.discounts/10 + '折'}}</div>
+                                        <div ng-if="orderDetail.coupon">优惠券:{{orderDetail.coupon.discountType == 1?"¥"+ (x.couponDiscountAmount | number:2):(orderDetail.coupon.discounts/10+"折")}}
+                                        </div>
+                                        <div ng-if="!x.discounts && !orderDetail.coupon">-</div>
+                                    </td>
+                                    <td ng-if="!x.discountType">-</td>
+                                    <td>{{(x.endTime | _addDate: x.giveTime: 'yyyy/MM/dd') || '-'}}</td>
+                                    <td>¥{{x.amount | number:2}}</td>
+                                </tr>
+                                <!--转入为课时-->
+                                <tr class="innerTdcenter" ng-if="arr_time && arr_time.length !== 0 && (tipData.orderType == 3 || tipData.orderType == 12)">
+                                    <td style="width:156px;">转入课程</td>
+                                    <!--<td>单课价</td>-->
+                                    <td class="w80">购买课时</td>
+                                    <td class="w80">赠送课时</td>
+                                    <td class="w80">课程价格</td>
+                                    <td class="w120">&nbsp;优惠&nbsp;</td>
+                                    <td class="w80">有效期至</td>
+                                    <td class="w80">签约金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_time" ng-if="x.feeType !==2 && arr_time.length !== 0 && (tipData.orderType == 3 || tipData.orderType == 12)">
+                                    <td>
+                                        {{x.course.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <!--<td>¥{{x.singleCoursePrice | number:2}}</td>-->
+                                    <td>{{x.buyTime}}</td>
+                                    <td>{{x.giveTime || '-'}}</td>
+                                    <td>¥{{x.coursePrice | number:2}}</td>
+                                    <td>
+                                        <div ng-if="x.discounts && x.discountType == 1">课程优惠:{{x.discounts > 0?"¥" + (x.discounts | number:2):"-"}}
+                                        </div>
+                                        <div ng-if="x.discounts && x.discountType == 2">课程折扣:{{x.discounts/10 + '折'}}</div>
+                                        <div ng-if="orderDetail.coupon">优惠券:{{orderDetail.coupon.discountType == 1?"¥"+ (x.couponDiscountAmount | number:2):(orderDetail.coupon.discounts/10+"折")}}
+                                        </div>
+                                        <div ng-if="!x.discounts && !orderDetail.coupon">-</div>
+                                    </td>
+                                    <td ng-if="!x.discountType">-</td>
+                                    <td>{{(x.endTime | yznDate:'yyyy/MM/dd') || '-'}}</td>
+                                    <td>¥{{x.amount | number:2}}</td>
+                                </tr>
+
+                                <!--退费课程-->
+                                <!--类型为课时和学期-->
+                                <tr class="innerTdcenter" ng-if="arr_time && arr_time.length !== 0 && tipData.orderType == 5">
+                                    <td colspan="2">退课课程</td>
+                                    <!--<td>剩余课时</td>-->
+                                    <!--<td>剩余学费</td>-->
+                                    <!--<td>欠费金额</td>-->
+                                    <td style="width:80px">退课课时</td>
+                                    <td style="width:160px">可退学费</td>
+                                    <td style="width:80px">手续费</td>
+                                    <td style="width:160px">退课金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_time" ng-if="x.feeType !== 2 &&tipData.orderType == 5">
+                                    <td colspan="2">
+                                        {{tipData.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <!--<td>{{(x.surplusTime + x.surplusGiveTime) | number:2}}</td>-->
+                                    <!--<td>¥{{x.surplusFee | number:2}}</td>-->
+                                    <!--<td>¥{{x.arrearage | number:2}}</td>-->
+                                    <td>{{x.returnHour + x.returnGiveTime}}</td>
+                                    <td>¥{{x.returnMoney | number:2}}</td>
+                                    <td>{{x.serviceChange != 0?"¥" + (x.serviceChange | number:2):"-"}}</td>
+                                    <td>¥{{x.amount|number:2}}</td>
+                                </tr>
+                                <!--类型为月-->
+                                <tr class="innerTdcenter" ng-if="arr_mouth && arr_mouth.length !== 0 && tipData.orderType == 5">
+                                    <td colspan="2">退课课程</td>
+                                    <!--<td>购买天数</td>-->
+                                    <!--<td>签约金额</td>-->
+                                    <td style="width:80px">剩余天数</td>
+                                    <td style="width:160px">剩余学费</td>
+                                    <!--<td>欠费金额</td>-->
+                                    <td style="width:80px">手续费</td>
+                                    <td style="width:160px">退课金额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in arr_mouth" ng-if="x.feeType == 2 &&tipData.orderType == 5">
+                                    <td colspan="2">
+                                        {{tipData.courseName}}
+                                        <span ng-if="x.feeType == 1">{{x.schoolYear?x.schoolYear+" ":""}}{{x.schoolTermName}}</span>
+                                    </td>
+                                    <!--<td>{{x.buyTime + x.giveTime}}天</td>-->
+                                    <!--<td>¥{{x.coursePrice| number:2}}</td>-->
+                                    <td>{{x.surplusTime + x.surplusGiveTime}}</td>
+                                    <td>¥{{x.surplusFee|number:2}}</td>
+                                    <!--<td>¥{{x.arrearage | number:2}}</td>-->
+                                    <td>{{x.serviceChange != 0?"¥" + (x.serviceChange | number:2):"-"}}</td>
+                                    <td>¥{{x.amount|number:2}}</td>
+                                </tr>
+                                <!--学杂信息-->
+                                <tr class="innerTdcenter" ng-if="tipData.orderType!=11 && tipData.orderGoods && tipData.orderGoods.length !== 0">
+                                    <td colspan="3">学杂名称</td>
+                                    <!--<td>购买数量</td>-->
+                                    <!--<td>原价</td>-->
+                                    <td>单价</td>
+                                    <td>购买数量</td>
+                                    <!--<th>优惠</th>-->
+                                    <td colspan="2">小计</td>
+                                </tr>
+                                <tr ng-if="tipData.orderType!=11" class="innerTdcenter" ng-repeat="x in tipData.orderGoods">
+                                    <td colspan="3">{{x.goodsName}}{{x.goodsSpec?'*'+x.goodsSpec.name:''}}</td>
+                                    <!--<td>{{x.goodsNumber | number:2}}</td>-->
+                                    <!--<td>¥{{x.goodsPriceOld | number:2}}</td>-->
+                                    <td>¥{{x.goodsPrice| number:2}}</td>
+                                    <td>{{x.goodsNumber}}</td>
+                                    <!--<td>{{x.orderGoodsId | number:2}}</td>-->
+                                    <td colspan="2">¥{{x.goodsTotalPrice | number:2}}</td>
+                                </tr>
+                                <!-- 退学杂 -->
+                                <tr class="innerTdcenter" ng-if="tipData.orderType==11 && tipData.orderGoods && tipData.orderGoods.length !== 0">
+                                    <td>学杂名称</td>
+                                    <td colspan="2">退出数量</td>
+                                    <td colspan="2">退出金额</td>
+                                    <td colspan="2">手续费</td>
+                                </tr>
+                                <tr ng-if="tipData.orderType==11" class="innerTdcenter" ng-repeat="x in tipData.orderGoods">
+                                    <td>{{x.goodsName}}{{x.goodsSpec?'*'+x.goodsSpec.name:''}}</td>
+                                    <td colspan="2">{{x.outNum}}</td>
+                                    <td colspan="2">¥{{x.amount| number:2}}</td>
+                                    <td colspan="2">¥{{x.serviceChange | number:2}}</td>
+                                </tr>
+
+                                <!--<tr class="innerTdcenter" ng-if="tipData.remark && !(tipData.orderPaymentList  && tipData.orderPaymentList.length !== 0)">
+                                    <td class="">备注:</td>
+                                    <td colspan="8">{{tipData.remark}}</td>
+                                </tr>-->
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <!--充值退款-->
+                    <div ng-if="tipData.orderCourseList && (tipData.orderType == 6 || tipData.orderType == 7)" class="mb10">
+                        <div class="table-responsivecharge_table">
+                            <table border="" cellspacing="" cellpadding="" class="shouju" style="width:100%;">
+                                <tr class="innerTdcenter">
+                                    <td>{{tipData.orderType == 6?"充值金额":"退款金额"}}</td>
+                                    <td>账户余额</td>
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in tipData.orderCourseList" ng-if="tipData.orderCourseList">
+                                    <td>¥ {{x.amount | number:2}}</td>
+                                    <td>
+                                        ¥ {{x.accountBalance | number:2}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!--小计-->
+                    <div>
+                        <div class="table-responsivecharge_table">
+                            <table border="" cellspacing="" cellpadding="" class="shouju" style="width:100%;">
+                                <tr class="innerTdcenter">
+                                    <td>合计:¥{{(orderDetail.receivable*1+orderDetail.studentAccount*1)|abs|number:2}}</td>
+                                    <td ng-if="(tipData.orderType == 1 || tipData.orderType == 3 || tipData.orderType == 5) && orderDetail.studentAccount*1 !== 0">
+                                        学员账户:{{orderDetail.studentAccount*1 > 0?"-":"+"}}¥{{orderDetail.studentAccount*1 | abs |number:2}}
+                                    </td>
+                                    <!--<td>{{0 > tipData.receivable ? "应退:": "应收:"}}¥{{isTip.changeStyle(tipData.receivable) | number:2}}</td>-->
+                                    <td>{{0 > tipData.received ? "实退:": "实收:"}}¥{{isTip.changeStyle(tipData.received) | number:2}}
+                                    </td>
+                                    <td ng-if="tipData.arrearage">欠费:¥{{isTip.changeStyle(tipData.arrearage) | number:2}}
+                                    </td>
+                                </tr>
+                                <tr ng-if="tipData.externalRemark">
+                                    <td colspan="{{(((tipData.orderType == 1 || tipData.orderType == 3 || tipData.orderType == 5) && orderDetail.studentAccount*1 !== 0) && tipData.arrearage)? 4 : (((tipData.orderType == 1 || tipData.orderType == 3 || tipData.orderType == 5) && orderDetail.studentAccount*1 !== 0) || tipData.arrearage)?3:2}}"
+                                        style="text-align:left;padding:3px 5px">备注:{{tipData.externalRemark}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!--交费记录-->
+                    <div ng-if="isTip.flag == 2 && tipData.orderPaymentList  && tipData.orderPaymentList.length !== 0">
+                        <p class="f12 tip_title">{{0 > tipData.received ?"退款记录":"交费记录"}}</p>
+                        <div class="table-responsivecharge_table">
+                            <table border="" cellspacing="" cellpadding="" class="shouju" style="width:100%;">
+                                <tr class="innerTdcenter">
+                                    <td style="width:160px">{{0 > tipData.received ?"退款时间":"交费时间"}}</td>
+                                    <td style="width:160px">{{0 > tipData.received ?"退款方式":"付款方式"}}</td>
+                                    <td style="width:160px">金额</td>
+                                    <td style="width:160px">经办人</td>
+                                    <!--<td colspan="2">备注</td>-->
+                                </tr>
+                                <tr class="innerTdcenter" ng-repeat="x in tipData.orderPaymentList" ng-if="isTip.payments.indexOf(x.paymentMode)>-1">
+                                    <td>{{x.paymentTime | yznDate:'yyyy/MM/dd'}}</td>
+                                    <td>{{x.paymentMode}}</td>
+                                    <td>¥{{0 > tipData.received ?-x.paymentMoney:x.paymentMoney | number:2}}</td>
+                                    <td>{{x.teacherName}}</td>
+                                    <!--<td colspan="2">{{x.remark}}</td>-->
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div style="margin-top:18px;">
+                        <div style="width:40%;display:inline-block">{{0 > tipData.received ?"退款人签字:":"收款人签字:"}}</div>
+                        <div style="width:40%;display:inline-block">客户签字:</div>
+                        <div style="float:right;">经办人:{{tipData.teacherInfo.teacherName}}</div>
+                    </div>
+                    <!--页脚信息-->
+                    <div>
+                        <img ng-if="billInfo.miniWebsite" style="width: 64px;height: 64px;margin-top: -2px;" class="pull-right" ng-src="{{billInfo.miniWebsite}}" alt="" />
+
+                        <div style="margin-right:64px;line-height:28px;margin-top: 8px;">
+                            <!--{{billInfo.billSettingPhone?'联系方式:':'&nbsp;&nbsp;'}}-->
+                            <span>联系方式:</span><span ng-bind="billInfo.billSettingPhone"></span>
+                        </div>
+                        <!--{{billInfo.billSettingAddress?'地址:':'&nbsp;&nbsp;'}}-->
+                        <div class="" style="margin-right:64px;line-height:16px;">
+                            <span>地址:</span><span ng-bind="billInfo.billSettingAddress"></span>
+                        </div>
+
+                    </div>
+                    <p style="margin-top:25px;overflow: hidden">
+                        <!--<img class="pull-right printLogo ml8 mb8" ng-src="{{billInfo.miniWebsite}}" alt="" />-->
+                        <span style="white-space: pre-wrap;" ng-bind="billInfo.billSettingDesc"></span>
+                    </p>
+                </div>
+            </div>
+            <!--endprint-->
+        </div>
+
+    </div>
+</div>
+
+<!--补交win-->
+<div class="popup_" id="rePay">
+    <h6>补交学费<span ng-click="closePopup('rePay')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form" ng-submit="order_repay()">
+            <div class="popup_form_content order" style="height:440px">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="table_title clearfix">
+                        <span class="span_title">欠费记录</span>
+                    </div>
+                    <div>
+                        <span class="span_title">欠费总计：</span>
+                        <span class="main_color">¥{{payTotal}}</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="20%">欠费课程</th>
+                                    <th width="15%" class="textAlignRt">应收金额</th>
+                                    <!--<th width="25%" class="textAlignRt">欠费金额</th>-->
+                                    <th width="25%" class="textAlignRt">当前欠费</th>
+                                    <th width="25%" class="textAlignCenter">补交金额</th>
+                                    <th width="15%" class="textAlignCenter">补交后欠费</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in repayOrderCourseList track by $index">
+                                        <td width="20%">{{x.courseName}}</td>
+                                        <td width="15%" class="textAlignRt">¥{{x.coursePrice|number:2}}</td>
+                                        <td width="25%" class="textAlignRt">¥{{x.arrearage|number:2}}</td>
+                                        <td width="25%" class="textAlignCenter">
+                                            <input type="text" style="width:100px;margin:0 auto;" class="form-control" autocomplete="off" ng-change="limitMax(x)" yzn-filter="num_" ng-model="x.repay" ng-disabled="x.arrearage<=0" />
+                                        </td>
+                                        <td width="15%" class="textAlignCenter" style="color: #ff595e;">¥{{(x.arrearage - x.repay) | number:2}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="table_title clearfix">
+                        <span class="span_title">支付信息</span>
+                    </div>
+                    <!--支付方式-->
+                    <div class="popup_line" ng-hide="potentialInfo.accountBalance == 0">
+                        <label class="form-label">使用余额</label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" ng-model="PayProjectList.student.paymentMoney" placeholder="请输入金额" yzn-filter="num_" />
+                        </div>
+                        <div class="col-xs-3" style="padding-left: 0px;line-height:27px;">
+                            （账户余额：¥{{potentialInfo.accountBalance}}）
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">应收:</label>
+                        <span class="col-xs-1 form-span">¥{{pay.receivable|number:2}}</span>
+                        <label class="form-label" style="width:50px;">实收:</label>
+                        <span class="col-xs-1 form-span">¥{{pay.received|number:2}}</span>
+                        <label class="form-label" style="width:50px;">欠费:</label>
+                        <span class="col-xs-1 form-span main_color">¥{{pay.arrearage|number:2}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">支付方式</label>
+                        <div class="col-xs-10">
+                            <ul class="pay_type_icon clearfix">
+                                <li ng-if="!isOnlinePayType" class="pay_type_icon_hide" ng-mouseover="clickPayTypeIcon(null, $event)"></li>
+                                <li ng-hide="!isOnlinePayType && x.name=='易收宝'" ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.other.paymentMode==x.name}" ng-click="clickPayTypeIcon(x.name)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">支付金额</label>
+                        <div class="col-xs-2">
+                            <span style="display: inline-block;line-height: 28px;">¥{{PayProjectList.other.paymentMoney}}</span>
+                            <!--<input type="text" class="form-control" placeholder="输入金额" ng-model="PayProjectList.other.paymentMoney" yzn-filter="num_"/>-->
+                        </div>
+                        <!--<div class="col-xs-1" style="padding: 0;line-height:27px;border: 1px solid #397fd4;text-align: center;">
+                            <span class="clickText" ng-click="totalPay($index)">全额付款</span>
+                        </div>-->
+                    </div>
+                    <div class="popup_line" ng-if="PayProjectList.other.paymentMode !== '易收宝'">
+                        <label class="form-label">支付时间</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control dateIcon repay_time" name="name" ng-model="repay_time" placeholder="选择支付时间" required autocomplete="off" style="width:240px;" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">经办人:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择经办人" list-data="{{handlerList}}" list-field="teacherName" list-click="clickHandler(n)" list-search="true" list-all="no" list-default="{{shopTeachName}}"></my-select>
+                            </div>
+                            <!--<select class="form-control"  ng-model="handler">
+                                <option value="">选择经办人</option>
+                                <option value="{{x.id}}" ng-repeat="x in handlerList">{{x.name}}</option>
+                            </select>-->
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对内备注:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <span class="input_words">{{orderDesc?orderDesc.length:0}}/200</span>
+                            <textarea class="form-control" rows="4" maxlength="200" ng-model="orderDesc" placeholder="该备注只有内部操作人员可见"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对外备注:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <span class="input_words">{{orderDesc_out?orderDesc_out.length:0}}/200</span>
+                            <textarea class="form-control" rows="4" maxlength="200" ng-model="orderDesc_out" placeholder="该备注会显示在订单打印的小票或收据上"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('rePay')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--编辑顾问签单占比-->
+<div class="popup_ adviser_proportion">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label marging-rt-15">
+                            <span style="float: right;">顾问:</span>
+                            <span style="float: right; margin-right:5px;position: relative;color: #f5787c;"
+                                  ng-mouseenter="adviser_rule = true" ng-mouseleave="adviser_rule = false"
+                                  class="icon_head_help">
+                                <span class="tippaopao" ng-if="adviser_rule"
+                                      style="display: block; top: 18px; padding: 5px 14px; box-shadow: 0 0 5px #ccc;">顾问签单分成规则</span>
+                            </span>
+                        </label>
+                        <ul class="teacher_select_new">
+                            <li ng-repeat="x in otherFun.adviser">
+                                <span style="float: left; width: 60px;display: inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{x.teacherName}}&nbsp;&nbsp;</span>
+                                <span style="float: left;">占比<input class="form-control" type="text"
+                                                                    ng-model="x.percentage" yzn-filter="num"/>%</span>
+                                <i ng-click="otherFun.operate(3, x, $index)"></i>
+                            </li>
+                        </ul>
+                        <div class="drop_add_teacher screen_no" style="margin-left: 100px;float: inherit; width: 120px;">
+                            <i class="icon_name_add"></i>
+                            <my-select list-name="选择顾问" my-id="orderAdviser" list-data="{{adviserList}}" list-field="teacherName" list-click="otherFun.operate(2, n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="otherFun.operate(4)" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="otherFun.operateSubmit(1)">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,390 @@
+<div class="tp1" ng-controller="show_tp">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />-->
+    <link rel="stylesheet" href="templates/show_template/makeappointment/painting/css/index.css"/>
+    <audio id="bacMusic" src=""></audio>
+    <span class="r_music music_rotate" id="bacMusicBtn" btnType="on"></span>
+    <div class="tp1_header"><img src="templates/show_template/makeappointment/painting/img/header.png" alt="主题图片"/></div>
+    <!--课程详情-->
+    <div class="tp1_course_detail">
+        <div class="return_page icon_return"></div>
+        <div class="course_detail_img"><img src="" alt=""/></div>
+        <div style="margin: 0 0.2rem 0.5rem;background-color: white">
+            <div class="course_detail_name detail_name">课程名称:<span>钢琴</span></div>
+            <div class="course_detail_name detail_type">上课形式:<span>一对一</span></div>
+            <div class="tit_power"></div>
+            <div class="tit_abstract"></div>
+            <div class="tit_con"></div>
+        </div>
+
+    </div>
+    <!--校区-->
+    <div style="padding: 0 0.2rem;">
+        <div class="tp1_organ">
+            <div class="tp1_title font_huihua">校区介绍</div>
+            <!--<div class="tp1_organName font_huihua"></div>-->
+            <ul class="tp1_organ_lis clearfix font_huihua"></ul>
+        </div>
+        <!--师资-->
+        <div class="tp1_teacher">
+            <div class="tp1_title font_huihua">师资介绍</div>
+            <span class="btn_right"></span>
+            <span class="btn_left"></span>
+            <div class="tp1_teacher_con">
+                <ul class="tp1_teacher_lis clearfix"></ul>
+            </div>
+            <div class="teachers_point"></div>
+        </div>
+        <!--课程-->
+        <div class="tp1_course">
+            <div class="tp1_title font_huihua">精选课程</div>
+            <ul class="tp1_course_lis clearfix"></ul>
+        </div>
+        <!--预约-->
+        <div class="tp1_yuyue">
+            <div class="tp1_title font_huihua">我要预约</div>
+            <form class="tp1_yuyue_lis">
+                <ul></ul>
+                <button class="yuyue_sumbit font_huihua">提交预约</button>
+            </form>
+            <div class="copyright">
+                <p class="copyright_erweima">
+                    <img src="" alt="校区二维码" />
+                </p>
+                <p class="copyright_organ">易知鸟教育培训</p>
+                <p class="copyright_phone">0571-85789582</p>
+                <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+                <p style="margin: 0.4rem auto 0.2rem;">易知鸟提供技术支持</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //课程详情默认数据
+        var courseDetailData = {
+            experienceCourseImageUrl: 'templates/show_template/makeappointment/painting/img/course_detail_tit.png',
+            experienceCourseName: '国画',
+            courseType: 1,
+            fosterAbilities: '通过国画教学让学生了解中国传统绘画的悠久历史和伟大成就，认识中国画的形式和艺术特色，懂得如何分辨和运用墨色，能够了解和掌握基本的用笔和用墨方法。',
+            courseSummary: '基础知识讲解及写生步骤详解（教给孩子具体工具的运用技巧及简单国画学习）。第1-2周，指导学生具体工具的运用，国画握笔姿势的矫正和习惯培养，及用笔、用墨、用色， 第3-10周，指导学生学习简单蔬果的绘画，如：白菜、茄子、葡萄。',
+            courseDetails: [
+                {imageUrl: 'templates/show_template/makeappointment/painting/img/course_detail_1.png'},
+                {imageUrl: 'templates/show_template/makeappointment/painting/img/course_detail_2.png'},
+                {content: '先深入浅出地给学生讲明国画的特点，再让学生临摹进而创作，教给学生一些巧妙的绘画技巧，活动时一个项目一个项目的进行练习。1、工具材料介绍。笔、墨、纸、砚以及颜料的性质特点。2、教育学生养成正确的握笔姿势和良好的坐姿。3、掌握正确的执笔、用笔和用墨方法。4、利用墨与彩调配产生的变化与宣纸特性，让学生在绘画过程中体验彩墨的乐趣。5、让学生初步了解在画国画时水分的控制及笔和墨的应用，培养学生的国画表现能力，会画简单的瓜果、昆虫画。如：南瓜、山水、辣椒、樱桃、蜻蜓等。 '},
+            ]
+        }
+
+        //初始化渲染手机页面
+        function getShowData(data) {
+
+            // 如果没有数据则使用show.js里面的初始数据
+            if (!data) {
+                var data = h5_tempalteData['makeappointment/painting'];
+            }
+            console.log('修改了数据', data);
+
+            var courseHtml = '';
+            var organHtml = '';
+            var teacherHtml = '';
+            var studentHtml = '';
+            var phoneHtml = '';
+//            $('.tp1_organName').html(data.organ.name);  //渲染校区名称
+            
+            //渲染校区二维码
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima img').attr('src', data.organ.code);
+            } else {
+                $('.copyright_erweima').hide();
+            }
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+
+            //渲染校区模块信息
+            if (data.organInfo.length > 0) {
+                $('.tp1_organ').show();
+                for (var i = 0; i < data.organInfo.length; i++) {
+                    if (data.organInfo[i].type == 'text') {
+                        organHtml += '<li><dl><dd class="font_huihua">' + data.organInfo[i].value.replace(/\n/g, "<br/>") + '</dd>';
+                        organHtml += '<dt class="show_none"></dt></dl></li>';
+                    } else {
+                        organHtml += '<li><dl><dd class="show_none font_huihua"></dd>';
+                        organHtml += '<dt><img src="' + data.organInfo[i].value + '" alt="校区图片" /></dt></dl></li>';
+                    }
+                }
+                ;
+            } else {
+                $('.tp1_organ').hide();
+            }
+
+            //渲染老师模块信息
+            if (data.teacherInfo.length > 0) {
+                $('.tp1_teacher').show();
+                for (var i = 0; i < data.teacherInfo.length; i++) {
+                    teacherHtml += '<li><dl><dt>';
+//                    teacherHtml += '<span class="flower_1"></span><span class="flower_2"></span><span class="flower_3"></span><span class="flower_4"></span>';
+                    teacherHtml += '<div class="teacher_img"><img src="' + data.teacherInfo[i].imgsrc + '" alt="老师头像" /></div></dt>';
+                    teacherHtml += '<dd><p class="teacher_detail">' + data.teacherInfo[i].introduce.replace(/\n/g, "<br/>") + '</p></dd></dl></li>';
+                }
+            } else {
+                $('.tp1_teacher').hide();
+            }
+
+            //渲染展示课程模块信息
+            if (data.showCourseList.length > 0) {
+                $('.tp1_course').show();
+                studentHtml += '<li class="sel_courseId"><label for="">体验课程:</label><div class="yuyue_course"><select name="" id="selCourseId">';
+                for (var i = 0; i < data.showCourseList.length; i++) {
+                    courseHtml += '<li>';
+                    courseHtml += '<div class="tp1_course_lisimg">';
+                    courseHtml += '<img src="' + data.showCourseList[i].experienceCourseImageUrl + '" alt="课程图片" />';
+                    courseHtml += '<span class="tp1_course_lisname">' + data.showCourseList[i].experienceCourseName + '</span></div></li>';
+
+                    studentHtml += '<option value="' + data.showCourseList[i].courseId + '">' + data.showCourseList[i].experienceCourseName + '</option>';
+                }
+                ;
+                studentHtml += '</select></div></li>';
+            } else {
+                $('.tp1_course').hide();
+            }
+
+            //渲染预约模块信息
+            studentHtml += '</select></div></li>';
+            studentHtml += '<li><label class="show_required" for="">学员姓名:</label><input type="text" placeholder="请输入学员姓名" required/></li>';
+            if (data.appoinInfo.nickname) {
+                studentHtml += '<li><label for="">学员昵称:</label><input type="text" placeholder="请输入学员昵称"></li>';
+            }
+            if (data.appoinInfo.sex) {
+                studentHtml += '<li><label for="">学员性别:</label><input type="text" placeholder="请输入学员性别"></li>';
+            }
+            studentHtml += '<li><label class="show_required" for="">学员年龄:</label><input type="text" placeholder="请输入学员年龄" required/></li>';
+
+            studentHtml += '<li><label class="show_required" for="">学员电话:</label><input type="text" placeholder="请输入学员电话" required/></li>';
+            if (data.appoinInfo.parentname) {
+                studentHtml += '<li><label for="">家长姓名:</label><input type="text" placeholder="请输入家长姓名"></li>';
+            }
+            if (data.appoinInfo.address) {
+                studentHtml += '<li><label for="">学员地址:</label><input type="text" placeholder="请输入学员地址"></li>';
+            }
+
+            //渲染底部版权信息模块
+            for (var i = 0; i < data.organ.phone.length; i++) {
+                phoneHtml += data.organ.phone[i] + '   ';
+            }
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html(phoneHtml);
+            $('.copyright_dress').html(data.organ.address);
+
+            $('.tp1_organ_lis').html(organHtml);
+            $('.tp1_teacher_lis').html(teacherHtml);
+            $('.tp1_course_lis').html(courseHtml);
+            $('.tp1_yuyue_lis ul').html(studentHtml);
+
+            initShowData(data);
+        }
+
+        //渲染页面完毕，页面存在元素节点之后运行的方法
+        function initShowData(data) {
+            //用计时器防止页面未渲染完成
+            setTimeout(function () {
+                consWidth = $('.tp1_teacher_lis li').width();   //获取图片的宽用于滚动
+                $('.tp1_teacher_lis').width(consWidth * (data.teacherInfo.length + 1));
+                consLen = data.teacherInfo.length;
+                box = $('.tp1_teacher_con')[0];
+                con = $('.tp1_teacher_lis')[0];
+                box.scrollLeft = 0;
+                //渲染图片的点点点
+                var spNum = '';
+                for(var i = 0; i < consLen; i++) {
+                    spNum += '<span></span>'
+                }
+                $('.teachers_point').html('<p>'+spNum+'</p>');
+                $('.teachers_point')[0].style.width = consLen*(0.22)-0.12 + 'rem';
+                $('.teachers_point p span:eq(0)').addClass('sp_show');
+
+                //如果老师介绍大于一个则出现左右的点击滚动按钮
+                if (data.teacherInfo.length > 1) {
+                    $('.btn_left').show();
+                    $('.btn_right').show();
+                    //向左滚动一张图片
+                    $('.btn_left').off().on('click', function () {
+                        if (timer) {
+                            return;
+                        }
+                        ;
+                        num -= consWidth;
+                        if (num == -consWidth) {
+                            num = consWidth * (consLen - 1);
+                        }
+                        ;
+                        startMove(num);
+                    });
+                    //向右滚动一张图片
+                    $('.btn_right').off().on('click', function () {
+                        if (timer) {
+                            return;
+                        }
+                        ;
+                        num += consWidth;
+                        if (num == consWidth * consLen) {
+                            num = 0;
+                        }
+                        ;
+                        startMove(num);
+                    });
+                } else {
+                    $('.btn_left').hide();
+                    $('.btn_right').hide();
+                }
+
+                //展示课程列表点击进入详情
+                $('.tp1_course_lis li').off().on('click', function () {
+                    var _index = $(this).index();
+                    console.log(_index)
+                    var lsCourseDetail = data.showCourseList[_index];
+                    if (!lsCourseDetail.experienceCourseId) {
+                        lsCourseDetail = courseDetailData;
+                    }
+                    console.log(lsCourseDetail);
+                    initCourseDetail(lsCourseDetail);
+
+                    //oa端由于不能进行跳转页面所以隐藏课程详情之外的元素
+                    $('.sel_courseId').hide();
+                    $('.tp1_header').hide();
+                    $('.tp1_organ').hide();
+                    $('.tp1_teacher').hide();
+                    $('.tp1_course').hide();
+                    $('.tp1_course_detail').show();
+                    $('#show_contain').scrollTop(0);
+                });
+
+                //点击返回按钮隐藏课程详情元素，展示活动信息
+                $('.return_page').off().on('click', function () {  //课程详情返回按钮
+                    $('.sel_courseId').show();
+                    $('.tp1_header').show();
+                    $('.tp1_organ').show();
+                    $('.tp1_teacher').show();
+                    $('.tp1_course').show();
+                    $('.tp1_course_detail').hide();
+                    $('#show_contain').scrollTop($('.tp1_course').offset().top);
+                });
+            });
+        }
+
+        //点击展示课程之后进入渲染展示课程详情
+        function initCourseDetail(d) {
+            var detailHtml = '';
+            var lsCourseDetail = d;
+            $('.tit_power').html('');
+            $('.tit_abstract').html('');
+
+            $('.course_detail_img img').attr('src', lsCourseDetail.experienceCourseImageUrl);
+            $('.detail_name span').html(lsCourseDetail.experienceCourseName);
+            if (lsCourseDetail.courseType == 1) {
+                $('.detail_type span').html('一对一');
+            } else {
+                $('.detail_type span').html('一对多');
+            }
+
+            if (lsCourseDetail.fosterAbilities) {
+                $('.tit_power').html('<h2 class="course_detail_tit">培养能力:</h2>' + '<p class="course_detail_text">' + lsCourseDetail.fosterAbilities.replace(/\n/g, "<br/>") + '</p>');
+            }
+            if (lsCourseDetail.courseSummary) {
+                $('.tit_abstract').html('<h2 class="course_detail_tit">课程摘要:</h2>' + '<p class="course_detail_text">' + lsCourseDetail.courseSummary.replace(/\n/g, "<br/>") + '</p>');
+            }
+            if (lsCourseDetail.courseDetails && lsCourseDetail.courseDetails.length > 0) {
+                detailHtml += '<h2 class="course_detail_tit">课程详情:</h2><ul class="course_detail_con">';
+                for (var i = 0; i < lsCourseDetail.courseDetails.length; i++) {
+                    var lsdata = lsCourseDetail.courseDetails[i];
+                    if (lsdata.imageUrl || lsdata.imageUrl == '') {
+                        detailHtml += '<li><img src="' + lsdata.imageUrl + '" alt="课程详情图片" /></li>';
+                    } else {
+                        detailHtml += '<li><p class="course_detail_text" style="padding:0">' + lsdata.content.replace(/\n/g, "<br/>") + '</p></li>';
+                    }
+                }
+                detailHtml += '</ul>';
+            }
+            $('.tit_con').html(detailHtml);
+        }
+
+        /*
+         * 老师滚动效果封装
+         */
+        var timer, num = 0, consWidth, consLen, box, con;
+        function startMove(targetVal) {
+            var startVal = box.scrollLeft;
+            var targetVal = targetVal;
+            var step = 0;
+            timer = setInterval(move, 20);
+            function move() {
+                //判断，如果小于临界值则向右滚动
+                if (startVal < targetVal) {
+                    //利用改变步长实现缓冲的效果
+                    step = Math.ceil((targetVal - startVal) / 10);
+                    startVal += step;
+                    if (startVal >= targetVal) {
+                        startVal = targetVal;
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                    ;
+                    //判断，如果大于临界值则向左滚动
+                } else if (startVal > targetVal) {
+                    step = Math.ceil((startVal - targetVal ) / 10);
+                    startVal -= step;
+                    if (targetVal >= startVal) {
+                        startVal = targetVal;
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                    ;
+                }
+                ;
+                box.scrollLeft = startVal;
+                $('.teachers_point p span').removeClass('sp_show');
+                $('.teachers_point p span').eq(parseInt(startVal/consWidth)).addClass('sp_show');
+            };
+        }
+        ;
+
+        var pageSlide = function (ele, swipe, options) {
+            this.options = options;//可选参数
+            this.currentIndex = 0;//当前索引
+            this.swipe = swipe || 'X';//滑动方向
+        };
+
+
+    </script>
+</div>

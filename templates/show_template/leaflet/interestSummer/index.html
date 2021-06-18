@@ -1,0 +1,145 @@
+<span class="lef_btn">联系机构</span>
+<div class="leaflet_h5">
+    <link rel="stylesheet" href="templates/show_template/leaflet/interestSummer/css/index.css" />
+    <audio id="bacMusic" src="" loop="loop"></audio>
+    <span class="r_music music_rotate" id="bacMusicBtn" btnType="on"></span>
+    <div class="leaflet_h5_con">
+        <div class="lef_c1">
+            <div class="lef_c1_img">
+                <img src="templates/show_template/leaflet/interestSummer/img/bg.jpg" alt="" class="lef_c1_bg">
+                <div class="lef_tit_img">
+                    <div>
+                        <img src="" alt="">
+                    </div>
+                </div>
+                <span class="lef_tit_img2"></span>
+                <span class="lef_tit_img3"></span>
+            </div>
+            <div class="lef_c1_con">
+                <div class="lef_share">
+                    <span>20066</span>人查看
+                    <span>6888</span>人分享
+                    <span>5000</span>人报名
+                </div>
+                <div class="lef_c1_fun">
+                    <h2>感恩节感恩大回馈，仅100个名额，赶快来报名</h2>
+                    <p class="lef_time">活动截止时间: <span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒</p>
+                </div>
+            </div>
+        </div>
+        <div class="lef_c2">
+            <div class="lef_c2_box">
+                <span class="lef_c2_img2"></span>
+                <div class="lef_c2_con">
+                    <h2 class="lef_c2_tit"><p>活动流程</p></h2>
+                    <div class="lef_c2_text">
+                        <img src="" alt="模块图片">
+                        <p>模块内容</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="lef_c3">
+            <div class="lef_c2_box">
+                <span class="lef_c2_img2"></span>
+                <div class="lef_c2_con">
+                    <h2 class="lef_c2_tit"><p>我要报名</p></h2>
+                    <form class="lef_c2_text">
+                        <ul class="lef_sign">
+                            <li><label class="show_required">学员姓名：</label><input type="text" placeholder="请输入学员姓名"></li>
+                            <li><label class="show_required">学员年龄：</label><input type="text" placeholder="请输入学员年龄"></li>
+                            <li><label class="show_required">联系电话：</label><input type="text" placeholder="请输入联系电话"></li>
+                        </ul>
+                        <button class="lef_sumbit"></button>
+                    </form>
+                </div>
+            </div>
+        </div>-->
+        <div class="copyright"></div>
+    </div>
+    <script>
+        function  getShowData(data) {
+            console.log(data);
+            var modList = '', studentHtml = '';   //模块信息
+            $('.lef_tit_img img').attr('src', data.basicInfo.coverImg); //封面图片
+            $('.lef_c1_fun h2').html(data.basicInfo.activityName); //活动标题
+
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+
+            for (var i = 0; i < data.activityDes.length; i++) {
+                var modContent = '', d_ = data.activityDes[i];
+                modList += '<div class="lef_c2_box">';
+                modList += '<span class="'+ (i % 2 == 0?"lef_c2_img1":"lef_c2_img2") +'"></span>';
+                modList += '<div class="lef_c2_con">';
+                modList += '<h2 class="lef_c2_tit"><p>'+ d_.title +'</p></h2>';
+                modList += '<div class="lef_c2_text">';
+                for (var j = 0; j < d_.content.length; j++) {
+                    var d2 = d_.content[j];
+                    if(d2.type == 'text') {
+                        modContent += '<p>'+ d2.value.replace(/\n/g, "<br/>") +'</p>';
+                    } else {
+                        modContent += '<img  src="'+ d2.value +'" alt="图片">';
+                    }
+                }
+                modList += modContent;
+                modList += '</div></div></div>';
+            }
+            $('.lef_c2').html(modList);
+
+            //渲染预约模块信息
+//          studentHtml += '<li><label class="show_required">学员姓名:</label><input type="text" placeholder="请输入学员姓名" required/></li>';
+//          studentHtml += '<li><label class="show_required">联系电话:</label><input type="text" placeholder="请输入联系电话" required/></li>';
+//          if (data.appoinInfo.sex) {
+//              studentHtml += '<li><label>学员性别:</label><div class="let_select"><select><option value="1">男</option><option value="0">女</option><select></div></li>';
+//          }
+//          if (data.appoinInfo.birthday) {
+//              studentHtml += '<li><label>学员生日:</label><input type="text" placeholder="请输入学员生日"></li>';
+//          }
+//          if (data.appoinInfo.age) {
+//              studentHtml += '<li><label>学员年龄:</label><input type="text" placeholder="请输入学员年龄" required/></li>';
+//          }
+//          if (data.appoinInfo.schoolname) {
+//              studentHtml += '<li><label>就读学校:</label><input type="text" placeholder="请输入就读学校"></li>';
+//          }
+//          if (data.appoinInfo.gradle) {
+//              studentHtml += '<li><label>学员年级:</label><input type="text" placeholder="请输入学员年级"></li>';
+//          }
+//          $('.lef_sign').html(studentHtml);
+
+        }
+    </script>
+</div>

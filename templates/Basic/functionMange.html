@@ -1,0 +1,52 @@
+<div class="common_body">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+        <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+        <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>功能描述</th>
+                        <th class="textAlignCenter">状态</th>
+                    </tr>
+                </thead>
+                <!--<tbody class="demo_tbody" ng-if="setList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                    </tr>
+                </tbody>-->
+                <tbody>
+                    <tr ng-repeat="x in list">
+                        <td>{{x.name}}</td>
+                        <td>
+                            <span ng-if="x.name != '点名设置'">{{x.desc}}</span>
+                            <span ng-if="x.name == '点名设置'">
+                                上课结束时间过后 <input type='text' class='form-control width58' ng-model='x.rollcallLimitDay' ng-disabled='!checkEnable(x)' ng-blur = "setDays(x.rollcallLimitDay)" yzn-filter="num"> 天不允许老师操作点名
+                            </span>
+                        </td>
+                        <td class="textAlignCenter">
+                            <span ng-class='{"isEnable":checkEnable(x),"isDisable":!checkEnable(x)}' ng-click="changeBtn(x)"></span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--<div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>-->
+</div>

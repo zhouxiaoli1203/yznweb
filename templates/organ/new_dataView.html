@@ -1,0 +1,203 @@
+<div class="organ_workbench_4">
+    <div class="title">
+        <div class="newHelp_after pull-left" style="padding-right:20px;">
+            <span>周报数据概览</span>
+            <div style="top:6px;" class="help_icon noneWidth" data-tips="新增潜客：本机构下所有校区上周内新增潜客人数之和<br>
+    新报人数：本机构下所有校区上周内学员报读课程类型为“新报”的人数之和<br>
+    授课课次：本机构下所有校区上周内老师授课次数之和（包含试听课、补课课）<br>
+    总消课金额：本机构下所有校区上周内消课金额之和（包含课时消课、按月消课）"></div>
+        </div>
+        <div class="time_btns pull-right">
+            <div class="sch_time_frame" style="width: 410px;margin:0;">
+                <span class="sch_time_frame_btn1" ng-click="TimeFrameEvent(1)">上周</span>
+                <p class="sch_time_frame_text"><span class="dateIcon">{{_data._time}}</span><input type="text" id="sch_time_frame" /></p>
+                <span class="sch_time_frame_btn2" ng-class='{"disabled":thisDisable}' ng-click="TimeFrameEvent(2)">下周</span>
+                <span class="sch_time_frame_btn3" ng-click="TimeFrameEvent(3)" style="right:0 ;">重置</span>
+            </div>
+        </div>
+    </div>
+    <div class="organ_workbench_4_con">
+        <ul class="clearfix">
+            <li class="col-xs-3 nav nav_{{$index+1}}" ng-repeat="x in nav_datas track by $index">
+                <div class="left">
+                    <div class="title_button" ng-class='{"0":"button0","1":"button1","2":"button2","3":"button3"}[$index]'>
+                        {{$index==0?"新增潜客":$index==1?"新报人数":$index==2?"授课课次":$index==3?"总消课金额":""}}
+                    </div>
+                    <div class="left_data">
+                        {{$index==3?(x.data | number:2):x.data}}
+                    </div>
+                    <p><span>较上一周</span><span style="margin-left: 24px;">{{x.rate>0?("+"+(x.rate|number:2)):0>x.rate?("-"+(x.rate|number:2|abs)):0}}%</span></p>
+                </div>
+                <div class="right"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="data_view_2 organ">
+    <ul>
+        <li class="padding_rg_10">
+            <div class="collect_map_con">
+                <h2 class="collect_map_head">
+                    <div class="newHelp_after pull-left" style="padding-right:20px;">
+                        <span>销售分析</span>
+                        <div style="top:16px;" class="help_icon noneWidth" data-tips="销售成单率：本机构下所有校区上周内“完成签约总人数÷（完成签约+潜客流失）”<br>
+试听到课率：本机构下所有校区上周内“总到课人次（实到）÷总到课人次（应到）”<br>
+新生比：本机构下所有校区上周内“总新报人数÷总签约人数”<br>
+新报金额比：本机构下所有校区上周内“总新报金额÷总报课金额”"></div>
+                    </div>
+                </h2>
+                <div>
+                    <div id="canvas">
+                        <div class="col-xs-6 circle-data">
+                            <div class="circle-title">销售成单率(%)</div>
+                            <div class="circle" id="circles-1" value="{{dataGilInfo.contractRate}}"></div>
+                        </div>
+                        <div class="col-xs-6 circle-data">
+                            <div class="circle-title">试听到课率(%)</div>
+                            <div class="circle" id="circles-2" value="{{dataGilInfo.auditionRate}}"></div>
+                        </div>
+                        <div class="col-xs-6 circle-data">
+                            <div class="circle-title">新生比(%)</div>
+                            <div class="circle" id="circles-3" value="{{dataGilInfo.newContractRate}}"></div>
+                        </div>
+                        <div class="col-xs-6 circle-data">
+                            <div class="circle-title">新报金额比(%)</div>
+                            <div class="circle" id="circles-4" value="{{dataGilInfo.newCoursePriceRate}}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="padding_lf_10">
+            <div class="collect_map_con">
+                <h2 class="collect_map_head">
+                    <div class="newHelp_after pull-left" style="padding-right:20px;">
+                        <span>校区业绩榜</span>
+                        <div style="top:16px;" class="help_icon noneWidth" data-tips="  报课金额：本机构下各校区上周报课金额之和（不包含学员转课产生的金额）<br>
+      学杂售卖：本机构下各校区上周学杂售卖金额之和（物品售卖金额+费用售卖金额）<br>
+      合计：报课金额+学杂售卖"></div>
+                    </div>
+                </h2>
+                <div class="organ_school_paiming">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                        </table>
+                        <div class="popup_table_body" style="max-height:242px;">
+                            <table>
+                                
+                                <tbody class="roll_tbody" ng-if="dataGilInfo.shopWeekDataList==''||!dataGilInfo.shopWeekDataList">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" >
+                                    <tr style="background-color: #fff;" ng-repeat="x in dataGilInfo.shopWeekDataList track by $index">
+                                        <td width="10%" class="textAlignCenter">
+                                            <span ng-if="$index<=2" class="paiming" ng-class='{"1":"paiming_1","2":"paiming_2","3":"paiming_3"}[$index+1]'></span>
+                                            <span ng-if="$index>2" class="">{{$index+1}}</span>
+                                        </td>
+                                        <td width="30%">{{x.shopName}}</td>
+                                        <td width="20%">￥{{x.coursePrice|number:2}}</td>
+                                        <td width="20%">￥{{x.goodsPrice|number:2}}</td>
+                                        <td width="20%" class="textAlignCenter" title="￥{{(x.coursePrice + x.goodsPrice)|number:2}}">￥{{(x.coursePrice + x.goodsPrice)|number:2 }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div style="margin-top:15px;"><span class="pull-right">总签约金额：￥{{"total" |_total :dataGilInfo.shopWeekDataList}}</span></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="data_view_2  data_view_3 organ">
+    <ul>
+        <li class="padding_rg_10">
+            <div class="collect_map_con">
+                <h2 class="collect_map_head">
+                    <div class="newHelp_after pull-left" style="padding-right:20px;">
+                        <span>教务分析</span>
+                        <div style="top:16px;" class="help_icon noneWidth" data-tips="点名情况：本机构下所有校区上周内“点名次数/排课数量”（包含试听课、补课课）<br>
+满班率：本机构下所有校区上周内“总在班人数/总班级设定人数”<br>
+消课课时：本机构下所有校区上周内学员消课课时之和<br>
+消课天数：本机构下所有校区上周内学员消课天数之和<br>
+出勤率：本机构下所有校区上周内学员“总到课人次÷总（到课人次+缺席人次+请假人次）”"></div>
+                    </div>
+                </h2>
+                <div class="organ_class_content">
+                    <div class="col-xs-6">
+                        <ul class="organ_class_content_left">
+                        	<li>
+                        	    <h3 class="title">点名情况(点名数/排课数)</h3>
+                        	    <div class="data"><span class="main_color">{{dataGilInfo.namingCourseTimes }}</span>/{{dataGilInfo.courseTimes}}</div>
+                        	</li>
+                        	<li>
+                        	    <h3 class="title">消课课时</h3>
+                        	    <div class="data">{{dataGilInfo.shoppingCourseTime }}</div>
+                        	</li>
+                        	<li>
+                        	    <h3 class="title">消课天数</h3>
+                        	    <div class="data">{{dataGilInfo.shoppingCourseDay }}</div>
+                        	</li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-6">
+                        <ul>
+                            <li>
+                                <h3 class="title">满班率(%)</h3>
+                                <circle class="circleStyle" style="border:1px solid rgba(129,183,249,0.5);" my-id="myCircle1" my-data="{{dataGilInfo.classFullRate|number:2 }}" my-color="linear-gradient(167deg,rgba(70,126,196,0.9),rgba(129,183,249,0.9))" my-font="rgba(70,126,196,0.9)" my-out="DAE5F3"></circle>
+                            </li>
+                            <li style="margin-top:36px;">
+                                <h3 class="title">出勤率(%)</h3>
+                                <circle  class="circleStyle" style="border:1px solid rgba(151,213,0,0.5);" my-id="myCircle2" my-data="{{dataGilInfo.attendanceRate|number:2 }}" my-color="linear-gradient(167deg,rgba(117,165,0,0.9),rgba(151,213,0,0.9))" my-font="rgba(117,165,0,0.9)" my-out="EFFAD7"></circle>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="padding_lf_10">
+            <div class="collect_map_con">
+                <h2 class="collect_map_head">
+                    <div class="newHelp_after pull-left" style="padding-right:20px;">
+                        <span>财务分析</span>
+                        <div style="top:16px;" class="help_icon noneWidth" data-tips="应收金额：本机构下所有校区上周内“订单应收金额之和”<br>
+实收金额：本机构下所有校区上周内“订单实收金额之和”<br>
+收入合计：本机构下所有校区上周内“经营利润”中收入项合计（消课金额+手续费盈收+结课盈收+费用收入）<br>
+支出合计：本机构下所有校区上周内“经营利润”中支出项合计（手续费亏损+结课亏损+费用支出+工资支出）"></div>
+                    </div>
+                </h2>
+                <div class="organ_class_content" style="padding-top:38px;">
+                    <div class="col-xs-6">
+                        <ul>
+                            <li>
+                                <h3 class="title">应收金额(元)</h3>
+                                <div class="data">{{dataGilInfo.receivable|number:2  }}</div>
+                            </li>
+                             <li style="margin-top: 82px;">
+                                <h3 class="title">收入合计(元)</h3>
+                                <div class="data">{{dataGilInfo.income|number:2  }}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-6">
+                        <ul>
+                            <li>
+                                <h3 class="title">实收金额(元)</h3>
+                                <div class="data">{{dataGilInfo.realIncome |number:2 }}</div>
+                            </li>
+                            
+                            <li style="margin-top: 82px;">
+                                <h3 class="title">支出合计(元)</h3>
+                                <div class="data">{{dataGilInfo.disburse|number:2  }}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

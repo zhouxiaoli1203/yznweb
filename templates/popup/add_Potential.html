@@ -1,0 +1,358 @@
+<div class="popup_ addPotential" id="addPotential">
+    <h6>{{popTitle}}<span ng-click="closePopup('addPotential')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_btn()">
+            <div class="popup_form_content">
+                <!--滚动区域（添加属性isScroll=true则出现滚动条）-->
+                <div class="popup_scroll" isScroll="false">
+                    <!--内容区域-->
+                    <div class="popup_line reInfos" ng-show="potlnameList.length>0">
+                        <span class="icon_warning">本校区已有该信息的学员，点击  <span class="clickText" ng-click="gotoViewNameStud()">查看学员</span></span>
+                        <!--<span ng-show="isReName" class="icon_warning">本校区已有该信息的学员，点击  <span class="clickText" ng-click="gotoViewNameStud()">查看学员</span></span>-->
+                        <!--<span ng-show="isRePhone" class="icon_warning" style="margin-left:10px;">本校区已有该信息的学员，点击  <span class="clickText" ng-click="gotoViewPhoneStud()">查看学员</span></span>-->
+                    </div>
+                    <div class="popup_line" ng-show="!isPotential" style="margin-bottom: 25px;">
+                        <label for="" class="form-label">头像:</label>
+                        <div class="col-xs-10">
+                            <div class="signup_pic"><img ng-if="headerimgsrc" width="100%" height="100%" ng-src="{{headerimgsrc}}" /></div>
+                            <div class="signup_file" ng-click="openCopper()"><span>浏览...</span><input type="file" style="display: none;" id="imgUpId" name="upload-file" accept="image/gif, image/jpeg, image/png" /></div>
+                            <div class="img_ruleInfo" style="bottom:-16px;">建议上传尺寸：200*200，图片支持JPG、PNG格式，图片小于1MB.</div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">姓名:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <input class="form-control" type="text" ng-model="studentData.name" autocomplete="off" placeholder="学员姓名" maxlength="12" required ng-blur="nameBlur()">
+                        </div>
+                        <label class="form-label required">主要联系人:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <div class="parent potential">
+                                <div class="relation">
+                                    <select class="form-control" ng-model="Relation_relation">
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="Relation_phone" required ng-blur="phoneBlur()">
+                                </div>
+                                <!--<div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="Relation_name">
+                                </div>-->
+                            </div>
+                        </div>
+                        <!--<label for="" class="form-label">昵称:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <input class="form-control" type="text" ng-model="studentData.nickname" autocomplete="off" placeholder="学员昵称" maxlength="12">
+                        </div>-->
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">性别:</label>
+                        <div class="col-xs-4 popup_rt" style="line-height:26px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="gender" ng-model="studentData.studentGend" value="0"/>女
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="gender" ng-model="studentData.studentGend" value="1"/>男
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="gender" ng-model="studentData.studentGend" value="2"/>未知
+                            </label>
+                        </div>
+                        <label class="form-label">备用联系人:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <div class="parent potential list">
+                                <div class="relation">
+                                    <select class="form-control" ng-model="addParentList[0].relation" ng-required="addParentList[0].phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11" type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="addParentList[0].phone">
+                                </div>
+                                <!--<div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="x.name">
+                                </div>
+
+                                <i class="x_" ng-show="addParentList.length>=1" ng-click="deleteRelation($event,$index)"></i>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">生日/年龄:</label>
+                        <div class="col-xs-4">
+                            <select name="relation" ng-model="studentData.ageType" class="form-control" style="width:75px;float:left;">
+                                <option value="" disabled="false">选择类型</option>
+                                <option value="1">生日</option>
+                                <option value="2">年龄</option>
+                            </select>
+                            <div ng-show="studentData.ageType == 2" style="float:left;margin-left: 0px;">
+                                <input type="text" style="width:135px;" class="form-control" name="age" yzn-filter="age" placeholder="年龄" maxlength="2" ng-model="studentData.age" />
+                            </div>
+                            <input type="text" style="width:135px;" ng-show="studentData.ageType == 1" class="form-control dateIcon" id="studentBirth" name="date" placeholder="生日" ng-model="studentData.birthday" />
+                        </div>
+                        <!--<div class="col-xs-4 popup_rt">
+                            <input class="form-control age" type="text" yzn-filter="age" ng-model="studentData.age" autocomplete="off" placeholder="年龄">
+                            <span class="month" ng-show="hasMonth">{{studentData.studentMonth}}</span>
+                            <input class="form-control birthday dateIcon" type="text" id="studentBirth" ng-model="studentData.birthday" autocomplete="off" placeholder="生日">
+                        </div>-->
+                        <label class="form-label"></label>
+                        <div class="col-xs-4 popup_rt">
+                            <div class="parent potential list">
+                                <div class="relation">
+                                    <select class="form-control" ng-model="addParentList[1].relation" ng-required="addParentList[1].phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11" type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="addParentList[1].phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="parting_line"></div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">学校:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <input-select my-id="mySchool" list-data="{{schoolList}}" list-field="schoolName" ng-model="studentData.schoolName" list-placeholder="学校名称" list-max="24"></input-select>
+                        </div>
+                        <span class="clickText" style="width: 50px; float: left; line-height: 28px;margin-left: -10px;" ng-click='goCommonPop("basic-pop","schoolManage","660px",{name:"学校",callBackName:"潜客-学校管理"})'>学校管理</span>
+                        <label for="" class="form-label" style="width:45px;">年级:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <select class="form-control" ng-model="studentData.grade" ng-change="changeGrade(grade)">
+                                <option value="" style="display: none;">请选择年级</option>
+                                <option value="{{x.value}}" ng-repeat="x in gradeList">{{x.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">昵称:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <input class="form-control" type="text" ng-model="studentData.nickname" autocomplete="off" placeholder="学员昵称" maxlength="12">
+                        </div>
+                        <label for="" class="form-label">身份证号:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <input class="form-control" type="text" yzn-filter="staffCode" ng-model="studentData.studentStaff" autocomplete="off" placeholder="身份证号" maxlength="18" spellcheck="false">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">家庭住址:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <input class="form-control" style="width:539px;" type="text" ng-model="studentData.address" autocomplete="off" placeholder="家庭地址/小区" maxlength="50">
+                        </div>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label required">主要联系人:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <div class="parent">
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="Relation_phone" required ng-blur="phoneBlur()">
+                                </div>
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="Relation_relation">
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="Relation_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="addParentList.length>0">
+                        <label class="form-label">其他联系人:</label>
+                        <div class="col-xs-10 popup_rt" >
+                            <div class="parent list" ng-repeat="x in addParentList track by $index">
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="x.phone">
+                                </div>
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="x.relation" ng-required="x.phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="x.name">
+                                </div>
+
+                                <i class="x_" ng-show="addParentList.length>=1" ng-click="deleteRelation($event,$index)"></i>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-3">
+                            <div class="addParent icon_name_add" ng-click="addParent()">添加家长信息</div>
+                        </div>
+                    </div>-->
+                    <div ng-show="isPotential">
+                        <div class="parting_line"></div>
+                        <div class="popup_line">
+                            <label class="form-label">渠道类型:</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" ng-model="channel" ng-change="changeChalType(channel)">
+                                    <option value="">请选择渠道类型</option>
+                                    <option value="{{x.id}}" ng-repeat="x in channelTypeList" >{{x.channelTypeName}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4" ng-show="hasChannelType">
+                                <select class="form-control" ng-model="channel2" ng-change="changeChal2(channel2)">
+                                    <option value="">请选择来源渠道</option>
+                                    <option value="{{x.id}}" ng-repeat="x in channelList2">{{x.channelName}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4" ng-show="isInRecmd">
+                                <select class="form-control" ng-model="recmd" ng-change="changeRecmd(recmd)">
+                                    <option value="">请选择推荐人</option>
+                                    <option value="{{x.id}}" ng-repeat="x in teacherList">{{x.userName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="popup_line">
+                            <label class="form-label">推荐人</label>
+                            <div class="col-xs-10">
+                                <div class="teacher_select" ng-show="studentData.reference.name">
+                                    <span>{{studentData.reference.name}} ({{studentData.reference.phone}})<i ng-click="delStudent(studentData.reference, $index)" class="icon_drop_x"></i></span>
+                                </div>
+                                <span ng-show="!studentData.reference.name" class="form-span icon_name_add bef_mg_0" ng-click="goCommonPop('student-sel','selectStuds_refferral', '760px', {type: 'refferral',choseType:'radio',callBackName:'添加推荐人'})">选择推荐人</span>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">采单员</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" ng-model="marker" ng-change="markerChange(marker)">
+                                    <option value="">选择采单员</option>
+                                    <option value="{{x.shopTeacherId}}" ng-repeat="x in marketerList">{{x.teacherName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="popup_line" ng-show="isAllpotential && isAddPot">
+                            <label class="form-label">顾问</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" ng-model="adviser">
+                                    <option value="">选择顾问</option>
+                                    <option value="{{x.shopTeacherId}}" ng-repeat="x in adviserList">{{x.teacherName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="popup_line">
+                            <label for="" class="form-label required">意向度:</label>
+                            <div class="col-xs-3 intent" style="width:135px;">
+                                <label class="checkbox-inline labelLeft">
+                                    <input type="radio" class="low" name="intent" ng-model="studentData.studentIntent" value="1" ng-click="intentShow(studentData.studentIntent)"/>
+                                </label>
+                                <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+                                    <input type="radio" class="middle" name="intent" ng-model="studentData.studentIntent" value="2" ng-click="intentShow(studentData.studentIntent)"/>
+                                </label>
+                                <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+                                    <input type="radio" class="high" name="intent" ng-model="studentData.studentIntent" value="3" ng-click="intentShow(studentData.studentIntent)"/>
+                                </label>
+                            </div>
+                            <div class="col-xs-2 intent_tips" ng-show="studentData.studentIntent"><i></i>{{studentData.tip_text}}</div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">意向课程:</label>
+                            <!--<div class="col-xs-4">
+                                <div class="drop_select screen_no">
+                                    <span class="drop_select_icon"></span>
+                                    <my-select list-name="请添加意向课程" list-data="{{courseList}}" list-field="courseName" list-click="clickHandler(n)" list-search="true" list-all="no" list-default="{{courseSelected.courseName}}"></my-select>
+                                </div>
+                            </div>-->
+                            <div class="col-xs-10">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in course_">{{x.courseName}}<i ng-click="delCourse_(x, $index)" class="icon_drop_x"></i></span>
+                                </div>
+                                <div class="drop_add_teacher screen_no">
+                                    <i class="icon_name_add"></i>
+                                    <my-select my-id="_likeCourse" list-name="请添加意向课程" list-data="{{courseList}}" list-field="courseName" list-click="selCourse_(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="parting_line"></div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">标签:</label>
+                        <div class="col-xs-10">
+                            <div class="separate_list marks">
+                                <span ng-repeat="x in studentData.tags">{{x.name}}</span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="goCommonPop('mark-pop','preSetMark', '760px', {choseType:'checkbox',data:studentData.tags,callBackName:'添加标签'})">添加标签</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="!isPotential && pickUpShow">
+                        <label for="" class="form-label">安排接送:</label>
+                        <div class="col-xs-10 chargeistItem popup_rt" style="padding-bottom:13px;margin-left: 15px; width: 79.333333% !important;">
+                            <div class="caretype margin" ng-class='{marginTop_10:$index==1}' ng-repeat="x in pickupWeek track by $index">
+                                <span class="type">{{x.name}}:</span>
+                                <label class="checkbox-inline" style="margin-left:10px" ng-click="clickSelWeek(w)" ng-repeat="w in x.weekList track by $index">
+                                    <input type="checkbox" ng-model="x.week[w]" ng-checked="x.week[w]">{{w | _week}}
+                                </label>
+                                <span class="select-all" ng-click="selectedAllweek(x)">全选</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">备注:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <span class="input_words">{{studentData.studentDesc?studentData.studentDesc.length:0}}/500</span>
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="studentData.studentDesc" maxlength="500" placeholder="意向或者其他备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('addPotential')" type="button">取消</button>
+                <button class="btn" ng-class='{"sure":newStudSign,"cancel":!newStudSign}' type="button" ng-if="isPotential && isAddPot" ng-click="gotoSignUp()">报名</button>
+                <button class="btn sure" type="submit" ng-if="!newStudSign">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--重复学员信息-->
+<div class="popup_" id="repeat_studs">
+    <h6>重复信息<span ng-click="closePopup('repeat_studs')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_studPay()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.3%;">
+                            <thead my-thead='[{"name":"学员"},{"name":"昵称"},{"name":"年龄"},{"name":"联系方式","width":"18%"},{"name":"关系"},{"name":"家长姓名"},{"name":"所属顾问"}]'></thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;max-height:358px;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="potlnameList==''">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="potlnameList!==''">
+                                    <tr ng-repeat="x in potlnameList">
+                                        <td>{{x.name}}
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                                        </td>
+                                        <td>{{x.nickname}}</td>
+                                        <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                        <td width="18%">{{x.potentialCustomerParentPhone}}</td>
+                                        <td>{{x.relationType}}</td>
+                                        <td>{{x.potentialCustomerParentName}}</td>
+                                        <td>{{x.oaUserName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="button" ng-click="closePopup('repeat_studs')">关闭</button>
+            </div>
+        </form>
+    </div>
+</div>

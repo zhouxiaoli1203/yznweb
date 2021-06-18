@@ -1,0 +1,371 @@
+@charset "UTF-8";
+.leaflet_h5 {
+    font-size: 0.28rem;
+}
+
+.leaflet_h5_con {
+    background-color: #735EB3;
+}
+
+.lef_c1 {
+    position: relative;
+}
+
+.lef_c1_img .lef_c1_bg {
+    display: block;
+    width: 100%;
+}
+
+.lef_share {
+    position: absolute;
+    top: 0.11rem;
+    left: 0;
+    width: 100%;
+    height: 0.57rem;
+    background: url(../img/top.png) no-repeat;
+    background-size: contain;
+    text-align: center;
+    line-height: 0.57rem;
+    color: #fff;
+}
+
+.lef_share .contents {
+    position: relative;
+}
+
+.lef_share span {
+    display: inline-block;
+    margin-left: 0.2rem;
+    color: #FEFC3B;
+}
+
+.lef_share span:nth-of-type(1) {
+    margin-left: 0;
+}
+
+.lef_btn {
+    position: absolute;
+    top: 6.3rem;
+    right: 0.7rem;
+    width: 0.93rem;
+    height: 0.93rem;
+    padding: 0.1rem;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    z-index: 9;
+}
+
+.lef_c1_fun {
+    position: relative;
+}
+
+.lef_c1_fun h2 {
+    color: #C4A7F5;
+    font-size: 0.32rem;
+    text-align: center;
+    line-height: 0.5rem;
+    width: 5.9rem;
+    margin: 0.1rem auto 0
+}
+
+.lef_time {
+    width: 6.86rem;
+    color: #FAECCE;
+    font-size: 0.36rem;
+    text-align: center;
+    height: 0.67rem;
+    line-height: .67rem;
+    margin-top: 0.2rem;
+    background-color: #6651A5;
+    margin: .2rem auto 0;
+    border-radius: .67rem;
+}
+
+.lef_time span {
+    font-size: 0.36rem;
+    color: #fff;
+    font-weight: bolder;
+}
+
+
+/*音乐*/
+
+.r_music {
+    position: absolute;
+    right: 0.8rem;
+    top: 1.6rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    z-index: 999;
+}
+
+
+/*旋转*/
+
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+
+@keyframes mu_sport {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -o-transform: rotate(0deg);
+    }
+    to {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.lefbox {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    margin-top: .6rem;
+    padding-top: .6rem;
+    z-index: 1;
+    border-radius: 0.2rem;
+    background: url(../img/boxbg.png) no-repeat;
+    background-size: contain;
+}
+
+.lef_c2>div>div,
+.lef_c3>div,
+.lef_c4>div,
+.lef_c5>div {
+    position: relative;
+    width: 6.86rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #FEEBD8;
+    padding: .9rem .5rem .45rem;
+    z-index: 2;
+    border-radius: 0.2rem;
+}
+
+.lef_c2 {
+    margin-top: 0 !important;
+}
+
+.copyright {
+    margin-top: .75rem;
+    color: #fff;
+    padding-bottom: 0.4rem;
+}
+
+.lef_c2>div>div {
+    margin-top: 0.2rem;
+}
+
+.lefbox h2 {
+    width: 3.1rem;
+    height: .7rem;
+    position: absolute;
+    top: .36rem;
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.lef_c2 h2 {
+    background: url(../img/title_1.png) no-repeat;
+    background-size: contain;
+}
+
+.lef_c3 h2 {
+    background: url(../img/title_2.png) no-repeat;
+    background-size: contain;
+}
+
+.lef_c4 h2 {
+    background: url(../img/title_3.png) no-repeat;
+    background-size: contain;
+}
+
+.lef_c5 h2 {
+    background: url(../img/title_4.png) no-repeat;
+    background-size: contain;
+}
+
+.lef_c2 p {
+    font-size: 0.3rem;
+}
+
+.lef_c2 p,
+.lef_c3 p,
+.lef_c4 p,
+.lef_c5 p {
+    color: #000;
+    font-size: 0.28rem;
+    line-height: 0.36rem;
+    text-align: justify;
+}
+
+.lef_c2 p {
+    font-size: 0.34rem;
+}
+
+.lef_c2 img,
+.lef_c3 img,
+.lef_c5 img {
+    display: inline-block;
+    width: 100%;
+    margin: 0.2rem 0;
+}
+
+.lef_c2 .redBor {
+    border: 0.02rem solid #735EB3;
+    line-height: 0.36rem;
+    color: #735EB3;
+    font-size: 0.22rem;
+    padding: 0 0.1rem;
+    border-radius: 0.04rem;
+}
+
+.lef_c2 .redBor:nth-of-type(1) {
+    margin-right: 0.1rem;
+}
+
+.lef_c2 .c666 {
+    color: #666;
+    line-height: 0.35rem;
+    font-size: 0.22rem;
+}
+
+.originP {
+    color: #FF5553;
+    font-size: 0.54rem;
+    font-style: italic;
+}
+
+.throughP {
+    color: #999;
+    font-size: 0.18rem;
+    text-decoration: line-through;
+}
+
+.buyBtn {
+    width: 2rem;
+    height: .8rem;
+    background: url(../img/btn.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    right: 0.1rem;
+    bottom: 0.3rem;
+    color: #fff;
+    text-align: center;
+}
+
+.buyBtn span:nth-of-type(1) {
+    font-size: 0.22rem;
+    position: absolute;
+    top: -0.45rem;
+    color: #FF0000;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    display: block;
+}
+
+.buyBtn span:nth-of-type(2) {
+    font-size: 0.28rem;
+    color: #8E2802;
+    line-height: 0.72rem;
+}
+
+.mt20 {
+    margin-top: 0.2rem;
+}
+
+.pr17 {
+    padding-right: 1.7rem;
+}
+
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.empty {
+    min-height: 3rem;
+    text-align: center;
+    line-height: 3rem;
+    color: #000;
+}
+
+.zero {
+    color: #FF5553;
+    font-size: 0.24rem;
+    margin-right: 0.1rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.copyright p:last-child {
+    width: 6.08rem;
+    height: 0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin: 0.6rem auto 0 !important;
+}

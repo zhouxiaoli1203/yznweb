@@ -1,0 +1,11 @@
+<div class="contain_ct on">
+    <div class="titleWrapper result"></div>
+    <div>
+        <div class="quesItem" ng-repeat="x in quesList track by $index" ng-click="addQid(x.helpCenterId)">{{x.helpCenterTitle}}</div>
+        <div class="quesItem" ng-if="quesList.length == 0">无</div>
+    </div>
+    
+</div>
+<div class="pagitionDiv" style="padding-right: 20px;margin-top: 10px;">
+        <div class="M-box3 classPage"></div>
+    </div>

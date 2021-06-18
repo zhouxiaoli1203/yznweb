@@ -1,0 +1,238 @@
+<!--新建文件夹、重命名-->
+<div class="popup_ fileNamePop" id="fileNamePop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_create()">
+            <div class="popup_form_content" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label for="" class="form-label required">文件{{fileInfo.type=="folder"?"夹":""}}名称:</label>
+                        <div class="col-xs-7">
+                            <input class="form-control" type="text" ng-model="fileInfo.name" autocomplete="off" placeholder="请输入名称" maxlength="190" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--上传文件-->
+<div class="popup_ fileUploadPop" id="fileUploadPop">
+    <div class="popup_content" style="padding-top:10px;">
+        <form class="popup_form" role="form" ng-submit="confirm_upload()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <div class="pull-left line28 clickText" ng-click="add_showInfo('more',fileList)"><i class="icon_data_upload"></i> 本地上传</div>
+                        <div class="pull-left lineHeight28 newHelp_after" style="color:#999;margin-left: 15px;padding-right:20px;">
+                             上传文件须知
+                             <div class="help_icon noneWidth" style="top:6px;" data-tips="上传文件须知：<br>
+视频支持MP4文件，文件最大不超过500M;<br>
+音频支持MP3文件，文件最大不超过50M；<br>
+图片支持JPG、PNG文件，文件最大不超过10M；<br>
+文档支持PDF、Word文件，文件最大不超过10M；"></div>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="fileList.length>0">
+                        <table class="popup_table_head">
+                            <tbody class="roll_tbody">
+                                <tr style="background-color: #fff;" ng-repeat="x in fileList">
+                                    <!--<td style="width:30px;"  ng-drop="true" ng-drop-success="onDropComplete($index, $data, $event)" ng-drag="true" ng-drag-data="x"><span class="three_bar"></span></td>-->
+                                    <td style="width:280px;">
+                                        <input class="form-control" type="text" ng-model="x.fileName" autocomplete="off" placeholder="请输入文件名称" required>
+                                    </td>
+                                    <td class="textAlignRt file_btns">
+                                        <span class="view_file_btn " ng-if="x.key">
+                                            <a ng-if="x.key && x.fileType=='image'" class="cursor_pointer" ng-href="{{x.imageUrl}}" target="_blank"><i class="icon_filePic"></i>查看图片</a>
+                                            <a ng-if="x.key && x.fileType=='audio'" class="cursor_pointer" ng-href="{{x.audioUrl_}}" target="_blank"><i class="icon_fileAudio"></i>播放音频</a>
+                                            <a ng-if="x.key && x.fileType=='video'" class="cursor_pointer" ng-href="{{x.videoUrl_}}" target="_blank"><i class="icon_fileVideo"></i>播放视频</a>
+                                            <a ng-if="x.key && x.fileType=='word'"  class="cursor_pointer" ng-href="{{x.wordUrl_}}" target="_blank"><i class="icon_fileDoc"></i>查看文档</a>
+                                            <a ng-if="x.key && x.fileType=='pdf'"  class="cursor_pointer" ng-href="{{x.pdfUrl_}}" target="_blank"><i class="icon_fileDoc"></i>查看文档</a>
+                                        </span>
+                                        <span class="view_file_btn error" ng-if="!x.key">
+                                            <a style="width:{{x.percent}}%">
+                                                <span class="percent" ng-show="!x.uploadErr">{{x.percent}}%</span>
+                                            </a>
+                                        </span>
+                                        <span ng-click="delete_showInfo($index,fileList)"><i class="icon_delete clickText"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--移动至文件夹-->
+<div class="popup_ fileChangePop" id="fileChangePop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_remove()">
+            <div class="popup_form_content" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <tree-view tree-data="jsonData"></tree-view>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common" when-scrollwindow="loadMore()">
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="viewOperate(3)"><i class="icon_upload"></i>上传文件</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn fontRed_BgWhite" ng-click="viewOperate(1)"><i class="icon_data_add"></i>新建文件夹</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix mt15" style="line-height: 16px;">
+            <li ng-show="!searchName">
+                <span ng-if="listPath.length>0 && fileInfoParant.name != '全部文件'">
+                    <span class="clickText verticalAlign_bt" ng-click="toFileDetail(listPath[listPath.length-1],'parent')">返回上一级 | </span>
+                    <span ng-hide="listPath.length>2 && !$first && !last" ng-repeat="x in listPath track by $index" >
+                        <span ng-hide="$index==0"> > </span>
+                        <span class="clickText lastFilename" ng-click="toFileDetail(x,'parent')" title="{{x.name}}">{{x.name}}</span>
+                    </span>
+                    <span ng-show="listPath.length>2 && !$first && !last">
+                        <span ng-hide="$index==0"> > </span>
+                        <span >...</span>
+                    </span>
+                    <span> > </span>
+                </span>
+                <span class="lastFilename" title="{{fileInfoParant.name}}">{{fileInfoParant.name}}</span>
+            </li>
+            <li ng-show="searchName">
+                <span class="clickText verticalAlign_bt" ng-click="toFileDetail({parentId: 0, name: '全部文件'},'parent')">返回上一级 | </span>
+                <span class="clickText verticalAlign_bt" ng-click="toFileDetail({parentId: 0, name: '全部文件'},'parent')">全部文件</span>
+                <span class="lastFilename"> > 搜索: {{searchName}}</span>
+            </li>
+            <li class="capacity pull-right">
+               <span class="progressBar"><span style="width:{{(capacity_.currentCapacity/capacity_.totalCapacity)*100}}%"></span></span> 
+               <span>{{capacity.currentCapacity}}/{{capacity.totalCapacity}}</span>
+               <span class="clickText" ng-click="listModel = !listModel" ng-class='{"icon_data_list":!listModel,"icon_data_suolve":listModel}'></span>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content" ng-show="listModel" >
+        <div class="popup_table" >
+            <table class="popup_table_head" style="border:none;">
+                <thead my-id="data_head" my-thead="{{dataHead_}}" che-clicks="sel_allFun(data)"></thead>
+            </table>
+            <div class="popup_table_body"  style="width:100%;max-height: inherit;">
+                <table style="border:none;">
+                    <tbody class="demo_tbody" ng-if="dataList==''">
+                        <tr>
+                            <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody >
+                        <tr ng-repeat="x in dataList">
+                            <td style="width:50px;" class="textAlignCenter" ng-click="sel_singleFun($event,x,params_data,'dataBankId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked"/></td>
+                            <td width="50%" title="{{x.name}}" ng-if="x.type=='folder'" ng-click="toFileDetail(x)">
+                                <span class="cursor_pointer"><span class="fileIcon {{x.type}} mr5"></span>{{x.name}}</span>
+                            </td>
+                            <td width="50%" title="{{x.name}}" ng-if="x.type!='folder'">
+                                <a class="cursor_pointer" ng-href="{{x.url}}" target="_blank" style="color:#444;"><span class="fileIcon {{x.type}} mr5"></span>{{x.name}}</a>
+                            </td>
+                            <td width="50%">
+                                <span>{{x.type=="folder"?"-":(x.size | _getBt)}}</span>
+                            </td>
+                            <td style="width:180px;" class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-click="viewOperate(2,x)">重命名</span>
+                                <span class="clickText" ng-click="viewOperate(4,x,'single')">移动到</span>
+                                <span class="clickText" ng-click="viewOperate(5,x,'single')">删除</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="common_content" ng-show="!listModel" style="clear: both;overflow: hidden;margin-bottom: 20px;">
+        <div class="data_thumbnail"  style="max-height: inherit;">
+            <div class="data_icons" ng-class='{"active":x.hasChecked}' ng-repeat="x in dataList" >
+                <div class="data_icon_head">
+                    <span class="select_icon pull-left"  ng-click="sel_singleFun($event,x,params_data,'dataBankId')" ><input type="checkbox" name="data_file" ng-checked="x.hasChecked"/></span>
+                    <span class="operate_icon pull-right common_tab_libtn drop" >
+                        <i class="icon_data_set" data-toggle="dropdown"></i>
+                        <div class="dropdown-menu drop-list">
+                            <!--<span class="mark"></span>-->
+                            <ul>
+                                <li class="cursor_pointer" ng-click="viewOperate(2,x)">重命名</li>
+                                <li class="cursor_pointer" ng-click="viewOperate(4,x,'single')">移动到文件夹</li>
+                                <li class="cursor_pointer" ng-click="viewOperate(5,x,'single')">删除</li>
+                            </ul>
+                        </div>
+                    </span>
+                </div>
+                <div class="file_icon" >
+                    <span ng-if="x.type=='folder'" class="file_icon_list folder" ng-click="toFileDetail(x)"></span>
+                    <a ng-if="x.type=='image'" class="file_icon_list" ng-href="{{x.url}}" target="_blank">
+                        <img ng-src="{{x.url}}" alt="" width="100%" height="100%" style="object-fit: cover;"/>
+                    </a>
+                    <span ng-if="x.type=='video'" class="file_icon_list">
+                        <video style="width: 74px; height: 74px;">
+                            <source ng-src="{{x.url_}}"></source>
+                        </video>
+                        <a class="shop_img_msk video" ng-href="{{x.url}}" target="_blank"></a>
+                    </span>
+                    <a ng-if="x.type=='audio'" class="file_icon_list audio" ng-href="{{x.url}}" target="_blank"></a>
+                    <a ng-if="x.type=='word'"  class="file_icon_list word" ng-href="{{x.url}}" target="_blank"></a>
+                    <a ng-if="x.type=='pdf'"  class="file_icon_list pdf" ng-href="{{x.url}}" target="_blank"></a>
+                </div>
+                <p class="file_name" title="{{x.name}}">{{x.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="pagitionDiv mt20">
+        <div class="M-left">
+            <div class="M-button" >已选中 <span class="selected">{{params_data.length}}</span> 个</div>
+            <div class="M-button">
+                <div class="drop batchOperate" style="position: relative;">
+                    <span  class="M-button common_tab_btn fontRed_BgWhite" data-toggle="dropdown">批量操作<i class="icon_drop_down ml5" style="margin-right: 0;"></i></span>
+                    <div class="dropdown-menu drop-list">
+                        <!--<span class="mark"></span>-->
+                        <ul>
+                            <li ng-click="viewOperate(6,params_data,'batch')">下载到本地</li>
+                            <li ng-click="viewOperate(4,params_data,'batch')">移动到文件夹</li>
+                            <li ng-click="viewOperate(5,params_data,'batch')">删除</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="M-box3 dataPage"></div>-->
+    </div>
+</div>
+<script type="text/ng-template" id="treeView.html">
+  <ul>
+    <li class="lineHeight28" ng-repeat="item in treeData" ng-include="'treeItem.html'"></li>
+  </ul>
+</script>
+<script type="text/ng-template" id="treeItem.html">
+    <span ng-click="toggleExpandStatus(item)" style="vertical-align: top;">
+        <span class="tree_arrow" ng-class="{'tree_canotopen':!isLeaf(item) && item.isExpand,'tree_canopen':!isLeaf(item) && !item.isExpand}" ></span>
+        <span><i class="fileIcon folder"></i></span>
+    </span>
+    <span class="treeLi" ng-class='{"actived":item.active}' style='width:calc(100% - {{10*item.level+30+"px"}})' ng-click="selectTree(item)" title="{{item.name}}">{{item.name}}</span>
+    <ul ng-if="!isLeaf(item)" ng-show="item.isExpand">
+        <li class="lineHeight28 ml15" ng-repeat="item in item.dataBankList" ng-include="'treeItem.html'"></li>
+    </ul>
+</script>

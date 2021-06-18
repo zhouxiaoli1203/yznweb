@@ -1,0 +1,421 @@
+@charset "utf-8";
+/*特殊字体*/
+/*@font-face{
+    font-family: 'FZQKBYSJW';
+    src: url('font/FZQKBYSJW.ttf')format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}*/
+#show_contain {
+    font-size: 100px;
+}
+.tp1_course_detail {
+    position: relative;
+}
+.tp4 {
+    overflow: hidden;
+    width: 100%;
+    background: url("../../../makeappointment/dance/img/template_bg_4.png") no-repeat;
+    background-size: 150% 150%;
+    color: #333;
+    font-size: 0.24rem;
+}
+* {
+    font-size: 0.24rem;
+}
+.tp1_header {
+    width: 100%;
+}
+.tp1_header img {
+    display: block;
+    width: 100%;
+}
+.boxDiv{
+    width: 100%;
+    padding-top: 0.78rem;
+}
+.con {
+    /*position: absolute;*/
+    width: 100%;
+}
+.tp1_title {
+      width: 2.42rem;
+  height: 0.66rem;
+  border-radius: 0.08rem;
+  background-color: #ff759f;
+  font-size: 0.48rem;
+  line-height:0.66rem;
+  text-align: center;
+  color: #ffffff;
+  margin:0 auto 0.39rem;
+}
+.list_box {
+    width: 6.69rem;
+    border-radius: 0.2rem;
+    border: solid 0.03rem #ff759f;
+    padding: 0.2rem 0.24rem;
+    margin:0 auto;
+    background-color: rgba(255,255,255,0.5);
+}
+.tp1_organ_lis {
+    width: 100%;
+    color: #ff759f;
+}
+.tp1_organ_lis dd {
+    margin-bottom: 0.1rem;
+}
+.tp1_organ_lis dt {
+    width: 100%;
+}
+.tp1_organ_lis dt img {
+    display: block;
+    width: 100%;
+}
+.tp1_teacher_con {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 6.7rem;
+    height: 4.33rem;
+    border-radius: 0.2rem;
+    background: url("../../../makeappointment/dance/img/teacher_con.png") no-repeat;
+    background-size: 100% 100%;
+    background-color: #fff1f6;
+}
+.tp1_teacher_lis li {
+    float: left;
+    width: 6.7rem;
+    height: 4.33rem;
+}
+.tp1_teacher_lis dl {
+     height: 4.33rem;
+    padding: 0.42rem 0.22rem;
+}
+.tp1_teacher_lis dt {
+    float: left;
+    width: 2.52rem;
+    height: 3.6rem;
+    margin-right: 0.15rem;
+}
+.tp1_teacher_lis dt .teacher_name{
+    height: 0.73rem;
+    line-height: 0.73rem;
+    width: 100%;
+    background: #ff759f;
+    color: #fff;
+    text-align: center;
+}
+.tp1_teacher_lis dt img {
+    display: block;
+    width: 100%;
+    height:100%;
+}
+.tp1_teacher_lis dd {
+    float: left;
+    width: 3.59rem;
+    /*height: 4.33rem;*/
+}
+.tp1_teacher_lis dd p{
+   height: 3rem;
+    overflow: hidden;
+    color: #ff759f;
+}
+.teachers_point {
+    overflow: hidden;
+    margin: 0.4rem auto 0;
+    color: #ff759f;
+}
+.teachers_point p {
+    width: 200%;
+    height: 0.1rem;
+}
+.teachers_point span {
+    float: left;
+    width: 0.1rem;
+    height: 0.1rem;
+    border-radius: 50%;
+    background-color: #919191;
+    box-shadow: 0.01rem 0.017rem 0.03rem 0 rgba(0, 0, 0, 0.25);
+    margin-right: 0.12rem;
+}
+.teachers_point .sp_show {
+    background-color: #ff759f;
+}
+.tp1_course_lis {
+    width: 6.69rem;
+    margin: 0 auto;
+}
+.tp1_course_lis li {
+    float: left;
+    width: 3.14rem;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+    border-radius: 0.2rem;
+    background-color: #ffb3ca;
+}
+.tp1_course_lis li div {
+    overflow: hidden;
+    width: 3.04rem;
+    margin: 0.06rem 0.05rem 0;
+    border-radius: 0.2rem;
+}
+.tp1_course_lis li div img {
+    display: block;
+    width: 100%;
+}
+.tp1_course_lis li span {
+    display: block;
+    width: 3.15rem;
+    height: 0.73rem;
+    padding: 0 0.3rem;
+    line-height: 0.7rem;
+    text-align: center;
+    font-size: 0.28rem;
+    color: #fff;
+    overflow: hidden;
+}
+.tp1_courselis_lf{
+    margin-right: 0.39rem;
+}
+/*.tp1_courselis_rg {
+    margin-left: 0.39rem;
+}*/
+.tp1_yuyue_box {
+    width: 6.69rem;
+    margin: 0 auto;
+}
+.tp1_yuyue_title{
+    margin-top:0.6rem;
+}
+.tp1_yuyue_lis {
+    width: 100%;
+    padding: 0 0 0.4rem 0.1rem;
+}
+.tp1_yuyue_lis li {
+    height: 0.6rem;
+    margin-bottom: 0.2rem;
+}
+.tp1_yuyue_lis li label {
+    float: left;
+    position: relative;
+    float: left;
+    margin: 0;
+    margin-right: 0.4rem;
+    line-height: 0.6rem;
+    color:#ff759f;
+}
+.tp1_yuyue_lis li input {
+    float: left;
+    width: 4.7rem;
+    height: 0.6rem;
+    padding-left: 0.2rem;
+    border: none;
+    border-bottom: 0.02rem solid #ff759f;
+    background-color: transparent;
+}
+.yuyue_course {
+    float: left;
+    width: 4.7rem;
+    height: 0.6rem;
+    padding-left: 0.2rem;
+    border-bottom: 0.02rem solid #ff759f;
+}
+.yuyue_course select {
+    display: block;
+    width: 4.5rem;
+    height: 0.5rem;
+    padding-left: 0.2rem;
+    border: none;
+    background-color: transparent;
+}
+.show_required:before {
+    position: absolute;
+    top: 0.05rem;
+    left: -0.2rem;
+    content: '*';
+    color: #f45a4e;
+}
+.yuyue_sumbit {
+    display: block;
+    width: 3.67rem;
+    height: 0.79rem;
+    border-radius: 0.08rem;
+    background-color: #ff759f;
+    border: none;
+    margin: 0.6rem auto 0;
+    color: #fff;
+    line-height: 0.2rem;
+}
+.copyright {
+    width: 100%;
+    padding-bottom: 0.5rem;
+    color: #ff759f;
+}
+.copyright p {
+    text-align: center;
+    height:0.34rem;
+    line-height:0.34rem;
+    margin-top:0.2rem;
+}
+.copyright_erweima {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin:0 auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.show_none {
+    display: none;
+}
+.return_page {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    background-size: contain;
+    cursor: pointer;
+    text-align: center;
+}
+.return_page:before {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.3rem;
+}
+/*课程详情*/
+.course_detail_content{
+    width: 6.69rem;
+    margin:0.6rem  auto;
+    border: 0.02rem solid #ff759f;
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+    background-color: rgba(255,255,255,0.5);
+}
+.course_detail_img {
+    overflow: hidden;
+    width: 100%;
+    height: 3.75rem;
+}
+.course_detail_img img {
+    display: block;
+    width: 100%;
+}
+.course_detail_name {
+    font-size: 0.36rem;
+    color:#ff759f;
+}
+.course_detail_name span {
+    display: inline-block;
+    padding-left: 0.2rem;
+    font-size: 0.36rem;
+    font-family: "微软雅黑";
+}
+.course_detail_tit {
+    padding: 0.2rem 0 0.1rem 0;
+    font-size: 0.32rem;
+    color: #ff759f;
+}
+.course_detail_text {
+    color:#ff759f;
+    font-size: 0.28rem;
+}
+.course_detail_con li {
+    padding: 0 0 0.2rem;
+}
+.course_detail_con li img {
+    display: block;
+    width: 100%;
+}
+.course_detail_con p {
+    font-size: 0.28rem;
+    color: #ff759f;
+}
+.copyright_phone_icon{
+    width:0.28rem;
+    height:0.24rem;
+    margin: 0.2rem auto 0.07rem;
+    background:url("../../../makeappointment/dance/img/phone.png") no-repeat;
+    background-size: 100% 100%;
+}
+.copyright_address_icon{
+    width: 0.23rem;
+    height: 0.28rem;
+    margin: 0.2rem auto 0.07rem;
+    background: url(../../../makeappointment/dance/img/address.png) no-repeat;
+    background-size: 100% 100%;
+}
+.tp1_course_detail_box {
+    position: relative;
+    width: 6.01rem;
+    margin: 0 auto;
+    padding: 0.4rem 0.3rem 0.5rem;
+    background: url("../../../makeappointment/dance/img/organ_con.png") no-repeat;
+    background-size: 100% 100%;
+    color: #333;
+}
+.tp1_course_detail_con {
+    padding: 0.1rem;
+    border: 1px solid #fff;
+    background-color: #ffedcd;
+}
+.tp1_course_detail_po {
+    position: relative;
+    padding-top: 1.19rem;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.8rem;
+    top: 1.6rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+
+
+

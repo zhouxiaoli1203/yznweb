@@ -1,0 +1,617 @@
+<!--选择课程-->
+<div class="popup_ choseCourse" id="choseCourse">
+    <h6>选择课程<span ng-click="closePopup('choseCourse')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{searchData}}" select-name="courseName" select-input="false"></kindsearch>
+                            </li>
+                            <!--<li>
+                                <my-select list-name="课程类型" list-data="{{courseType}}" list-field="name" list-click="screen_courseType(n)" list-sort="false"></my-select>
+                            </li>-->
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareCourse" ng-change="screen_chargeCourse(true)" ng-disabled="propsData.courseType">标准课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareCourse1" ng-change="screen_chargeCourse(false)" ng-disabled="propsData.courseType">通用课
+                                </label>
+                            </li>
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="screen_chargeType(true)" ng-disabled="propsData.teachingMethod">一对一
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="screen_chargeType(false)" ng-disabled="propsData.teachingMethod">一对多
+                                </label>
+                            </li>
+                            <li ng-click="course_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                            <li class="common_tab_libtn pull-right" ng-show="isformActivity">
+                                <div class="common_tab_btn" ng-click='toAddCourse()'><i class="icon_addcourse"></i>新增课程</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"","width":"10%","align":"center"},{"name":"课程名称","width":"20%","issort": true,"sort": "asc"},{"name":"上课方式","width":"20%"},{"name":"类型","width":"20%"},{"name":"课程类型","width":"20%"}]' list-clicks="courseTheadClick(data)"></thead>
+                            <!--<thead>
+                                <tr class="choseCourse_td">
+                                    <th></th>
+                                    <th>课程名称</th>
+                                    <th>上课方式</th>
+                                    <th>类型</th>
+                                    <th>收费模式</th>
+                                    <th>课程类型</th>
+                                </tr>
+                            </thead>-->
+                        </table>
+                        <div class="popup_table_body" id="course_loading">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-show="!courseList">
+                                        <td colspan="5" style="text-align: center;">暂无课程</td>
+                                    </tr>
+                                    <tr ng-repeat="x in courseList" ng-click="sel_course(x, $event)">
+                                        <td width="10%">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_course" value="{{x.courseId}}" ng-model="params_course.courseId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_course" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <!--不知什么原因要加padding-right-->
+                                        <!--<td  width="20%" title="{{x.courseName}}" style="padding-right: 50px"><p class="td_tab_tips"><strong>{{x.courseName}}</strong><span ng-if="x.signType == 2" class="sign_type2">续报</span></p></td>-->
+                                        <td width="20%" title="{{x.courseName}}">
+                                            <p class="td_tab_tips"><strong>{{x.courseName}}</strong><span ng-if="x.signType == 2" class="sign_type2">续报</span></p>
+                                        </td>
+                                        <td width="20%">{{x.teachingMethod=="1"?"一对一":x.teachingMethod=="2"?"一对多":""}}</td>
+                                        <td width="20%">{{x.courseTypeName}}</td>
+                                        <td width="20%">{{x.courseType==0?"标准课":"通用课"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_course.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseCourse')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_course()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--选班报名-->
+<div class="popup_" id="choseClass">
+    <h6>选择班级<span ng-click="closePopup('choseClass')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n,'class')" list-keyup="Enterkeyup(n,'class')" list-data="{{searchData_}}" select-name="className" select-input="false"></kindsearch>
+                            </li>
+                            <!--<li ng-if="isScreen">
+                                <my-select list-name="班级类型" list-data="{{classType}}" list-field="name" list-click="sel_classType(n)" list-sort="false"></my-select>
+                            </li>-->
+                            <li ng-if="isScreen">
+                                <my-select list-name="课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="sel_screenCourse(n)" list-search="true"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isScreen">{{propsData.item.courseName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select my-id="year_class" list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="sel_changeYear(n,'class')" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select my-id="term_class" list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="sel_changeTerm(n,'class')" list-sort="false"></my-select>
+                            </li>
+                            <!--<li class="headNameColor screen_title" ng-if="!isScreen">正式班<i class="icon_drop_up"></i></li>-->
+                            <li ng-if="isTeachScreen">
+                                <my-select list-name="老师" list-data="{{screen_teacherList}}" list-field="teacherName" list-click="sel_screenCourse(n, 'class_teacher')" list-search="true"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isTeachScreen">{{propsData.teacherName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="上课星期" list-data="{{screen_weekList}}" list-field="name" list-click="sel_screenWeek(n)" list-search="false" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="isFull" ng-change="changeFull_1()">满班
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="unFull" ng-change="changeFull_2()">未满班
+                                </label>
+                            </li>
+                            <li class="part_leftLine" ng-show="propsData.callBackName == '选班报名-班级'">
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="currentClass" ng-change="changeCurrent()">当前在读班级
+                                </label>
+                            </li>
+                            <li ng-click="class_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                        <!--<ul class="temporary_head clearfix" ng-if="!isScreen">
+                        </ul>-->
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width: 101.3%;">
+                            <thead my-thead='[{"name":"","width":"52px"},{"name":"班级名称","width":"20%","issort": true,"sort": "asc"},{"name":"课程","width":"140px"},{"name":"适龄","width":"65px"},{"name":"人数","width":"67px"},{"name":"开班时间","width":"122px"},{"name":"上课时间","width":"150px"},{"name":"老师","width":"100px"},{"name":"教学进度"}]'
+                                che-clicks="classTheadClick(data)" list-clicks="classTheadClick(data)"></thead>
+                            <!--<thead>
+                                <tr class="choseClass_td">
+                                    <th></th>
+                                    <th>班级类型</th>
+                                    <th>班级名称</th>
+                                    <th>课程</th>
+                                    <th>适龄</th>
+                                    <th>人数</th>
+                                    <th>开班时间</th>
+                                    <th>上课时间</th>
+                                    <th>老师</th>
+                                    <th>教学进度</th>
+                                </tr>
+                            </thead>-->
+                        </table>
+                        <div class="popup_table_body" id="class_loading" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="!classList || classList.length==0">
+                                        <td colspan="8" style="text-align: center;">暂无班级</td>
+                                    </tr>
+                                    <tr class="choseClass_td" ng-repeat="i in classList" ng-click="sel_class(i, evt)">
+                                        <td>
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_class" value="{{i.classId}}" ng-model="params_class.classId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_class_" ng-checked="i.hasChecked" />
+                                        </td>
+                                        <!--<td ng-if="i.classType=='0'">正式班</td>
+                                        <td ng-if="i.classType=='1'">试听班</td>
+                                        <td ng-if="i.classType=='2'">补课班</td>-->
+                                        <td title="{{i.className}}">
+                                            <span ng-class='{"showStatusSpan":i.activityStatus == 1}'>{{i.className}}</span>
+                                            <span class="statusBg yellow" ng-show="i.activityStatus == 1">活动</span>
+                                        </td>
+                                        <td title="{{i.course.courseName}}">{{i.course.courseName}}</td>
+                                        <td>
+                                            <span ng-if="i.beginAge || i.endAge">{{i.beginAge}}-{{i.endAge}}岁</span>
+                                            <span ng-if="!i.beginAge && !i.endAge">-</span>
+                                        </td>
+                                        <td>{{i.studentTotal}}/{{i.classMax}}</td>
+                                        <td title="{{i.classDate | yznDate:'yyyy-MM-dd'}}">{{i.beginDate | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td title="{{i.classTemplateDates_str}}"><span ng-repeat="y in i.classTemplateDates">每{{y.week | _zhouweek}} {{y.beginTime}}-{{y.endTime}}&nbsp;&nbsp;</span></td>
+                                        <td title="{{i.teacherArr}}">{{i.teacherArr}}</td>
+                                        <!--<td><span ng-repeat="j in i.teachers">{{j.teacherName}}</span></td>-->
+                                        <td>{{i.rollcalledLessonNum?i.rollcalledLessonNum:'0'}}/{{i.arrangingCoursesTotal?i.arrangingCoursesTotal:'0'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_class.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseClass')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_class()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择学杂-->
+<div class="popup_ choseGoods" id="choseGoods">
+    <h6>选择学杂<span ng-click="closePopup('choseGoods')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n,'goods')" list-keyup="Enterkeyup(n,'goods')" list-data="{{searchData_goods}}" select-name="goodsName" select-input="false"></kindsearch>
+                            </li>
+                            <!--<li ng-click="goods_onReset()" class="clickText" style="line-height: 28px;">重置</li>-->
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"","width":"10%","align":"center"},{"name":"学杂名称","issort": true,"sort": "asc"},{"name":"类型"}]' list-clicks="goodsTheadClick(data)"></thead>
+                            <!--<thead>
+                                <tr>
+                                    <th width="10%" class="textAlignCenter"></th>
+                                    <th width="30%">学杂名称</th>
+                                    <th width="30%">类型</th>
+                                    <th width="30%">单价</th>
+                                </tr>
+                            </thead>-->
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="i in goodsList" ng-click="sel_goods(i, evt)">
+                                        <td width="10%">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_goods" value="{{i.goodsId}}" ng-model="params_goods.goodsId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_class_" ng-checked="i.hasChecked" />
+                                        </td>
+                                        <td>{{i.goodsName}}</td>
+                                        <td>{{i.goodsType == 1?"物品":i.goodsType == 2?"费用":""}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_goods.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseGoods')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_goods()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择优惠券-->
+<div class="popup_" id="choseCoupons">
+    <h6>添加优惠券<span ng-click="closePopup('choseCoupons')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="dialogWarnTip" ng-if='warnTipShow'>
+                        发放优惠券仅支持发放免费领取的优惠券，需要购买或积分兑换的优惠券不支持直接发放。
+                    </div>
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n,'coupons')" list-keyup="Enterkeyup(n,'coupons')" list-data="{{searchData_coupons}}" select-name="couponsName" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <my-select list-name="类型" list-data="{{screen_typeList}}" list-field="name" list-click="sel_screenType(n)" list-search="false" list-all="no" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="适用学员" list-data="{{screen_userList}}" list-field="name" list-click="sel_screenUser(n)" list-search="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="适用商品" list-data="{{screen_goodsList}}" list-field="name" list-click="sel_screenGoods(n)" list-search="false"></my-select>
+                            </li>
+                            <li ng-show='productScope == 1'>
+                                <my-select list-name="选择商品" list-data="{{screen_product}}" list-field="productName" list-click="sel_product(n)" list-search="true"></my-select>
+                            </li>
+                            <li ng-click="coupons_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th class="textAlignCenter" style="width:50px;">
+                                        <input ng-show="choseType == 'checkbox'" type="checkbox" name="sel_coupon" ng-model="sel_coupon_all" ng-click="checkboxAll(sel_coupon_all,couponList,'coupons')" />
+                                    </th>
+                                    <th>优惠券名称</th>
+                                    <th>类型</th>
+                                    <th>优惠/折扣</th>
+                                    <th style="width:150px;">使用门槛</th>
+                                    <th>适用学员</th>
+                                    <th>适用商品</th>
+                                    <th>剩余数量</th>
+                                    <th class="textAlignCenter" style="width:180px;">有效期</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in couponList" ng-click="sel_coupons(x, evt)">
+                                        <td class="textAlignCenter" style="width:50px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_coupon" value="{{x.couponId}}" ng-model="params_coupons.couponId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_coupon_" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td title="{{x.couponName}}">{{x.couponName}}</td>
+                                        <td>{{x.discountType == 1?"代金券":x.discountType==2?"折扣券":""}}</td>
+                                        <td>
+                                            <span ng-if="x.discountType == 1">{{x.discounts|number:2}}</span>
+                                            <span ng-if="x.discountType == 2">{{x.discounts / 10}}折</span>
+                                        </td>
+                                        <td style="width:150px;">
+                                            <span ng-if="x.useLimits==1">满{{x.useMoney|number:2}}元可用</span>
+                                            <span ng-if="x.useLimits!=1">无门槛</span>
+                                        </td>
+                                        <td>
+                                            {{x.userScope == 1?"新学员":x.userScope == 2?"老学员":"不限"}}
+                                        </td>
+                                        <td style="position: relative;overflow: inherit;">
+                                            <span ng-class='{"clickText":x.productScope == 1}' ng-mouseover="x.showIns=true" ng-mouseout="x.showIns=false">{{x.productScope == 1?"指定商品":"不限"}}</span>
+                                            <div class="coupon_instr" ng-if="x.showIns && x.productScope == 1 && x.productNameStr">
+                                                <p>适用商品：{{x.productNameStr}}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{x.stockNumber}}
+                                        </td>
+                                        <td class="textAlignCenter" style="width:180px;">
+                                            <span ng-if="x.validity == 1">{{x.validityBeginTime | yznDate:'yyyy-MM-dd'}}至{{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</span>
+                                            <span ng-if="x.validity == 2">领取后{{x.validityDays}}天内有效</span>
+                                            <span ng-if="x.validity == 3">长期有效</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_coupons.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseCoupons')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_coupons()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择上课主题-->
+<div class="popup_" id="courseTitle">
+    <h6>上课主题<span ng-click="closePopup('courseTitle')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="pot_pop_peo_nav clearfix">
+                        <div class="common_tab_btn" ng-click="addCourseTitle('add')">
+                            <i class="icon_addcourse"></i>新增上课主题
+                        </div>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th width="10%" class="textAlignCenter">
+                                        <input type="checkbox" name="sel_courseTl_" ng-model="sel_courseTl_all" ng-click="checkboxAll_courseTl(sel_courseTl_all,courseTlList)" />
+                                    </th>
+                                    <th width="45%">主题名称</th>
+                                    <th width="45%" class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="i in courseTlList" ng-click="sel_courseTl(i, evt)">
+                                        <td width="10%" class="textAlignCenter">
+                                            <!--<input ng-if="choseType == 'radio'" type="radio" name="sel_goods" value="{{i.goodsId}}" ng-model="params_courseTl.goodsId"/>-->
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_courseTl_" ng-checked="i.hasChecked" />
+                                        </td>
+                                        <td width="45%">{{i.courseThemeName}}</td>
+                                        <td width="45%" class="operate overflow-normal textAlignCenter">
+                                            <span class="clickText" ng-click="addCourseTitle('edit',i);$event.stopPropagation()">编辑</span>
+                                            <span class="clickText" ng-click="deleteCourseTitle(i);$event.stopPropagation()">删除</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_courseTl.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('courseTitle')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_courseTl()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--上课主题新增或编辑-->
+<div class="popup_" id="addOreditCourseTl" class="addOreditCourseTl">
+    <h6>{{propsData.name == 'addcourseTitle'?"添加":courseTl_type=='add'?"新增":"编辑"}}上课主题<span ng-click="closePopup('addOreditCourseTl')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="courseTl_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">上课主题:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="100" ng-model="courseTlInfo.courseThemeName" placeholder="请输入上课主题" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('addOreditCourseTl')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--选择排课课程-->
+<div class="popup_" id="chosePaikeCourse">
+    <h6>选择课次<span ng-click="closePopup('chosePaikeCourse')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li class="dropdown dropdown110">
+                                <input type="text" class="form-control dateIcon" id="screen_searchTime" size="30" ng-model="screen_searchTime" placeholder="请选择上课时间" autocomplete="off">
+                            </li>
+                            <li ng-if="isCourseTypeScreen">
+                                <my-select list-name="选择排课类型" list-data="{{classType}}" list-field="name" list-click="sel_classType(n, 'paikeCourse')" list-sort="false"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isCourseTypeScreen">{{propsData.deleteType == 2?"试听课":propsData.deleteType == 1?"补课课":"正式课"}}<i class="icon_drop_up"></i></li>
+
+                            <li ng-if="isCourseScreen">
+                                <my-select list-name="选择课程" list-data="{{screen_courseList}}" list-field="courseName" list-click="sel_screenCourse(n, 'paikeCourse')" list-search="true"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isCourseScreen">{{propsData.item.course.courseName}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="sel_changeYear(n, 'paikeCourse')" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="sel_changeTerm(n, 'paikeCourse')" list-sort="false"></my-select>
+                            </li>
+                            <li ng-if="isClassScreen">
+                                <my-select list-name="选择班级" list-data="{{screen_classList}}" list-field="className" list-click="sel_screenClass(n, 'paikeCourse')" list-search="true"></my-select>
+                            </li>
+                            <li class="headNameColor screen_title" ng-if="!isClassScreen">{{propsData.item.className}}<i class="icon_drop_up"></i></li>
+                            <li>
+                                <my-select list-name="选择老师" list-data="{{screen_teacherList}}" list-field="teacherName" list-click="sel_screenTeacher(n, 'paikeCourse')" list-search="true"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="星期" list-data="{{weekData}}" list-field="name" list-click="sel_week(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="选择上课主题" list-data="{{screen_themeList}}" list-field="courseThemeName" list-click="sel_screenTheme(n, 'paikeCourse')" list-search="true"></my-select>
+                            </li>
+                            <!--<li class="headNameColor screen_title" ng-if="!isThemeScreen">{{propsData.item.arrangingCoursesTheme.courseThemeName}}<i class="icon_drop_up"></i></li>-->
+                            <li ng-click="paikeCourse_onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr class="order_course paikeCourse_td">
+                                    <th class="textAlignCenter" style="width:40px;"></th>
+                                    <!--<td>班级类型</td>-->
+                                    <td style="width:270px;">上课日期</td>
+                                    <!--<td>上课时间</td>-->
+                                    <th style="width:20%;">课程</th>
+                                    <th style="width:20%;">班级</th>
+                                    <th style="width:10%;">教室</th>
+                                    <th style="width:10%;">课次</th>
+                                    <th style="width:10%;">主教</th>
+                                    <th style="width:10%;">上课主题</th>
+                                    <th style="width:10%;">学员</th>
+                                    <th style="width:10%;">适龄</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" id="paikeCourse_loading" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-show="!paikeCourseList||paikeCourseList==''">
+                                        <td colspan="9" style="text-align: center;">暂无课程</td>
+                                    </tr>
+                                    <tr class="order_course paikeCourse_td" ng-repeat="i in paikeCourseList" ng-click="sel_paikeCourse(i, $event)">
+                                        <td class="textAlignCenter" style="width:40px;">
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_class" value="{{i.arrangingCoursesId}}" ng-model="params_paikeCourse.arrangingCoursesId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_class_" ng-checked="i.hasChecked" />
+                                        </td>
+                                        <!--<td ng-if="i.courseType=='0'">正式课</td>
+                                        <td ng-if="i.courseType=='1'">试听课</td>
+                                        <td ng-if="i.courseType=='2'">补课课</td>-->
+                                        <td style="width:270px;" title="{{i.arrangingCoursesBeginDate | beginEndDate: i.arrangingCoursesEndDate: 'yyWeek_hh' : i.arrangingCoursesWeek}}">
+                                            <span>{{i.arrangingCoursesBeginDate | beginEndDate: i.arrangingCoursesEndDate: 'yyWeek_hh' : i.arrangingCoursesWeek}}</span>
+                                            <span ng-if="i.classInfo.activityStatus == 0">
+                                                <span ng-class='{"1":"listenIcon","2":"bukeIcon"}[i.courseType]'></span>
+                                            </span>
+                                            <span ng-if="i.classInfo.activityStatus == 1" class="actvitIcon"></span>
+                                        </td>
+                                        <!--<td title="{{i.arrangingCoursesBeginDate | beginEndDate: i.arrangingCoursesEndDate: 'hhAP'}}">{{i.arrangingCoursesBeginDate | beginEndDate: i.arrangingCoursesEndDate: 'hhAP'}}</td>-->
+                                        <td style="width:20%;" title="{{i.course.courseName}}">{{i.course.courseName}}</td>
+                                        <td style="width:20%;" title="{{i.classInfo.className}}">{{i.classInfo.className}}</td>
+                                        <td style="width:10%;" title="{{i.classRoomName}}">{{i.classRoomName}}</td>
+                                        <td style="width:10%;">{{i.courseType == 0?i.arrangingCourseOrd:"—"}}</td>
+                                        <td style="width:10%;"><span ng-repeat="x in i.teachers" ng-if="x.role == 1">{{x.teacherName}}</span></td>
+                                        <td style="width:10%;" title="{{i.arrangingCoursesTheme.courseThemeName}}">{{i.arrangingCoursesTheme.courseThemeName}}</td>
+                                        <td style="width:10%;" ng-if="i.courseType == 0">{{i.studentTotal}}/{{i.classInfo.classMax}}</td>
+                                        <td style="width:10%;" ng-if="i.courseType != 0">—</td>
+                                        <td style="width:10%;" ng-if="i.courseType == 0">{{i.classInfo.beginAge}}-{{i.classInfo.endAge}}岁</td>
+                                        <td style="width:10%;" ng-if="i.courseType != 0">—</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_paikeCourse.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('chosePaikeCourse')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_paikeCourse()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--选择课程包-->
+<div class="popup_ choseCoursePackage" id="choseCoursePackage">
+    <h6>选择课程包<span ng-click="closePopup('choseCoursePackage')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n, 'coursePackage')" list-keyup="Enterkeyup(n, 'coursePackage')" list-data="{{searchData_package}}" select-name="courseName" select-input="false"></kindsearch>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"","width":"10%","align":"center"},{"name":"课程包","width":"22.5%","issort": true,"sort": "asc"},{"name":"课程数量","width":"22.5%"},{"name":"学杂数量","width":"22.5%"},{"name":"课程包金额","width":"22.5%"}]' list-clicks="coursepackageTheadClick(data)"></thead>
+                            <!--<thead>
+                                <tr class="choseCourse_td">
+                                    <th></th>
+                                    <th>课程包</th>
+                                    <th>课程数量</th>
+                                    <th>学杂数量</th>
+                                    <th>课程包金额</th>
+                                </tr>
+                            </thead>-->
+                        </table>
+                        <div class="popup_table_body" id="course_loading">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-show="!courseList">
+                                        <td colspan="5" style="text-align: center;">暂无课程</td>
+                                    </tr>
+                                    <tr ng-repeat="x in coursePackageList" ng-click="sel_coursePackage(x, $event)">
+                                        <td>
+                                            <input ng-if="choseType == 'radio'" type="radio" name="sel_course" value="{{x.courseId}}" ng-model="params_course.courseId" />
+                                            <input ng-if="choseType == 'checkbox'" type="checkbox" name="sel_course" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td width="22.5%" title="{{x.coursePackageName}}">{{x.coursePackageName}}</td>
+                                        <td width="22.5%" title="{{x.coursePackageName}}">{{x.courseNum}}</td>
+                                        <td width="22.5%" title="{{x.coursePackageName}}">{{x.goodsNum}}</td>
+                                        <td width="22.5%" title="{{x.coursePackageName}}">{{x.coursePackagePrice|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_coursePackage.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseCoursePackage')" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_coursePackage()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

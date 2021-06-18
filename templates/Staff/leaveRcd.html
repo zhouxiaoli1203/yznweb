@@ -1,0 +1,113 @@
+<!--请假弹出框-->
+<div class="popup_ newleave_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_leave()">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label marging-rt-15">员工:</label>
+                        <div class="col-xs-9 padLeftNone">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in leave.teachers">{{x.teacherName}}<i ng-click="delTeachers(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="_addTeacher" list-name="请选择请假员工" list-data="{{teachersList}}" list-field="teacherName" list-click="sel_teachers(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                            <label class="form-label required">请假类型:</label>
+                            <div class="col-xs-6" style="line-height: 26px;">
+                               <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leave.teacherLeaveType" value="0"/>事假
+                                </label>
+                                <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leave.teacherLeaveType" value="1"/>病假
+                                </label>
+                                <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leave.teacherLeaveType" value="2"/>调休
+                                </label>
+                            </div>
+                        </div>
+                    <div class="popup_line">
+                        <label class="form-label required">开始时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="startTime" ng-model="leave.beginDate" placeholder="请选择开始时间" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">结束时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="endTime" ng-model="leave.endDate" placeholder="请选择结束时间" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">请假原因:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{leave.teacherLeaveDesc?leave.teacherLeaveDesc.length:0}}/100</span>
+                            <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="leave.teacherLeaveDesc" placeholder="请输入请假原因" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body staff_common_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">员工信息</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">请假记录</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">考勤记录</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"></kindsearch>
+            </li>
+            <li>
+                <my-select list-name="请假类型" list-data="{{screen_type}}" list-field="name" list-click="changeType(n)" list-sort="false"></my-select>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn demo_tab_btn" ng-if="isOperate" ng-click="openLeave()"><i class="icon_qingjia"></i>请假</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table staff_table table-hover">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="listData==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="listData">
+                    <tr ng-repeat="x in listData">
+                        <td title="{{x.teacherName}}">{{x.teacherName}}</td>
+                        <td>{{x.workId}}</td>
+                        <td>{{x.teacherPhone}}</td>
+                        <td>{{x.teacherLeaveType=="0"?"事假":x.teacherLeaveType==1?"病假":x.teacherLeaveType==2?"调休":""}}</td>
+                        <td title="{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}">{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.teacherLeaveDesc}}">{{x.teacherLeaveDesc}}</td>
+                        <td>
+                            <span class="clickText" ng-if="isOperate" ng-click="deleteLeave(x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3-total">
+                共计{{totalNum}}条数据
+            </div>
+            <div class="M-box3"></div>
+        </div>
+    </div>
+</div>

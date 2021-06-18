@@ -1,0 +1,702 @@
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: firstNav==1}">消息通知</span>
+        <span ng-click="switchStudNav(4)" ng-class="{tab_nav_show: firstNav==2}">短信通知</span>
+        <!--<span ng-click="switchStudNav(5)" ng-class="{tab_nav_show: firstNav==3}">通知设置</span>-->
+    </div>
+    <div class="second_nav" ng-show="firstNav==1">
+        <span ng-click="switchStudNav(1)" ng-class="{show_sp: studNavJud==1}">通知记录</span>
+        <span ng-click="switchStudNav(2)" ng-class="{show_sp: studNavJud==2}">通知模板</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab" ng-show="firstNav==1">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li ng-show="studNavJud == 1" style="width: 200px;">
+                <input class="form-control dateIcon" id="informTime" type="text" placeholder="请选择通知时间" />
+            </li>
+            <li class="common_tab_libtn" ng-show="studNavJud == 1 && operationPower">
+                <div class="common_tab_btn" ng-click='operationList(1, 1)'><i class="icon_inform_send"></i>发送通知</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="studNavJud == 2 && operationPower">
+                <div class="common_tab_btn" ng-click='operationList(4, 4)'><i class="icon_inform_add"></i>新建模板</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset(1)">重置</li>
+        </ul>
+    </div>
+    <div class="common_tab" ng-show="firstNav==2">
+        <ul class="ul_left clearfix">
+            <li style="width: 200px;">
+                <input class="form-control dateIcon" id="messageTime" ng-model="screen_sel.timef" type="text" placeholder="请选择发送时间" />
+            </li>
+            <li>
+                <my-select list-name="通知类型" list-data="{{messageSetList}}" list-field="name" list-click="screen_msgType(n)" list-search="true" list-all="no"></my-select>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset(2)">重置</li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-show="('181' | _authId)" ng-click='routerSkip("setManageOther",{tab:2,tab_:3,before:"edu_notice"})'><i class="icon_normalSet"></i>短信设置</div>
+            </li>
+            <!--<li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-if="operationPower" ng-click='operationBtn(3)'><i class="icon_messageQm"></i>短信签名</div>
+            </li>-->
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-if="operationPower" ng-click='operationBtn(2)'><i class="icon_messageRecharge"></i>短信充值</div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operationPower">
+                <div class="common_tab_btn" ng-click='operationList(1, 8)'><i class="icon_messageSend"></i>发送短信</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix" style="margin-top:15px;">
+            <li>
+                <span>短信剩余 : </span>
+                <strong ng-class="{'F5565B': messageTotleInfo.smsNum<500}" style="font-weight: normal;">{{messageTotleInfo.smsNum?messageTotleInfo.smsNum:0}}</strong>
+                <span>条</span>
+            </li>
+            <!--<li>
+               <span style="color: #60a4f7; cursor: pointer;" ng-click='operationBtn(2)'>短信充值</span>
+            </li>-->
+        </ul>
+    </div>
+
+    <!-- 列表通知记录 -->
+    <div class="common_content" ng-show="studNavJud == 1 && firstNav==1">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!informList">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in informList">
+                        <td>{{x.title}}</td>
+                        <td>{{x.gmtModified | yznDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{x.creator.teacherName}}</td>
+                        <td style="text-align: right;">{{x.receiverNum}}</td>
+                        <td style="text-align: right;" ng-if="x.needConfirm==1">{{x.confirmNum}}/{{x.checkedNum}}</td>
+                        <td style="text-align: right;" ng-if="x.needConfirm!=1">-/{{x.checkedNum}}</td>
+                        <td ng-if="!operationPower"></td>
+                        <td class="operate overflow-normal textAlignCenter" ng-if="operationPower">
+                            <span class="clickText" ng-click="operationList(x, 7)">收件情况</span>
+                            <span class="clickText" ng-click="operationList(x, 2)">编辑</span>
+                            <span class="clickText" ng-click="operationList(x, 3)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--通知模板-->
+    <div class="common_content" ng-show="studNavJud == 2 && firstNav==1">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead_}}"></thead>
+                <tbody class="demo_tbody" ng-if="!informList">
+                    <tr>
+                        <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in informList">
+                        <td>{{x.title}}</td>
+                        <td ng-if="!operationPower"></td>
+                        <td class="operate overflow-normal textAlignCenter" ng-if="operationPower">
+                            <span class="clickText" ng-click="operationList(x, 5)">编辑</span>
+                            <span class="clickText" ng-click="operationList(x, 6)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--短信通知-->
+    <div class="common_content" ng-show="firstNav==2">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead_1}}"></thead>
+                <tbody class="demo_tbody" ng-if="!messageList">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in messageList">
+                        <td>{{x.receiverName}}</td>
+                        <td>{{x.phonenum}}</td>
+                        <td>{{x.creator?x.creator.teacherName:'-'}}</td>
+                        <td>{{x.gmtModified | yznDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{x.typeName?x.typeName:'自定义通知'}}</td>
+                        <td title="{{x.content}}">{{x.content}}</td>
+                        <!--<td style="text-align: right;"ng-class='{"main_color":(x.smsStatus!=1&&x.smsStatus!=0)}' title="{{getSmsStatus(x)}}" >{{getSmsStatus(x)}}</td>-->
+                        <td style="text-align: right;">{{x.smsNum}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--通知设置-->
+    <div class="common_content" ng-show="firstNav==3">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead_2}}"></thead>
+                <tbody class="demo_tbody" ng-if="!messageSetList">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in messageSetList">
+                        <td>{{x.name}}</td>
+                        <td title="{{x.description}}">{{x.description}}</td>
+                        <td ng-if="x.wxappStatus!=null"><span ng-click="operationList_msg(1, x)" ng-class="{'enable_showcourse': x.wxappStatus, 'disable_showcourse': !x.wxappStatus}"></span></td>
+                        <td ng-if="x.wxappStatus==null" style="text-align: center;">-</td>
+                        <td><span ng-click="operationList_msg(2, x)" ng-class="{'enable_showcourse': x.smsStatus, 'disable_showcourse': !x.smsStatus}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="x.wxappPreivew" ng-click="operationList_msg(4, x)">应用端效果图</span>
+                            <span class="clickText" ng-if="x.smsPreview" ng-click="operationList_msg(3, x)">短信效果图</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv" ng-hide="firstNav==3">
+        <div class="M-box3 M_box3_1"></div>
+    </div>
+</div>
+
+<!--发送消息和新建消息弹框-->
+<div class="popup_ template_pop">
+    <div class="popup_content">
+        <div class="phone_template" style="left: 70px;">
+            <div class="phone_template_contain" id="show_contain">
+                <div class="inform">
+                    <h2 class="inform_head pos_ele_1">{{informTemplate.title?informTemplate.title:'通知抬头'}}</h2>
+                    <dl class="inform_name">
+                        <dt><img src="{{shopInfos.shopImgUrl}}" alt="" /></dt>
+                        <dd>
+                            <strong>{{shopInfos.shopName}}</strong>
+                            <span>{{informTemplate.date_}}</span>
+                        </dd>
+                    </dl>
+                    <ul class="inform_con">
+                        <li ng-repeat="l in informTemplate.content">
+                            <p ng-if="l.type == 'text'" style="white-space: pre-wrap; word-wrap: break-word;">{{l.value?l.value:'通知内容'}}</p>
+                            <img ng-if="l.type == 'img'" src="{{l.value}}" alt="" />
+                            <video ng-if="l.type == 'video'" controls>
+                                <source ng-src="{{l.value_}}">
+                            </video>
+                        </li>
+                    </ul>
+                    <button class="inform_btn pos_ele_2" ng-if="informTemplate.isConfirm">确认收到</button>
+                </div>
+            </div>
+        </div>
+        <form class="popup_form" ng-submit="submit_template()">
+            <div class="popup_form_content" style="height: 400px; position: relative;">
+                <div class="popup_scroll clearfix" isScroll="true">
+                    <div class="change_template" style="width: 700px;">
+                        <div ng-if="templateTab == '1_2'">
+                            <div class="popup_line" style="margin-bottom: 5px">
+                                <label class="form-label marging-rt-15">收件人:</label>
+                                <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                                    <label class="checkbox-inline labelLeft">
+                                        <input type="radio" ng-click="operationBtn(4, 1, 'notice')" ng-checked="informTemplate.peo == 1" value="1"/>学员
+                                    </label>
+                                    <label class="checkbox-inline labelLeft">
+                                        <input type="radio" ng-click="operationBtn(4, 2, 'notice')" ng-checked="informTemplate.peo == 2" value="2"/>老师
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="popup_line" style="margin-bottom: 5px">
+                                <label class="form-label marging-rt-15">收件范围:</label>
+                                <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                                    <label class="checkbox-inline labelLeft">
+                                        <input type="radio" ng-click="operationBtn(5, 1, 'notice')" ng-checked="informTemplate.peoType == 1" value="1"/>全部
+                                    </label>
+                                    <label class="checkbox-inline labelLeft" ng-if="informTemplate.peo == 1">
+                                        <input type="radio" ng-click="operationBtn(5, 2, 'notice')" ng-checked="informTemplate.peoType == 2" value="2"/>按班
+                                    </label>
+                                    <label class="checkbox-inline labelLeft">
+                                        <input type="radio" ng-click="operationBtn(5, 3, 'notice')" ng-checked="informTemplate.peoType == 3" value="3"/>部分
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="popup_line" style="margin-bottom: 5px" ng-show="informTemplate.peo">
+                                <label class="form-label marging-rt-15">发送设置:</label>
+                                <!--                                选择学员-->
+                                <div ng-if="informTemplate.peo == 1">
+                                    <!--选择班级-->
+                                    <div class="col-xs-8 padLeftNone" ng-if="informTemplate.peoType == 2">
+                                        <div class="teacher_select">
+                                            <span ng-repeat="x in informTemplate.classList">{{x.className}}<i ng-click="inform_del(x, $index, 'c')" class="icon_drop_x"></i></span>
+                                        </div>
+
+                                        <div class="drop_add_teacher screen_no" ng-click="goCommonPop('course-sel', 'choseClass', '1060px', {name: 'class', type: 'checkbox', screen_classType: '0', callBackName: '通知-班级'})">
+                                            <i class="icon_name_add"></i>
+                                            <span class="form-span" style="color: #f5565b;">选择班级</span>
+                                        </div>
+                                    </div>
+                                    <!--                                    选择部分学员或者全部学员-->
+                                    <div class="col-xs-8 padLeftNone" ng-if="informTemplate.peoType != 2">
+                                        <div class="teacher_select">
+                                            <span ng-repeat="x in informTemplate.students">{{x.name}}<i ng-click="inform_del(x, $index, 's')" class="icon_drop_x"></i></span>
+                                        </div>
+                                        <div class="drop_add_teacher screen_no" ng-click="goCommonPop('student-sel','selectStuds', '760px', {name:'all', type: 'student', choseType: 'checkbox', callBackName:'通知-学员'})">
+                                            <i ng-class="{'icon_name_sub': informTemplate.peoType == 1, 'icon_name_add': informTemplate.peoType == 3}"></i>
+                                            <span class="form-span" style="color: #f5565b;">{{informTemplate.peoType==3?'选择学员':'排除学员'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                                选择老师-->
+                                <div ng-show="informTemplate.peo == 2">
+                                    <div class="col-xs-8 padLeftNone">
+                                        <div class="teacher_select">
+                                            <span ng-repeat="x in informTemplate.teachers">{{x.teacherName}}<i ng-click="inform_del(x, $index, 't')" class="icon_drop_x"></i></span>
+                                        </div>
+                                        <div class="drop_add_teacher screen_no">
+                                            <i ng-class="{'icon_name_sub': informTemplate.peoType == 1, 'icon_name_add': informTemplate.peoType == 3}"></i>
+                                            <my-select my-id="inform_teacher" list-name="{{informTemplate.peoType == 3?'选择老师':'排除老师'}}" list-data="{{inform_teachers}}" list-field="teacherName" list-click="inform_sel(n, 't')" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div ng-if="templateTab == 2">-->
+                        <!--                            <div class="popup_line" ng-if="informTemplate.teachers">-->
+                        <!--                                <label for="" class="form-label marging-rt-15">收件老师:</label>-->
+                        <!--                                <div class="col-xs-8 padLeftNone">-->
+                        <!--                                    <span class="form-span" ng-repeat="s in informTemplate.teachers">{{s.teacherName}}，</span>-->
+                        <!--                                    <span class="form-span" ng-if="informTemplate.teachers.length == 0">全部</span>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="popup_line" ng-if="informTemplate.classList">-->
+                        <!--                                <label for="" class="form-label marging-rt-15">收件班级:</label>-->
+                        <!--                                <div class="col-xs-8 padLeftNone">-->
+                        <!--                                    <span class="form-span" ng-repeat="s in informTemplate.classList">{{s.className}}，</span>-->
+                        <!--                                    <span class="form-span" ng-if="informTemplate.classList.length == 0">全部</span>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="popup_line" ng-if="informTemplate.students">-->
+                        <!--                                <label for="" class="form-label marging-rt-15">收件学员:</label>-->
+                        <!--                                <div class="col-xs-8 padLeftNone">-->
+                        <!--                                    <span class="form-span" ng-repeat="s in informTemplate.students">{{s.name}}；</span>-->
+                        <!--                                    <span class="form-span" ng-if="informTemplate.students.length == 0">全部</span>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <div class="popup_line" ng-if="templateTab == '1_2'">
+                            <label for="" class="form-label marging-rt-15">是否需要确认:</label>
+                            <div class="col-xs-8 padLeftNone" posEle="pos_ele_2">
+                                <span ng-click="openClose()" style="float:left; margin: 3px 5px 0 0; cursor: pointer;" ng-class='{"true":"isYesToggle","false":"isNoToggle"}[informTemplate.isConfirm]'></span>
+                                <span class="form-span">开启后，接受通知会增加“确认收到”操作。</span>
+                            </div>
+                        </div>
+                        <div class="popup_line" ng-if="templateTab == '1_2'">
+                            <label for="" class="form-label marging-rt-15">是否发送短信:</label>
+                            <div class="col-xs-8 padLeftNone" posEle="pos_ele_2">
+                                <span ng-click="openClose('msg')" style="float:left; margin: 3px 5px 0 0; cursor: pointer;" ng-class='{"true":"isYesToggle","false":"isNoToggle"}[informTemplate.isSendMsg]'></span>
+                                <span class="form-span">开启后，所选收件人将收到短信通知。</span><span class="form-span" style="color: #397fd4; cursor: pointer;" ng-click="openClose('see')">点击预览效果图</span>
+                            </div>
+                        </div>
+                        <!--                        <div style="margin-left: 0; border: 1px dotted #ccc;" class="parting_solidline popup_line" ng-if="templateTab == 2"></div>-->
+                        <div ng-if="templateTab != '1_2'">
+                            <div class="popup_line" ng-hide="templateTab == 3 || templateTab == 4">
+                                <label for="" class="form-label">选择通知模板:</label>
+                                <div class="col-xs-6">
+                                    <select class="form-control" ng-model="informTemplate.template" ng-change="sel_template()" ng-options="i as i.title for i in templateList">
+                                    	<option value="">选择模板</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="popup_line" posEle="pos_ele_1">
+                                <label for="" class="form-label">通知抬头:</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" ng-model="informTemplate.title" maxlength="24" placeholder="请输入通知抬头" required/>
+                                </div>
+                            </div>
+                            <div class="popup_line">
+                                <label class="form-label">通知内容:</label>
+                                <ul class="pop_float_l" style="padding-left: 6px;">
+                                    <li ng-repeat="x in informTemplate.content">
+                                        <div class="organ_img imghover" ng-if="x.type == 'img'" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                            <div class="msk_changeimg"><span ng-click="add_informContent('img', x)">更换图片</span></div>
+                                            <div><img ng-src="{{x.value}}" alt="通知图片" /></div>
+                                            <i class="icon_newdelete" ng-click="delete_informContent($index, 'content')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除图片</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                            </var>
+                                        </div>
+                                        <div class="organ_info" ng-if="x.type == 'text'">
+                                            <textarea ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word;" class="form-control" ng-model="x.value" rows="3" maxlength="500"></textarea>
+                                            <i class="icon_newdelete" ng-click="delete_informContent($index, 'content')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')"><var>删除文字</var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                            </var>
+                                        </div>
+                                        <div class="img_hover" ng-if="x.type == 'video'" style="margin: 10px 0 3px 9px;">
+                                            <video style="width: 420px; height: 196px;" controls>
+                                                <source ng-src="{{x.value_}}">
+                                            </video>
+                                            <i ng-click="delete_informContent($index, 'content')" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除视频 </var></i>
+                                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                                <i ng-click="moveUpDown(informTemplate.content, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                                            </var>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="popup_line" style="margin-bottom: 25px;">
+                                <label for="" class="form-label"></label>
+                                <div style="padding-left: 5px; float: left;" ng-if="templateTab == 1||templateTab == 2">
+                                    <span class="add_info" ng-click="add_informContent('text',null,'notification')">+ 添加文字</span>
+                                    <span class="add_info" ng-click="add_informContent('img',null,'notification')">+ 添加图片</span>
+                                    <span class="add_info" ng-click="add_informContent('video',null,'notification')">+ 添加视频</span>
+                                    <div class="img_ruleInfo" style="bottom:-23px;margin-left:10px;display: block;">建议上传尺寸：750*420，图片支持JPG、PNG格式，图片小于1MB.</div>
+                                </div>
+                                <div style="padding-left: 5px; float: left;" ng-if="templateTab == 3||templateTab == 4">
+                                    <span class="add_info" ng-click="add_informContent('text',null,'template')">+ 添加文字</span>
+                                    <span class="add_info" ng-click="add_informContent('img',null,'template')">+ 添加图片</span>
+                                    <span class="add_info" ng-click="add_informContent('video',null,'template')">+ 添加视频</span>
+                                    <div class="img_ruleInfo" style="bottom:-23px;margin-left:10px;display: block;">建议上传尺寸：750*420，图片支持JPG、PNG格式，图片小于1MB.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeLayer('sp')" type="button">{{templateTab == '1_2'?'上一步':'取消'}}</button>
+                <button class="btn sure" type="submit" ng-if="templateTab == 1">下一步</button>
+                <button class="btn sure" type="submit" ng-if="templateTab == 2 || templateTab == '1_2'">{{templateTab == 2?'确定':'发送'}}</button>
+                <button class="btn sure" type="submit" ng-if="templateTab == 3 || templateTab == 4">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--发送短信-->
+<div class="popup_ message_send" id="message_send">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_messageSend()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15">收件人:</label>
+                        <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-click="operationBtn(4, 1, 'message')" ng-checked="messageTemplate.peo == 1" value="1"/>学员
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-click="operationBtn(4, 2, 'message')" ng-checked="messageTemplate.peo == 2" value="2"/>老师
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-click="operationBtn(4, 3, 'message')" ng-checked="messageTemplate.peo == 3" value="3"/>潜客
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15">收件范围:</label>
+                        <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-click="operationBtn(5, 1, 'message')" ng-checked="messageTemplate.peoType == 1" value="1"/>全部
+                            </label>
+                            <label class="checkbox-inline labelLeft" ng-if="messageTemplate.peo == 1">
+                                <input type="radio" ng-click="operationBtn(5, 2, 'message')" ng-checked="messageTemplate.peoType == 2" value="2"/>按班
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-click="operationBtn(5, 3, 'message')" ng-checked="messageTemplate.peoType == 3" value="3"/>部分
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px" ng-show="messageTemplate.peo">
+                        <label class="form-label marging-rt-15">发送设置:</label>
+                        <!--                                选择学员-->
+                        <div ng-if="messageTemplate.peo == 1">
+                            <!--选择班级-->
+                            <div class="col-xs-8 padLeftNone" ng-if="messageTemplate.peoType == 2">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in messageTemplate.classList">{{x.className}}<i ng-click="inform_del(x, $index, 'c')" class="icon_drop_x"></i></span>
+                                </div>
+                                <div class="drop_add_teacher screen_no" ng-click="goCommonPop('course-sel', 'choseClass', '1060px', {name: 'class', type: 'checkbox', screen_classType: '0', callBackName: '通知-班级'})">
+                                    <i class="icon_name_add"></i>
+                                    <span class="form-span" style="color: #f5565b;">选择班级</span>
+                                </div>
+                            </div>
+                            <!-- 选择部分学员或者全部学员-->
+                            <div class="col-xs-8 padLeftNone" ng-if="messageTemplate.peoType != 2">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in messageTemplate.students">{{x.name}}<i ng-click="inform_del(x, $index, 's')" class="icon_drop_x"></i></span>
+                                </div>
+                                <div class="drop_add_teacher screen_no" ng-click="goCommonPop('student-sel','selectStuds', '760px', {name:'all', type: 'student', choseType: 'checkbox', callBackName:'通知-学员'})">
+                                    <i ng-class="{'icon_name_sub':messageTemplate.peoType == 1, 'icon_name_add': messageTemplate.peoType == 3}"></i>
+                                    <span class="form-span" style="color: #f5565b;">{{messageTemplate.peoType==3?'选择学员':'排除学员'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                                选择老师-->
+                        <div ng-show="messageTemplate.peo == 2">
+                            <div class="col-xs-8 padLeftNone">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in messageTemplate.teachers">{{x.teacherName}}<i ng-click="inform_del(x, $index, 't')" class="icon_drop_x"></i></span>
+                                </div>
+                                <div class="drop_add_teacher screen_no">
+                                    <i ng-class="{'icon_name_sub':messageTemplate.peoType == 1, 'icon_name_add': messageTemplate.peoType == 3}"></i>
+                                    <my-select my-id="inform_teacher_" list-name="{{messageTemplate.peoType == 3?'选择老师':'排除老师'}}" list-data="{{inform_teachers}}" list-field="teacherName" list-click="inform_sel(n, 't')" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="messageTemplate.peo == 3">
+                            <!--选择潜客-->
+                            <div class="col-xs-8 padLeftNone">
+                                <div class="teacher_select">
+                                    <span ng-repeat="x in messageTemplate.potials">{{x.name}}<i ng-click="inform_del(x, $index, 'p')" class="icon_drop_x"></i></span>
+                                </div>
+                                <div class="drop_add_teacher screen_no" ng-click="goCommonPop('potial-sel','potial_sel', '960px', {callBackName:'通知-潜客'})">
+                                    <i ng-class="{'icon_name_sub':messageTemplate.peoType == 1, 'icon_name_add': messageTemplate.peoType == 3}"></i>
+                                    <span class="form-span" style="color: #f5565b;">{{messageTemplate.peoType==3?'选择潜客':'排除潜客'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">通知内容:</label>
+                        <div class="col-xs-10">
+                            <span style="position: absolute;left: 18px;top: 4px;color: #999;">【{{messageTotleInfo.signName?messageTotleInfo.signName:'短信签名'}}】</span>
+                            <span class="input_words" style="right: 0px;">{{messageTotleInfo.signName?(messageTemplate.content.length + messageTotleInfo.signName.length + 2):messageTemplate.content.length}}/500</span>
+                            <textarea ng-trim="false" class="form-control" ng-model="messageTemplate.content" ng-style="{'text-indent': (messageTotleInfo.signName?(messageTotleInfo.signName.length + 2):6) + 'em'}" style="width: 600px; height: 92px; resize: none;" maxlength="{{498 - messageTotleInfo.signName.length}}"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10" style="color: #F6B352;">
+                            <p>注：移动/联通/电信每条70字，普通短信70字符，长短信67字符为一条计费。</p>
+                            <p style="text-indent: 25px;">同一收件人只发送一条短信，短信未发送成功不扣除短信条数。</p>
+                            <p style="text-indent: 25px;">短信剩余条数不足时，系统将自动关闭短信提醒.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="close_popup(3)" type="button">取消</button>
+                <button class="btn sure" type="submit">发送</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--收件情况-->
+<div class="popup_ receivingCase" id="receivingCase">
+    <ul class="pot_pop_nav clearfix">
+        <li ng-click="switchSeeNav(1)" ng-class="{pot_pop_nav_li: see_tab==1}">收件老师<em></em><i></i></li>
+        <li ng-click="switchSeeNav(2)" ng-class="{pot_pop_nav_li: see_tab==2}">收件学生<em></em><i></i></li>
+        <li ng-class="{pot_pop_nav_li: popNavSelected == n.tab}" ng-click="changePopNav(n.tab)" ng-repeat="n in popNav">{{n.name}}<em></em><i></i></li>
+    </ul>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData_see(n)" list-keyup="Enterkeyup_see(n)" list-data="{{kindSearchData_see}}" select-name="{{selectInfoNameId_see}}"></kindsearch>
+                            </li>
+                            <li ng-if="see_tab == 2">
+                                <my-select list-name="班级" list-data="{{screenClassList}}" list-field="className" list-default="班级" list-click="screen_selClass(n)" list-sort="true" list-search="true"></my-select>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="screenData.see" ng-click="changeBycome($event, 1)">未查看
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="screenData.confirm" ng-click="changeBycome($event, 2)">未确认
+                                </label>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="onReset_see()">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table" ng-if="see_tab==1">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr class="choseCourse_td">
+                                    <th style="width: 230px;">收件老师</th>
+                                    <th style="width: 250px;">联系电话</th>
+                                    <th style="width: 220px;">确认状态</th>
+                                    <th>查看状态</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in informSeeList">
+                                        <td style="width: 230px;text-indent: 36px;">{{x.teacher.teacherName}}</td>
+                                        <td style="width: 250px;">{{x.teacher.teacherPhone}}</td>
+                                        <td style="width: 220px;" ng-if="seeLineData.needConfirm==1">{{x.confirmed?'已确认':'未确认'}}</td>
+                                        <td style="width: 220px;" ng-if="seeLineData.needConfirm==0">-</td>
+                                        <td>{{x.checked?'已查看':'未查看'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="see_tab==2">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr class="choseCourse_td">
+                                    <th style="width: 230px;">收件学员</th>
+                                    <th style="width: 250px;">联系电话</th>
+                                    <th style="width: 220px;">确认状态</th>
+                                    <th>查看状态</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in informSeeList">
+                                        <td style="width: 230px;text-indent: 36px;">{{x.student.name}}</td>
+                                        <td style="width: 250px;">{{x.student.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 220px;" ng-if="seeLineData.needConfirm==1">{{x.confirmed?'已确认':'未确认'}}</td>
+                                        <td style="width: 220px;" ng-if="seeLineData.needConfirm==0">-</td>
+                                        <td>{{x.checked?'已查看':'未查看'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 M_box3_2"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--短信充值-->
+<div class="popup_ message_recharge" id="message_recharge">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_pay()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label for="" class="form-label marging-rt-15">选择套餐:</label>
+                        <div class="col-xs-8 message_recharge_p">
+                            <p ng-class="{message_recharge_sp: messageRecharge._p==m}" ng-click="messageRecharge._p=m" ng-repeat="m in messageRecharge._con"><strong>{{m.smsNum}}条</strong><em>¥{{m.price | _qf}}</em><span class="icon_yes"></span></p>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label marging-rt-15">选择支付方式:</label>
+                        <div class="col-xs-8 message_recharge_t">
+                            <p ng-class="{message_recharge_tp: messageRecharge._t == 'ALP'}" ng-click="messageRecharge._t='ALP'"><span></span><strong>支付宝</strong><i class="icon_yes"></i></p>
+                            <p ng-class="{message_recharge_tp: messageRecharge._t == 'WXP'}" ng-click="messageRecharge._t='WXP'"><span></span><strong>微信</strong><i class="icon_yes"></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="close_popup(1)" type="button">取消</button>
+                <button class="btn sure" type="submit">确认支付</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--短信设置-->
+<!-- <div class="popup_ message_early" id="message_early">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_updateInfo(1)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">短信预警设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">预警设置:</label>
+                        <div class="col-xs-8 message_early_p">
+                            <p>短信条数低于</p><input type="text" class="form-control" ng-model="messageTotleInfo.smsWarningNum" yzn-filter="num"/><p>条数，将提示预警</p>
+                            <span style="position: relative; margin: 6px 0 0 5px; float: left;color: #f5787c;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help">
+                                <span class="tippaopao" style="width: 200px;">如果剩余短信条数不足，系统将自动关闭所有短信提醒</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">手机提醒:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" style="float: left; width: 140px;" ng-model='messageTotleInfo.smsWarningPhone' yzn-filter="num" maxlength="11" />
+                            <span style="position: relative; margin: 6px 0 0 5px; float: left;color: #f5787c;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help">
+                                <span class="tippaopao" style="width: 200px;">当短信条数不足xx条时，短信通知至该手机号</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">短信签名设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">签名设置:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words" style="right: 20px;">{{messageTotleInfo.signName.length?messageTotleInfo.signName.length:0}}/12</span>
+                            <input type="text" class="form-control" ng-model="messageTotleInfo.signName" placeholder="输入限制2~12个字符，建议输入机构名字" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-8">
+                            <span class="form-span" style="color: #F6B352;">注：本签名将使用至短信通知抬头，如未设置将使用「易知鸟」为抬头</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">生日祝福模板设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">通知内容:</label>
+                        <div class="col-xs-9">
+                            <span style="position: absolute;left: 18px;top: 4px;color: #999;">【{{messageTotleInfo.signName?messageTotleInfo.signName:'短信签名'}}】某某某</span>
+                            <span class="input_words" style="right: 19px;">{{messageTotleInfo.signName?(messageTotleInfo.birthdayTemplate.length + messageTotleInfo.signName.length + 5):messageTotleInfo.birthdayTemplate.length}}/200</span>
+                            <textarea ng-trim="false" class="form-control" style="height: 94px;resize: none;text-indent: 9em;" ng-style="{'text-indent': (messageTotleInfo.signName?(messageTotleInfo.signName.length + 5):9) + 'em'}" ng-model="messageTotleInfo.birthdayTemplate" placeholder="同学，祝你生日快乐！愿这特殊的日子里，你的每时每刻都充满欢乐。" maxlength="{{195 - messageTotleInfo.signName.length}}"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-8">
+                            <span class="form-span" style="color: #F6B352;">注：移动/联通/电信每条70字，普通短信70字符，长短信67字符为一条计费。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="close_popup(2)" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<!--点击预览短信通知-->
+<div class="message_see">
+    <span class="message_see_x" ng-click='operationList_msg(5, 0)'></span>
+    <img src="{{previewImg}}" style="width:100%;height:auto;" alt="预览" />
+</div>
+
+<!--扫码支付-->
+<div class="popup_ onlinePay" id="onlinePay_sign">
+    <h2>扫一扫付款</h2>
+    <h3>¥{{onlindePayData.paymentMoney}}</h3>
+    <div class="onlinePay_code">
+
+    </div>
+    <p ng-click="reloadOnlinePay()">点击刷新支付状态</p>
+    <div class="onlinePay_order">
+        <strong>浙江筑森网络科技有限公司</strong>
+        <!--<em>订单号：{{onlindePayData.smsBillId}}</em>-->
+    </div>
+</div>

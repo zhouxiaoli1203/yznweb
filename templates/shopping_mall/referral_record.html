@@ -1,0 +1,57 @@
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="tab_nav">
+        <span ng-click="switchClassNav(1)" ng-class="{tab_nav_show: classNavJud==1}">推荐人</span>
+        <span ng-click="switchClassNav(2)" ng-class="{tab_nav_show: classNavJud==2}">推荐报课记录</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch  class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"  select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon"  id="searchTime" size="30" ng-model="searchTime" placeholder="报课时间段筛选"  autocomplete="off" >
+            </li>
+            <li>
+                <my-select list-name="推荐人" list-data="{{studentList}}" list-field="studentName" list-load="listReload" list-click="changeType(n)" list-sort="false" list-search="true"></my-select>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!referral_recordList || referral_recordList.length==0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in referral_recordList">
+                        <td class="clickText" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}' ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':'0','fromPage':'studentPop','item':x,'tab':1})">
+                            <span>{{x.studentName}}</span>
+                            <span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentSex]"></span>
+                        </td>
+                        <td>{{x.phoneNum}}</td>
+                        <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>¥{{x.amount|number:2}}</td>
+                        <td>
+                            <span ng-if="x.referrer">{{x.referrer}}</span>
+                            <span ng-if="!x.referrer" style="color:#999;">该推荐人已被删除</span>
+                        </td>
+                        <td>{{x.referrerPhone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>
+

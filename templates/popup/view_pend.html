@@ -1,0 +1,57 @@
+<div class="popup_ viewPending" id="viewPending">
+    <!--closePopup方法为公共的关闭弹窗的方法，参数填需要关闭的id名-->
+    <h6>待处理<span ng-click="closePopup('viewPending')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <!--滚动区域（添加属性isScroll=true则出现滚动条）-->
+                <div class="popup_scroll" isScroll="true">
+                    <!--内容区域-->
+                    
+                    <div class="calendar">
+                        <div id='pendContainer' class="timer_calander"></div>
+                    </div>
+                    <!--<div class="partline"></div>-->
+                    <div class="right_infos">
+                        <ul>
+                        	<li>
+                        		<div class="col-xs-3 time">13:30</div>
+                        		<div class="col-xs-8 info_detail">
+                        		    <span class="name">周小丽</span>
+                        		    <div  class="operate">
+                        		        <span class="operate_name">预约来访&nbsp;&nbsp;</span>
+                        		        <span>未来访</span>
+                        		    </div>
+                        		</div>
+                        	</li>
+                        	<li>
+                        		<div class="col-xs-3 time">13:30</div>
+                                <div class="col-xs-8 info_detail">
+                        		    <span class="name">周小丽</span>
+                        		     <div  class="operate">
+                                        <span class="operate_name">预约来访&nbsp;&nbsp;</span>
+                                        <span>未来访</span>
+                                    </div>
+                        		</div>
+                        	</li>
+                        	<li>
+                        		<div class="col-xs-3 time">13:30</div>
+                                <div class="col-xs-8 info_detail">
+                        		    <span class="name">周小丽</span>
+                        		     <div  class="operate">
+                                        <span class="operate_name">预约来访&nbsp;&nbsp;</span>
+                                        <span>未来访</span>
+                                    </div>
+                        		</div>
+                        	</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('viewPending')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

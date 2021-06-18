@@ -1,0 +1,238 @@
+<!--消息详情-->
+<div class="popup_ msgDetail" id="msgDetail">
+    <h6>详情<span ng-click="closePopup('msgDetail')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="height:492px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="pot_pop_peo">
+                        <div class="pot_pop_peo_nav clearfix studentAccount">
+                             <div class="common_tab_btn fontRed_BgWhite" ng-if="props.item.notificationStatus == '0' || props.item.notificationStatus == '1'" ng-click='gotoConfirmInfo(true)'>
+                                <i class="icon_delete"></i>删除
+                            </div>
+                            <div class="common_tab_btn fontRed_BgWhite" ng-if="props.item.notificationStatus == '0'" ng-click='gotoEditMsg("sendMsg_pop","760px")'>
+                                <i class="icon_edit"></i>编辑
+                            </div>
+                            <div class="common_tab_btn fontRed_BgWhite" ng-if="props.item.notificationStatus == '1'" ng-click='gotoEditMsg("creatModel_pop","560px")'>
+                                <i class="icon_edit"></i>编辑
+                            </div>
+                           <div class="common_tab_btn fontRed_BgWhite" ng-if="props.item.notificationStatus == '0'" ng-click='gotoConfirmInfo(false)'>
+                                <i class="icon_push"></i>发送
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">通知抬头 :</label>
+                            <span class="col-xs-10 form-span">{{props.item.notificationTitle}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">通知内容:</label>
+                            <span class="col-xs-10 form-span">{{props.item.notificationDesc}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">图片:</label>
+                            <span class="col-xs-10 form-span">
+                            <span class="img_list" ng-repeat="n in props.item.notificationImgs track by $index">
+                                <img ng-src="{{n}}" alt="" />
+                            </span>
+                            </span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">时间:</label>
+                            <span class="col-xs-10 form-span">{{props.item.notificationDate}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">发件人:</label>
+                            <span class="col-xs-10 form-span">{{props.item.teacherName}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">收件员工:</label>
+                            <span class="col-xs-10 form-span separate_list" ><span ng-repeat="n in props.item.teachers">{{n.teacherName}}</span></span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">收件班级:</label>
+                            <span class="col-xs-10 form-span separate_list" ><span ng-repeat="n in props.item.classInfos">{{n.className}}</span></span>
+                        </div>
+                        <!--<div class="popup_line infos">
+                            <label class="form-label">收件学员:</label>
+                            <span class="col-xs-10 form-span separate_list" ><span ng-repeat="n in props.item.teachers">{{n.teacherName}}</span></span>
+                        </div>-->
+                        <div class="popup_line">
+                            <label class="form-label">消息状况:</label>
+                            <span class="col-xs-10 form-span">{{props.item.notificationStatus=='0'?"草稿":props.item.notificationStatus=='1'?"模板":"已发送"}}</span>
+                        </div>
+                    </div>
+                </div>
+        </form>
+        </div>
+
+    </div>
+</div>
+
+<!--新建或编辑模板-->
+<div class="popup_ creatModel_pop" id="creatModel_pop">
+    <h6>{{props.isAdd?"新建":"编辑"}}模板<span ng-click="closePopup('creatModel_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="model_confirm()">
+            <div class="popup_form_content" style="max-height:470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">通知抬头:</label>
+                        <div class="col-xs-10">
+                            <input class="form-control" ng-model="modelDetail.title" maxlength="24" type="text" autocomplete="off" placeholder="请输入抬头" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">内容:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{modelDetail.desc?modelDetail.desc.length:0}}/1000</span>
+                            <textarea class="form-control" rows="3" maxlength="1000" ng-model="modelDetail.desc" autocomplete="off" placeholder="请输入内容"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">添加图片:</label>
+                        <div class="col-xs-10">
+                            <span class="img_list" ng-repeat="n in modelDetail.imgs track by $index">
+                                <img ng-src="{{n}}" alt="" />
+                                <i ng-click="deleteImg($index,modelDetail.imgs)"></i>
+                            </span>
+                            <div class="addImg_Icon" ng-click="add_img(modelDetail.imgs)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('creatModel_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+                <!--<button class="btn sure" ng-if="isDetailPage" ng-click="editNews_modelPop(newsDetailData,edit_noticeTitle,edit_content)" type="">确定</button>-->
+            </div>
+        </form>
+    </div>
+</div>
+<!--发送消息-->
+<div class="popup_ sendMsg_pop" id="sendMsg_pop">
+    <h6>发送消息<span ng-click="closePopup('sendMsg_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="popup_line">
+            <div class="navigation_bar msg_width navigation_bar_bgm{{navigation_bar_bgm}}">
+                <!--导航条-->
+                <div ng-class="{colorFFF:navigation_bar_bgm==1}">1.填写消息内容</div>
+                <div ng-class="{colorFFF:navigation_bar_bgm==2}">2.选择收件人</div>
+            </div>
+        </div>
+        <form class="popup_form" role="form" ng-submit='next_btn()' ng-show="navigation_bar_bgm==1">
+            <div class="popup_form_content" style="max-height:470px;">
+                <div class="popup_scroll" isScroll="true" style=" padding: 2px 114px 20px;">
+                    <div class="popup_line">
+                        <label class="form-label">模板:</label>
+                        <div class="col-xs-10">
+                            <select name="" ng-model="selectedModel" ng-change="changeModel(selectedModel)" style="width:100%;">
+                                <option value="">请选择您适用的模板</option>
+                                <option value="{{x}}" ng-repeat="x in modelList">{{x.notificationTitle}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line" required>
+                        <label class="form-label">通知抬头:</label>
+                        <div class="col-xs-10">
+                            <input class="form-control" ng-model="send_model.title" maxlength="24" type="text" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">内容:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{send_model.desc?send_model.desc.length:0}}/1000</span>
+                            <textarea class="form-control" ng-model="send_model.desc" maxlength="1000" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">添加图片:</label>
+                        <div class="col-xs-10">
+                            <span class="img_list" ng-repeat="n in send_model.imgs track by $index">
+                                <img ng-src="{{n}}" alt="" />
+                                <i ng-click="deleteImg($index,send_model.imgs)"></i>
+                            </span>
+                            <div class="addImg_Icon" ng-click="add_img(send_model.imgs)">
+                                <!--<div class="fixedIcon" id="msg_fixedIcon_send">
+                                    <input type="file"   id="msg_imgUpId_send" name="upload-file" accept="image/gif, image/jpeg, image/png"  />
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('sendMsg_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">下一步</button>
+            </div>
+        </form>
+        <form class="popup_form" role="form" ng-show="navigation_bar_bgm==2">
+            <div class="popup_form_content" style="max-height:470px;">
+                <div class="popup_scroll" isScroll="true" style=" padding: 2px 114px 20px;">
+                    <div class="popup_line">
+                        <label class="form-label">收件员工:</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in selectTeacher">{{x.teacherName}}<i ng-click="delTeacher_(x, $index,'teacher')" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="msg_addTeacher" list-name="选择老师" list-data="{{teachersList}}" list-field="teacherName" list-click="selTeacher_(n,selectTeacher,'teacher')" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">收件班级:</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in selectClass">{{x.className}}<i ng-click="delTeacher_(x, $index,'class')" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="msg_addClass" list-name="选择班级" list-data="{{classList}}" list-field="className" list-click="selTeacher_(n,selectClass,'class')" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label">收件学员:</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in selectStudent">{{x.name}}<i ng-click="delTeacher_(x, $index,'student')" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="msg_addStudent" list-name="选择学员" list-data="{{studentList}}" list-field="name" list-click="selTeacher_(n,selectStudent,'student')" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="prve_btn()" type="">上一步</button>
+                <button class="btn cancel caogao" ng-click="sendMsg_btn('saveCaogao')" type="">存草稿</button>
+                <!--<button class="btn cancel caogao"  ng-click="send_confirm(send_model_title,send_model_desc,true,false,newsDetailData)" type="">存草稿</button>-->
+                <button class="btn sure" ng-click="sendMsg_btn('confirmBtn')" type="">确定</button>
+                <!--<button class="btn sure"  ng-click="send_confirm(send_model_title,send_model_desc,true,true,newsDetailData)" type="">确定</button>-->
+            </div>
+        </form>
+    </div>
+</div>
+<!--发送或者删除确认信息-->
+<div class="popup_ confirmDel_pop" id="confirmDel_pop">
+    <h6>确认{{isDeteleInfo?"删除信息":"发送信息"}}<span ng-click="closePopup('confirmDel_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line textAlignCenter">
+                        是否{{isDeteleInfo?"删除":"发送"}}&nbsp;&nbsp;"{{props.item.notificationTitle}}"&nbsp;&nbsp;？
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('confirmDel_pop')" type="button">否</button>
+                <button class="btn sure" type="submit" ng-click="confirm_btn(props.item)">是</button>
+            </div>
+        </form>
+    </div>
+</div>

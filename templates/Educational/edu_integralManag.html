@@ -1,0 +1,295 @@
+<!--系统规则-->
+<!-- <div class="popup_" id="submitHk">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_submitHk()">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_line" ng-if="rules.pointsItemId<=7">
+                    <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                        <span>{{(rules.pointsItemId == 5||rules.pointsItemId==6)?"每日首次":"每次"}}{{rules.pointsItem}}，{{(rules.pointsItemId == 3||rules.pointsItemId==4)?"减":"加"}} </span>
+                        <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                        <span> 分</span>
+                    </div>
+                </div>
+                <div class="popup_line" ng-if="rules.pointsItemId==13">
+                    <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                        <span>学员每次完成打卡后，加  </span>
+                        <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                        <span> 分</span>
+                    </div>
+                </div>
+                <div class="popup_line" ng-if="rules.pointsItemId==14">
+                    <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                        <span>学员完成当天打卡后,加  </span>
+                        <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 80px;display: inline-block;" required>
+                        <span> 分</span>
+                    </div>
+                </div>
+                <div class="popup_line" ng-if="rules.pointsItemId==8 || rules.pointsItemId==9">
+                    <div class="textAlignCenter" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                        <span>每满 </span>
+                        <input class="form-control" type="text" yzn-filter="num_" ng-model="x.limitValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                        <span> 元，{{rules.pointsItemId == 9?"减":"加"}} </span>
+                        <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                        <span> 分</span>
+                    </div>
+                </div>
+                <div class="popup_line" style="margin-bottom:0;" ng-if="rules.pointsItemId==10 || rules.pointsItemId==11">
+                    <div class="textAlignLf" style="width: 200px;margin: 0 auto 10px;" ng-repeat="x in rules.pointsRuleDetailList track by $index">
+                        <span>等级{{$index+1}}，加 </span>
+                        <input class="form-control" type="text" yzn-filter="num" ng-model="x.pointsValue" autocomplete="off" style="width: 60px;display: inline-block;" required>
+                        <span>分</span>
+                        <span class="clickText" ng-click="deleteItem(rules.pointsRuleDetailList,$index)"> 删除</span>
+                    </div>
+                </div>
+                <div class="popup_line" ng-if="rules.pointsItemId==10 || rules.pointsItemId==11">
+                    <div class="textAlignLf" style="width: 200px;margin: 0 auto;">
+                        <span class="icon_name_add" ng-click="addItem(rules.pointsRuleDetailList)">添加规则</span>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<!--机构规则-->
+<!-- <div class="popup_" id="change_organRule">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_organRule()">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_line">
+                    <label for="" class="form-label required">积分项:</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" ng-model="ruleData.pointsItem" maxlength="20" autocomplete="off" placeholder="请输入积分项" required>
+                    </div>
+                </div>
+                <div class="popup_line">
+                    <label for="" class="form-label required">说明:</label>
+                    <div class="col-xs-10 ">
+                        <span class="input_words">{{ruleData.remark?ruleData.remark.length:0}}/50</span>
+                        <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="ruleData.remark" maxlength="50" placeholder="请输入说明" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<!--积分变动-->
+<div class="popup_" id="change_integral">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_change()">
+            <div class="popup_form_content" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">学员:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in ingData.apt_students">{{x.name}}<i ng-click="delStudent(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkStudent()">选择学员</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">积分项:</label>
+                        <div class="col-xs-4">
+                            <select class="form-control" ng-model="ingData.pointsItem" required>
+                                <option value="">选择积分项</option>
+                                <option value="{{x.pointsItem}}" ng-repeat="x in ruleList">{{x.pointsItem}}</option>
+                            </select>
+                        </div>
+                        <span class="clickText pull-left" ng-click="add_integral()">新增积分项</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">备注:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <span class="input_words">{{ingData.remark?ingData.remark.length:0}}/50</span>
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="ingData.remark" maxlength="50" placeholder=""></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">类型:</label>
+                        <div class="col-xs-5" style="line-height: 28px;">
+                            <label class="checkbox-inline labelLeft">   
+                                <input type="radio" name="type" ng-model="ingData.type" value="1" ng-click="intentShow(ingData.studentIntent)"/>增加积分
+                            </label>
+                            <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+                                <input type="radio" name="type" ng-model="ingData.type" value="2" ng-click="intentShow(ingData.studentIntent)"/>减少积分
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">积分值:</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" yzn-filter="num" ng-model="ingData.pointsValue" autocomplete="off" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 新增积分项 -->
+<div class="popup_" id="change_organRule">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_organRule()">
+            <div class="popup_scroll" isScroll="false">
+                <div class="popup_line">
+                    <label for="" class="form-label required">积分项:</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" ng-model="ruleData.pointsItem" maxlength="20" autocomplete="off" placeholder="请输入积分项" required>
+                    </div>
+                </div>
+                <div class="popup_line">
+                    <label for="" class="form-label required">说明:</label>
+                    <div class="col-xs-10 ">
+                        <span class="input_words">{{ruleData.remark?ruleData.remark.length:0}}/50</span>
+                        <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="ruleData.remark" maxlength="50" placeholder="请输入说明" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--规则设置-->
+<!-- <div class="popup_" id="set_rule">needdel__cz
+    <ul class="pot_pop_nav clearfix">
+        <li ng-class="{pot_pop_nav_li: popNavSelected == n.tab}" ng-click="changePopNav(n.tab)" ng-repeat="n in popNav">{{n.name}}<em></em><i></i></li>
+    </ul>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div ng-if="popNavSelected == 2" style="position: relative;height: 30px;line-height: 30px;">
+                        <div  style="color: #F6B352;position: absolute;" >请添加机构自定义的积分规则，设置完成后可以按规则为学员增加或减少积分</div>
+                        <div  class="common_tab_libtn" style="position:absolute;right:0;">
+                            <div class="common_tab_btn" ng-click="setRule('add')" style="margin-right:0;"><i class="icon_add"></i>新增机构规则</div>
+                        </div>
+                    </div>
+                    <div class="popup_table marginTop_10" ng-if="popNavSelected == 1">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>积分项</th>
+                                    <th style="width:240px;">说明</th>
+                                    <th>规则</th>
+                                    <th style="width:100px;">启用状态</th>
+                                    <th style="width:100px;" class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.5%;max-height:inherit;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in ruleList">
+                                        <td>{{x.pointsItem}}</td>
+                                        <td style="width:240px;" title="{{x.remark}}">{{x.remark}}</td>
+                                        <td title="{{x.rule}}">{{x.rule}}</td>
+                                        <td style="width:100px;">
+                                            <span ng-class='{"isEnable":x.status==1,"isDisable":x.status==0}' ng-click="changeBtn(x)"></span>
+                                        </td>
+                                        <td style="width:100px;" class="textAlignCenter">
+                                            <span class="clickText" ng-click="toSubmitHk(x)">编辑</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table marginTop_10" ng-if="popNavSelected == 2">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>积分项</th>
+                                    <th style="width:240px;">说明</th>
+                                    <th class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.5%;max-height:420px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in ruleList" >
+                                        <td>{{x.pointsItem}}</td>
+                                       <td style="width:240px;" title="{{x.remark}}">{{x.remark}}</td>
+                                        <td class="operate overflow-normal textAlignCenter">
+                                            <span class="clickText" ng-click="setRule('edit',x)">编辑</span>
+                                            <span class="clickText" ng-click="deleteRule(x)">删除</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> -->
+<div class="common_body">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择时间" autocomplete="off">
+            </li>
+            <li>
+                <my-select list-name="积分项" list-data="{{pointsItemList}}" list-field="pointsItem" list-click="changeType(n)" list-search="true"></my-select>
+            </li>
+            <li class="common_tab_libtn" ng-show="'174' | _authId">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageEdu',{tab:2,before:'edu_integralManag'})"><i class="icon_integral_rule"></i>规则设置</div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operateIntegral">
+                <div class="common_tab_btn" ng-click="btn_apply(1)"><i class="icon_integral"></i>积分变动</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{integralThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="integrallist==''||integrallist==[]">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="integrallist">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in integrallist">
+                        <td title='{{x.studentName}}' class="clickText" ng-click="gotoViewStudent(x)">
+                            <span>{{x.studentName}}</span>
+                        </td>
+                        <td>{{x.potentialCustomerParentPhone}}</td>
+                        <td>{{x.pointsItem}}</td>
+                        <td>{{x.remark}}</td>
+                        <td>{{x.pointsValue>0?("+"+x.pointsValue):x.pointsValue}}</td>
+                        <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.handlerName?x.handlerName:"-"}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="deleteBtn(x)" ng-if="operateIntegral && x.sourceType == 2">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

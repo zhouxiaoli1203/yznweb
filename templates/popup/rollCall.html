@@ -1,0 +1,692 @@
+<div class="popup_ rollCall" id="rollCall">
+    <h6>点名<span ng-click="closePopup('rollCall'); closeRollCall()" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="min-height: 430px;">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label for="" class="form-label">课程名称:</label>
+                        <span class="col-xs-5 form-span">{{rollCallInfos.course.courseName}}</span>
+                        <label for="" class="form-label">班级名称:</label>
+                        <span class="col-xs-4 form-span">{{rollCallInfos.classInfo.className}}</span>
+                    </div>
+                    <div class="popup_line" ng-show="rollCallInfos.page == 'mySchedule'">
+                        <label for="" class="form-label">上课日期:</label>
+                        <span class="col-xs-5 form-span">{{getNeedTime(rollCallInfos.arrangingCourses.beginDate, rollCallInfos.arrangingCourses.endDate)}}</span>
+                    </div>
+                    <div class="popup_line" ng-show="rollCallInfos.page != 'mySchedule'">
+                        <label for="" class="form-label required">上课日期:</label>
+                        <div class="col-xs-4">
+                            <input type="text" id="arrangingCoursesDate" class="form-control dateIcon" ng-model="rollCallInfos.arrangingCoursesDate" placeholder="请选择上课日期" size="30" autocomplete="off" />
+                        </div>
+                        <!--<span class="col-xs-5 form-span">{{getNeedTime(rollCallInfos.arrangingCourses.beginDate, rollCallInfos.arrangingCourses.endDate)}}</span>-->
+                    </div>
+                    <div class="popup_line" ng-show="rollCallInfos.page != 'mySchedule'">
+                        <label class="form-label required">上课时间:</label>
+                        <div class="col-xs-7" style="height:30px;padding-right: 0;">
+                            <timesel list-click="changeClasstime(data)" list-data="{{rollCallInfos.operateTime}}" list-id="preSetTime_Id"></timesel>
+                            <div style="line-height:30px;padding:0;float: right;margin-right: 45px;">
+                                (上课时长:{{getMinutes(rollCallInfos.operateTime)}}分钟)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin:0;" ng-show="rollCallInfos.page != 'mySchedule'">
+                        <label class="form-label"></label>
+                        <div class="col-xs-4">
+                            <span class="clickText" ng-click="usePreSetTime()">使用预设时间</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">上课教室:</label>
+                        <div class="col-xs-4">
+                            <select class="form-control" ng-model="rollCallInfos.classRoom.classroomId">
+                                <option value="" style="display: none;">请选择上课教室</option>
+                                <option value="{{x.classRoomId}}" ng-repeat="x in classroomList">{{x.classRoomName}}</option>
+                            </select>
+                        </div>
+                        <label for="" class="form-label" ng-show="rollCallInfos.page == 'mySchedule'">授课课时:</label>
+                        <span class="col-xs-4 form-span" ng-show="rollCallInfos.page == 'mySchedule'">{{rollCallInfos.arrangingCoursesTime}}</span>
+
+                        <label for="" class="form-label required" ng-show="rollCallInfos.page != 'mySchedule'">
+                            <span style="float: right;">授课课时:</span>
+                            <span style="float: right; margin-right:5px;position: relative;color: #f5787c;" ng-mouseenter="rollCallInfos.showQu = true" ng-mouseleave="rollCallInfos.showQu = false" class="icon_head_help">
+                                <span class="tippaopao" ng-if="rollCallInfos.showQu" style="display: block; top: 21px;width: 330px;text-align: left; padding: 5px 14px; box-shadow: 0 0 5px #ccc;">修改后将影响老师授课课时和学员消课课时（补课和试听课只影响老师授课课时）</span>
+                            </span>
+                        </label>
+                        <div class="col-xs-4" ng-show="rollCallInfos.page != 'mySchedule'">
+                            <input type="text" class="form-control" ng-model="rollCallInfos.arrangingCoursesTime" yzn-filter="num_">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">主教老师:</label>
+                        <div class="col-xs-4">
+                            <div class="drop_select screen_no" style="margin-left: 0">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="请选择主教" list-data="{{teacherList}}" list-field="teacherName" list-click="clickMainTeacher(n)" list-search="true" list-all="no" list-default="{{mainTeacher.teacherName}}"></my-select>
+                            </div>
+                        </div>
+                        <label for="" class="form-label">上课主题:</label>
+                        <div class="col-xs-4">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="请选择上课主题" list-data="{{courseThemeList_}}" list-field="courseThemeName" list-click="selectTheme(n)" list-sort="false" list-search="true" list-all="no" list-default="{{rollCallInfos.arrangingCoursesTheme?rollCallInfos.arrangingCoursesTheme.courseThemeName:'请选择上课主题'}}"
+                                    list-moren="请选择上课主题"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="rollCallInfos.course.teachingMethod == 2">
+                        <label for="" class="form-label marging-rt-15">助教老师:</label>
+                        <div class="teacher_select">
+                            <span ng-repeat="x in subTeacher">{{x.teacherName}}<i ng-click="delTeacher_(x, $index)" class="icon_drop_x"></i></span>
+                        </div>
+                        <div class="drop_add_teacher screen_no">
+                            <i class="icon_name_add"></i>
+                            <my-select list-name="请选择助教" list-data="{{subTeacherList}}" list-field="teacherName" list-click="selTeacher_(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{rollCallInfos.remark?rollCallInfos.remark.length:0}}/100</span>
+                            <textarea class="form-control" rows="4" maxlength="100" ng-model="rollCallInfos.remark" placeholder="请输入备注信息"></textarea>
+                        </div>
+                    </div>
+                    <div class="parting_line"></div>
+
+
+                    <div class="clearfix">
+                        <span class="rollcall_head_add pull_left mr20" ng-if="rollCallInfos.classInfo.activityStatus!=1 && rollCallInfos.courseType != 2 && rollCallInfos.course.teachingMethod==2  && rollCallInfos.page != 'mySchedule'" ng-click="openStudentTb('roll_listen_stu'); checkboxAll=false"><i class="icon_name_add"></i>添加试听学员</span>
+                        <span class="rollcall_head_add pull_left mr20" ng-if="rollCallInfos.classInfo.activityStatus!=1 && rollCallInfos.courseType != 1 && rollCallInfos.course.teachingMethod==2" ng-click="openStudentTb('roll_makeup_stu'); checkboxAll=false"><i class="icon_name_add"></i>添加补课学员</span>
+                        <span class="rollcall_head_add pull_left mr20" ng-if="rollCallInfos.courseType == 0 && rollCallInfos.course.teachingMethod==2" ng-click="openStudentTb('roll_temporary_stu'); checkboxAll=false"><i class="icon_name_add"></i>添加临时学员</span>
+                    </div>
+
+                    <!--以下是非活动班才展示的数据-->
+                    <div ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                        <!--试听学员-->
+                        <!-- <div class="rollcall_head clearfix" ng-if="rollCallInfos.courseType != 2 && rollCallInfos.course.teachingMethod==2 && rollCallInfos.rollcallStudent_4.length > 0"> -->
+                        <!-- <span class="rollcall_head_name">试听学员</span> -->
+                        <!-- <span class="rollcall_head_add" ng-click="openStudentTb('roll_listen_stu'); checkboxAll=false" ng-if="rollCallInfos.page != 'mySchedule'"><i class="icon_name_add"></i>添加试听学员</span> -->
+                        <!-- </div> -->
+                        <div ng-if="rollCallInfos.rollcallStudent_4.length > 0">
+                            <p class="rollcall_head_name pull_inherit">试听学员</p>
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 13%;">姓名（昵称）</th>
+                                            <!--<th style="width: 12%;">报读课程</th>-->
+                                            <td style="width: 8%;"></td>
+                                            <td style="width: 8%;"></td>
+                                            <td style="width: 10%;"></td>
+                                            <th style="width: 26%; text-align: center;">点名状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="n in rollCallInfos.rollcallStudent_4" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1'}">
+                                            <td>
+                                                <span>{{n.name}}</span>
+                                                <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            </td>
+                                            <!--<td>{{n.courseName}}</td>-->
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <div class="roll_state" style="padding-left:0;text-align: center;">
+                                                    <label style="float:inherit;"><input type="radio" name="4{{$index}}" ng-click="n.studentStatus = '1'" ng-checked="n.studentStatus == 1" ng-disabled="n.lockStatus == '1'"/>到课</label>
+                                                    <label style="float:inherit;"><input type="radio" name="4{{$index}}" ng-click="n.studentStatus = '0'" ng-checked="n.studentStatus == 0" ng-disabled="n.lockStatus == '1'"/>缺席</label>
+                                                    <span style="float:inherit;" ng-click="clickLock(null, n, $index)" class="roll_icon icon_roll_state_del"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--补课学员-->
+                        <!-- <div class="rollcall_head clearfix" ng-if="rollCallInfos.courseType != 1 && rollCallInfos.course.teachingMethod==2">
+                            <span class="rollcall_head_name">补课学员</span>
+                            <span class="rollcall_head_add" ng-click="openStudentTb('roll_makeup_stu'); checkboxAll=false"><i class="icon_name_add"></i>添加补课学员</span>
+                        </div> -->
+                        <div ng-if="rollCallInfos.rollcallStudent_3.length > 0">
+                            <p class="rollcall_head_name pull_inherit">补课学员</p>
+                            <div class="popup_table" style="overflow: initial;">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 14%;">姓名（昵称）</th>
+                                            <th style="width:130px;">课程</th>
+                                            <th class="textAlignCenter" style="width: 8%;">补课</th>
+                                            <th class="textAlignCenter" style="width: 15%;">{{rollCallInfos.arrangingCoursesStatus==1?"消课":""}}</th>
+                                            <th style="width: 10%;" ng-if="signInshow == 2">签到情况</th>
+                                            <th style="width: 26%; text-align: center;">点名状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="n in rollCallInfos.rollcallStudent_3" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1' || n.bukeStatus == '1'}">
+                                            <td>
+                                                <span>{{n.name}}</span>
+                                                <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                                <!--<span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>-->
+                                            </td>
+                                            <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                            <td style="overflow: initial;" class="hoverMakeup textAlignCenter" ng-mouseover="n.hover=true" ng-mouseleave="n.hover=false">{{n.makeUpTime|number:2}}课时
+                                                <ul ng-if="n.hover">
+                                                    <li class='hover_point'></li>
+                                                    <li ng-repeat="m in n.arrangingCourses" style="clear: both;">
+                                                        <span>{{m.className}}</span>
+                                                        <span>{{getNeedTime(m.beginDate, m.endDate)}}</span>
+                                                        <span>缺课课时：{{m.studentCourseTimeInfo.feeType==2?"--":(m.arrangingCoursesTime|number:2)}}</span>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td class="textAlignCenter">
+                                                {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                            </td>
+                                            <td ng-if="signInshow == 2">
+                                                <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                                <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">已签到</span>-->
+                                                <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                                <!--<div class="enrollmouse">
+                                                <span class="popMark"></span>
+                                                <ul class="enrollmouse_ul">
+                                                    <li ng-repeat="y in n.signNews">
+                                                        <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                                        <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>-->
+                                            </td>
+                                            <td>
+                                                <div class="roll_state" ng-class="{'roll_state_no': n.lockStatus == '1'}">
+                                                    <label><input type="radio" name="3{{$index}}" ng-click="n.studentStatus = '1'" ng-checked="n.studentStatus == 1 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>到课</label>
+                                                    <label><input type="radio" name="3{{$index}}" ng-click="n.studentStatus = '0'" ng-checked="n.studentStatus == 0 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>缺席</label>
+                                                    <label><input type="radio" name="3{{$index}}" ng-click="n.studentStatus = '2'" ng-checked="n.studentStatus == 2 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>请假</label>
+                                                    <span ng-if="n.bukeStatus != '1'" ng-click="clickLock(null, n, $index)" class="roll_icon icon_roll_state_del"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--临时学员-->
+                    <!-- <div class="rollcall_head clearfix" ng-if="rollCallInfos.courseType == 0 && rollCallInfos.course.teachingMethod==2">
+                        <span class="rollcall_head_name">临时学员</span>
+                        <span class="rollcall_head_add" ng-click="openStudentTb('roll_temporary_stu'); checkboxAll=false"><i class="icon_name_add"></i>添加临时学员</span>
+                    </div> -->
+                    <div ng-if="rollCallInfos.rollcallStudent_2.length > 0">
+                        <p class="rollcall_head_name pull_inherit">临时学员</p>
+                        <div class="popup_table">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width:130px;">姓名（昵称）</th>
+                                        <th style="width:130px;">课程</th>
+                                        <th class="textAlignCenter" style="width: 130px;">剩余</th>
+                                        <th class="textAlignCenter">
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                                                                                              消课<span class="clickText" ng-click="goBatchXiaoke(rollCallInfos.rollcallStudent_2)"> 批量</span>
+                                            </span>
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                            <span ng-if="rollCallInfos.arrangingCoursesStatus==1">消课</span>
+                                            </span>
+                                        </th>
+                                        <th style="width:70px;" ng-if="signInshow == 2">签到情况</th>
+                                        <th style="width: 240px;text-align: center;">点名状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos.rollcallStudent_2" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1' || n.bukeStatus == '1'}">
+                                        <td>
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <!--<span class="color_nameState" ng-if="n.bukeStatus == '1'" ng-mouseenter="ngMouseenter($event)" ng-mouseleave="ngMouseleave($event)">(已补)</span>
+                                        <div class="enrollmouse">
+                                            <span class="popMark"></span>
+                                            <div class="enrollmouse_ul">
+                                                <ul>
+                                                    <li>
+                                                        <label class="info_tabel">处理方式：</label>
+                                                        <span class="info_span">插班补课</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">课程：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUpCourse.courseName}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">班级：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUpClassInfo.className}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">上课时间：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesBeginDate | beginEndDate: n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesEndDate}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>-->
+                                            <span class="clickText" style="display: inline-block;line-height: 21px;" ng-if="n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS.length>0 && n.bukeStatus !=0" ng-click="goCommonPop('buke-pop','bukeDetail_pop','560px',n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS)">
+                                            <span>({{n.bukeStatus == 1?(n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==0?"已安排":n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==1?"已补课":""):n.bukeStatus == 2?"线下处理":n.bukeStatus == 3?"已结课":""}})</span>
+                                            </span>
+                                        </td>
+                                        <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <!--<td>{{n.course.courseName}}</td>-->
+                                        <td style="width:130px;" class="textAlignCenter" title="{{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}">
+                                            <!--{{n.totalSurplusTime|number:2}}-->
+                                            {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                        <!--<td class="textAlignCenter">
+                                        {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                    </td>-->
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                            <!--(n.lockStatus == '1')指休课状态-->
+                                            <span class="num_mins_add">
+                                            <span class="icon_num_mins"  ng-click="n.lockStatus == '1'?return:numOperate(n,'mins','1')"></span>
+                                            <input class="form-control num_input" type="text" yzn-filter="num_" ng-model="n.courseTime_" autocomplete="off" required ng-disabled="n.lockStatus == '1'">
+                                            <span class="icon_num_add" ng-click="n.lockStatus == '1'?return:numOperate(n,'add','1')"></span>
+                                            </span>
+                                        </td>
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                            {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                        </td>
+                                        <td ng-if="signInshow == 2">
+                                            <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                            <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">已签到</span>-->
+                                            <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                            <!--<div class="enrollmouse">
+                                            <span class="popMark"></span>
+                                            <ul class="enrollmouse_ul">
+                                                <li ng-repeat="y in n.signNews">
+                                                    <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                                    <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>-->
+                                        </td>
+                                        <td style="width: 240px;text-align: center;">
+                                            <div class="roll_state" ng-class="{'roll_state_no': n.lockStatus == '1'}">
+                                                <label><input type="radio" name="2{{$index}}" ng-click="n.studentStatus = '1';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 1 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>到课</label>
+                                                <label><input type="radio" name="2{{$index}}" ng-click="n.studentStatus = '0';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 0 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>缺席</label>
+                                                <label><input type="radio" name="2{{$index}}" ng-click="n.studentStatus = '2';n.courseTime_ = '0'" ng-checked="n.studentStatus == 2 && n.bukeStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>请假</label>
+                                                <span ng-if="n.bukeStatus != '1'" ng-click="clickLock(null, n, $index)" class="roll_icon icon_roll_state_del"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--约课学员-->
+                    <!-- <div class="rollcall_head clearfix" ng-if="rollCallInfos.courseType != 1 && rollCallInfos.course.teachingMethod==2 && rollCallInfos.rollcallStudent_5.length > 0"> -->
+                    <!-- <span class="rollcall_head_name">约课学员</span> -->
+                    <!--<span class="rollcall_head_add" ng-click="openStudentTb('aboutClass')" ng-if="rollCallInfos.page != 'mySchedule' && rollCallInfos.classInfo.bookingStatus==1"><i class="icon_name_add"></i>添加约课学员</span>-->
+                    <!-- </div> -->
+                    <div ng-if="rollCallInfos.rollcallStudent_5.length > 0 && rollCallInfos.courseType != 1">
+                        <p class="rollcall_head_name pull_inherit">约课学员</p>
+                        <div class="popup_table">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width:130px;">姓名（昵称）</th>
+                                        <th style="width:130px;">课程</th>
+                                        <th class="textAlignCenter" style="width: 130px;">剩余</th>
+                                        <th class="textAlignCenter">
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                            消课<span class="clickText" ng-click="goBatchXiaoke(rollCallInfos.rollcallStudent_5)"> 批量</span>
+                                            </span>
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                            <span ng-if="rollCallInfos.arrangingCoursesStatus==1">消课</span>
+                                            </span>
+                                        </th>
+                                        <th style="width:70px;" ng-if="signInshow == 2">签到情况</th>
+                                        <th style="width: 240px; text-align: center;">点名状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos.rollcallStudent_5" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1' || n.bukeStatus == '1'}">
+                                        <td>
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <!--<span class="color_nameState" ng-if="n.bukeStatus == '1'" ng-mouseenter="ngMouseenter($event)" ng-mouseleave="ngMouseleave($event)">(已补)</span>
+                                        <div class="enrollmouse">
+                                            <span class="popMark"></span>
+                                            <div class="enrollmouse_ul">
+                                                <ul>
+                                                    <li>
+                                                        <label class="info_tabel">处理方式：</label>
+                                                        <span class="info_span">插班补课</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">课程：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUpCourse.courseName}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">班级：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUpClassInfo.className}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">上课时间：</label>
+                                                        <span class="info_span">{{n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesBeginDate | beginEndDate: n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesEndDate}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>-->
+                                            <span class="clickText" style="display: inline-block;line-height: 21px;" ng-if="n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS.length>0 && n.bukeStatus !=0" ng-click="goCommonPop('buke-pop','bukeDetail_pop','560px',n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS)">
+                                            <span>({{n.bukeStatus == 1?(n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==0?"已安排":n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==1?"已补课":""):n.bukeStatus == 2?"线下处理":n.bukeStatus == 3?"已结课":""}})</span>
+                                            </span>
+                                        </td>
+                                        <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td class="textAlignCenter" style="width:130px;" title="{{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}">
+                                            {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                        <!--<td class="textAlignCenter">
+                                        {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                    </td>-->
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                            <!--(n.lockStatus == '1')指休课状态-->
+                                            <span class="num_mins_add">
+                                            <span class="icon_num_mins"  ng-click="n.lockStatus == '1'?return:numOperate(n,'mins','1')"></span>
+                                            <input class="form-control num_input" type="text" yzn-filter="num_" ng-model="n.courseTime_" autocomplete="off" required ng-disabled="n.lockStatus == '1'">
+                                            <span class="icon_num_add" ng-click="n.lockStatus == '1'?return:numOperate(n,'add','1')"></span>
+                                            </span>
+                                        </td>
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                            {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                        </td>
+                                        <td ng-if="signInshow == 2">
+                                            <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                            <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">已签到</span>-->
+                                            <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                            <!--<div class="enrollmouse">
+                                            <span class="popMark"></span>
+                                            <ul class="enrollmouse_ul">
+                                                <li ng-repeat="y in n.signNews">
+                                                    <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                                    <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>-->
+                                        </td>
+                                        <td style="width: 240px; text-align: center;">
+                                            <div class="roll_state" ng-class='{"roll_state_teach2":rollCallInfos.course.teachingMethod==1}'>
+                                                <label><input type="radio" name="5{{$index}}" ng-click="n.studentStatus = '1';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 1 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>到课</label>
+                                                <label><input type="radio" name="5{{$index}}" ng-click="n.studentStatus = '0';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 0 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>缺席</label>
+                                                <label><input type="radio" name="5{{$index}}" ng-click="n.studentStatus = '2';n.courseTime_ = '0'" ng-checked="n.studentStatus == 2 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>请假</label>
+                                                <!--<span ng-if="n.lockStatus == '0' && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2" ng-click="clickLock(0, n, $index)" class="roll_icon icon_roll_state_yes"></span>
+                                            <span ng-if="n.lockStatus == '1' && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2" ng-click="clickLock(1, n, $index)" class="roll_icon icon_roll_state_no"></span>-->
+                                                <!--<span ng-if="!n.lockStatus && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2" ng-click="clickLock(null, n, $index)" class="roll_icon icon_roll_state_del"></span>-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--本班学员-->
+                    <div ng-if="rollCallInfos.rollcallStudent_1.length > 0">
+                        <div class="rollcall_head clearfix">
+                            <span class="rollcall_head_name">本班学员</span>
+                        </div>
+                        <div class="popup_table">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width:130px;">姓名（昵称）</th>
+                                        <th style="width:130px;">课程</th>
+                                        <th class="textAlignCenter" style="width:130px;">剩余</th>
+                                        <th class="textAlignCenter">
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                                消课<span class="clickText" ng-click="goBatchXiaoke(rollCallInfos.rollcallStudent_1)"> 批量</span>
+                                            </span>
+                                            <span ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                                <span ng-if="rollCallInfos.arrangingCoursesStatus==1">消课</span>
+                                            </span>
+                                        </th>
+                                        <th style="width:70px;" ng-if="signInshow == 2">签到情况</th>
+                                        <th style="width: 240px; text-align: center;">点名状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos.rollcallStudent_1" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1' || n.bukeStatus == '1'}">
+                                        <td>
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <span class="clickText" style="display: inline-block;line-height: 21px;" ng-if="n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS.length>0 && n.bukeStatus !=0" ng-click="goCommonPop('buke-pop','bukeDetail_pop','560px',n.studentCourseTimeInfo.temporaryStudentArrangingCourseRS)">
+                                                <span>({{n.bukeStatus == 1?(n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==0?"已安排":n.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==1?"已补课":""):n.bukeStatus == 2?"线下处理":n.bukeStatus == 3?"已结课":""}})</span>
+                                            </span>
+                                        </td>
+                                        <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td class="textAlignCenter" style="width:130px;" title="{{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}">
+                                            {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus==1">
+                                            <!--(n.lockStatus == '1')指休课状态-->
+                                            <span class="num_mins_add">
+                                                <span class="icon_num_mins"  ng-click="n.lockStatus == '1'?return:numOperate(n,'mins','1')"></span>
+                                            <input class="form-control num_input" type="text" yzn-filter="num_" ng-model="n.courseTime_" autocomplete="off" required ng-disabled="n.lockStatus == '1'">
+                                            <span class="icon_num_add" ng-click="n.lockStatus == '1'?return:numOperate(n,'add','1')"></span>
+                                            </span>
+                                        </td>
+                                        <td class="textAlignCenter" ng-if="rollCallInfos.classInfo.activityStatus!=1">
+                                            {{rollCallInfos.arrangingCoursesStatus!=1?"":(n.studentCourseTimeInfo.feeType==2?"--":(n.consumedTime|number:2))}}
+                                        </td>
+
+                                        <td ng-if="signInshow == 2">
+                                            <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                            <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">已签到</span>-->
+                                            <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                            <!--<div class="enrollmouse">
+                                                <span class="popMark"></span>
+                                                <ul class="enrollmouse_ul">
+                                                    <li ng-repeat="y in n.signNews">
+                                                        <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                                        <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>-->
+                                        </td>
+                                        <td style="width: 240px; text-align: center;">
+                                            <div class="roll_state" ng-class='{"roll_state_teach2":rollCallInfos.course.teachingMethod==1}'>
+                                                <label><input type="radio" name="1{{$index}}" ng-click="n.studentStatus = '1';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 1 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>到课</label>
+                                                <label><input type="radio" name="1{{$index}}" ng-click="n.studentStatus = '0';n.courseTime_ = n.courseTime_old" ng-checked="n.studentStatus == 0 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>缺席</label>
+                                                <label><input type="radio" name="1{{$index}}" ng-click="n.studentStatus = '2';n.courseTime_ = '0'" ng-checked="n.studentStatus == 2 && n.bukeStatus != '1' && n.lockStatus != '1'" ng-disabled="n.lockStatus == '1' || n.bukeStatus == '1'"/>请假</label>
+                                                <span ng-if="n.lockStatus == '0' && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2 && xiuke" ng-click="clickLock(0, n, $index)" class="roll_icon icon_roll_state_yes"></span>
+                                                <span ng-if="n.lockStatus == '1' && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2 && xiuke" ng-click="clickLock(1, n, $index)" class="roll_icon icon_roll_state_no"></span>
+                                                <span ng-if="!n.lockStatus && n.bukeStatus != '1' && rollCallInfos.course.teachingMethod==2" ng-click="clickLock(null, n, $index)" class="roll_icon icon_roll_state_del"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('rollCall');closeRollCall()" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sureRollCall()">确定</button>
+                <ul class="person_statify">
+                    <li><span>到课人数:</span><span class="fontColor_ff595e">{{rollInclass}}</span></li>
+                    <li><span>缺席人数:</span><span class="fontColor_ff595e">{{rollAbsent}}</span></li>
+                    <li><span>请假人数:</span><span class="fontColor_ff595e">{{rollLeave}}</span></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup_" id="roll_temporary_stu">
+    <h6>临时学员选择<span ng-click="closePopup('roll_temporary_stu')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="temporary" list-clicks="SearchData(n, 'temporary')" list-keyup="Enterkeyup(n, 'temporary')" list-data="{{kindSearchData_temporary}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="course_type==0" ng-click="changeCourseType($event,0)">标准课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="course_type==1" ng-click="changeCourseType($event,1)">通用课
+                                </label>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="onReset_temporary()">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px; text-align: center;"><input type="checkbox" ng-model="checkboxAll" ng-click="clickCheckboxAll(checkboxAll,temporaryList)" /></th>
+                                    <th>姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th style="width: 200px;">课程</th>
+                                    <th style="text-align: center;">剩余</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="n in temporaryList" ng-class="{back_color_f5: $index%2 != 0}" ng-click="selectChecked(n.hasChecked, n)">
+                                        <td style="width: 80px; text-align: center;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td title='{{n.name}} {{n.nickname?"("+n.nickname+")":""}}'>
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[n.sex]"></span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(n.age,n.birthday)"></td>
+                                        <td>{{n.userPhone}}</td>
+                                        <!--<td>{{n.nickname}}</td>-->
+                                        <td style="width: 200px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td style="text-align: center;">
+                                            {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('roll_temporary_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sureStudent('temporary')">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup_" id="roll_makeup_stu">
+    <h6>补课学员选择<span ng-click="closePopup('roll_makeup_stu')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" style="min-height: 310px;">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="makeup" list-clicks="SearchData(n, 'makeup')" list-keyup="Enterkeyup(n, 'makeup')" list-data="{{kindSearchData_makeup}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li class="temporary_time_icon">
+                                <input type="text" class="form-control" ng-mouseover="timeClearHover()" id="temporary_time" size="30" value="" placeholder="请选择时间">
+                                <i ng-class="{false: 'dateIcon', true: 'icon_drop_x'}[timeClearJud]" ng-click="timeClear()"></i>
+                            </li>
+                            <!--<li>
+                                <my-select list-name="课程" list-data="{{screen_course}}" list-field="name" list-click="changeCourse(n)" list-search="true"></my-select>
+                            </li>-->
+                            <li>
+                                <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="sel_changeYear(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="sel_changeTerm(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="班级" list-data="{{screen_class}}" list-field="className" list-click="changeClass(n)" list-search="true"></my-select>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="onReset_makeup()">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;width:40px;"><input type="checkbox" ng-model="checkboxAll" ng-click="clickCheckboxAll(checkboxAll,makeupList)" /></th>
+                                    <th style="width: 120px;text-align: left;">姓名（昵称）</th>
+                                    <!--<th>昵称</th>-->
+                                    <th>课程</th>
+                                    <th style="text-align: center;">剩余</th>
+                                    <th style="width: 120px; text-align: left;">班级</th>
+                                    <th style="width: 240px; text-align: left;">缺课时间</th>
+                                    <th style="text-align: center;">缺课课时</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="n in makeupList" ng-class="{back_color_f5: $index%2 != 0}" ng-click="selectChecked(n.hasChecked, n)">
+                                        <td style="text-align: center;width:40px;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td style="width: 120px;text-align: left;">
+                                            <span>{{n.student.name}}</span>
+                                            <span>{{n.student.nickname?"("+n.student.nickname+")":""}}</span>
+                                        </td>
+                                        <!--<td>{{n.student.nickname}}</td>-->
+                                        <td>{{n.course.courseName}}</td>
+                                        <td style="text-align: center;">
+                                            {{n.contract.totalSurplusTime|keshi_tian_sheng:n.contract.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                        <td style="width: 120px; text-align: left;">{{n.classInfo.className}}</td>
+                                        <td style="width: 240px; text-align: left;">{{n.arrangingCourses.beginDate | beginEndDate: n.arrangingCourses.endDate: 'yyWeek_hh' : n.arrangingCourses.week}}</td>
+                                        <td style="text-align: center;">{{n.studentCourseTimeInfo.feeType==2?"---":(n.arrangingCourses.arrangingCoursesTime|number:2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('roll_makeup_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sureStudent('makeup')">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--批量消课-->
+<div class="popup_ xiaoke_pop" id="roll_xiaoke_pop">
+    <h6>批量设置学员每节消课<span ng-click="closePopup('roll_xiaoke_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="xiaoke_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line" style="margin-bottom: 0;">
+                        <label class="form-label required">每节消课:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" yzn-filter="num_" autocomplete="off" ng-model="xiaokeTime" placeholder="请输入每节消课" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-10" style="color:#999;">
+                            系统将更改本班学员默认消课，已点名数据不会更改。
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('roll_xiaoke_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

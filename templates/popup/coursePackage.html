@@ -1,0 +1,299 @@
+<div class="popup_ signUp-popup" id="add_coursepackage">
+    <h6>{{popupTypeData.popupName}}<span class="popup_x icon_drop_x" ng-click="closePopup('add_coursepackage')"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirmData()">
+            <!--<div class="popup_form_content" style="height: 395px;">-->
+            <div class="popup_form_content overinherit">
+                <div class="popup_scroll" isScroll="false">
+                    <!--课程包数据-->
+                    <div class="popup_line" ng-if="popupTypeData.type == 1">
+                        <label class="form-label theadleft required">课程包名称：</label>
+                        <div class="col-xs-2" style="padding-left: 0;">
+                            <input type="text" class="form-control" ng-model="popupTypeData.name" maxlength="15" placeholder="请输入课程包名称" required/>
+                        </div>
+                    </div>
+
+                    <!--商城数据-->
+                    <div ng-if="popupTypeData.type == 'mall'">
+                        <div class="popup_line">
+                            <label class="form-label required">商品名称：</label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" ng-model="popupTypeData.name" maxlength="15" placeholder="请输入商品名称" required/>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">商品封面：</label>
+                            <div class="col-xs-9">
+                                <dl class="show_title" style="width: 480px;">
+                                    <dt style="width: 244px;" class="icon_noimg imghover" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                        <img ng-if="popupTypeData.imgurl" ng-src="{{popupTypeData.imgurl}}" alt="课程封面" />
+                                        <div class="msk_changeimg"><span ng-click="operationInfo('img')">{{popupTypeData.imgurl?'更换图片':'添加图片'}}</span></div>
+                                    </dt>
+                                    <dd>
+                                        <div class="popup_line" style="margin-top: 85px;">
+                                            <span>图片可根据实际大小裁剪</span>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <p class="img_tagging" style="padding-left: 92px;">（建议尺寸750:420像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">商品描述：</label>
+                            <div class="col-xs-4">
+                                <span class="input_words" style="right: 0;">{{popupTypeData.describe?popupTypeData.describe.length:0}}/300</span>
+                                <textarea ng-trim="false" ng-model="popupTypeData.describe" style="white-space: pre-wrap; word-wrap: break-word;height: 110px;padding-right: 38px;" class="form-control showcourseText" rows="3" placeholder="请输入商品描述" maxlength="300" required></textarea>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">商品类型：</label>
+                            <div class="col-xs-8">
+                                <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                    <input type="radio" name="mallType" value="0" ng-change="operationInfo('mallType')" ng-model="popupTypeData.mallType">课程
+                                </label>
+                                <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                    <input type="radio" name="mallType" value="1" ng-change="operationInfo('mallType')" ng-model="popupTypeData.mallType">学杂
+                                </label>
+                                <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                    <input type="radio" name="mallType" value="2" ng-change="operationInfo('mallType')" ng-model="popupTypeData.mallType">套餐
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--课程包选择课程或者学杂按钮-->
+                    <div class="popup_line" ng-if="popupTypeData.type == 1">
+                        <div class="signUpMode">
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop( 'course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '选课报名-课程'})">选择课程</div>
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop( 'course-sel', 'choseGoods', '760px',{name:'goods',type: 'checkbox',callBackName: '选课报名-学杂'})">选择学杂</div>
+                        </div>
+                    </div>
+                    <!--商城选择课程或者学杂-->
+                    <div class="parting_solidline popup_line" ng-if="popupTypeData.type == 'mall'"></div>
+                    <div class="popup_line" ng-if="popupTypeData.type == 'mall'" style="padding-left: 15px;">
+                        <div class="signUpMode" ng-if="popupTypeData.mallType == 0">
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="operationInfo('course')">选择课程</div>
+                        </div>
+                        <div class="signUpMode" ng-if="popupTypeData.mallType == 1">
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="operationInfo('goods')">选择学杂</div>
+                        </div>
+                        <div class="signUpMode" ng-if="popupTypeData.mallType == 2">
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop( 'course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '选课报名-课程'})">选择课程</div>
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop( 'course-sel', 'choseGoods', '760px',{name:'goods',type: 'checkbox',callBackName: '选课报名-学杂'})">选择学杂</div>
+                        </div>
+                    </div>
+
+                    <!--下面为报名课程学杂数据-->
+                    <div class="popup_line noneMargin" ng-show="packageData.course.length > 0">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;报名课程</label>
+                    </div>
+                    <div class="courseList" ng-repeat="x in packageData.course" ng-show="packageData.course.length > 0">
+                        <h2 class="courseList_h clearfix">
+                            <div>
+                                <label for="">课程名称：</label>
+                                <span>{{x.course.courseName}}</span>
+                            </div>
+                            <div ng-if="x.package.feeType == 1">
+                                <label for="">学年：</label>
+                                <select style="float:left; width: 80px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolYear" ng-change="selYear(x)">
+                                    <option value="" ng-disable="false ">学年</option>
+                                    <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                </select>
+                            </div>
+                            <div ng-if="x.package.feeType == 1">
+                                <label for="">学期：</label>
+                                <select style="float:left; width: 90px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolTerm" ng-change="selSchoolTerm(x)" ng-options="p as p.schoolTermName for p in schoolTermList">
+                                    <option value="">选择学期</option>
+                                </select>
+                            </div>
+                            <div ng-if="popupTypeData.type == 'mall'">
+                                <label for="">关联展示课程：</label>
+                                <select style="float:left; width: 120px; margin-right: 5px;" class="form-control" ng-model="x.experienceCourse" ng-options="p as p.experienceCourseName for p in x.experienceCourseList">
+                                    <option value="">选择展示课程</option>
+                                </select>
+                            </div>
+                            <!--<div style="float: right;" ng-if="popupTypeData.type != 'mall'">
+                                <label for="">签约金额：</label>
+                                <span ng-if="x.discountType=='1'" title="{{x.package.packagePrice-x.discountPrice | m}}">￥{{(x.package.packagePrice-x.discountPrice) | m}}</span>
+                                <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100)) | m}}">￥{{(x.package.packagePrice*(x.discountPrice_/100)) | m}}</span>
+                            </div>
+                            <div style="float: right;" ng-if="popupTypeData.type == 'mall'">
+                                <label for="">签约金额：</label>
+                                <span title="{{(x.package.packagePrice * 1) | m}}">￥{{(x.package.packagePrice * 1) | m}}</span>
+                            </div>-->
+                            <div style="float: right;">
+                                <span class="" ng-click="del_signUpCourse($index)"><i class="icon_delete clickText"></i></span>
+                            </div>
+                        </h2>
+                        <div class="popup_table noneMargin" style="overflow: visible;">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 150px;">套餐名称</th>
+                                        <th style="width: 85px;">单课价</th>
+                                        <th ng-if="x.package.feeType != 2" style="width: 115px;">购买课时</th>
+                                        <th ng-if="x.package.feeType != 2" style="width: 115px;">赠送课时</th>
+                                        <th ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'" style="width: 120px;">开始时间</th>
+                                        <th ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'" style="width: 80px;">结束时间</th>
+                                        <th ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'" style="width: 120px;"></th>
+                                        <th ng-if="x.package.feeType == 2 && popupTypeData.type == 'mall'" style="width: 120px;text-align: center;">购买时长</th>
+                                        <th ng-if="x.package.feeType == 2 && popupTypeData.type == 'mall'" style="width: 120px;text-align: center;">
+                                            <span style="float: left;">开始时间</span>
+                                            <span style="float: left; margin-left:5px;position: relative;color: #f5787c;" ng-mouseenter="sp_show = true" ng-mouseleave="sp_show = false" class="icon_head_help">
+                                                <span class="tippaopao" ng-if="sp_show" style="display: block; top: 18px; padding: 5px 14px; box-shadow: 0 0 5px #ccc;width: 425px;line-height: 18px;">该项选填，若设置开始时间，则购买后课程开始时间从设置时间开始生效，否则从学员购买时间当日开始生效。若学员已经在读，则自动往后顺延。</span>
+                                            </span>
+                                        </th>
+                                        <th ng-if="x.package.feeType == 2" style="width: 85px;">赠送时间</th>
+                                        <th style="width: 120px;">课程价格</th>
+                                        <th style="width: 165px;" ng-if="popupTypeData.type == 'mall'">划线价</th>
+                                        <th style="width: 165px;" ng-if="popupTypeData.type != 'mall'">优惠</th>
+                                        <th style="width: 110px;">金额</th>
+                                        <!--<th style="text-align: center;" ng-if="popupTypeData.type != 'mall'">均课价</th>-->
+                                        <!--<th style="text-align: center; width: 75px;">操作</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="overinherit">
+                                            <!--<select style="float:left; width: 130px; margin-right: 5px;" ng-change="sel_package(x)" class="form-control" ng-model="x.package_" ng-options="p as p.packageName for p in (x.package.feeType == 1?x.packageList:x.packageList_)">
+                                                <option value="">选择套餐</option>
+                                            </select>-->
+                                            <mix-sel my-id="{{x.time_id}}" sel-data="{{x.packageList}}" selected-fn="sel_package(n,x)" default-seleted="{{x.package_}}"></mix-sel>
+                                        </td>
+                                        <td class="moneyColor" ng-if="x.package.feeType != 2">{{x.package.packageUnitPrice | m}}元/课时</td>
+                                        <td class="moneyColor" ng-if="popupTypeData.type != 'mall' && x.package.feeType == 2">{{(x.chargeType=="1"?x.package.packageUnitPrice:x.package.packageUnitPrice/30) | m}}{{x.chargeType=="1"?"元/月":"元/天"}}</td>
+                                        <td class="moneyColor" ng-if="popupTypeData.type == 'mall' && x.package.feeType == 2">{{x.package.packageUnitPrice}}元/月</td>
+                                        <td ng-if="x.package.feeType != 2">
+                                            <input type="text" ng-change="inputPackageTime(x, 1)" ng-model="x.package.packageTime" class="form-control width55" yzn-filter="num_" />
+                                        </td>
+                                        <td ng-if="x.package.feeType != 2">
+                                            <input type="text" ng-model="x.package.giveTime" class="form-control width55" yzn-filter="num_" />
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'">
+                                            <input ng-mouseover="selTimeFrame(x, $event, 1)" ng-model="x.beginTime" type="text" class="form-control dateIcon" index="{{$index}}" placeholder="选择开始时间" required>
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'">
+                                            <select name="" ng-model="x.chargeType" ng-change="inputPackageTime(x, 2,true)" class="form-control" style="float: left; margin: 5px;">
+                                                <option value="">按天</option>
+                                                <option value="1">按月</option>
+                                            </select>
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2 && popupTypeData.type != 'mall'">
+                                            <input ng-hide="x.chargeType" type="text" ng-model="x.endTime" ng-mouseover="selTimeFrame(x, $event, 2)" class="form-control dateIcon" placeholder="选择结束时间" />
+                                            <span class="sign_td_span" ng-if="x.chargeType"><input style="width: 40px;" ng-change="inputPackageTime(x, 2)" class="form-control" type="text" ng-model="x.monthNum" yzn-filter="num" />月</span>
+                                        </td>
+                                        <!--如果是商城的按月课程-->
+                                        <td ng-if="x.package.feeType == 2 && popupTypeData.type == 'mall'">
+                                            <span class="sign_td_span"><span style="float: left;margin-right: 5px;">按月</span><input type="text" style="width: 40px;" ng-change="inputPackageTime(x, 2)" ng-model="x.monthNum" class="form-control" yzn-filter="num"
+                                            />月</span>
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2 && popupTypeData.type == 'mall'">
+                                            <input type="text" ng-model="x.beginTime" ng-mouseover="selTimeFrame(x, $event, 1)" class="form-control dateIcon" placeholder="选择开始时间" />
+                                        </td>
+                                        <!--赠送课时-->
+                                        <td ng-if="x.package.feeType == 2">
+                                            <span class="sign_td_span"><input type="text" style="width: 40px;" ng-model="x.package.giveTime" class="form-control" yzn-filter="num"/>天</span>
+                                        </td>
+                                        <td>
+                                            <span class="sign_td_span"><input ng-model="x.package.packagePrice" ng-change="inputPackageTime(x, 3)" ng-disabled="toString(x.package.packageTime) == '0'" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元</span>
+                                        </td>
+                                        <td ng-if="popupTypeData.type == 'mall'">
+                                            <span class="sign_td_span"><input ng-model="x.package.originalPrice" ng-disabled="toString(x.package.packageTime) == '0'" ng-blur="operationInfo('originalPrice', x)" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元</span>
+                                        </td>
+                                        <td style="overflow: visible;" ng-if="popupTypeData.type != 'mall'">
+                                            <select class="form-control width58" ng-model="x.discountType" ng-change="initDiscount(x)" ng-disabled="toString(x.package.packageTime) == '0'">
+                                                <option value="1">优惠</option>
+                                                <option value="2">折扣</option>
+                                            </select>
+                                            <span ng-if="x.discountType=='1'"><input style="width: 55px;" type="text" ng-model="x.discountPrice" ng-change="inputPackageTime(x, 4)" ng-disabled="toString(x.package.packageTime) == '0'" class="form-control width45" yzn-filter="num_" />&nbsp;元</span>
+                                            <span ng-if="x.discountType=='2'" class="discount">
+                                                <input style="width: 55px;" type="text" value="{{x.discountPrice_ / 10}}" ng-disabled="toString(x.package.packageTime) == '0'" data-toggle="dropdown" class="form-control width45" readonly="readonly" />&nbsp;折
+                                                <span class="dropdown-menu discount_lis">
+                                                    <em ng-repeat="h in (m | limitTo:100)" ng-click="x.discountPrice_ = (100 - h);inputPackageTime(x, 4)">{{(100 - h) / 10}}折</em>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="sign_td_span" ng-if="popupTypeData.type != 'mall'">
+                                                <input ng-model="x.amount"  ng-disabled="toString(x.package.packageTime) == '0'" ng-change="inputPackageTime(x, 5)" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元
+                                            </span>
+                                            <span ng-if="popupTypeData.type == 'mall'">{{x.package.packagePrice}}元</span>
+                                        </td>
+                                        <!--<td class="textAlignCenter" ng-if="popupTypeData.type != 'mall'">
+                                            <span ng-if="x.discountType=='1'" title="{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m}}">{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m:'int'}}</span>
+                                            <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}">{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}</span>
+                                            <span ng-if="x.package.feeType != 2">元/课时</span>
+                                            <span ng-if="x.package.feeType == 2">{{x.chargeType=="1"?"元/月":"元/天"}}</span>
+                                        </td>-->
+                                        <!--<td style="text-align: center;" ng-if="popupTypeData.type != 'mall'">
+                                            <span ng-if="x.discountType=='1'" title="{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m}}">￥{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m:'int'}}</span>
+                                            <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}">￥{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}</span>
+                                        </td>-->
+                                        <!--<td class="textAlignCenter"><span class="" ng-click="del_signUpCourse($index)"><i class="icon_delete clickText"></i></span></td>-->
+                                    </tr>
+                                    <tr ng-if="x.course.teachingMethod != 1 && popupTypeData.type == 'mall'">
+                                        <td colspan="{{popupTypeData.type == 'mall'?'6':'8'}}" style="padding-top: 10px;">
+                                            <label class="form-label" style="text-align: left;width: 68px;">添加班级:</label>
+                                            <div class="teacher_select" style="float: left;">
+                                                <span ng-repeat="s in x.classList track by $index">{{s.className?s.className:s.classInfo.className}}<i ng-click="operationInfo('delete', x, $index)" class="icon_drop_x"></i></span>
+                                            </div>
+                                            <span style="float: left;" class="icon_name_add" ng-click="choseClass_(x, $index);">添加班级</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_line noneMargin" ng-show="packageData.goods.length > 0">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;学杂</label>
+                    </div>
+                    <div class="popup_table noneMargin" style="overflow: visible;" ng-show="packageData.goods.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>学杂名称</th>
+                                    <th>学杂规格</th>
+                                    <th>学杂原价</th>
+                                    <th>售卖单价</th>
+                                    <th>购买数量</th>
+                                    <th>学杂价格</th>
+                                    <th class="textAlignCenter" width="10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in packageData.goods">
+                                    <td title="{{x.goodsName}}">{{x.goodsName}}</td>
+                                    <td ng-if="x.goodsType == 1">
+                                        <select class="form-control input-w100 pull-left" ng-model="x.goodsSpecId" required ng-change="switch_goodsSpecId(x)">
+                                            <option value='' selected>请选择规格</option>
+                                            <option ng-repeat="n in x.goodsSpecList track by $index"
+                                                    value="{{n.goodsSpecId}}">{{n.name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td ng-if="x.goodsType == 2">-</td>
+                                    <td>{{(x.goodsPrice_ || 0) | number:2}}元</td>
+                                    <td>
+                                        <input type="text" ng-model="x.goodsPrice" class="form-control width58" yzn-filter="num_" required/>&nbsp;&nbsp;元
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="x.goodsNumber" class="form-control width58" yzn-filter="num" required/>
+                                    </td>
+                                    <td>￥{{x.goodsPrice*x.goodsNumber?(x.goodsPrice*x.goodsNumber|number:2):"0.00"}}</td>
+                                    <td class="textAlignCenter"><span class="clickText" ng-click="del_signUpGoods($index)">删除</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="popup_line" ng-if="coursePackageMoney">
+                        <p style="text-align: right;font-size: 14px;margin-top: 30px;">{{popupTypeData.countName}}：<span style="color: #ff595e;">¥{{coursePackageMoney | m}}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn" ng-hide="!power_operate && popupTypeData.type=='mall'">
+                <button class="btn cancel" ng-click="closePopup('add_coursepackage')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

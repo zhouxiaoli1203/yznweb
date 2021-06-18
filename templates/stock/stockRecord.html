@@ -1,0 +1,234 @@
+<div class="popup_ confirm_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="isBatch?confirm_btns():confirm_btn();">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" ng-hide="isBatch">
+                        <label class="form-label">领取物品:</label>
+                        <div class="col-xs-6">
+                            <span class="line28">{{confirmRecive_data.goodsStr}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">{{confirmType}}时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="startTime" ng-model="startTime" placeholder="请选择{{confirmType}}时间" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label pull-left required">经办人:</label>
+                        <div class="col-xs-6">
+                            <div class="drop_select screen_no" style="overflow: visible;">
+                                <span class="drop_select_icon"></span>
+                                <my-select my-id="confirmReciveSel" list-name="请选择经办人" list-data="{{handlerList}}" list-field="teacherName" list-click="confirmRecive_click(n)" list-sort="false" list-search="true" list-all="no" list-default="请选择经办人"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="popup_ orderDetail">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_checkGoods()">
+            <div class="popup_form_content" style="max-height:470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="pot_pop_peo_nav clearfix" style="position:absolute;top:-3px;right:18px;">
+                        <div class="common_tab_btn fontRed_BgWhite" ng-if="operateStorage && !(orderInfo.stockRecordType==2 || orderInfo.stockRecordType==5 || orderInfo.stockRecordType==6) && orderInfo.recordStatus != 1" ng-click="deleteStorage(orderInfo,'pop')">
+                            <i class="icon_delete"></i>废除
+                        </div>
+                        <div class="common_tab_btn fontRed_BgWhite" ng-if="operateStorage && orderInfo.stockRecordType==2 && orderInfo.recordStatus != 1 && orderInfo.checkStatus == 0" ng-click="confirmRecive(orderInfo,'pop','领取',true)">
+                            <i class="icon_delete"></i>确认领取
+                        </div>
+                        <div class="common_tab_btn fontRed_BgWhite" ng-if="operateStorage && orderInfo.stockRecordType==5 && orderInfo.recordStatus != 1 && orderInfo.checkStatus == 0" ng-click="confirmRecive(orderInfo,'pop','归还',true)">
+                            <i class="icon_delete"></i>确认归还
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="orderInfo.stockRecordType==2 || orderInfo.stockRecordType==5" style="position: initial;">
+                        <label class="form-label">订单号:</label>
+                        <span class="col-xs-4 form-span">{{orderInfo.externalOrderId}}</span>
+                    </div>
+                    <div class="popup_line" style="position: initial;">
+                        <label class="form-label">{{orderInfo.stockRecordType==0?"入库":orderInfo.stockRecordType==3?"清点":"出库"}}单号:</label>
+                        <span class="col-xs-4 form-span">{{orderInfo.stockRecordCode}}</span>
+                        <label class="form-label">类型:</label>
+                        <span class="col-xs-4 form-span">{{orderInfo.stockRecordType==0?"手动入库":orderInfo.stockRecordType==1?"手动出库":orderInfo.stockRecordType==3?"清点":orderInfo.stockRecordType==2?"订单出库":orderInfo.stockRecordType==4?"兑换礼品":orderInfo.stockRecordType==5?"订单入库":orderInfo.stockRecordType==6?"转介绍奖励":""}}</span>
+                        <!--<span class="col-xs-4 form-span">{{orderInfo.stockRecordType==0?"入库":orderInfo.stockRecordType==1?"出库":orderInfo.stockRecordType==3?"清点":orderInfo.stockRecordType==2?"订单出库":orderInfo.stockRecordType==4?"兑换礼品":""}}</span>-->
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">经办人:</label>
+                        <span class="col-xs-4 form-span">{{orderInfo.shopTeacher.teacherName}}</span>
+                        <label class="form-label">备注:</label>
+                        <span class="col-xs-4 form-span" style="word-wrap: break-word;" ng-bind-html="orderInfo.stockRecordDesc"></span>
+                    </div>
+                    <div class="parting_line popup_line"></div>
+                    <div class="popup_table" ng-if="orderInfo.stockRecordGoodsList.length>0 && orderInfo.stockRecordType==0">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>入库物品</th>
+                                    <th>入库数量</th>
+                                    <th>采购单价</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderInfo.stockRecordGoodsList">
+                                        <td>{{x.goods.goodsName}}{{x.goodsSpec?'*'+x.goodsSpec.name:''}}</td>
+                                        <td>{{x.num}}</td>
+                                        <td>{{x.price}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="orderInfo.stockRecordGoodsList.length>0 && !(orderInfo.stockRecordType==0|| orderInfo.stockRecordType==3)">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>{{orderInfo.stockRecordType==5?'入库':orderInfo.stockRecordType==4?'兑换':orderInfo.stockRecordType==6?'赠送':'出库'}}物品</th>
+                                    <th>{{orderInfo.stockRecordType==5?'入库':orderInfo.stockRecordType==4?'兑换':orderInfo.stockRecordType==6?'兑换':'出库'}}数量</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderInfo.stockRecordGoodsList">
+                                        <td>{{x.goods.goodsName}}*{{x.goodsSpec.name}}</td>
+                                        <td>{{x.num}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="popup_table" ng-if="orderInfo.stockRecordGoodsList.length>0 && orderInfo.stockRecordType==3">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>清点物品</th>
+                                    <th>{{orderInfo.recordMode==0?"丢失":"找回"}}数量</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in orderInfo.stockRecordGoodsList">
+                                        <td>{{x.goods.goodsName}}*{{x.goodsSpec.name}}</td>
+                                        <td>{{x.num}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">库存</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">记录</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择时间" autocomplete="off">
+            </li>
+            <li>
+                <my-select list-name="物品名称" list-data="{{goodslist}}" list-field="goodsName" list-click="searchByGoods(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select my-id="screenClear" list-name="规格" list-data="{{speclist}}" list-field="name" list-click="searchBySpec(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="经办人" list-data="{{handlerList}}" list-field="teacherName" list-click="searchByTeach(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="类型" list-data="{{typeList}}" list-field="name" list-click="changeType(n)" list-sort="false"></my-select>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="unCheck" ng-change="changeStatus(1)">待领取
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="unReturn" ng-change="changeStatus(2)">待归还
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="unDetele" ng-change="changeStatus(3)">已废除
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{recordListThead}}" list-clicks="sortCllict(data)" che-clicks="sel_allFun(data)"></thead>
+                <tbody class="demo_tbody" ng-if="recordPageList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in recordPageList">
+                        <td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'stockRecordId',true)"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked" ng-disabled="x.disabled"/></td>
+                        <td ng-class='{"clickText":operateStorage}' ng-click="orderDetail(x)" title='{{x.goodsStr}}'>
+                            {{x.goodsStr}}
+                        </td>
+                        <td>{{x.outInTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.stockRecordDesc}}">{{x.stockRecordDesc}}</td>
+                        <td>{{x.stockRecordType==0?"手动入库":x.stockRecordType==1?"手动出库":x.stockRecordType==3?"清点":x.stockRecordType==2?"订单出库":x.stockRecordType==4?"兑换礼品":x.stockRecordType==5?"订单入库":x.stockRecordType==6?"转介绍奖励":""}}
+                        </td>
+                        <td ng-if="x.stockRecordType!=5">
+                            <span ng-if="x.recordStatus == 1">已废除</span>
+                            <span ng-if="x.recordStatus != 1">{{x.stockRecordType==2?(x.checkStatus == 0?"待领取":x.checkStatus == 1?"已领取":"-"):"-"}}</span>
+                            <!-- <span ng-if="x.stockRecordType==2">{{x.recordStatus == 1?"已废除":(x.checkStatus == 0?"待领取":checkStatus == 1?"已领取":"-")}}</span>
+                            <span ng-if="x.stockRecordType!=2">{{x.recordStatus == 1?"已废除":"-"}}</span> -->
+                        </td>
+                        <td ng-if="x.stockRecordType==5">
+                            <span>{{x.checkStatus == 0?"待归还":x.checkStatus == 1?"已归还":"-"}}</span>
+                        </td>
+                        <td>{{x.shopTeacher.teacherName}}</td>
+                        <td class="textAlignCenter">
+                            <span class="clickText" ng-if="operateStorage && !(x.stockRecordType==2 || x.stockRecordType==5 || x.stockRecordType==6)">
+                                <span ng-if="x.recordStatus != 1" ng-click="deleteStorage(x)">废除</span>
+                            </span>
+                            <span class="clickText" ng-if="operateStorage && (x.stockRecordType==2 || x.stockRecordType==5)">
+                                <span ng-if="x.stockRecordType==2 && x.recordStatus != 1 && x.checkStatus == 0" ng-click="confirmRecive(x,false,'领取',null)">确认领取</span>
+                            <span ng-if="x.stockRecordType==5 && x.recordStatus != 1 && x.checkStatus == 0" ng-click="confirmRecive(x,false,'归还',null)">确认归还</span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-left">
+            <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+            <div class="M-button common_tab_btn fontRed_BgWhite" ng-show="operateStorage" ng-click="batchOperate(1)">批量领取</div>
+            <div class="M-button common_tab_btn fontRed_BgWhite" ng-show="operateStorage" ng-click="batchOperate(2)">批量归还</div>
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

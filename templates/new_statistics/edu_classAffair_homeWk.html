@@ -1,0 +1,167 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">课务分析详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">课堂展示</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">课堂点评</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">作业收交</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>课堂展示率</th>
+                    <th>课堂点评率</th>
+                    <th>作业提交率</th>
+                    <th>作业点评率</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td>本周</td>
+                    <td class="">{{dataTotal.weekDisplayRate|number:2}}%</td>
+                    <td class="">{{dataTotal.weekReviewRate|number:2}}%</td>
+                    <td class="">{{dataTotal.weekTaskUpRate|number:2}}%</td>
+                    <td class="">{{dataTotal.weekTaskReviewRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>本月</td>
+                    <td class="">{{dataTotal.monthDisplayRate|number:2}}%</td>
+                    <td class="">{{dataTotal.monthReviewRate|number:2}}%</td>
+                    <td class="">{{dataTotal.monthTaskUpRate|number:2}}%</td>
+                    <td class="">{{dataTotal.monthTaskReviewRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>上周</td>
+                    <td class="">{{dataTotal.lastWeekDisplayRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastWeekReviewRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastWeekTaskUpRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastWeekTaskReviewRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>上月</td>
+                    <td class="">{{dataTotal.lastMonthDisplayRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastMonthReviewRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastMonthTaskUpRate|number:2}}%</td>
+                    <td class="">{{dataTotal.lastMonthTaskReviewRate|number:2}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pot_pop_peo_nav clearfix">
+        <div class="tab_course_history">
+            <div ng-class="{bg_active:isactive==1}" ng-click="tab_course_history(1)">按老师</div>
+            <div ng-class="{bg_active:isactive==2}" ng-click="tab_course_history(2)">按班级</div>
+        </div>
+    </div>
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(1)">作业提交率
+                    </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType2" ng-change="chargeType(2)">作业点评率
+                    </label>
+                </li>
+                <li class="ml5 part_leftLine">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compare" ng-change="chargeType1(true)">一对一
+                    </label>
+                </li>
+                <li class="ml5">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compare1" ng-change="chargeType1(false)">一对多
+                    </label>
+                </li>
+                <!--<li class="margin_lf_15 part_leftLine">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="classType == '0,1,2'" ng-click="changeClass($event,'0,1,2')">标准班
+                    </label>
+                </li>-->
+                <li class="ml5">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="activityStatus == 1" ng-click="changeClass($event,1)">活动班
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;%&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                    <span>统计规则 </span>
+                    <div style="top:0;" class="help_icon noneWidth" data-tips="作业布置次数：按上课时间统计，老师布置作业的次数（不包含“没有作业”次数）<br>到课人数：按上课时间统计，点名结果为“到课”的人数之和<br>
+提交人数：按上课时间统计，作业提交的人数之和<br>
+作业提交率：提交人数÷到课人数<br>
+点评数：按上课时间统计，老师作业点评的次数之和<br>
+作业点评率：点评数÷提交人数<br>
+家长回复数：按上课时间统计，家长回复老师的次数之和<br>
+老师回复数：按上课时间统计，老师回复家长的次数之和"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.workTaskTotal}}</td>
+                        <td class="textAlignCenter">{{x.studentTotal}}</td>
+                        <td class="textAlignCenter">{{x.taskStudentTotal}}</td>
+                        <td class="textAlignCenter">{{x.taskUpRate|number:2}}%</td>
+                        <td class="textAlignCenter">{{x.taskReviewTotal}}</td>
+                        <td class="textAlignCenter">{{x.taskReviewRate|number:2}}%</td>
+                        <td class="textAlignCenter">{{x.reviewsRecordUserTotal}}</td>
+                        <td class="textAlignCenter">{{x.reviewsRecordTeacherTotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table totalTr" ng-if="tableList.length>0">
+                <tbody>
+                    <tr>
+                        <td width="12%">总计</td>
+                        <td width="11%" class="textAlignCenter main_color">{{totalData.workTaskTotal_total}}</td>
+                        <td width="11%" class="textAlignCenter main_color">{{totalData.studentTotal_total}}</td>
+                        <td width="11%" class="textAlignCenter main_color">{{totalData.taskStudentTotal_total}}</td>
+                        <td width="11%" class="textAlignCenter main_color">{{(totalData.taskStudentTotal_total/totalData.studentTotal_total)*100|number:2}}%</td>
+                        <td width="11%" class="textAlignCenter main_color">{{totalData.taskReviewTotal_total}}</td>
+                        <td width="11%" class="textAlignCenter main_color">{{((totalData.taskReviewTotal_total/totalData.taskStudentTotal_total)*100|number:2)||"0.00"}}%</td>
+                        <td width="11%" class="textAlignCenter main_color">-</td>
+                        <td width="11%" class="textAlignCenter main_color">-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

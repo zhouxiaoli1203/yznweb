@@ -1,0 +1,10 @@
+<div class="full_page_context {{sharink?'':'isclosed_'}}">
+    <div class="full_page_title">
+        <div class="inline_dm cursor" ng-click="return()">
+            <span class="icon_return"></span><span>{{props.text}}</span>
+        </div>
+    </div>
+</div>
+<div class="full_page_body">
+    <div ng-include="props.templateUrl"></div>
+</div>

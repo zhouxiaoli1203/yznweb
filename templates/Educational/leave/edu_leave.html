@@ -1,0 +1,255 @@
+<!--请假弹出框-->
+<!-- <div class="shade_ setleave_pop">needdel__cz
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form" ng-submit="confirm_Set()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:20px;">
+                        <div class="popup_line">
+                            <label class="form-label required">请假时间:</label>
+                            <div class="col-xs-10">
+                                请假申请需提前
+                                <input type="text" class="form-control width45" autocomplete="off" ng-model="warnLeaveNum" yzn-filter="num" required /> 天
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">请假处理:</label>
+                            <div class="col-xs-10">
+                                <label class="search_checkbox">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="leaveConfirmStatus" ng-checked="false">自动确认申请
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+<!--请假弹出框-->
+<div class="shade_ newleave_pop">
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form" ng-submit="confirm_leave()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:20px;">
+                        <div class="popup_line">
+                            <label class="form-label">学员:</label>
+                            <span class="col-xs-5 form-span" ng-if="!hasStudent">
+                                <span class="addParent icon_name_add" ng-click="goCommonPop('student-sel','selectStuds', '760px', {name:'leave',type: 'student',choseType:'radio',callBackName:'请假学员'})">请选择请假学员</span>
+                            </span>
+                            <span class="col-xs-5 form-span" ng-if="hasStudent">
+                                <span class="teacher_select">
+                                    <span  style="padding-right:10px;">{{hasStudent.name}}</span>
+                            </span>
+                            <span class="clickText" style="margin-left:10px;" ng-click="goCommonPop('student-sel','selectStuds', '760px', {name:'leave',type: 'student',choseType:'radio',callBackName:'请假学员'})">重选</span>
+                            </span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">开始时间:</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control dateIcon" autocomplete="off" id="startTime" ng-model="beginDate" placeholder="请选择开始时间" required />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">结束时间:</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control dateIcon" autocomplete="off" id="endTime" ng-model="endDate" placeholder="请选择结束时间" required />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">请假原因:</label>
+                            <div class="col-xs-10">
+                                <span class="input_words">{{leaveReason?leaveReason.length:0}}/100</span>
+                                <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="leaveReason" placeholder="请输入请假原因" required></textarea>
+                            </div>
+                        </div>
+                        <div class="parting_line"></div>
+                        <div class="popup_line">
+                            <label class="form-label">处理备注:</label>
+                            <div class="col-xs-10">
+                                <span class="input_words">{{teacher_desc?teacher_desc.length:0}}/100</span>
+                                <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="teacher_desc" placeholder="请输入备注内容"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--处理详情弹出框-->
+<div class="shade_ viewInfo_pop">
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                        <div class="popup_line" style="padding-top:10px;">
+                            <span class="imgHead col-xs-2">
+                                <img ng-src="{{leaveInfo.potentialCustomer.imgUrl}}" width="100%" height="100%"  ng-if="leaveInfo.potentialCustomer.imgUrl"/>
+                            </span>
+                            <div class="col-xs-8" style="margin-top: 14px;">
+                                <div class="studentName">{{leaveInfo.potentialCustomer.name}}<span ng-class="{'1':'icon_male','0':'icon_female'}[leaveInfo.potentialCustomer.sex]"></span></div>
+                                <div class="nickName">
+                                    <label class="form-label name">昵称:</label>
+                                    <span class="col-xs-3 form-span name">{{leaveInfo.potentialCustomer.nickname}}</span>
+                                    <label class="form-label">联系方式:</label>
+                                    <span class="col-xs-4 form-span">
+                                       {{leaveInfo.potentialCustomer.potentialCustomerParentPhone}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="parting_line"></div>
+                        <div class="popup_line margbottomNone">
+                            <label class="form-label">申请时间:</label>
+                            <span class="col-xs-4 form-span">{{leaveInfo.leaveDate | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                        </div>
+                        <div class="popup_line margbottomNone">
+                            <label class="form-label">开始时间:</label>
+                            <span class="col-xs-4 form-span">{{leaveInfo.beginDate | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                            <label class="form-label">结束时间:</label>
+                            <span class="col-xs-4 form-span"> {{leaveInfo.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">请假原因:</label>
+                            <span class="col-xs-10 form-span">{{leaveInfo.leaveDesc}}</span>
+                        </div>
+                        <div ng-if="leaveInfo.leaveStatus == 2 || leaveInfo.leaveStatus == 4">
+                            <div class="parting_line"></div>
+                            <div class="popup_line margbottomNone">
+                                <label class="form-label">处理状态:</label>
+                                <span class="col-xs-4 form-span moneyColor">{{leaveInfo.leaveStatus == 2?"已拒绝":"已处理"}}</span>
+                            </div>
+                            <div class="popup_line margbottomNone">
+                                <label class="form-label">处理时间:</label>
+                                <span class="col-xs-4 form-span">{{leaveInfo.leaveTeacherDate | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                            </div>
+                            <div class="popup_line margbottomNone">
+                                <label class="form-label">备注:</label>
+                                <span class="col-xs-10 form-span">{{leaveInfo.leaveTeacherDesc}}</span>
+                            </div>
+                            <div class="popup_line margbottomNone">
+                                <label class="form-label">处理人:</label>
+                                <span class="col-xs-4 form-span">{{leaveInfo.shopTeacher.teacherName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()">关闭</button>
+                    <button class="btn sure" ng-click="gotoProcsessApply(leaveInfo)">{{(leaveInfo.leaveStatus == 2 || leaveInfo.leaveStatus == 4)?"重新处理":"处理"}}</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--请假--处理弹出框-->
+<div class="shade_ procesApply_pop" id="procesApply_pop">
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form" ng-submit="confirm_procesApply()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:25px;">
+                        <div class="popup_line">
+                            <label for="" class="form-label required">处理方式:</label>
+                            <div class="col-xs-10 popup_rt" style="line-height:26px;">
+                                <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="apply" ng-model="confirm_apply" value="1" required/>确认申请
+                                </label>
+                                <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="apply" ng-model="confirm_apply" value="0" required/>拒绝申请
+                                </label>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">备注</label>
+                            <div class="col-xs-10">
+                                <span class="input_words">{{leaveTeacherDesc?leaveTeacherDesc.length:0}}/100</span>
+                                <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="leaveTeacherDesc" placeholder="请输入备注"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closeProcesApply()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}" ng-if="viewQingjia || isQingjia">请假申请</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}" ng-if="viewMakeup || opMakeup">补课管理</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择请假时间" autocomplete="off">
+            </li>
+            <li>
+                <my-select list-name="状态" list-data="{{screen_status}}" list-field="name" list-click="changeStatus(n)" list-search="false"></my-select>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="leavePop()" ng-if="isQingjia"><i class="icon_qingjia"></i>请假</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageEdu',{tab:4,before:'edu_leave'})" ng-show="'175' | _authId"><i class="icon_head_set"></i>请假设置</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="leaveList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-show="leaveList">
+                    <tr ng-click="tableTr(x)" ng-repeat="x in leaveList">
+                        <td title='{{x.potentialCustomer.name}}  {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}' class="clickText" ng-click="gotoViewStudent(x.potentialCustomer)">
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                        </td>
+                        <!--<td>{{x.potentialCustomer.nickname}}</td>-->
+                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                        <td>{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.leaveDesc}}">{{x.leaveDesc}}</td>
+                        <td>{{x.leaveDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.leaveStatus == 0?"待确认":x.leaveStatus == 2?"已拒绝":x.leaveStatus == 4?"已确认":"-"}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="x.leaveStatus == 0 && isQingjia" ng-click="gotoProcsessApply(x)">处理申请</span>
+                            <span class="clickText" ng-if="(x.leaveStatus == 2 || x.leaveStatus == 4) && isQingjia" ng-click="gotoProcsessApply(x)">重新处理</span>
+                            <span class="clickText" ng-if="isQingjia" ng-click="gotoViewInfo(x)">查看详情</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

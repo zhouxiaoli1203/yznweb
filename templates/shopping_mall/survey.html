@@ -1,0 +1,627 @@
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n,1)" list-keyup="Enterkeyup(n,1)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <label class="search_checkbox" style="margin-right: 10px;">
+                    <input type="checkbox" ng-checked="searchStatus == 1" ng-click="sel_screen(1, $event)" class="checkbox-inline labelLeft">启用
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-checked="searchStatus == 0" ng-click="sel_screen(2, $event)"  class="checkbox-inline labelLeft">禁用
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset(true)">重置</li>
+            <li class="common_tab_libtn" ng-show='survey_opra'>
+                <div class="common_tab_btn" ng-click="openCreateSuevey()"><i class="icon_addcourse"></i>新建问卷</div>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(1,data)"></thead>
+                <tbody class="demo_tbody" ng-if="!surveyList || surveyList.length==0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in surveyList">
+                        <td class="clickText" ng-click="operationList(x, 'openQuesDetail')">{{x.questionnaireName}}</td>
+                        <td>{{x.remark}}</td>
+                        <td>{{x.createTime | yznDate:'yyyy-MM-dd hh:mm'}}</td>
+                        <td>{{x.recyclingQuantity + "/" + x.releasedQuantity}}</td>
+                        <td><span ng-show='survey_opra' ng-click="operationList(x, 'survey_on')" ng-class="{'enable_showcourse': x.status==1, 'disable_showcourse': x.status==0}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span ng-if="x.status == 1 && survey_opra" class="clickText" ng-click="operationList(x, 'send')">发送</span>
+                            <span ng-show='survey_opra' class="clickText" ng-click="operationList(x, 'edit')">编辑</span>
+                            <span ng-show='survey_opra' class="clickText" ng-click="operationList(x, 'copy')">复制</span>
+                            <span ng-show='survey_opra' class="clickText" ng-click="operationList(x, 'delete')">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3 M_box3_1"></div>
+    </div>
+</div>
+
+<!--创建问卷弹框-->
+<div class="popup_ survey-popup">
+    <h6>{{iseditSurvey?'编辑问卷':'新增问卷'}}<span ng-click="closePopup(true)" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="createQues()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false" style="padding-bottom: 40px;">
+                    <div class="popup_line noneMargin">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;封面设置</label>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">问卷名称:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" ng-model="submitQuesdata.questionnaireName" maxlength="50" placeholder="请填写问卷名称" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">问卷说明:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" maxlength="2000" ng-model="submitQuesdata.questionnaireDesc" placeholder="请填写问卷说明"></textarea>
+                            <span class="textAreaLen">
+                                {{submitQuesdata.questionnaireDesc?submitQuesdata.questionnaireDesc.length:0}}/2000
+                            </span>
+                        </div>
+                    </div>
+                    <div class="popup_line quesBanner">
+                        <label class="form-label">封面图:</label>
+                        <div class="col-xs-10">
+                            <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                <img ng-src="{{submitQuesdata.frontImageUrl}}" alt="" />
+                                <span class="shop_img_msk"><em ng-click="add_organInfo('frontImageUrl')" style="margin:56px auto 0">{{submitQuesdata.frontImageUrl?'更换图片':'添加图片'}}</em></span>
+                            </div>
+                            <i ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete" ng-click="submitQuesdata.frontImageUrl = ''"></i>
+                            <ul class="printTips">
+                                <li>建议尺寸1380*776像素，图片支持JPG、PNG格式 </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;封底设置</label>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">封面图:</label>
+                        <div class="col-xs-10">
+                            <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                <img ng-src="{{submitQuesdata.behindImageUrl}}" alt="" />
+                                <span class="shop_img_msk"><em ng-click="add_organInfo('behindImageUrl')" style="margin:32px auto 0">{{submitQuesdata.behindImageUrl?'更换图片':'添加图片'}}</em></span>
+                            </div>
+                            <span ng-click="submitQuesdata.behindImageUrl = 'https://cdn.yizhiniao.com/surveytop.png'" class="clickText ml10">{{submitQuesdata.behindImageUrl != "https://cdn.yizhiniao.com/surveytop.png"?'重置':''}}</span>
+                            <ul class="printTips">
+                                <li>建议尺寸1380*1380像素，图片支持JPG、PNG格式 </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">提示文案:</label>
+                        <div class="col-xs-9">
+                            <input type="te xt" class="form-control" ng-model="submitQuesdata.submitMes" placeholder="你的问题已提交，谢谢您的支持与配合！" />
+                        </div>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;对内备注</label>
+                    </div>
+                    <div class="popup_line">
+                        <div>
+                            <textarea class="form-control" maxlength="500" ng-model="submitQuesdata.remark" placeholder="该备注只有内部操作人员可见"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="border-top: 1px dashed #DCDCDC;"></div>
+                    <div class="popup_line">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;题目设置</label><span class="c999 line28">(点击箭头可更改题目顺序，非自定义题目的名称或选项内容不支持修改)</span>
+                        <span class="btn_empty_red pull-right" ng-click='opensurveyTemplate()'><i class="icon_use_survey"></i> 引用模板</span>
+                    </div>
+                    <div class="popup_line surveyItem" ng-repeat="x in QuestionList track by $index" ng-init="outerIndex = $index">
+                        <i ng-click="del($index,x)" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除</var></i>
+                        <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(QuestionList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(QuestionList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                        <!--填空题-->
+                        <div ng-if="x.questionType == 1">
+                            <!--题库-->
+                            <div ng-if="x.userDefined == 0">
+                                <div class="clearfix">
+                                    <span class="line30">{{$index+1}}、{{x.questionName}}</span>
+                                    <span class="line25">[填空题]</span>
+                                    <span class="survey_lib"></span>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-xs-5 mt10 ml5">
+                                        <input class="form-control" type="text" maxlength="0" />
+                                    </div>
+                                </div>
+                                <div class="cursor mt15">
+                                    <span>题目设置：</span>
+                                    <label class="mr10"><input type="checkbox" ng-model="x.questionNotNull"/>必填</label>
+                                </div>
+                            </div>
+                            <!--自定义-->
+                            <div ng-if="x.userDefined == 1">
+                                <div class="clearfix">
+                                    <span class="line25 pull-left">{{$index+1}}、</span>
+                                    <div class="surveyTextarea" contenteditable="plaintext-only" content-editable ng-model="x.questionName"><br /></div>
+                                    <span class="line25">[填空题]</span>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-xs-5 mt10 ml5">
+                                        <input class="form-control" placeholder="请输入提示文字" ng-model="x.questionDefaultValue" type="text" />
+                                    </div>
+                                </div>
+                                <div class="cursor mt15">
+                                    <span>题目设置：</span>
+                                    <label class="mr10"><input type="checkbox" ng-model="x.questionNotNull"/>必填</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--选择题-->
+                        <div ng-if="x.questionType !== 1">
+                            <!--题库-->
+                            <div ng-if="x.userDefined == 0">
+                                <div class="clearfix">
+                                    <span class="line25 pull-left">{{$index+1}}、</span>
+                                    <div class="surveyTextarea" contenteditable="false" content-editable ng-model="x.questionName"><br /></div>
+                                    <span class="line25">[{{x.questionType == 2?'单选题':'多选题'}}]</span>
+                                    <span class="survey_lib"></span>
+                                </div>
+                                <div style="padding: 8px 20px 0;">
+                                    <div ng-repeat="n in x.questionAnserList track by $index" class="line30" style="overflow: auto;">
+                                        <div>
+                                            <div class="pull-left">
+                                                <input type="radio" ng-disabled="true" ng-if="x.questionType == 2" style="margin-bottom: -2px;" />
+                                                <input type="checkbox" ng-disabled="true" ng-if="x.questionType == 3" style="margin-right:5px;margin-bottom: -2px;" />
+                                            </div>
+                                            <div class="surveyTextarea" contenteditable="false" content-editable ng-model="n.anser"><br /></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor mt15">
+                                    <span>题目设置：</span>
+                                    <label class="mr10"><input ng-disabled="true" type="radio" value="2" ng-model="x.questionType"/>单选</label>
+                                    <label class="mr10"><input ng-disabled="true" type="radio" value="3" ng-model="x.questionType"/>多选</label>
+                                    <label class="mr10"><input type="checkbox" ng-model="x.questionNotNull"/>必填</label>
+                                </div>
+                            </div>
+                            <!--自定义-->
+                            <div ng-if="x.userDefined == 1">
+                                <div class="clearfix">
+                                    <span class="line25 pull-left">{{$index+1}}、</span>
+                                    <div class="surveyTextarea" contenteditable="plaintext-only" content-editable ng-model="x.questionName"><br /></div>
+                                    <span class="line25">[{{x.questionType == 2?'单选题':'多选题'}}]</span>
+                                </div>
+                                <div style="padding: 8px 20px 0;">
+                                    <div ng-repeat="n in x.questionAnserList track by $index" class="line25" style="overflow: auto;">
+                                        <div>
+                                            <div class="pull-left">
+                                                <input type="radio" ng-disabled="true" ng-if="x.questionType == 2" style="margin-bottom: -2px;" />
+                                                <input type="checkbox" ng-disabled="true" ng-if="x.questionType == 3" style="margin-right:5px;margin-bottom: -2px;" />
+                                            </div>
+                                            <div class="surveyTextarea placeholder1" contenteditable="{{n.anser !== '其他'?'plaintext-only':false}}" content-editable ng-model="n.anser"><br /></div>
+                                            <div>
+                                                <span class="survey-add-del" title="添加题目" ng-click="oprateAnswer(outerIndex,1)">+</span>
+                                                <span class="survey-add-del" title="删除题目" ng-click="oprateAnswer(outerIndex,0,$index)">-</span>
+                                                <span class="survey-add-del" title="上移" btnType="{{$first?'n':'y'}}" ng-click="moveUpDown(x.questionAnserList, $index, 1, $event)">↑</span>
+                                                <span class="survey-add-del" title="下移" btnType="{{$last?'n':'y'}}" ng-click="moveUpDown(x.questionAnserList, $index, 2, $event)">↓</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor mt15">
+                                    <span>题目设置：</span>
+                                    <label class="mr10"><input type="radio" value="2" ng-model="x.questionType"/>单选</label>
+                                    <label class="mr10"><input type="radio" value="3" ng-model="x.questionType"/>多选</label>
+                                    <label class="mr10"><input type="checkbox" ng-model="x.questionNotNull"/>必填</label>
+                                    <label class="mr10"><input type="checkbox" ng-click="addother($index)" ng-checked="x.hasOther"/>添加‘其他’选项</label>
+                                    <label class="mr10"><input type="checkbox" ng-disabled="!x.hasOther" ng-checked="x.hasOther && x.anserFillIn" ng-model="x.anserFillIn"/>‘其他’后添加输入框</label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="textAlignCenter">
+                        <div class="btn_empty_red mr10" ng-click="addQues(true)"><i class="icon_addcourse"></i>填空题</div>
+                        <div class="btn_empty_red mr10" ng-click="addQues()"><i class="icon_addcourse"></i>选择题</div>
+                        <div class="btn_full_red" ng-click="openQues()"><i class="icon_addcourse"></i>选择题目</div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup(true)">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+                <button class="btn sure" type="button" ng-click="createQues(true)">预览</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--填空题详情-->
+<div class="popup_ customerAnswer-popup">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <div class="pull-left line28" style="max-width: 80%;">
+                            题目{{currentQues}}
+                        </div>
+                        <div ng-show='survey_opra' class="common_tab_btn noneMargin pull-right" ng-click="openleadSuevey(leadOutquestionnaireContentId,leadOutquestionnaireAnserId,leadOutquestionnaireId)"><i class="icon_export"></i>导出数据</div>
+                    </div>
+                    <div class="popup_table mt10">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>姓名(昵称)</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th>提交时间</th>
+                                    <th style="width: 40%;">答案文本</th>
+                                    <th class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.3%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="currentQuesList.length !== 0" ng-repeat="x in currentQuesList track by $index">
+                                        <td>{{x.potentialCustomer.name}}{{x.potentialCustomer.nickname?"("+ x.potentialCustomer.nickname +")" : ""}}</td>
+                                        <td>{{x.potentialCustomer.age}}</td>
+                                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td>{{x.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width: 40%;">{{x.textAnser}}</td>
+                                        <td><span class="clickText" ng-click="goCommonPop('check-answer', 'check_answer', '760px', {id:x.respondentsId})">查看答案</span></td>
+                                    </tr>
+                                    <tr ng-if="currentQuesList.length == 0">
+                                        <td colspan="2" class="textAlignCenter">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--模板选择-->
+<div class="popup_ surveyTemplate-popup">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <!--<div class="common_tab">
+                        <ul class="ul_left clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" list-clicks="SearchData(n,3)" list-keyup="Enterkeyup(n,3)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"  select-input="false"></kindsearch>
+                            </li>
+                        </ul>
+                    </div>-->
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>问卷名称</th>
+                                    <th class="textAlignCenter" style="width:40%;">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.3%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="surveyTemplateList.length !== 0" ng-repeat="x in surveyTemplateList track by $index">
+                                        <td>{{x.questionnaireName}}</td>
+                                        <td class="operate overflow-normal textAlignCenter" style="width:40%;">
+                                            <span class="clickText" ng-click="useTemsurvey(x)">引用模板</span>
+                                            <span class="clickText" ng-click='makeQrcode(x.previewUrl)'>预览模板</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="surveyTemplateList.length == 0">
+                                        <td colspan="2" class="textAlignCenter">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--选择题目弹框-->
+<div class="popup_ ques-popup">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="ques_types">
+                        <span>分类:</span>
+                        <span ng-repeat="n in quesTypes" ng-class="{'active':QuestionBank_type == n.id}" ng-click="getlistQuestionBank(n.id)">{{n.name}}</span>
+                    </div>
+                    <div class="popup_table mt10">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;"></th>
+                                    <th style="width: 75%;">题目名称</th>
+                                    <th style="width: 20%;">题型</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.3%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="listQuestionBank.length !== 0" ng-repeat="x in listQuestionBank track by $index" ng-click="choosedQues(x,$event)">
+                                        <td style="width: 5%;" class="textAlignCenter"><input type="checkbox" ng-checked="newChoosed_obj[x.questionId]" /></td>
+                                        <td style="width: 75%;">{{x.questionName}}</td>
+                                        <td style="width: 21.3%;">{{x.questionType == 1?"填空题":x.questionType == 2?"单选题":"多选题"}}</td>
+                                    </tr>
+                                    <tr ng-if="listQuestionBank.length == 0">
+                                        <td colspan="2" class="textAlignCenter">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="popup_btn">
+            <p class="screen_params">已选<span>{{newChoosed.length}}</span>个</p>
+            <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+            <button class="btn sure" type="button" ng-click="getQuestionList()">确定</button>
+        </div>
+    </div>
+</div>
+<!--发送问卷弹框-->
+<div class="popup_ sendsurvey-popup">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="sendSurvey()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15 required">收件设置:</label>
+                        <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-model="sendSurveyData.type" ng-checked="sendSurveyData.type == 'potentialCustomer'" value="potentialCustomer"/>潜客
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-model="sendSurveyData.type" ng-checked="sendSurveyData.type == 'student'" value="student"/>学员
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15 required">收件范围:</label>
+                        <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-model="sendSurveyData.scope" ng-checked="sendSurveyData.scope == 'all'" value="all"/>全部
+                            </label>
+                            <label class="checkbox-inline labelLeft" ng-if="sendSurveyData.type == 'student'">
+                                <input type="radio" ng-model="sendSurveyData.scope" ng-checked="sendSurveyData.scope == 'class'" value="class"/>按班
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" ng-model="sendSurveyData.scope" ng-checked="sendSurveyData.scope == 'portion'" value="portion"/>部分
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15">发送设置:</label>
+                        <!--选择班级-->
+                        <div class="col-xs-8 padLeftNone" ng-if="sendSurveyData.scope == 'class'">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in sendSurveyData.classList">{{x.className}}<i ng-click="inform_del(x, $index, 'c')" class="icon_drop_x"></i></span>
+                            </div>
+
+                            <div class="drop_add_teacher screen_no" ng-click="goCommonPop('course-sel', 'choseClass', '1060px', {name: 'class', type: 'checkbox', screen_classType: '0', callBackName: '通知-班级'})">
+                                <i class="icon_name_add"></i>
+                                <span class="form-span" style="color: #f5565b;">选择班级</span>
+                            </div>
+                        </div>
+                        <!--选择学员或者潜客-->
+                        <div class="col-xs-8 padLeftNone" ng-if="sendSurveyData.scope !== 'class'">
+                            <div class="teacher_select">
+                                <div ng-if="sendSurveyData.type == 'student'">
+                                    <span ng-repeat="x in sendSurveyData.studentList">{{x.name}}<i ng-click="inform_del(x, $index, 's')" class="icon_drop_x"></i></span>
+                                </div>
+                                <div ng-if="sendSurveyData.type == 'potentialCustomer'">
+                                    <span ng-repeat="x in sendSurveyData.potialList">{{x.name}}<i ng-click="inform_del(x, $index, 'p')" class="icon_drop_x"></i></span>
+                                </div>
+
+                            </div>
+                            <div class="drop_add_teacher screen_no" ng-if="sendSurveyData.type == 'student'" ng-click="goCommonPop('student-sel','selectStuds', '760px', {name:'all', type: 'student', choseType: 'checkbox', callBackName:'通知-学员'})">
+                                <i ng-class="{'icon_name_sub': sendSurveyData.scope == 'all', 'icon_name_add': sendSurveyData.scope == 'portion'}"></i>
+                                <span class="form-span" style="color: #f5565b;">{{sendSurveyData.scope == 'all'?'排除学员':'选择学员'}}</span>
+                            </div>
+                            <div class="drop_add_teacher screen_no" ng-if="sendSurveyData.type == 'potentialCustomer'" ng-click="goCommonPop('potial-sel','potial_sel', '960px', {callBackName:'通知-潜客',form:'survey'})">
+                                <i ng-class="{'icon_name_sub': sendSurveyData.scope == 'all', 'icon_name_add': sendSurveyData.scope == 'portion'}"></i>
+                                <span class="form-span" style="color: #f5565b;">{{sendSurveyData.scope == 'all'?'排除潜客':'选择潜客'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px">
+                        <label class="form-label marging-rt-15">通知方式:</label>
+                        <div class="col-xs-8 padLeftNone line28">
+                            <label class="checkbox-inline" ng-if="sendSurveyData.type == 'student'">
+                                <input type="checkbox" style="margin-top: 7px;" ng-model="sendSurveyData.notificationMode_wx"/>公众号通知
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" style="margin-top: 7px;" ng-model="sendSurveyData.notificationMode_sms"/>短信通知
+                            </label>
+                            <label class="checkbox-inline">
+                                <span class="clickText" ng-click="operationList(null, 'open')">点击预览效果图</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-bottom: 5px;margin-left: 35px;">
+                        <div class="col-xs-8 padLeftNone" style="line-height: 28px">
+                            <span style="color:#F6B352">注：本问卷将以短信的形式发送给家长，家长可通过短信链接的形式填写问卷。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发送问卷预览图-->
+<div class="message_see">
+    <span class="message_see_x" ng-click='operationList(null, "close")'></span>
+    <img src="https://cdn.yizhiniao.com/surveyview.png" alt="预览" />
+</div>
+<!--预览二问卷-->
+<div id="surveyQrCode" class="clearfix">
+    <dl>
+        <dt id="surveyUrl"><span></span><img alt="预览问卷" /></dt>
+    </dl>
+    <div>请用微信扫一扫预览问卷</div>
+</div>
+<!--问卷数据详情-->
+<div class="popup_ quesdetail-popup">
+    <ul class="pot_pop_nav clearfix">
+        <li ng-class="{pot_pop_nav_li: popNavSelected == n.tab}" ng-click="changePopNav(n.tab)" ng-repeat="n in popNav">{{n.name}}<em></em><i></i></li>
+    </ul>
+    <div class="popup_content" ng-show='popNavSelected == 1'>
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <div class="col-xs-9 noPadding">
+                            数据汇总：发送问卷：{{questionnaireDetail.releasedQuantity}}份 回收问卷：{{questionnaireDetail.recyclingQuantity}}份
+                        </div>
+                    </div>
+                    <div class="popup_line surveyItem" ng-repeat="x in questionnaireDetail.questionnaireContentList track by $index" ng-init="outerIndex = $index">
+                        <div ng-if="x.questionType == 1">
+                            <div class="popup_line noneMargin">
+                                <span class="line30">{{$index+1}}、{{x.questionName}}（本次有效填写人次:{{x.answerNumber}}）</span>
+                                <span ng-show='x.answerNumber > 0' class="clickText" ng-click="customerAnswer($index+1,x.questionName,x.questionnaireContentId,x.questionnaireAnserId,questionnaireId)">查看明细</span>
+                            </div>
+                        </div>
+                        <div ng-if="x.questionType != 1">
+                            <div class="popup_line noneMargin">
+                                <span class="line30">{{$index+1}}、{{x.questionName}}（本次有效填写人次:{{x.answerNumber}}）</span>
+                            </div>
+                            <div class="common_body">
+                                <table class="table table-hover noneMargin">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;">选项</th>
+                                            <th style="width: 20%;">填写次数</th>
+                                            <th style="width: 30%;">比例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="roll_tbody">
+                                        <tr ng-if="x.questionnaireAnserList.length !== 0" ng-repeat="n in x.questionnaireAnserList">
+                                            <td style="width: 50%;">{{n.anser}}<span ng-show="n.answerNumber > 0 && n.anserFillIn == 1" class="clickText ml10" ng-click="customerAnswer(outerIndex+1,x.questionName,x.questionnaireContentId,n.questionnaireAnserId,questionnaireId)">查看明细</span></td>
+                                            <td style="width: 20%;">{{n.answerNumber}}</td>
+                                            <td style="width: 30%;">
+                                                <div class="surveyRate">
+                                                    <div ng-style="{'width':n.rate+ '%'}"></div>
+                                                </div>
+                                                <span>{{n.rate}}%</span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="x.questionnaireAnserList.length == 0">
+                                            <td colspan="3" class="textAlignCenter">暂无数据</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="popup_content" ng-show='popNavSelected == 2' style="padding-bottom: 20px;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="common_tab">
+                        <ul class="ul_left clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n,2)" list-keyup="Enterkeyup(n,2)" list-data="{{kindSearchData_}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <label class="search_checkbox" style="margin-right: 10px;">
+                                    <input type="checkbox" ng-checked="parentsReaded == 1" ng-click="sel_screen(3, $event)" class="checkbox-inline labelLeft">已读
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-checked="parentsReaded == 0" ng-click="sel_screen(4, $event)"  class="checkbox-inline labelLeft">未读
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox" style="margin-right: 10px;">
+                                    <input type="checkbox" ng-checked="viewStatus == 0" ng-click="sel_screen(6, $event)" class="checkbox-inline labelLeft">未查看
+                                </label>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" ng-checked="viewStatus == 1" ng-click="sel_screen(5, $event)"  class="checkbox-inline labelLeft">已查看
+                                </label>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                            <li class="common_tab_libtn" ng-show='survey_opra'>
+                                <div class="common_tab_btn" ng-click="openleadSuevey()"><i class="icon_export"></i>导出数据</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_line">
+                        <div class="col-xs-9 noPadding">
+                            数据汇总：发送问卷：{{listRespondents.length}}份 回收问卷：{{object}}份
+                        </div>
+                    </div>
+                    <div class="popup_table mt10">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead my-thead="{{surveyThead}}" list-clicks="sortCllict(2,data)"></thead>
+                        </table>
+                        <div class="popup_table_body" style="width:100%;max-height:240px;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-if="listRespondents.length !== 0" ng-repeat="x in listRespondents track by $index">
+                                        <td>{{x.potentialCustomer.name}}{{x.potentialCustomer.nickname?"("+ x.potentialCustomer.nickname +")" : ""}}</td>
+                                        <td>{{x.potentialCustomer.age}}</td>
+                                        <td>{{x.potentialCustomer.potentialCustomerParentPhone}}</td>
+                                        <td style="width: 120px;"><span ng-if="x.commitStatus == 1">{{x.createTime | yznDate:'yyyy-MM-dd hh:mm'}}</span></td>
+                                        <td>{{x.parentsReaded == 1?'已读':'未读'}}</td>
+                                        <td>
+                                            <span ng-click="modifyViewStatus(x)" ng-if="x.commitStatus == 1" ng-class='{"survey_checked":x.viewStatus == 1,"survey_nochecked":x.viewStatus == 0}'>
+                                                    {{x.viewStatus == 1?'已查看':'未查看'}}
+                                                </span>
+                                        </td>
+                                        <td title='{{x.remark}}'>{{x.remark}}</td>
+                                        <td class="operate overflow-normal textAlignCenter" style="width: 140px;">
+                                            <span class="clickText" ng-click="goCommonPop('check-answer', 'check_answer', '760px', {id:x.respondentsId},getlistRespondents)" ng-if="x.commitStatus == 1">查看答卷</span>
+                                            <span ng-show='survey_opra' class="clickText" ng-click="delSurvey(x)">删除答卷</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="listRespondents.length == 0">
+                                        <td colspan="2" class="textAlignCenter">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="pagitionDiv">
+            <div class="M-box3 M_box3_2"></div>
+        </div>
+    </div>
+</div>

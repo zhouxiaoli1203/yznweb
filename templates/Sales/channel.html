@@ -1,0 +1,84 @@
+<!--编辑-->
+<div class="popup_ shade_editchannel">
+		<div class="popup_content">
+			<form class="popup_form" role="form" ng-submit="channelSure()">
+				<div class="popup_form_content">
+				<!-- 内容区 -->
+				    <div class="popup_line">
+						<label class="form-label required">渠道名称:</label>
+						<div class="col-xs-10">
+							<input class="form-control" maxlength="12" type="text" autocomplete="off" ng-model="channelName"  required>
+						</div>
+				    </div>
+					<div class="popup_line">
+						<label class="form-label required">渠道类型:</label>
+						<div class="col-xs-10">
+							<select class="form-control" ng-model="channelTypeId" required>
+								<option value="">请选择渠道类型</option>
+								<option value="{{x.id}}" ng-repeat="x in getChannelTypeList">{{x.channelTypeName}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="popup_line">
+						<label class="form-label">备注:</label>
+						<div class="col-xs-10">
+						    <span class="input_words" >{{channelDesc?channelDesc.length:0}}/100</span>
+							<textarea class="form-control fixedTextareaWidth" maxlength="100" rows="3" ng-model="channelDesc"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+			</form>
+		</div>
+</div>
+<div class="common_body">
+	<!--下拉选择-->
+	<div class="common_tab">
+		<ul class="ul_left clearfix">
+			<li>
+				<kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{searchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+			</li>
+			<li class="common_tab_libtn" ng-if="isOperate">
+				<div class="common_tab_btn charge_tab_por " ng-click="channel_tab_por()">
+					<i class="icon_addtype"></i>新增渠道
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="common_content">
+		<div class="table-responsivecharge_table">
+			<table class="table table-hover abnormal">
+				<thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+				<tbody class="demo_tbody"  ng-if="getChannelList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+				<tbody class="demo_tbody" ng-if="getChannelList">
+					<tr ng-repeat="x in getChannelList">
+						<td>{{x.channelName}}</td>
+						<td>{{x.channelTypeName}}</td>
+						<td class="remarks overflow-normal">
+							<remark-view view-data="{{x.channelDesc}}"></remark-view>
+							<remark-edit edit-id="{{x}}" edit-length="100" edit-title="备注" edit-text="{{x.channelDesc}}" edit-otext="{{x.channelDesc}}" edit-click="editRemark(n)" ng-if="!fromOrgn"></remark-edit>
+						</td>
+						<td class="operate overflow-normal textAlignCenter">
+							<span class="clickText" ng-click="editOperation(x)" ng-if="isOperate">编辑</span>
+							<span class="clickText" ng-click="deleteOperation(x)" ng-if="isOperate">删除</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="pagitionDiv">
+				<div class="M-box3-total">
+					共计{{totalNum}}条数据
+				</div>
+				<div class="M-box3"></div>
+			</div>
+		</div>
+	</div>
+</div>

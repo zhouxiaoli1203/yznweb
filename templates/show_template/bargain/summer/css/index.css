@@ -1,0 +1,417 @@
+@charset "utf-8";
+.summer_con {
+    background-color: #F4D96E;
+}
+.con_1 {
+    position: relative;
+    width: 100%;
+}
+.con_1_bg {
+    display: block;
+    width: 100%;
+}
+.con_1_c {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.s_peo {
+    margin-top: 0.4rem;
+    margin-left: 0.2rem;
+    height: 0.9rem;
+}
+.s_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin-right: 0.15rem;
+    border-radius: 50%;
+}
+.s_peo_info {
+    float: left;
+    height: 100%;
+}
+.s_peo_info p {
+    height: 0.3rem;
+    line-height: 0.3rem;
+    color: #fff;
+}
+.con_1_tit {
+    width: 6.35rem;
+    height: 1.31rem;
+    margin: 0.6rem auto 0.15rem;
+    border-radius: 0.1rem;
+    background-color: #FCFF10;
+    color: #51ACF0;
+    text-align: center;
+    line-height: 1.31rem;
+}
+.con_1_tit p {
+    height: 100%;
+    font-size: 0.42rem;
+}
+.con_1_time {
+    width: 5.1rem;
+    margin: 0 auto;
+    height: 0.25rem;
+    color: #fff;
+    line-height: 0.25rem;
+}
+.con_1_time span {
+    display: inline-block;
+    color: #FCFF10;
+    margin: 0 0.08rem;
+}
+.con_img_1 {
+    position: absolute;
+    top: 4.74rem;
+    right: 0;
+    width: 4.04rem;
+    height: 2.96rem;
+    background: url("../img/img_1.gif") no-repeat;
+    background-size: contain;
+}
+.con_img_2 {
+    position: absolute;
+    top: 5.8rem;
+    left: 1.03rem;
+    width: 1.54rem;
+    height: 1.78rem;
+    background: url("../img/img_2.gif") no-repeat;
+    background-size: contain;
+}
+.con_img_2 i:nth-child(1) {
+    position: absolute;
+    top: 0.25rem;
+    right: -0.1rem;
+    width: 0.18rem;
+    height: 0.18rem;
+    background: url("../img/bubble_1.png") no-repeat;
+    background-size: contain;
+}
+.con_img_2 i:nth-child(2) {
+    position: absolute;
+    top: 0.05rem;
+    right: -0.18rem;
+    width: 0.15rem;
+    height: 0.15rem;
+    background: url("../img/bubble_1.png") no-repeat;
+    background-size: contain;
+}
+.con_img_2 i:nth-child(3) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.13rem;
+    height: 0.13rem;
+    background: url("../img/bubble_1.png") no-repeat;
+    background-size: contain;
+}
+.con_img_1 i:nth-child(1) {
+    position: absolute;
+    top: -0.1rem;
+    left: 0.31rem;
+    width: 0.35rem;
+    height: 0.35rem;
+    background: url("../img/bubble_1.png") no-repeat;
+    background-size: contain;
+}
+.con_img_1 i:nth-child(2) {
+    position: absolute;
+    top: -0.48rem;
+    left: 0.2rem;
+    width: 0.22rem;
+    height: 0.22rem;
+    background: url("../img/bubble_1.png") no-repeat;
+    background-size: contain;
+}
+.con_img_3 {
+    display: block;
+    position: absolute;
+    top: 5.52rem;
+    left: 0;
+    width: 0.85rem;
+    height: 2.88rem;
+    background: url("../img/bubble_2.png") no-repeat;
+    background-size: contain;
+}
+.con_img_4 {
+    position: absolute;
+    top: 5.25rem;
+    right: 0.08rem;
+    width: 1.58rem;
+    height: 3.05rem;
+    background: url("../img/bubble_3.png") no-repeat;
+    background-size: contain;
+}
+.con_fish_1 {
+    position: absolute;
+    top: 8.4rem;
+    left: 1.07rem;
+    width: 1.06rem;
+    height: 1.15rem;
+    background: url("../img/fish_1.gif") no-repeat;
+    background-size: contain;
+}
+.con_fish_2 {
+    position: absolute;
+    top: 9.38rem;
+    left: 2.5rem;
+    width: 0.42rem;
+    height: 0.24rem;
+}
+.con_fish_2 i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.42rem;
+    height: 0.24rem;
+    background: url("../img/fish_2.png") no-repeat;
+    background-size: contain;
+}
+.con_fish_2 i:nth-child(2) {
+    top: 0.02rem;
+    left: 0.5rem;
+}
+.con_fish_2 i:nth-child(3) {
+    top: 0.4rem;
+    left: 0.3rem;
+}
+.con_fish_2 i:nth-child(4) {
+    top: 0.25rem;
+    left: 0.75rem;
+}
+.con_fish_3 {
+    position: absolute;
+    top: 7.5rem;
+    left: 4.5rem;
+    width: 1.16rem;
+    height: 1.36rem;
+}
+.con_fish_3 i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.16rem;
+    height: 1.36rem;
+    background: url("../img/fish_3.gif") no-repeat;
+    background-size: contain;
+}
+.con_fish_3 i:nth-child(2) {
+    top: 0.9rem;
+    left: -0.4rem;
+    width: 1rem;
+    height: 1rem;
+}
+.con_fish_3 i:nth-child(3) {
+    top: 0.9rem;
+    left: 0.4rem;
+    width: 1rem;
+    height: 1rem;
+}
+.con_1_btn {
+    display: block;
+    width: 2.07rem;
+    height: 0.75rem;
+    margin: 7.3rem auto 0;
+    border: none;
+    background: url("../img/btn_1.png") no-repeat;
+    background-size: contain;
+}
+.con_2, .con_3, .con_4, .con_5, .con_6 {
+    position: relative;
+}
+.con_box {
+    position: relative;
+    width: 6.76rem;
+    padding: 0.12rem;
+    margin: 1.55rem auto 0;
+    border-radius: 0.16rem;
+    background: #fb962d;
+    opacity:0.85;
+}
+.con_text {
+    width: 100%;
+    padding: 0.2rem 0.25rem;
+    border-radius: 0.16rem;
+    background-color: #FBFBFB;
+}
+.con_text p {
+    margin-bottom: 0.2rem;
+    color: #D86E00;
+    font-size: 0.32rem;
+}
+.con_text img {
+    display: block;
+    width: 100%;
+}
+.con_tit {
+    position: absolute;
+    top: -0.89rem;
+    left: 0.57rem;
+    width: 5.66rem;
+    height: 0.92rem;
+    background: url("../img/con_tit.png") no-repeat;
+    background-size: contain;
+}
+.con_tit span {
+    display: block;
+    margin: 0.51rem auto 0;
+    width: 2.06rem;
+    height: 0.4rem;
+}
+.con_2 .con_tit span {
+    background: url("../img/con_tit_1.png") center center no-repeat;
+    background-size: contain;
+}
+.con_3 .con_tit span {
+    background: url("../img/con_tit_2.png") center center no-repeat;
+    background-size: contain;
+}
+.con_4 .con_tit span {
+    background: url("../img/con_tit_3.png") center center no-repeat;
+    background-size: contain;
+}
+.con_5 .con_tit span {
+    background: url("../img/con_tit_4.png") center center no-repeat;
+    background-size: contain;
+}
+.con_6 .con_tit span {
+    background: url("../img/con_tit_5.png") center center no-repeat;
+    background-size: contain;
+}
+.s_nodata {
+    min-height: 4.4rem;
+    text-align: center;
+    line-height: 4.4rem;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.6rem;
+    color: #D86E00;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.crumbs_1 {
+    position: absolute;
+    top: -1.2rem;
+    left: -0.2rem;
+    width: 1.26rem;
+    height: 2.01rem;
+    background: url("../img/crumbs (4).png") no-repeat;
+    background-size: contain;
+}
+.crumbs_2 {
+    position: absolute;
+    top: -1.4rem;
+    left: -0.2rem;
+    width: 1.18rem;
+    height: 2.43rem;
+    background: url("../img/crumbs (5).png") no-repeat;
+    background-size: contain;
+}
+.crumbs_3 {
+    position: absolute;
+    top: -1.2rem;
+    right: -0.1rem;
+    width: 1.75rem;
+    height: 1.31rem;
+    background: url("../img/crumbs (2).png") no-repeat;
+    background-size: contain;
+}
+.crumbs_4 {
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    width: 1.96rem;
+    height: 1.67rem;
+    background: url("../img/crumbs (3).png") no-repeat;
+    background-size: contain;
+}
+.crumbs_5 {
+    position: absolute;
+    top: -1.2rem;
+    right: -0.1rem;
+    width: 1.45rem;
+    height: 2.28rem;
+    background: url("../img/crumbs (6).png") no-repeat;
+    background-size: contain;
+}
+.crumbs_6 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.73rem;
+    background: url("../img/crumbs (1).png") bottom left no-repeat;
+    background-size: contain;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

@@ -1,0 +1,753 @@
+<!--员工选择筛选器-->
+<staff-sel></staff-sel>
+<div class="common_body staff_common_body">
+    <div class="tab_nav">
+        <span ng-click="switchNav(1, 1)" ng-class="{tab_nav_show: firstNav==1}">考勤管理</span>
+        <span ng-click="switchNav(1, 2)" ng-class="{tab_nav_show: firstNav==2}">请假记录</span>
+    </div>
+    <div class="second_nav" ng-show="firstNav==1">
+        <span ng-click="switchNav(2, 1)" ng-class="{show_sp: secondNav==1}">每日统计</span>
+        <span ng-click="switchNav(2, 2)" ng-class="{show_sp: secondNav==2}">月度汇总</span>
+        <span ng-click="switchNav(2, 3)" ng-class="{show_sp: secondNav==3}">考勤记录</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="commomFun.operateScreen(1, n)" list-keyup="commomFun.operateScreen(1, n)" list-data="{{commomData.ksn}}" select-name="{{commomData.ksnId}}" select-input="false"></kindsearch>
+            </li>
+            <li ng-show="firstNav==1 && secondNav == 1">
+                <input type="text" class="form-control dateIcon" id="attend_1" ng-model="commomData.screenData.time" placeholder="请选择时间" autocomplete="off">
+            </li>
+            <li ng-show="firstNav==1 && secondNav == 2">
+                <input type="text" class="form-control dateIcon" id="attend_2" ng-model="monthlyData.screenData.time" placeholder="请选择时间" autocomplete="off">
+            </li>
+            <li ng-show="firstNav==1 && secondNav == 3">
+                <input type="text" style="width: 230px;" class="form-control dateIcon" id="attend_3" ng-model="recordData.screenData.time" placeholder="请选择时间" autocomplete="off">
+            </li>
+            <li ng-show="firstNav==1 && secondNav==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="dailyData.screenData.fullTime==1" ng-click="dailyFun.operateScreen(1, $event)">全职
+                </label>
+            </li>
+            <li ng-show="firstNav==1 && secondNav==1" class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="dailyData.screenData.fullTime==0" ng-click="dailyFun.operateScreen(2, $event)">兼职
+                </label>
+            </li>
+            <li ng-show="firstNav==1 && secondNav==2">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="monthlyData.screenData.fullTime==1" ng-click="monthlyFun.operateScreen(1, $event)">全职
+                </label>
+            </li>
+            <li ng-show="firstNav==1 && secondNav==2" class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="monthlyData.screenData.fullTime==0" ng-click="monthlyFun.operateScreen(2, $event)">兼职
+                </label>
+            </li>
+            <li ng-if="firstNav==2">
+                <my-select my-id="leaveType" list-name="请假类型" list-data="{{leaveData.screenData.leaveType}}" list-field="name" list-click="leaveFun.operateScreen(1, n)" list-sort="true"></my-select>
+            </li>
+            <li class="common_tab_libtn" ng-show="firstNav==1 && secondNav==1 && ('183' | _authId)">
+                <div class="common_tab_btn demo_tab_btn" ng-click="routerSkip('setManageOther',{tab:4,tab_:1,before:'attend'})"><i class="icon_attend_2"></i>考勤设置</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="firstNav==1 && secondNav==1 && powerJud.operate && totalNum_pop>0">
+                <div class="common_tab_btn demo_tab_btn" ng-click="dailyFun.operateBtn(6)">未分组({{totalNum_pop}})</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="firstNav==1 && secondNav==3 && powerJud.operate">
+                <div class="common_tab_btn demo_tab_btn" ng-click="recordFun.operateBtn(1)"><i class="icon_attend_3"></i>新增记录</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="firstNav==1 && secondNav==3 && powerJud.operate">
+                <div class="common_tab_btn demo_tab_btn" ng-click="recordFun.operateBtn(2)"><i class="icon_attend_3"></i>导出记录</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="firstNav==2 && powerJud.operate">
+                <div class="common_tab_btn demo_tab_btn" ng-click="leaveFun.operateBtn(1)"><i class="icon_attend_4"></i>请假</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="commomFun.operateScreen(2)">重置</li>
+        </ul>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table staff_table table-hover" ng-if="firstNav==1 && secondNav==1">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>上班安排</th>
+                        <th>上班打卡时间</th>
+                        <th>上班打卡结果</th>
+                        <th>下班打卡时间</th>
+                        <th>下班打卡结果</th>
+                        <th>关联请假单</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="!listData || listData.legnth == 0">
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                    <tr ng-repeat="x in listData">
+                        <td class="clickText" ng-click="dailyFun.operateList(1, x)">{{x.teacherName}}</td>
+                        <td ng-if="x.type == 0">-</td>
+                        <td ng-if="x.type == 1">{{x.attendanceBeginTime | _interception_time}}-{{x.attendanceEndTime | _interception_time}}</td>
+                        <td ng-if="x.type == 2">休息</td>
+                        <td>{{x.workBeginTime?(x.workBeginTime | yznDate:'HH:mm') : ''}}</td>
+                        <td ng-if="x.type == 1" class="clickText" ng-click="dailyFun.operateList(5, x)"><span ng-if="x.beginWorkType == 0">正常</span><span style="color: #fa575d;" ng-if="x.beginWorkType == 1">迟到</span><span style="color: #fa575d;" ng-if="x.beginWorkType == 2">缺卡</span></td>
+                        <td ng-if="x.type != 1"></td>
+                        <td>{{x.workEndTime?(x.workEndTime | yznDate:'HH:mm') : ''}}</td>
+                        <td ng-if="x.type == 1" class="clickText" ng-click="dailyFun.operateList(5, x)"><span ng-if="x.endWorkType == 0">正常</span><span style="color: #fa575d;" ng-if="x.endWorkType == 1">早退</span><span style="color: #fa575d;" ng-if="x.endWorkType == 2">缺卡</span></td>
+                        <td ng-if="x.type != 1"></td>
+                        <td style="overflow: initial;" class="hoverMakeup textAlignCenter" ng-mouseover="x.showLeave=true" ng-mouseout="x.showLeave=false">
+                            <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                                <span ng-repeat="q in x.teacherLeaves">{{q.teacherLeaveType==0?'事假':(q.teacherLeaveType==1?'病假':'调休')}} {{q.beginDate | yznDate:'MM-dd HH:mm'}}至{{q.endDate | yznDate:'MM-dd HH:mm'}}</span>
+                            </div>
+                            <ul ng-if="x.showLeave && x.teacherLeaves.length > 0" style="min-width: 200px;left: 0;top: 40px;z-index: 999;">
+                                <li style="text-align: left;" ng-repeat="q in x.teacherLeaves">{{q.teacherLeaveType==0?'事假':(q.teacherLeaveType==1?'病假':'调休')}} {{q.beginDate | yznDate:'MM-dd HH:mm'}}至{{q.endDate | yznDate:'MM-dd HH:mm'}}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table staff_table table-hover" ng-if="firstNav==1 && secondNav==2">
+                <thead my-thead="{{monthlyData.thead}}" list-clicks="monthlyFun.operateScreen(3, data)"></thead>
+                <tbody class="demo_tbody" ng-if="!listData || listData.legnth == 0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="listData">
+                    <tr ng-repeat="x in listData">
+                        <td>{{x.teacherName}}</td>
+                        <td><span ng-if="x.lateNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(1, x, 0)">{{x.lateNum}}</span><span ng-if="x.lateNum == 0">{{x.lateNum}}</span></td>
+                        <td><span ng-if="x.leaveNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(1, x, 2)">{{x.leaveNum}}</span><span ng-if="x.leaveNum == 0">{{x.leaveNum}}</span></td>
+                        <td><span ng-if="x.beginAbsentNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(1, x, 1)">{{x.beginAbsentNum}}</span><span ng-if="x.beginAbsentNum == 0">{{x.beginAbsentNum}}</span></td>
+                        <td><span ng-if="x.endAbsentNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(1, x, 3)">{{x.endAbsentNum}}</span><span ng-if="x.endAbsentNum == 0">{{x.endAbsentNum}}</span></td>
+                        <td><span ng-if="x.absentNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(1, x, 4)">{{x.absentNum}}</span><span ng-if="x.absentNum == 0">{{x.absentNum}}</span></td>
+                        <td><span ng-if="x.privateLeaveNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(2, x, 0)">{{x.privateLeaveNum}}</span><span ng-if="x.privateLeaveNum == 0">{{x.privateLeaveNum}}</span></td>
+                        <td><span ng-if="x.illLeaveNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(2, x, 1)">{{x.illLeaveNum}}</span><span ng-if="x.illLeaveNum == 0">{{x.illLeaveNum}}</span></td>
+                        <td><span ng-if="x.abjustLeaveNum > 0" style="color: #f5565b; cursor: pointer;" ng-click="monthlyFun.operateList(2, x, 2)">{{x.abjustLeaveNum}}</span><span ng-if="x.abjustLeaveNum == 0">{{x.abjustLeaveNum}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table staff_table table-hover" ng-if="firstNav==1 && secondNav==3">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>联系方式</th>
+                        <th>打卡时间</th>
+                        <th>来源</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="!listData || listData.legnth == 0">
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                    <tr ng-repeat="x in listData">
+                        <td title="{{x.teacherName}}">{{x.teacherName}}</td>
+                        <td>{{x.teacherPhone}}</td>
+                        <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{x.operatorId?"手动补卡":"设备打卡"}}</td>
+                        <td>
+                            <span ng-if="x.operatorId" class="clickText" ng-click="recordFun.operateList(1, x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table staff_table table-hover" ng-if="firstNav==2">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>工号</th>
+                        <th>联系方式</th>
+                        <th>请假类型</th>
+                        <th>请假时间</th>
+                        <th>请假原因</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="!listData || listData.legnth == 0">
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                    <tr ng-repeat="x in listData">
+                        <td title="{{x.teacherName}}">{{x.teacherName}}</td>
+                        <td>{{x.workId}}</td>
+                        <td>{{x.teacherPhone}}</td>
+                        <td>{{x.teacherLeaveType=="0"?"事假":x.teacherLeaveType==1?"病假":x.teacherLeaveType==2?"调休":""}}</td>
+                        <td title="{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}">{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td title="{{x.teacherLeaveDesc}}">{{x.teacherLeaveDesc}}</td>
+                        <td>
+                            <span class="clickText" ng-click="leaveFun.operateList(1, x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3-total">共计{{totalNum}}条数据</div>
+            <div class="M-box3 M-box3-list"></div>
+        </div>
+    </div>
+</div>
+
+<!--每日统计的员工详情-->
+<div class="popup_ daily_detail">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="searchHead">
+                            <li>
+                                <input type="text" id="daily_detail_1" ng-model="dailyData.peoInfo.detailTime" class="form-control dateIcon" placeholder="请选择时间" autocomplete="off" />
+                            </li>
+                            <li ng-if="secondNav==1">
+                                <my-select my-id="daily_detail_state" list-name="状态" list-data="{{dailyData.peoInfo.stateList}}" list-field="name" list-click="dailyFun.operateList(4, n)" list-sort="false"></my-select>
+                            </li>
+                            <li ng-if="secondNav==2" class="headNameColor screen_title">
+                                <span ng-if="dailyData.peoInfo.state==0">迟到</span>
+                                <span ng-if="dailyData.peoInfo.state==1">上班缺卡</span>
+                                <span ng-if="dailyData.peoInfo.state==2">早退</span>
+                                <span ng-if="dailyData.peoInfo.state==3">下班缺卡</span>
+                                <span ng-if="dailyData.peoInfo.state==4">旷工</span>
+                                <i class="icon_drop_up"></i>
+                            </li>
+                            <li ng-if="secondNav==1 && powerJud.operate" class="common_tab_libtn" style="float: right; margin-right: 10px;">
+                                <div class="common_tab_btn demo_tab_btn" ng-click="dailyFun.operateBtn(5)"><i class="icon_attend_5"></i>变更上班安排</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table" style="overflow: inherit;">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th ng-if="secondNav==1" style="text-align: center; width: 50px;"><input type="checkbox" ng-checked="dailyData.peoInfo.allChecked" ng-click="dailyFun.operateList(3)" /></th>
+                                    <th style="width: 130px;">考勤日期</th>
+                                    <th style="width: 130px;">上班安排</th>
+                                    <th style="width: 90px;">上班打卡时间</th>
+                                    <th style="width: 90px;">上班打卡结果</th>
+                                    <th style="width: 90px;">下班打卡时间</th>
+                                    <th style="width: 90px;">下班打卡结果</th>
+                                    <th style="text-align: center;">关联请假单</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody" ng-if="dailyData.peoInfo.listData">
+                                <tr ng-if="!dailyData.peoInfo.listData || dailyData.peoInfo.listData.legnth == 0">
+                                    <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                </tr>
+                                <tr ng-repeat="x in dailyData.peoInfo.listData" ng-click="secondNav==1?dailyFun.operateList(2, x):''">
+                                    <td ng-if="secondNav==1" style="text-align: center;"><input type="checkbox" ng-checked="x.hasChecked" /></td>
+                                    <td>{{x.date | yznDate:'yyyy-MM-dd'}} {{x.date | _week:'date'}}</td>
+                                    <td ng-if="x.type == 0">未分组</td>
+                                    <td ng-if="x.type == 1">{{x.attendanceBeginTime | _interception_time}}-{{x.attendanceEndTime | _interception_time}}</td>
+                                    <td ng-if="x.type == 2">休息</td>
+                                    <td>{{x.workBeginTime?(x.workBeginTime | yznDate:'HH:mm') : ''}}</td>
+                                    <td ng-click="secondNav==2?dailyFun.operateList(5, x):''" ng-class="{'clickText':secondNav==2}"><span ng-if="x.beginWorkType == 0">正常</span><span style="color: #fa575d;" ng-if="x.beginWorkType == 1">迟到</span><span style="color: #fa575d;" ng-if="x.beginWorkType == 2">缺卡</span></td>
+                                    <td>{{x.workEndTime?(x.workEndTime | yznDate:'HH:mm') : ''}}</td>
+                                    <td ng-click="secondNav==2?dailyFun.operateList(5, x):''" ng-class="{'clickText':secondNav==2}"><span ng-if="x.endWorkType == 0">正常</span><span style="color: #fa575d;" ng-if="x.endWorkType == 1">早退</span><span style="color: #fa575d;" ng-if="x.endWorkType == 2">缺卡</span></td>
+                                    <td style="overflow: initial;" class="hoverMakeup textAlignCenter" ng-mouseover="x.showLeave=true" ng-mouseout="x.showLeave=false">
+                                        <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                                            <span ng-repeat="q in x.teacherLeaves">{{q.teacherLeaveType==0?'事假':(q.teacherLeaveType==1?'病假':'调休')}} {{q.beginDate | yznDate:'MM-dd HH:mm'}}至{{q.endDate | yznDate:'MM-dd HH:mm'}}</span>
+                                        </div>
+                                        <ul ng-if="x.showLeave && x.teacherLeaves.length > 0" style="min-width: 200px;left: -160px;top: 0px;z-index: 999;">
+                                            <li style="text-align: left;" ng-repeat="q in x.teacherLeaves">{{q.teacherLeaveType==0?'事假':(q.teacherLeaveType==1?'病假':'调休')}} {{q.beginDate | yznDate:'MM-dd HH:mm'}}至{{q.endDate | yznDate:'MM-dd HH:mm'}}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 M-box3-pop"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--每日统计迟到信息-->
+<div class="popup_ daily_late">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" style="margin: 0;">
+                        <label class="form-label">考勤日期:</label>
+                        <div class="col-xs-8">
+                            <span class="form-span">{{dailyData.lateInfo.date | yznDate:'yyyy-MM-dd'}}  {{dailyData.lateInfo.date | _week:'date'}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;">
+                        <label class="form-label">上班安排:</label>
+                        <div class="col-xs-8">
+                            <span class="form-span" ng-if="dailyData.lateInfo.type == 0">未分组</span>
+                            <span class="form-span" ng-if="dailyData.lateInfo.type == 1">{{dailyData.lateInfo.attendanceBeginTime | _interception_time}}-{{dailyData.lateInfo.attendanceEndTime | _interception_time}}</span>
+                            <span class="form-span" ng-if="dailyData.lateInfo.type == 2">休息</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;" ng-if="!dailyData.lateInfo.teacherLeaves || dailyData.lateInfo.teacherLeaves.length==0">
+                        <label class="form-label">请假:</label>
+                        <div class="col-xs-8">
+                            <span class="form-span">无</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;" ng-repeat="q in dailyData.lateInfo.teacherLeaves">
+                        <label class="form-label"><span ng-if="$first">请假:</span></label>
+                        <div class="col-xs-8">
+                            <span class="form-span">{{q.teacherLeaveType==0?'事假':(q.teacherLeaveType==1?'病假':'调休')}} {{q.beginDate | yznDate:'MM-dd HH:mm'}} 至 {{q.endDate | yznDate:'MM-dd HH:mm'}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;" ng-repeat="d in dailyData.lateInfo.signTeachers">
+                        <label class="form-label"><span ng-if="$first">打卡:</span></label>
+                        <div class="col-xs-8">
+                            <span class="form-span">{{d.signTime | yznDate:'HH:mm'}}<span ng-if="d.operatorId">(手动补卡)</span><span ng-if="!d.operatorId">(设备打卡)</span><i ng-if="d.operatorId" ng-click="dailyFun.operateList(6, d, $event)" style="margin-left: 5px;cursor: pointer;"
+                                class="icon_drop_x"></i></span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;">
+                        <label class="form-label"></label>
+                        <div class="col-xs-5">
+                            <span class="icon_name_add" ng-click="dailyFun.operateList(7)">新增打卡记录</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--每日统计新增打卡记录-->
+<div class="popup_ daily_push_time">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="dailyFun.operateList(8)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" style="margin: 0;">
+                        <label class="form-label">员工：</label>
+                        <div class="col-xs-8">
+                            <span class="form-span">{{dailyData.lateInfo.teacherName}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin: 0;">
+                        <label class="form-label required">打卡时间：</label>
+                        <div class="col-xs-6">
+                            <input type="text" id="daily_detail_2" ng-model="dailyData.pushTime" class="form-control dateIcon" placeholder="请选择时间" autocomplete="off" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--员工假期-->
+<!-- <div class="popup_ daily_vacation">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="searchHead">
+                            <li class="common_tab_libtn" ng-click="dailyFun.operateBtn(3)" style="float: right; margin-right: 10px;">
+                                <div class="common_tab_btn demo_tab_btn"><i class="icon_attend_6"></i>新增员工假期</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>员工假期</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in peoVacationList">
+                                    <td>{{x.holidayName}}</td>
+                                    <td>{{x.holidayBeginTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td>{{x.holidayEndTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td class="operate overflow-normal">
+                                        <span class="clickText" ng-click="dailyFun.operateList(9, x)">编辑</span>
+                                        <span class="clickText" ng-click="dailyFun.operateList(10, x)">删除</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<!--新增员工假期-->
+<!-- <div class="popup_ daily_vacation_add">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="dailyFun.operateList(11)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">员工假期：</label>
+                        <div class="col-xs-8">
+                            <input type="text" ng-model="dailyData.newAddVacation.name" class="form-control" maxlength="20" placeholder="请输入员工假期名称" autocomplete="off" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">日期：</label>
+                        <div class="col-xs-8">
+                            <input type="text" id="daily_detail_3" ng-model="dailyData.newAddVacation.time" class="form-control dateIcon" placeholder="请选择时间" autocomplete="off" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">描述：</label>
+                        <div class="col-xs-8">
+                            <span class="input_words">{{dailyData.newAddVacation.dec?dailyData.newAddVacation.dec.length:0}}/100</span>
+                            <textarea class="form-control" style="width: 100%;height: 60px;resize: none;" ng-model="dailyData.newAddVacation.dec" placeholder="请添加描述"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<!--未分组-->
+<div class="popup_ un_fenzu" id="un_fenzu">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>岗位</th>
+                                    <th class="textAlignCenter" style="width:150px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in unFenzuList">
+                                    <td>{{x.shopTeacher.teacherName}}</td>
+                                    <td title="{{x.quarterStr}}">{{x.quarterStr}}</td>
+                                    <td class="operate overflow-normal textAlignCenter" style="width:150px;">
+                                        <span class="clickText" ng-click="dailyFun.operateList(17, x)">安排考勤组</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 M-box3-pop"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--安排考勤组-->
+<div class="popup_ fenpei" id="fenpei">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="dailyFun.operateList(18)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label width_110">分配到此考勤组：</label>
+                        <div class="col-xs-8">
+                            <select class="form-control" ng-model="attendanceRulesId" style="width:200px;">
+                                <option value="">请选择考勤组</option>
+                                <option value="{{x.attendanceRulesId}}" ng-repeat="x in attendanceRulesList">{{x.name}}</option>
+                            </select>
+                            <div class="marginTop_7" style="color:#999;">若没有可选考勤组，请前往“考勤设置”新增考勤组。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--考勤设置-->
+<!-- <div class="popup_ daily_set">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="searchHead">
+                            <li class="common_tab_libtn" ng-click="dailyFun.operateBtn(4)" style="float: right; margin-right: 10px;">
+                                <div class="common_tab_btn demo_tab_btn"><i class="icon_attend_6"></i>新增考勤组</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>类型</th>
+                                    <th>星期</th>
+                                    <th>上下班时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in dailySetList">
+                                    <td>{{x.name}}</td>
+                                    <td>{{x.type==0?'固定':'排课'}}</td>
+                                    <td>{{x.type==0?x.weeks:''}}</td>
+                                    <td ng-if="x.type!=0"></td>
+                                    <td ng-if="x.type==0">{{x.beginTime | _interception_time}}-{{x.endTime | _interception_time}}</td>
+                                    <td class="operate overflow-normal">
+                                        <span class="clickText" ng-click="dailyFun.operateList(12, x)">编辑</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<!--新增考勤组-->
+<!-- <div class="popup_ daily_set_add">needdel__cz
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="dailyFun.operateList(13)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">考勤组名称：</label>
+                        <div class="col-xs-4">
+                            <input type="text" ng-model="dailyData.newAddSet.name" class="form-control" maxlength="20" placeholder="请输入考勤组名称" autocomplete="off" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">类型：</label>
+                        <div class="col-xs-3">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="set_type" value="0" ng-model="dailyData.newAddSet.type" required>固定制
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" name="set_type" value="1" ng-model="dailyData.newAddSet.type" required>排课制
+                            </label>
+                        </div>
+                        <span class="form-span" ng-if="dailyData.newAddSet.type==0" style="color: #999;">（说明：固定制，即有固定的上下班时间。）</span>
+                        <span class="form-span" ng-if="dailyData.newAddSet.type==1" style="color: #999;">（说明：排课制，即老师将按照排课时间进行考勤。）</span>
+                    </div>
+                    <div class="popup_line" ng-show="dailyData.newAddSet.type==0">
+                        <label class="form-label">工作日：</label>
+                        <div class="col-xs-10">
+                            <label class="checkbox-inline checkbox-padding" style="margin-left:5px" ng-repeat="w in weekList track by $index">
+                                <input type="checkbox" ng-model="dailyData.newAddSet.days[w]">{{w | _week}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="dailyData.newAddSet.type==0">
+                        <label class="form-label">上班时间：</label>
+                        <div class="col-xs-3">
+                            <input type="text" id="daily_detail_4" ng-model="dailyData.newAddSet.time_1" class="form-control dateIcon_2" placeholder="请选择时间" autocomplete="off" />
+                        </div>
+                        <label class="form-label">下班时间：</label>
+                        <div class="col-xs-3">
+                            <input type="text" id="daily_detail_5" ng-model="dailyData.newAddSet.time_2" class="form-control dateIcon_2" placeholder="请选择时间" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">员工：</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in dailyData.newAddSet.peoList">{{x.shopTeacher.teacherName}}<i ng-click="dailyFun.operateList(15, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span style="float: left;" class="icon_name_add" ng-click="dailyFun.operateList(14)">选择员工</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<!--月度汇总请假list点击-->
+<div class="popup_ monthly_leave">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>请假类型</th>
+                                    <th>请假时间</th>
+                                    <th>请假原因</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in leave_reasonList">
+                                    <td ng-if="x.teacherLeaveType==0">事假</td>
+                                    <td ng-if="x.teacherLeaveType==1">病假</td>
+                                    <td ng-if="x.teacherLeaveType==2">调休</td>
+                                    <td>{{x.beginDate | yznDate:'yyyy-MM-dd HH:mm'}} 至 {{x.endDate | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>{{x.teacherLeaveDesc}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--新增记录-->
+<div class="popup_ newRecord_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="recordFun.submit_params(1)">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label marging-rt-15">员工:</label>
+                        <div class="col-xs-9 padLeftNone">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in recordData.newAddRecord.teachers">{{x.teacherName}}<i ng-click="recordFun.operateList(2, x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="_addTeacher" list-name="请选择打卡员工" list-data="{{teachersList}}" list-field="teacherName" list-click="recordFun.operateList(3, n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">打卡时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="attend_record_1" ng-model="recordData.newAddRecord.signTime" placeholder="请选择开始时间" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--请假弹出框-->
+<div class="popup_ newleave_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="leaveFun.operateSubmit(1)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label marging-rt-15">员工:</label>
+                        <div class="col-xs-9 padLeftNone">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in leaveData.msk.teachers">{{x.teacherName}}<i ng-click="leaveFun.operateList(2, x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <div class="drop_add_teacher screen_no">
+                                <i class="icon_name_add"></i>
+                                <my-select my-id="leave_addTeacher" list-name="请选择请假员工" list-data="{{teachersList}}" list-field="teacherName" list-click="leaveFun.operateList(3, n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">请假类型:</label>
+                        <div class="col-xs-6" style="line-height: 26px;">
+                            <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leaveData.msk.teacherLeaveType" value="0"/>事假
+                                </label>
+                            <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leaveData.msk.teacherLeaveType" value="1"/>病假
+                                </label>
+                            <label class="checkbox-inline labelLeft">
+                                    <input type="radio" name="type" ng-model="leaveData.msk.teacherLeaveType" value="2"/>调休
+                                </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">开始时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="startTime" ng-model="leaveData.msk.beginDate" placeholder="请选择开始时间" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">结束时间:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="endTime" ng-model="leaveData.msk.endDate" placeholder="请选择结束时间" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">请假原因:</label>
+                        <div class="col-xs-10">
+                            <textarea style="max-width:401px;resize: none;" class="form-control" rows="4" maxlength="100" ng-model="leaveData.msk.teacherLeaveDesc" placeholder="请输入请假原因" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--批量变更打卡时间-->
+<div class="popup_ daily_change_time">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="dailyFun.operateList(16)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">上班安排：</label>
+                        <div class="col-xs-10">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="set_type" value="0" ng-model="dailyData.changeTime.type" required>上班
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" name="set_type" value="1" ng-model="dailyData.changeTime.type" required>休息
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="dailyData.changeTime.type == 0">
+                        <label class="form-label"></label>
+                        <div class="col-xs-4">
+                            <input type="text" id="daily_detail_6" ng-model="dailyData.changeTime.time_1" class="form-control dateIcon_2" placeholder="请选择上班时间" autocomplete="off" />
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" id="daily_detail_7" ng-model="dailyData.changeTime.time_2" class="form-control dateIcon_2" placeholder="请选择下班时间" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-10">
+                            <span style="color: #F6B352;">变更后，该员工所选日期的上班时间安排将全部按照新的上班时间重新设置。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

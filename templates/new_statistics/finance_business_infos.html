@@ -1,0 +1,89 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">经营利润</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+            </ul>
+        </div>
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+               <li class="li_left" style="margin-left:0">
+                    <my-select list-name="统计类别" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)" list-sort="false" ></my-select>
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1" >
+                    <span>单位:&nbsp;元&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+                <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" class="help_icon noneWidth" data-tips="消课金额：按上课时间统计，学员点名消课后产生的金额之和<br>
+手续费盈收：按订单时间统计，学员退课或转课后产生手续费盈收之和<br>
+结课盈收：按订单时间统计，学员结课后产生的非课消盈收之和<br>
+费用收入：按费用记录时间统计，费用收支中“收入”类型的金额之和<br>
+手续费亏损：按订单时间统计，学员退课或转课后产生手续费亏损之和<br>
+结课亏损：按订单时间统计，学员结课后产生的非课消亏损之和<br>
+费用支出：按费用记录时间统计，费用收支中“支出”类型的金额之和<br>
+工资支出：按结算日期统计，当月实发工资<br>
+合计：（消课金额+手续费盈收+结课盈收+费用收入）-（手续费亏损+结课亏损+费用支出+工资支出）"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0;">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)" list-change="selectList(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.data1}}</td>
+                        <td>￥{{x.data2|number:2}}</td>
+                        <td>￥{{x.data3|number:2}}</td>
+                        <td>￥{{x.data4|number:2}}</td>
+                        <td>￥{{x.data5|number:2}}</td>
+                        <td>￥{{x.data6|number:2}}</td>
+                        <td>￥{{x.data7|number:2}}</td>
+                        <td>￥{{x.data8|number:2}}</td>
+                        <td>￥{{x.data9|number:2}}</td>
+                        <td ng-attr-title="￥{{x.total|number:2}}">￥{{x.total|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td style="width:100px;">总计</td>
+                    <td width="10%" class="main_color">￥{{"data2" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data3" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data4" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data5" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data6" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data7" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data8" |_total :tableList|number:2}}</td>
+                    <td width="10%" class="main_color">￥{{"data9" |_total :tableList|number:2}}</td>
+                    <td ng-attr-title="￥{{'total' |_total :tableList|number:2}}" width="10%" class="main_color">￥{{"total" |_total :tableList|number:2}}</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

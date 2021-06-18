@@ -1,0 +1,369 @@
+<div class="showPop"></div>
+<!--推单二维码-->
+<div class="popup_ send_code">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="send_code_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false" style="padding: 40px 18px 50px 18px;">
+                    <div class="popup_line">
+                        <div class="share_con_code">
+                            <div id="shareCode"></div>
+                            <span>扫一扫分享到微信</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <div class="share_con_copy" style="padding-left:125px;">
+                            <label>链接分享</label>
+                            <input type="text" id="shareCopyText" ng-model="shareInfo" />
+                            <span ng-click="clickShareCopy()">复制链接</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--延期时间-->
+<div class="popup_ delay_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="delay_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">延期时间:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control dateIcon" type="text" id="delay" ng-model="delayDate" autocomplete="off" placeholder="请选择延期时间" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--查看提醒失败原因-->
+<div class="popup_ remindFail_pop" id="remindFail_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" ng-hide="unbindSevice_msg">
+                        <div class="textAlignCenter">
+                            {{studentInfo}}未绑定服务号，目前无法收到订单支付提醒。
+                        </div>
+                    </div>
+                    <div class="parting_line" ng-hide="unbindSevice_msg"></div>
+                    <div>您可以通过以下2种方法引导学员完成支付：</div>
+                    <div class="mt10">方法一：引导学员绑定服务号，绑定成功后，系统会自动重新发送订单支付提醒。</div>
+                    <div class="mt7"><span ng-click="openCheckPoster()" class="btn" style="border: 1px solid #ccc; padding: 5px 7px; border-radius: 1px;cursor: pointer;">查看引导海报</span></div>
+                    <div class="mt10">方法二：扫一扫下方二维码分享给学员，学员在手机上登录并完成支付。</div>
+                    <div class="mt20">
+                        <div class="share_con_code" style="margin:0;width:100px;height:100px;">
+                            <div id="shareCode_"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="submit" ng-click="closePop()">我知道了</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--查看引导海报-->
+<div class="popup_" id="checkPosters_pop">
+    <div class="popup_content" style="padding-top:27px;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll clearfix" isScroll="false">
+                    <div class="pull-left">
+                        <div style="width: 300px;height:464px;overflow: auto;position: relative;">
+                            <img style="width: 100%;" src="http://cdn.yizhiniao.com/poster.png" />
+                            <img id="PosterCode" />
+                        </div>
+                        <p class="f12 c999 textAlignCenter">（滚动查看完整海报）</p>
+                    </div>
+                    <div style="margin-left:330px;">
+                        <p class="f14">如何引导学员绑定服务号</p>
+                        <p class="f12 line25 mt5">1.获取海报。</p>
+                        <p class="f12 line25">2.将海报发送给学员或分享到朋友圈。</p>
+                        <p class="f12 line25">3.学员根据海报中的操作指引关注绑定服务号。</p>
+                        <p class="f14 mt20">获取海报方式</p>
+                        <p class="f12 line25">1.直接下载至电脑</p>
+                        <p class="clickText line28 posterDownload" ng-click="saveThePoster()">点击下载至电脑
+                            <p>
+                                <p class="f12 line25">2.微信扫一扫从下方二维码从手机上下载海报</p>
+                                <div id="PosterCodeH5"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--批量操作-->
+<div class="popup_ batch_pop">
+    <ul class="pot_pop_nav clearfix">
+        <li ng-class="{pot_pop_nav_li: popNavSelected == n.tab}" ng-click="changePopNav(n.tab)" ng-repeat="n in popNav">{{n.name}}<em></em><i></i></li>
+    </ul>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="batch_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line common_tab">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch select-id="screenSearch" class="vagueSearch" list-clicks="SearchData_(n)" list-keyup="Enterkeyup_(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <my-select list-name="顾问" my-id="adviser_id_" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser_(n)" list-search="true" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected_==-1" ng-click="changeRemind_($event,-1)">提醒失败
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected_==0" ng-click="changeRemind_($event,0)">未查看
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected_==1" ng-click="changeRemind_($event,1)">已查看
+                                </label>
+                            </li>
+                            <li ng-click="onReset_()" class="clickText" style="line-height: 28px;">重置</li>
+
+                            <li class="common_tab_libtn">
+                                <div class="common_tab_btn fontRed_BgWhite" ng-click="deletePop('batch')"><i class="icon_delete"></i>删除</div>
+                            </li>
+                            <li class="common_tab_libtn" ng-if="popNavSelected == 2">
+                                <div class="common_tab_btn fontRed_BgWhite" ng-click="openDelayPop('batch')"><i class="icon_addcourse"></i>延期</div>
+                            </li>
+                            <li class="common_tab_libtn" ng-if="popNavSelected == 1">
+                                <div class="common_tab_btn fontRed_BgWhite" ng-click="remindPop('batch',x)">重新提醒</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr class="">
+                                    <th style="width:50px;" class="textAlignCenter">
+                                        <input type="checkbox" ng-click="checkboxClick($event,orderList_)" ng-model="allChecked" />
+                                    </th>
+                                    <th style="width:120px;">学员姓名</th>
+                                    <th style="width:10%;">联系方式</th>
+                                    <th style="width:25%;">订单内容</th>
+                                    <th style="width:10%;">订单价格</th>
+                                    <th style="width:10%;">推单待收</th>
+                                    <th style="width:12%;">顾问</th>
+                                    <th style="width:12%;">付款截止日期</th>
+                                    <th style="width:18%;">上次提醒时间</th>
+                                    <!--<th style="width:10%;" class="textAlignCenter">状态</th>-->
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="max-height:420px;">
+                            <table>
+                                <tbody class="demo_tbody" ng-if="orderList_==''">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="10">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody " ng-show="orderList_">
+                                    <tr ng-repeat="x in orderList_" ng-click="sel_order(x, $event)">
+                                        <td style="width:50px;" class="textAlignCenter">
+                                            <input type="checkbox" name="sel_order" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td style="width:120px;">{{x.studentName}}</td>
+                                        <td style="width:10%;" title="{{x.phoneNumber}}">{{x.phoneNumber}}</td>
+                                        <td style="width:25%;" class="overheight" ng-mouseenter="showContent(x,$index,$event)" ng-mouseleave="hideContent()">
+                                            <div style="max-height:29px;">
+
+                                                <div class="lis">
+                                                    <!--收费标准类型 0 课时 1 学期 2按月-->
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 0">
+                                                        [{{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 购买课时:{{y.buyTime|number:2}} {{y.giveTime?"赠送课时:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 1">
+                                                        [{{y.schoolYear}} {{y.schoolTermName}} {{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 购买课时:{{y.buyTime|number:2}} {{y.giveTime?"赠送课时:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 2">
+                                                        [{{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 上课时间:{{y.beginTime|yznDate:'yyyy-MM-dd'}}至{{y.endTime|yznDate:'yyyy-MM-dd'}} {{y.giveTime?"赠送天数:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                </div>
+                                                <div class="lis" ng-if="x.orderGoods.length>0">
+                                                    <div ng-repeat="y in x.orderGoods track by $index">
+                                                        [{{y.goodsName}}{{y.goodsSpec?'*'+ y.goodsSpec.name:''}}]{{y.goodsPrice?(y.goodsPrice|number:2):"0.00"}}元*{{y.goodsNumber?(y.goodsNumber):"0"}}={{y.goodsTotalPrice?(y.goodsTotalPrice|number:2):"0.00"}}元
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="showXuanfu" ng-show="$index == showInd && (x.orderCourseList.length>0 || x.orderGoods.length>0)">
+                                                <div class="lis">
+                                                    <!--收费标准类型 0 课时 1 学期 2按月-->
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 0">
+                                                        [{{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 购买课时:{{y.buyTime|number:2}} {{y.giveTime?"赠送课时:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 1">
+                                                        [{{y.schoolYear}} {{y.schoolTermName}} {{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 购买课时:{{y.buyTime|number:2}} {{y.giveTime?"赠送课时:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                    <div ng-repeat="y in x.orderCourseList track by $index" ng-if="y.feeType == 2">
+                                                        [{{y.courseName}}] 签约金额:￥{{y.amount|number:2}}元 上课时间:{{y.beginTime|yznDate:'yyyy-MM-dd'}}至{{y.endTime|yznDate:'yyyy-MM-dd'}} {{y.giveTime?"赠送天数:":""}} {{y.giveTime?(y.giveTime|number:2):""}}
+                                                    </div>
+                                                </div>
+                                                <div class="lis" ng-if="x.orderGoods.length>0">
+                                                    <div ng-repeat="y in x.orderGoods track by $index" style="display: block;">
+                                                        [{{y.goodsName}}{{y.goodsSpec?'*'+ y.goodsSpec.name:''}}]{{y.goodsPrice?(y.goodsPrice|number:2):"0.00"}}元*{{y.goodsNumber?(y.goodsNumber):"0"}}={{y.goodsTotalPrice?(y.goodsTotalPrice|number:2):"0.00"}}元
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:10%;">￥{{x.receivable|number:2}}</td>
+                                        <td style="width:10%;">￥{{x.received|number:2}}</td>
+                                        <td style="width:12%;" title="{{x.counselor}}">{{x.counselor}}</td>
+                                        <td style="width:12%;">{{x.deadline|yznDate:'yyyy-MM-dd'}}</td>
+                                        <td style="width:18%;">{{x.lastRemindTime?(x.lastRemindTime|yznDate:'yyyy-MM-dd'):"提醒失败"}}
+                                            <span ng-if="x.lastRemindTime">({{x.remindStatus==0?"未查看":x.remindStatus==1?"已查看":x.remindStatus == '-1'?"提醒失败":""}})</span>
+                                        </td>
+                                        <!--<td style="width:10%;" class="textAlignCenter">{{x.status==0?"待支付":x.status==1?"已支付":x.status==2?"已过期":""}}</td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 batch"></div>
+            </div>
+            <div class="popup_btn">
+                <p class="screen_params">已选中<span>{{params_order.length}}</span>个</p>
+                <button class="btn sure" ng-click="closePop_()" type="button">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch " list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li class="common_tab_libtn drop" ng-if="operatePushOrder">
+                <div class="common_tab_btn fontRed_BgWhite" data-toggle="dropdown">
+                    <i class="icon_more">更多</i>
+                </div>
+                <div class="dropdown-menu drop-list">
+                    <span class="mark"></span>
+                    <ul>
+                        <li ng-click="batchOperate()">批量操作</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="openSendCode()"><i class="icon_Addpotential"></i>推单二维码</div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operatePushOrder">
+                <div class="common_tab_btn" ng-click="newAddOrder()"><i class="icon_addcourse"></i>新增推单</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <my-select list-name="顾问" my-id="adviser_id" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected==0" ng-click="changeStatus($event,0)">待支付
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected==1" ng-click="changeStatus($event,1)">已支付
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected==2" ng-click="changeStatus($event,2)">已过期
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected==-1" ng-click="changeRemind($event,-1)">提醒失败
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected==0" ng-click="changeRemind($event,0)">未查看
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="remind_selected==1" ng-click="changeRemind($event,1)">已查看
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover">
+                <thead my-id="sendOrderHead" my-thead="{{nameListThead_}}"></thead>
+                <tbody class="demo_tbody" ng-if="orderList=='' || orderList==[]">
+                    <tr>
+                        <td class="textAlignCenter" colspan="{{nameListThead_.length}}">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody my-id="sendOrderTdChange" my-tr='<tr ng-repeat="x in orderList">' my-td td-head="{{checkedHead}}" td-list="{{nameListThead}}">
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:130px;">
+                <thead>
+                    <tr>
+                        <th>学员姓名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in orderList">
+                        <td class="clickText" ng-click="gotoViewStudent(x)">{{x.studentName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r">
+            <table style="width:150px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter cursor_pointer" ng-click="goCommonPop('custom-pop','customTable','560px',{data:checkedHead,customTagId:getHeads.customTagId,customTagType:7,callBackName:'订单推送表头-自定义'})">自定义显示列<i class="icon_setHead"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in orderList">
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="operatePushOrder&&!x.orderId&&x.status==2" ng-click="openDelayPop('single',x)">延期</span>
+                            <span class="clickText" ng-if="operatePushOrder&&x.status==0 && x.lastRemindTime" ng-click="remindPop('single',x)">重新提醒</span>
+                            <span class="clickText" ng-if="operatePushOrder&&x.status==0 && !x.lastRemindTime" ng-click="openPop(x,'查看原因')">查看原因</span>
+                            <span class="clickText" ng-if="operatePushOrder&&!x.orderId&&x.status!=1" ng-click="deletePop('single',x)">删除</span>
+                            <span class="clickText" ng-if="operatePushOrder&&x.orderId&&x.status==1" ng-click="goCommonPop('order-info', 'orderInfo','960px',{data:x,page:'订单推送',})">查看订单</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="page M-box3"></div>
+    </div>
+</div>

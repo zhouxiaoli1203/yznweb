@@ -1,0 +1,576 @@
+@charset "utf-8";
+.flicker div, .flicker p, .flicker span, .flicker em, .flicker var, .flicker strong {
+    font-size: 0.28rem;
+    font-style: inherit;
+    font-weight: normal;
+}
+.group_flicker {
+    background-color: #FFE200;
+}
+.g_1, .g_2, .g_3, .g_4, .g_5 {
+    /*overflow: hidden;*/
+    position: relative;
+    width: 100%;
+}
+.g_2, .g_3, .g_4, .g_5{
+    padding-top: 1.86rem;
+}
+.boxl{
+    position: absolute;
+    left:0;
+    top:0;
+    width: 1.8rem;
+    height:3.64rem;
+    background: url(../img/boxl.png) no-repeat;
+    background-size: contain;
+}
+.boxr{
+    position: absolute;
+    right:0;
+    top:0.3rem;
+    width: 1rem;
+    height:2.64rem;
+    background: url(../img/boxr.png) no-repeat;
+    background-size: contain;
+}
+.g_1_bg {
+    width: 100%;
+    background: url("../img/bg1.png") no-repeat;
+    background-size: 100%;
+}
+.g_1_bg.on{
+    background: url("../img/bg2.png") no-repeat;
+    background-size: 100%;
+}
+.g_1_bg_img {
+    display: block;
+    width: 100%;
+}
+.g_1_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.g_1_bg .bg{
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    width: 100%;
+    height: 10.17rem;
+    background: url("../img/bg.png") no-repeat;
+    background-size: 100%;
+}
+.titleBg{
+    position: absolute;
+    top: 0.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6.57rem;
+    height: 4.59rem;
+    background: url("../img/titleBg.png") no-repeat;
+    background-size: 100%;
+}
+.titleText1{
+    position: absolute;
+    top: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7.18rem;
+    height: 1.53rem;
+    background: url("../img/titleText1.png") no-repeat;
+    background-size: 100%;
+}
+.titleText{
+    position: absolute;
+    top: 3.3rem;
+    left: 2.1rem;
+    width: 3.41rem;
+    height: 0.65rem;
+    background: url("../img/titleText.png") no-repeat;
+    background-size: 100%;
+}
+.people{
+    position: absolute;
+    top: 4.4rem;
+    left: 0;
+    width: 100%;
+    height: 3.48rem;
+    background: url("../img/people.png") no-repeat;
+    background-size: 100%;
+}
+.s_img1 {
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: img1 0.3s ease infinite alternate-reverse;
+    -webkit-animation: img1 0.3s ease infinite alternate-reverse;
+    -o-animation: img1 0.3s ease infinite alternate-reverse;
+}
+.s_img2 {
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: img2 0.3s ease infinite alternate-reverse 0.5s;
+    -webkit-animation: img2 0.3s ease infinite alternate-reverse 0.5s;
+    -o-animation: img2 0.3s ease infinite alternate-reverse 0.5s;
+}
+@keyframes img1 {
+    from{transform: scale(1)}
+    to{transform: scale(1.2)}
+}
+@keyframes img1 {
+    from{-moz-transform: scale(1)}
+    to{-moz-transform: scale(1.2)}
+}
+@keyframes img1 {
+    from{-o-transform: scale(1)}
+    to{-o-transform: scale(1.2)}
+}
+@keyframes img1 {
+    from{-webkit-transform: scale(1)}
+    to{-webkit-transform: scale(1.2)}
+}
+@keyframes img2 {
+    from{transform: scale(1)}
+    to{transform: scale(1.2)}
+}
+@keyframes img2 {
+    from{-moz-transform: scale(1)}
+    to{-moz-transform: scale(1.2)}
+}
+@keyframes img2 {
+    from{-o-transform: scale(1)}
+    to{-o-transform: scale(1.2)}
+}
+@keyframes img2 {
+    from{-webkit-transform: scale(1)}
+    to{-webkit-transform: scale(1.2)}
+}
+.g_1_con {
+    padding-top: 6.47rem;
+}
+.g_1_box {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.g_1_box h2 {
+    height: 1.03rem;
+}
+.g_1_box h2 p {
+    float: left;
+    width: 25%;
+    color: #fff;
+}
+.g_1_box h2 p strong, .g_1_box h2 p em {
+    display: block;
+    text-align: center;
+    font-size: 0.24rem;
+}
+.g_1_box h2 p strong {
+    font-size: 0.36rem;
+    line-height: 0.64rem;
+}
+.g_fun {
+    position: relative;
+    background-color: #fff;
+    min-height: 4.61rem;
+    padding: 0 0.28rem;
+    border-radius: 0.41rem 0.41rem 0 0;
+}
+.g_1_time {
+    position: absolute;
+    right: 0;
+    top: 0.15rem;
+    width: 3.5rem;
+    height: 0.53rem;
+    padding-left: 0.17rem;
+    background-color: #F7C720;
+    color: #fff;
+    border-radius: 0.27rem 0 0 0.27rem;
+    line-height: 0.53rem;
+}
+.g_1_time strong, .g_1_time span {
+    font-size: 0.2rem;
+}
+.g_1_price {
+    height:0.85rem;
+    line-height:0.85rem;
+    color: #DD4D41;
+}
+.g_1_price strong {
+    float: left;
+    margin-right: 0.1rem;
+    font-size: 0.4rem;
+    font-weight: bold;
+}
+.g_1_price em {
+    float: left;
+    color: #ccc;
+    font-size: 0.24rem;
+    text-decoration: line-through;
+}
+.g_1_tit {
+    position: relative;
+}
+.g_1_tit p {
+    font-size: 0.36rem;
+}
+.g_1_tit p span {
+    float: left;
+    height: 0.3rem;
+    background-color: #DD4D41;
+    padding: 0 0.04rem;
+    margin: 0.1rem 0.11rem 0 0;
+    color: #fff;
+    border-radius: 0.04rem;
+    line-height: 0.3rem;
+    font-size: 0.2rem;
+}
+.g_1_tit p strong {
+    font-size: 0.36rem;
+}
+.g_1_peo {
+    height:1.4rem;
+    padding-top: 0.24rem;
+}
+.g_1_peo li {
+    float: left;
+    width: 0.87rem;
+    height: 0.87rem;
+    border-radius: 50%;
+    border: 0.02rem #fff solid;
+    margin-left: -0.25rem;
+}
+.g_1_peo .g_1_peo1 {
+    position: relative;
+    margin: 0 0.62rem 0 0;
+    border: 0.02rem #F7C720 solid;
+}
+.g_1_peo1 span {
+    position: absolute;
+    top: -0.24rem;
+    right: -0.2rem;
+    width: 0.48rem;
+    height: 0.41rem;
+    background: url("../img/header_icon.png") no-repeat;
+    background-size: contain;
+}
+.g_1_peoM {
+    background-color: #F7C720;
+    color: #fff;
+    text-align: center;
+    line-height: 0.87rem;
+    font-size: 0.24rem;
+}
+.g_1_peo li img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.g_btns {
+    height: 0.7rem;
+}
+.g_btn1 {
+    display: block;
+    width: 5.3rem;
+    height: 0.7rem;
+    margin: 0 auto;
+    border: none;
+    border-radius: 0.32rem;
+    background: url("../img/btn3.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    line-height: 0.56rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.g_btn2, .g_btn3 {
+    float: left;
+    width: 2.2rem;
+    height: 0.7rem;
+    border: none;
+    border-radius: 0.32rem;
+    background: url("../img/btn1.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    line-height: 0.56rem;
+    cursor: pointer;
+}
+.g_btn2 span, .g_btn3 span, .g_btn1 span {
+    display: block;
+    height: 0.28rem;
+    text-align: center;
+    line-height: 0.28rem;
+    font-size: 0.28rem;
+    font-weight: bold;
+}
+.g_btn2 em, .g_btn3 em, .g_btn1 em {
+    display: block;
+    height: 0.18rem;
+    margin-top: 0.08rem;
+    text-align: center;
+    line-height: 0.18rem;
+    font-size: 0.18rem;
+    font-weight: normal;
+    font-style: inherit;
+}
+.g_btn2 {
+    margin: 0 0.6rem 0 1rem;
+}
+.g_btn3 {
+    background: url("../img/btn2.png") no-repeat;
+    background-size: 100% 100%;
+}
+.g_btn4 {
+    background: url("../img/btn4.png") no-repeat;
+    background-size: 100% 100%;
+}
+.g_btn5 {
+    background: url("../img/btn5.png") no-repeat;
+    background-size: 100% 100%;
+}
+.g_1_tips {
+    font-size: 0.12rem;
+    margin-top: 0.1rem;
+    text-align: center;
+}
+.g_1_tips span {
+    font-size: 0.12rem;
+    color: #DD4D41;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("http://cdn.yizhiniao.com/group/goodStart/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("http://cdn.yizhiniao.com/group/goodStart/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.g_text {
+    width: 7.09rem;
+    background-color: #ff5b5b;
+    border-radius: 0.66rem;
+    border: 0.03rem solid #171C61;
+    margin: 0 auto;
+    padding: 0.1rem;
+    z-index: 2;
+    position: relative;
+}
+.g_text_con {
+    min-height: 2.6rem;
+    padding-bottom: 0.1rem;
+    background-color: #fff;
+    border-radius: 0.66rem;
+    border: 0.03rem solid #171C61;
+    padding: 0.3rem 0.2rem;
+}
+.g_text_con p {
+    color: #FF0000;
+    margin-bottom: 0.15rem;
+}
+.g_text_con img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.15rem;
+}
+.g_head {
+    position: absolute;
+    width: 6.19rem;
+    top: -1.46rem;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 1.16rem;
+    background: url(../img/tit1.png)center center no-repeat;
+    background-size: contain;
+}
+.g_head_1 {
+    background-image: url("../img/tit1.png");
+}
+.g_head_2 {
+    background-image: url("../img/tit2.png");
+}
+.g_head_3 {
+    background-image: url("../img/tit3.png");
+}
+.g_head_4 {
+    background-image: url("../img/tit4.png");
+}
+/*正在拼团列表*/
+.grop_list li {
+    height: 1.18rem;
+    color: #FF0000;
+    border-bottom: 0.02rem solid #FF7F7F;
+    line-height: 1.18rem;
+}
+.grop_list li img {
+    float: left;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin: 0.19rem 0.15rem 0 0;
+    border: 0.03rem solid #FF0000;
+    border-radius: 50%;
+}
+.grop_list li strong {
+    overflow: hidden;
+    float: left;
+    width: 1.8rem;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.grop_list li em {
+    float: left;
+    margin-right: 0.3rem;
+}
+.grop_list li span {
+    float: left;
+    width: 1.52rem;
+    height: 0.49rem;
+    margin-top: 0.36rem;
+    background: url(../img/partin.png) no-repeat;
+    cursor: pointer;
+    background-size: contain;
+}
+.grop_list li:last-child {
+    border: none;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color:#FF0000;
+    overflow: hidden;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+    position: relative;
+    z-index: 1;
+}
+.cloud{
+    width: 0.76rem;
+    height: 0.42rem;
+    background: url(../img/cloud.png) no-repeat;
+    background-size: contain;
+    right: 0.65rem;
+    position: absolute;
+    bottom: 0.88rem;
+}
+.icon{
+    width: 1.26rem;
+    height: 0.79rem;
+    background: url(../img/icon.png) no-repeat;
+    background-size: contain;
+    left: 0.24rem;
+    position: absolute;
+    bottom: 0.24rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.icon1{
+    width: 0.57rem;
+    height:0.55rem;
+    background: url(../img/icon1.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    right:0;
+    top:0.3rem;
+}
+.icon2{
+    width: 0.93rem;
+    height:1.95rem;
+    background: url(../img/icon2.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    left:0;
+    top:1.3rem;
+    z-index: 1;
+}
+.icon3{
+    width: 0.88rem;
+    height:0.84rem;
+    background: url(../img/icon3.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    right:0;
+    top: -0.4rem;
+}
+.icon4{
+    width: 0.71rem;
+    height:0.55rem;
+    background: url(../img/icon4.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    left:0;
+    top:0;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

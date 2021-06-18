@@ -1,0 +1,131 @@
+<div id="rollCallContain" name="时间日历容器"></div>
+<!-- 弹框模板 -->
+<div class="popup_ exportAllData">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="export_config()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">选择时间:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control dateIcon" autocomplete="off" id="pCallTime" ng-model="derTime" placeholder="请选择导出时间段" type="text" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="export_cancel()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="icon_warning statistc_icon_warn">本页面数据统计截止至昨日</div>
+<div class="common_body summary_body">
+        <div class="common_tab" style="border-top:none;">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="begin_endTime" value="" placeholder="请选择录入时间"  autocomplete="off" >
+            </li>
+             <li>
+                <my-select list-name="省" list-data="{{provincesList['0']}}" list-field="" list-click="searchByProv(n, i)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="市" list-data="{{cityList}}" list-field="" list-click="searchByCity(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="所属校区" list-data="{{shooList}}" list-field="shopName" list-click="searchByShop(n)" list-search="false"></my-select>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+            </li>
+        </ul>
+    </div>
+    <div class="common_content organ">
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left" style="margin-left:0px;">
+                        <my-select list-name="新增潜客" my-id="search_1" list-data="{{screen_swiChart}}" list-field="name" list-click="clickswiChart(n)"  list-all="no" list-sort="false" list-defalut="{{qianKe.potial}}"></my-select>
+                    </li>
+                    <li class="li_left">
+                        <my-select list-name="按时间" list-data="{{screen_time}}" list-field="name" list-click="clickTime(n)"  list-all="no" list-defalut="{{xiaoKe.time}}"></my-select>
+                    </li>
+                    <li class="li_left date" ng-if="conditionType=='0'">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;{{qianKeType=='potial'?'人':qianKeType=='complete'?'单':'元'}}&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li>
+                   <span>数据汇总 : </span>
+                </li>
+                <li>
+                   <span>新增潜客: </span><span class="main_color">{{allData.addPotentialCustomer}}</span>
+                </li>
+                <li>
+                   <span>签约单数 : </span><span class="main_color">{{allData.addContract}}</span>
+                </li>
+                <li>
+                   <span>签约金额 : </span><span class="main_color">￥{{allData.contractPrice|number:2}}</span>
+                </li>
+                <!--<li>
+                   <span>实收金额 : </span><span class="main_color">￥{{allData.received|number:2}}</span>
+                </li>-->
+            </ul>
+            <table class="table">
+                <thead my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="eduDataList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="eduDataList">
+                    <tr ng-repeat="x in eduDataList">
+                        <td title="{{x.shopName}}">{{x.shopName}}</td>
+                        <td class="textAlignCenter operate">
+                            <span>{{x.addPotentialCustomer}}</span>
+                            <span>{{allData.addPotentialCustomer>0?((x.addPotentialCustomer/allData.addPotentialCustomer*100)|number:2):0}}%</span>
+                        </td>
+                        <td class="textAlignCenter operate">
+                            <span>{{x.addContract}}</span>
+                            <span>{{allData.addContract>0?((x.addContract/allData.addContract*100)|number:2):0}}%</span>
+                        </td>
+                        <td class="textAlignCenter operate">
+                            <span>￥{{x.contractPrice|number:2}}</span>
+                            <span>{{allData.contractPrice>0?((x.contractPrice/allData.contractPrice*100)|number:2):0.00}}%</span>
+                        </td>
+                        <!--<td class="textAlignCenter operate">
+                            <span>￥{{x.received|number:2}}</span>
+                            <span>{{allData.received>0?((x.received/allData.received*100)|number:2):0.00}}%</span>
+                        </td>-->
+                        <td class="textAlignCenter clickText" ng-click="gotoPartyShop(x,'new_saleStatistics')">进入校区</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="M-box3"></div>
+        </div>
+    </div>
+</div>

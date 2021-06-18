@@ -1,0 +1,69 @@
+<div>
+    <ul ng-if="userType == 'auth'">
+        <!--一级-->
+        <li ng-show="datas.length == 0" class="textAlignCenter">
+            暂无权限数据
+        </li>
+        <li class="parent_li_1 cursor line28" ng-repeat="item in datas track by $index" ng-class="{'parent_li_expend':item.isopen}">
+
+            <p class="line28" ng-click="Fns.shouqi($event,$index,datas)">
+                <span ng-hide="item.menuList && item.menuList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                <span class="tree_arrow" ng-show="item.menuList && item.menuList.length!==0" ng-class="{'tree_canopen':item.isopen,'tree_canotopen':!item.isopen}"></span>
+                <span class="ml6" ng-class="{'tree_checked':item.checkStatus == 1,'tree_nochecked':item.checkStatus == 0,'tree_noallchecked':item.checkStatus == 2}" ng-click="Fns.allChecked($event,item)"></span>
+                <span class="ml6">{{item.menuName}}</span></p>
+            <ul>
+                <!--二级-->
+                <li class="parent_li_1 cursor line28" style="margin-left:22px;" ng-repeat="x in item.menuList track by $index" ng-class="{'parent_li_expend':x.isopen}">
+                    <p class="line28 clearfix" ng-click="Fns.shouqi($event,$index,item.menuList)">
+                        <span ng-hide="x.menuList && x.menuList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                        <span class="tree_arrow" ng-show="x.menuList && x.menuList.length!==0" ng-class="{'tree_canopen':x.isopen,'tree_canotopen':!x.isopen}"></span>
+                        <span class="ml6" ng-class="{'tree_checked':x.checkStatus == 1,'tree_nochecked':x.checkStatus == 0,'tree_noallchecked':x.checkStatus == 2}" ng-click="Fns.allChecked($event,x,item)"></span>
+                        <span class="ml6">{{x.menuName}}</span>
+
+                    </p>
+                    <ul>
+                        <!--三级-->
+                        <li class="line28" style="margin-left:42px;" ng-repeat="y in x.menuList" ng-click="Fns.Checked($event,y,x,item)">
+                            <span ng-class="{'tree_checked':y.checkStatus == 1,'tree_nochecked':y.checkStatus == 0}"></span>
+                            <span class="ml6">{{y.menuName}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul ng-if="userType == 'shop'">
+        <!--一级-->
+        <li ng-show="datas.length == 0" class="textAlignCenter">
+            暂无权限数据
+        </li>
+        <li class="parent_li_1 cursor line28" ng-repeat="item in datas track by $index" ng-class="{'parent_li_expend':item.isopen}">
+
+            <p class="line28" ng-click="Fns.shouqi($event,$index,datas)">
+                <span ng-hide="item.shopList && item.shopList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                <span class="tree_arrow" ng-show="item.shopList && item.shopList.length!==0" ng-class="{'tree_canopen':item.isopen,'tree_canotopen':!item.isopen}"></span>
+                <span class="ml6" ng-class="{'tree_checked':item.checkStatus == 1,'tree_nochecked':item.checkStatus == 0,'tree_noallchecked':item.checkStatus == 2}" ng-disabled="userAll==1" ng-click="Fns.allChecked($event,item)"></span>
+                <span class="ml6">{{item.shopName}}</span></p>
+            <ul>
+                <!--二级-->
+                <li class="parent_li_1 cursor line28" style="margin-left:22px;" ng-repeat="x in item.shopList track by $index" ng-class="{'parent_li_expend':x.isopen}">
+                    <p class="line28 clearfix" ng-click="Fns.shouqi($event,$index,item.shopList)">
+                        <span ng-hide="x.shopList && x.shopList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                        <span class="tree_arrow" ng-show="x.shopList && x.shopList.length!==0" ng-class="{'tree_canopen':x.isopen,'tree_canotopen':!x.isopen}"></span>
+                        <span class="ml6" ng-class="{'tree_checked':x.checkStatus == 1,'tree_nochecked':x.checkStatus == 0,'tree_noallchecked':x.checkStatus == 2}" ng-disabled="userAll==1" ng-click="Fns.allChecked($event,x,item)"></span>
+                        <span class="ml6">{{x.shopName}}</span>
+
+                    </p>
+                    <ul>
+                        <!--三级-->
+                        <li class="line28" style="margin-left:42px;" ng-repeat="y in x.shopList" ng-click="Fns.Checked($event,y,x,item)">
+                            <span ng-class="{'tree_checked':y.checkStatus == 1,'tree_nochecked':y.checkStatus == 0}" ng-disabled="userAll==1"></span>
+                            <span class="ml6">{{y.shopName}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>

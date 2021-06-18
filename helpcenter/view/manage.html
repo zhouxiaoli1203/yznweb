@@ -1,0 +1,21 @@
+<div class="contain clearfix">
+    <div>
+        <!--左侧菜单-->
+        <div class="contain_lf_wrapper">
+            <div class="contain_lf">
+                <ul>
+                    <li ng-repeat="x in firList">
+                        <div class="first_level" ng-click="collesFn($event,x)"><p>{{x.helpCenterTitle}}</p><span ng-class="{'open':x.isopen}"></span></div>
+                        <div class="second_level">
+                            <div ng-show="x.isopen" class="{{n.helpCenterId == currentTid?'cff595e':''}}" ng-repeat="n in x.helpCenterList" ng-click="getSecTitList(n,x)"><p>{{n.helpCenterTitle}}</p></div>
+                        </div>
+                       
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="manageCenter">
+            <div ui-view style="height:100%;"></div>
+        </div>
+    </div>
+</div>

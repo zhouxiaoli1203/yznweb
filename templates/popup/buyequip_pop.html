@@ -1,0 +1,172 @@
+<div class="popup_ equip_popup" id="equip_popup">
+    <h6>立即购买<span ng-click="closePopup('equip_popup')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="popup_line">
+            <div class="navigation_bar navigation_twobar import_width navigation_twobar_bgm{{navigation_bar_bgm}}" style="width:785px;">
+                <!--导航条-->
+                <div ng-class="{colorFFF:navigation_bar_bgm==1}" style="width:50%;">1.选择购买信息</div>
+                <div ng-class="{colorFFF:navigation_bar_bgm==2}"  style="width:50%;">2.填写收货信息</div>
+            </div>
+        </div>
+        <form class="popup_form" role="form" ng-show="navigation_bar_bgm==1">
+            <div class="popup_form_content content" style="height: 387px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">设备名称:</label>
+                        <span class="col-xs-10 form-span">易知鸟人脸识别硬件</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">购买数量:</label>
+                        <div class="col-xs-2 input_change_num">
+                            <input type="text" class="form-control" autocomplete="off" yzn-filter="num" maxlength="3" ng-model="params_1.change_num">
+                            <span class="to-up" ng-click="changeNum('add')"></span>
+                            <span class="to-down" ng-click="changeNum('min')"></span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">分期租赁:</label>
+                        <div class="col-xs-10 marginTop_5">
+                            <div class="clickText" ng-click="openExplain()"><i class="icon_head_help"></i>分期租赁说明</div>
+                            <div class="fenqi_radios">
+                                <div class="fenqi_radio" ng-class='{"disabled":x.display != 1,"device_type_icon_show":x.active}' ng-click="selectFenqi(x,deviceLeaseRules)" ng-repeat = "x in deviceLeaseRules track by $index">
+                                    <span class="fenqi">￥{{x.money | number:2}}*{{x.period}}期</span>
+                                    <span class="money">押金:￥{{x.deposit | number:2}}</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">支付方式:</label>
+                        <div class="col-xs-10">
+                            <ul class="pay_type_icon clearfix">
+                                <li ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.paymentMoney==x.value}" ng-click="clickPayTypeIcon(x.value)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="selectedRule.period != 1">
+                        <div>
+                            <label class="form-label">押金:</label>
+                            <span class="col-xs-10 form-span">￥{{(params_1.change_num*selectedRule.deposit)|number:2}}</span>
+                        </div>
+                        <div>
+                            <label class="form-label">月租金:</label>
+                            <span class="col-xs-10 form-span">￥{{(params_1.change_num*selectedRule.money)|number:2}}</span>
+                        </div>
+                        <div>
+                            <label class="form-label">首次付款:</label>
+                            <span class="col-xs-10 form-span main_color" style="font-size: 18px;">￥{{(selectedRule.deposit*params_1.change_num+selectedRule.money*params_1.change_num)|number:2}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="selectedRule.period == 1">
+                        <label class="form-label">合计金额:</label>
+                        <span class="col-xs-10 form-span main_color" style="font-size: 18px;">￥{{params_1.change_num*selectedRule.money|number:2}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('equip_popup')" type="button">取消</button>
+                <button class="btn sure" type="button" ng-click="confirmNext(2)">下一步</button>
+            </div>
+        </form>
+        <form class="popup_form" role="form" ng-submit="confirmNext(3)" ng-show="navigation_bar_bgm==2">
+            <div class="popup_form_content content2" style="height: 387px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line" style="margin-top:20px;">
+                        <label class="form-label">收货人:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="请填写收货人" ng-model="params_2.name" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">联系电话:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="请填写联系电话" ng-model="params_2.phone" maxlength="11" yzn-filter="phone" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">收货地址:</label>
+                        <div class="zcity_group pop_float_l" style="padding-left: 15px;">
+                            <select ng-model="params_2.address.province" ng-change="sel_province(params_2.address.province)" name="省" class="form-control">
+                                <option value="{{x}}" ng-repeat="x in provinceList['0']">{{x}}</option>
+                            </select>
+                            <select ng-model="params_2.address.city" name="市" class="form-control">
+                                <option value="{{y}}" ng-repeat="y in cityList">{{y}}</option>
+                            </select>
+                            <input type="text" class="form-control" ng-model="params_2.address.detaild" maxlength="128" style="width: 429px;" placeholder="请输入具体地址" required/>
+                        </div>
+                    </div>
+                    <div class="zhushi">收货信息用于设备寄送，请保证信息准确无误。</div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="confirmNext(1)">上一步</button>
+                <button class="btn sure" type="submit">确认支付</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--购买说明文档-->
+<div class="popup_ buy_word_popup" id="buy_word_popup">
+    <h6>分期租赁说明<span ng-click="closePopup('buy_word_popup')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="popup_form_content">
+            <div class="popup_scroll">
+                <div class="word_title">易知鸟人脸识别硬件分期租赁说明</div>
+                <div class="contents">
+                    <div class="title title1">押金说明</div>
+                    <p class="content">
+                        分期租赁时，每台设备需缴纳800元押金，押金仅作为设备在租赁期范围内的保证金。
+                    </p>
+                    <div class="title title2">租赁方式</div>
+                    <div class="content">
+                        <table>
+                            <tr>
+                            	<td colspan="2" class="textAlignCenter">人脸识别设备租赁方式</td>
+                            </tr>
+                            <tr>
+                            	<td>1</td>
+                            	<td>租期<span class="main_color">6</span>个月，月租金<span class="main_color">438</span>元。租赁期满，设备归校区所有。</td>
+                            </tr>
+                            <tr>
+                            	<td>2</td>
+                            	<td>租期<span class="main_color">12</span>个月，月租金<span class="main_color">248</span>元。租赁期满，设备归校区所有</td>
+                            </tr>
+                            <tr>
+                            	<td>3</td>
+                            	<td>租期<span class="main_color">18</span>个月，月租金<span class="main_color">188</span>元。租赁期满，设备归校区所有。</td>
+                            </tr>
+                            <tr>
+                            	<td>4</td>
+                            	<td>租期<span class="main_color">24</span>个月，月租金<span class="main_color">158</span>元。租赁期满，设备归校区所有。</td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    <div class="title title3">租金缴付说明</div>
+                    <p class="content">
+                        1.下单时，我们将收取每台设备的押金和第1个月的租金。<br> 2.以后每月1日出账当月账单，每月15日为还款截至时间，逾期则按当月租金每日支付1%的滞纳金。
+                    </p>
+                    <div class="title title4">押金退还及其他说明</div>
+                    <p class="content">
+                        1.若校区在租期范围内提前终止人脸设备租赁，原机归还后确认无损坏，将于次月15日统一退还押金。<br> 2.若设备归还时出现人脸识别设备破损现象，则按照原价2499元/台补齐尾款（含押金和之前缴纳的租金）。<br> 3.租赁期满后，将于次月15日统一退还押金。<br> 4.租期1期，即为按照原价2499元/台全额购买，无需押金，一年保修。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--扫码支付-->
+<div class="popup_ onlinePay" id="onlinePay_order">
+    <h2>扫一扫付款</h2>
+    <h3>¥{{onlindePayData.downPayment|number:2}}</h3>
+    <div class="onlinePay_code">
+        
+    </div>
+    <p ng-click="reloadOnlinePay()">点击刷新支付状态</p>
+    <div class="onlinePay_order">
+        <strong>浙江筑森网络科技有限公司</strong>
+        <!--<em>订单号：{{onlindePayData.externalOrderId}}</em>-->
+    </div>
+</div>

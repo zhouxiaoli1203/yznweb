@@ -1,0 +1,1880 @@
+<!--主弹框-->
+<div class="popup_ affair_pop" id="affair_pop">
+    <h6>课务详情<var class="color_nameState">（{{classAffairInfo.arrangingCoursesBeginDate | beginEndDate: classAffairInfo.arrangingCoursesEndDate: 'yyWeek_hh' : classAffairInfo.arrangingCoursesWeek}}--{{classAffairInfo.classInfo.className}}）</var><span ng-click="closePopup('class_pop')"
+            class="popup_x icon_drop_x"></span></h6>
+    <ul class="pot_pop_nav clearfix" ng-show="classAffairInfo.status == 1 && popNav.length>1">
+        <li ng-class="{pot_pop_nav_li: popNavSelected == n.tab}" ng-click="changePopNav(n.tab)" ng-repeat="n in popNav">{{n.name}}<em></em><i></i></li>
+    </ul>
+    <!--基本信息-->
+    <div class="popup_form_content huge" ng-if="popNavSelected==1">
+        <div class="popup_scroll" isScroll="true">
+            <!--未点名-->
+            <div class="pot_pop_peo_nav clearfix studentAccount" style="position: absolute;width:96%;" ng-if="classAffairInfo.status != 1" style="margin-bottom: -10px;">
+                <div class="common_tab_btn fontRed_BgWhite" ng-if="changePaike" ng-click='clsAffair_delete()'>
+                    <i class="icon_delete"></i>删除
+                </div>
+                <!--活动课隐藏-->
+                <div class="common_tab_libtn  drop" ng-show="changePaike && classAffairInfo.course.teachingMethod == 2 && classAffairInfo.courseType==0 && classAffairInfo.classInfo.activityStatus==0" style="float: right;">
+                    <div class="common_tab_btn fontRed_BgWhite" data-toggle="dropdown">
+                        <i class="icon_more">安排学员</i>
+                    </div>
+                    <div class="dropdown-menu drop-list" style="left:3px;">
+                        <span class="mark"></span>
+                        <ul>
+                            <li ng-click="inClassStuObj.operate(1)">临时跟班</li>
+                            <li ng-click="inClassStuObj.operate(2)">安排补课</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-click="inClassStuObj.operate(2)" ng-if="changePaike && classAffairInfo.course.teachingMethod == 2 && classAffairInfo.courseType==2">
+                    <i class="icon_changePaike"></i>安排补课
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-if="changePaike && classAffairInfo.course.teachingMethod == 2 && classAffairInfo.classInfo.activityStatus==1" ng-click="inClassStuObj.operate(1)">
+                    <i class="icon_changePaike"></i>临时跟班
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-if="changePaike" ng-click='goChangePaike()'>
+                    <i class="icon_changePaike"></i>排课变更
+                </div>
+                <div class="common_tab_btn" ng-if="changePaike" ng-click="goto_rollCall(classAffairInfo)">
+                    <i class="icon_rollcall"></i>点名
+                </div>
+            </div>
+            <!--已点名-->
+            <div class="pot_pop_peo_nav clearfix" style="position: absolute;width:96%;" ng-show="classAffairInfo.status == 1">
+                <div class="common_tab_btn fontRed_BgWhite" ng-if="changePaike" ng-click='deleteRollcall()'>
+                    <i class="icon_delete"></i>删除
+                </div>
+                <div class="common_tab_btn" ng-if="changePaike" ng-click="goto_rollCall(classAffairInfo)">
+                    <i class="icon_edit"></i>编辑点名
+                </div>
+                <div class="common_tab_btn" ng-show="operateClass && jifen && zuoyeJifen" ng-click="goPoints('homeWk')">
+                    <i class="icon_integral"></i>作业积分
+                </div>
+                <div class="common_tab_btn" ng-show="operateClass && jifen && ketangJifen" ng-click="goPoints('comment')">
+                    <i class="icon_integral"></i>课堂积分
+                </div>
+            </div>
+            <!--以下    课次信息-->
+            <div class="rollcall_head clearfix mb10" style="height:48px;" ng-if="classAffairInfo">
+                <span class="rollcall_head_name">课次信息</span>
+            </div>
+            <div class="popup_line keciInfo" ng-if="classAffairInfo">
+                <label class="form-label">课程:</label>
+                <span class="col-xs-2 form-span"><span class="font_color_green mr5" ng-show="classAffairInfo.classInfo.schoolYear || classAffairInfo.classInfo.schoolTerm.schoolTermName">{{classAffairInfo.classInfo.schoolYear}} {{classAffairInfo.classInfo.schoolTerm.schoolTermName}}</span>{{classAffairInfo.course.courseName}}</span>
+                <label class="form-label">老师:</label>
+                <span class="col-xs-2 form-span">
+                    <span class="separate_list"><span ng-repeat="x in classAffairInfo.teachers">{{x.teacherName}}</span></span>
+                </span>
+                <label class="form-label">授课课时:</label>
+                <span class="col-xs-2 form-span">{{classAffairInfo.arrangingCoursesTime|number:2}}</span>
+                <label class="form-label">上课主题:</label>
+                <span class="col-xs-2 form-span" title="{{classAffairInfo.arrangingCoursesTheme.courseThemeName}}">{{classAffairInfo.arrangingCoursesTheme.courseThemeName}}</span>
+            </div>
+            <!--以上    课次信息-->
+            <!--原在课学员tab-->
+            <div class="parting_line"></div>
+            <div ng-show="classAffairInfo.status != 1">
+                <div ng-hide="props.item.courseType == 0 && props.item.course.teachingMethod==1">
+                    <div ng-hide="props.item.arrangingCoursesStatus == 1 && rollCallInfos.rollcallStudent_4.length == 0 || props.item.courseType == 2">
+                        <div class="rollcall_head clear_both mb10 mt10">
+                            <div class="rollcall_head clearfix" ng-if="rollCallInfos.rollcallStudent_4.length > 0">
+                                <span class="rollcall_head_name mt_none">试听学员</span>
+                            </div>
+                        </div>
+                        <div class="popup_table" ng-if="rollCallInfos.rollcallStudent_4.length > 0">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">姓名（昵称）</th>
+                                        <th style="width: 50%;">联系方式</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos.rollcallStudent_4" ng-class="{back_color_f5: $index%2 != 0}">
+                                        <td class="clickText" ng-click="gotoViewStudent(n)">
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>
+                                        </td>
+                                        <td>{{n.userPhone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-hide="props.item.arrangingCoursesStatus == 1 && rollCallInfos.rollcallStudent_3.length == 0 || props.item.courseType == 1">
+                        <div class="rollcall_head clear_both mb10 mt10" ng-if="rollCallInfos.rollcallStudent_3.length > 0">
+                            <span class="rollcall_head_name mt_none">补课学员</span>
+                        </div>
+                        <div class="popup_table" ng-if="rollCallInfos.rollcallStudent_3.length > 0" style="overflow: initial;">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">姓名（昵称）</th>
+                                        <th style="width:130px;">课程</th>
+                                        <th style="width: 20%;">补课</th>
+                                        <th style="width: 20%;" ng-if="signInshow == 2">签到情况</th>
+                                        <th style="width: 20%;">是否请假</th>
+                                        <th style="width: 20%; text-align: center;">{{props.item.arrangingCoursesStatus == 0?'操作':'点名状态'}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos.rollcallStudent_3" ng-class="{back_color_f5: $index%2 != 0}">
+                                        <td class="clickText" ng-click="gotoViewStudent(n)">
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>
+                                        </td>
+                                        <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td style="overflow: initial;">
+                                            <span ng-mouseenter="ngMouseenter($event)" ng-mouseleave="ngMouseleave($event)">{{n.makeUpTime|number:2}}课时</span>
+                                            <div class="enrollmouse">
+                                                <span class="popMark"></span>
+                                                <div class="enrollmouse_ul">
+                                                    <ul ng-repeat="m in n.arrangingCourses" ng-class='{"mt5":!$first}'>
+                                                        <li>
+                                                            <label class="info_tabel">缺课班级：</label>
+                                                            <span class="info_span">{{m.className}}</span>
+                                                        </li>
+                                                        <li>
+                                                            <label class="info_tabel">缺课时间：</label>
+                                                            <span class="info_span">{{getNeedTime(m.beginDate, m.endDate)}}</span>
+                                                        </li>
+                                                        <li>
+                                                            <label class="info_tabel">缺课课时：</label>
+                                                            <span class="info_span">{{m.studentCourseTimeInfo.feeType==2?"--":(m.arrangingCoursesTime|number:2)}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td ng-if="signInshow == 2">
+                                            <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                            <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                        </td>
+                                        <td>{{n.studentStatus == '2'?'是':'否'}}</td>
+                                        <td class="operate textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 0">
+                                            <span class="clickText" ng-click="inClassStuObj.operate(6, 'makeup', n)">删除</span>
+                                        </td>
+                                        <td class="textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 1">
+                                            <span ng-if="n.studentStatus == 1">到课</span>
+                                            <span ng-if="n.studentStatus == 0">缺席</span>
+                                            <span ng-if="n.studentStatus == 2">请假</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="props.item.arrangingCoursesStatus == 1 && rollCallInfos.rollcallStudent_2.length == 0 || props.item.courseType == 1 || props.item.courseType == 2">
+                    <div class="rollcall_head clear_both mb10 mt10" ng-if="rollCallInfos.rollcallStudent_2.length > 0">
+                        <span class="rollcall_head_name mt_none">临时学员</span>
+                    </div>
+                    <div class="popup_table" ng-if="rollCallInfos.rollcallStudent_2.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">姓名（昵称）</th>
+                                    <th style="width:130px;">课程</th>
+                                    <th style="width: 20%;">剩余</th>
+                                    <th style="width: 20%;" ng-if="signInshow == 2">签到情况</th>
+                                    <th style="width: 20%;">是否请假</th>
+                                    <th style="width: 20%; text-align: center;">{{props.item.arrangingCoursesStatus == 0?'操作':'点名状态'}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="n in rollCallInfos.rollcallStudent_2" ng-class="{back_color_f5: $index%2 != 0}">
+                                    <td class="clickText" ng-click="gotoViewStudent(n)">
+                                        <span>{{n.name}}</span>
+                                        <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                        <span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>
+                                    </td>
+                                    <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                    <td>
+                                        {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                    </td>
+                                    <td ng-if="signInshow == 2">
+                                        <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                        <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>-->
+                                        <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                        <!--<div class="enrollmouse">
+                                <span class="popMark"></span>
+                                <ul class="enrollmouse_ul">
+                                    <li ng-repeat="y in n.signNews">
+                                        <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                        <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                    </li>
+                                </ul>
+                            </div>-->
+                                    </td>
+                                    <td>{{n.studentStatus == '2'?'是':'否'}}</td>
+                                    <td class="operate textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 0">
+                                        <span class="clickText" ng-click="inClassStuObj.operate(6, 'temporary', n)">删除</span>
+                                    </td>
+                                    <td class="textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 1">
+                                        <span ng-if="n.studentStatus == 1">到课</span>
+                                        <span ng-if="n.studentStatus == 0">缺席</span>
+                                        <span ng-if="n.studentStatus == 2">请假</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div ng-hide="props.item.arrangingCoursesStatus == 1 && rollCallInfos.rollcallStudent_5.length == 0">
+                    <div class="rollcall_head clear_both mb10 mt10" ng-if="rollCallInfos.rollcallStudent_5.length > 0">
+                        <span class="rollcall_head_name mt_none">约课学员</span>
+                    </div>
+                    <div class="popup_table" ng-if="rollCallInfos.rollcallStudent_5.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">姓名（昵称）</th>
+                                    <th style="width:130px;">课程</th>
+                                    <th style="width: 20%;">剩余</th>
+                                    <th style="width: 20%;" ng-if="signInshow == 2">签到情况</th>
+                                    <th style="width: 20%;">是否请假</th>
+                                    <th style="width: 20%; text-align: center;" ng-if="props.item.arrangingCoursesStatus != 0">点名状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="n in rollCallInfos.rollcallStudent_5" ng-class="{back_color_f5: $index%2 != 0}">
+                                    <td class="clickText" ng-click="gotoViewStudent(n)">
+                                        <span>{{n.name}}</span>
+                                        <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                        <span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>
+                                    </td>
+                                    <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                    <td>
+                                        {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                    </td>
+                                    <td ng-if="signInshow == 2">
+                                        <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                        <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>-->
+                                        <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                        <!--<div class="enrollmouse">
+                                <span class="popMark"></span>
+                                <ul class="enrollmouse_ul">
+                                    <li ng-repeat="y in n.signNews">
+                                        <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                        <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                    </li>
+                                </ul>
+                            </div>-->
+                                    </td>
+                                    <td>{{n.studentStatus == '2'?'是':'否'}}</td>
+                                    <!--<td class="operate textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 0">
+                                    <span class="clickText" ng-click="inClassStuObj.operate(6, 'aboutClass', n)">取消预约</span>
+                                </td>-->
+                                    <td class="textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 1">
+                                        <span ng-if="n.studentStatus == 1">到课</span>
+                                        <span ng-if="n.studentStatus == 0">缺席</span>
+                                        <span ng-if="n.studentStatus == 2">请假</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="rollcall_head clear_both mb10 mt10" ng-if="rollCallInfos.rollcallStudent_1.length > 0">
+                    <span class="rollcall_head_name mt_none">本班学员</span>
+                </div>
+                <div class="popup_table" ng-if="rollCallInfos.rollcallStudent_1.length > 0">
+                    <table class="popup_table_head">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">姓名（昵称）</th>
+                                <th style="width:130px;">课程</th>
+                                <th style="width: 20%;">剩余</th>
+                                <th style="width: 20%;" ng-if="signInshow == 2">签到情况</th>
+                                <th style="width: 20%;">是否请假</th>
+                                <th style="width: 20%; text-align: center;">{{props.item.arrangingCoursesStatus == 0?'操作':'点名状态'}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="n in rollCallInfos.rollcallStudent_1" ng-class="{back_color_f5: $index%2 != 0, 'roll_state_no': n.lockStatus == '1'}">
+                                <td class="clickText" ng-click="gotoViewStudent(n)">
+                                    <span>{{n.name}}</span>
+                                    <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                    <span class="color_nameState" ng-if="n.bukeStatus == '1'">(已补)</span>
+                                </td>
+                                <td style="width:130px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                <td>
+                                    {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                </td>
+                                <td ng-if="signInshow == 2">
+                                    <span ng-if="n.signStatus == 1">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                    <!--<span  ng-if="n.signStatus == 1" ng-mouseenter="ngMouseenter($event,n.signNews)" ng-mouseleave="ngMouseleave($event)">{{n.signNews[0].signTime | yznDate:'HH:mm'}}</span>-->
+                                    <span ng-if="n.signStatus == 0" class="main_color">未签到</span>
+                                    <!--<div class="enrollmouse">
+                            <span class="popMark"></span>
+                            <ul class="enrollmouse_ul">
+                                <li ng-repeat="y in n.signNews">
+                                    <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                    <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                </li>
+                            </ul>
+                        </div>-->
+                                </td>
+                                <td>{{n.studentStatus == '2'?'是':'否'}}</td>
+                                <td class="operate textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 0">
+                                    <div ng-if="props.item.course.courseType == 0 && props.item.course.teachingMethod==2">
+                                        <span class="clickText" ng-click="inClassStuObj.operate(4, n, 1)" ng-if="n.lockStatus != '1'">休课</span>
+                                        <span class="clickText" ng-click="inClassStuObj.operate(4, n, 0)" ng-if="n.lockStatus == '1'">取消休课</span>
+                                    </div>
+                                </td>
+                                <td class="textAlignCenter" ng-if="props.item.arrangingCoursesStatus == 1">
+                                    <span ng-if="n.studentStatus == 1">到课</span>
+                                    <span ng-if="n.studentStatus == 0">缺席</span>
+                                    <span ng-if="n.studentStatus == 2">请假</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--原点名记录tab-->
+            <div ng-show="classAffairInfo.status == 1">
+                <div>
+                    <div class="rollcall_head clear_both mb10 mt10">
+                        <span class="rollcall_head_name" style="margin-top:13px;">点名记录</span>
+                        <div class="rollcallRecord_search" style="margin-top: 7px;">
+                            <label class="search_checkbox">
+                                <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="studentStatus == 1" ng-click="changeStatus($event,'1')"/>到课
+                            </label>
+                            <label class="search_checkbox">
+                                <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="studentStatus == 2" ng-click="changeStatus($event,'2')"/>请假
+                            </label>
+                            <label class="search_checkbox">
+                                <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="studentStatus == 0" ng-click="changeStatus($event,'0')"/>缺席
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_table" style="width:100%;">
+                    <table class="popup_table_head" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:220px;">姓名</th>
+                                <th width="20%">联系方式</th>
+                                <th width="20%" class="textAlignRt">消课</th>
+                                <th width="20%" class="textAlignRt" ng-if="signInshow == 2">签到情况</th>
+                                <th width="20%" class="textAlignCenter">是否请假</th>
+                                <th style="width:180px;">点名状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="max-height: inherit;width:100%;">
+                        <table>
+                            <tbody class="roll_tbody" ng-if="roll_scheduleList==''||!roll_scheduleList">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="roll_tbody" ng-if="roll_scheduleList.length>0">
+                                <tr ng-repeat="i in roll_scheduleList">
+                                    <td style="width:220px;" class="clickText" ng-click="gotoViewStudent(i)">{{i.name}}<span class="font_mark ml5" ng-class='{1:"green",2:"yellow",3:"prinkRed",4:"blue"}[i.studentType]'>{{i.studentType==1?"试":i.studentType==2?"补":i.studentType==3?"临":i.studentType==4?"约":""}}</span></td>
+                                    <td width="20%">{{i.userPhone}}</td>
+                                    <td width="20%" class="textAlignRt">
+                                        <span ng-show="!i.arrangingCoursesList">{{(i.studentCourseTimeInfo.buyTime*1+i.studentCourseTimeInfo.giveTime *1)|number:2}}</span>
+                                        <span ng-show="i.arrangingCoursesList" ng-mouseenter="ngMouseenter($event)" ng-mouseleave="ngMouseleave($event)">{{(i.studentCourseTimeInfo.buyTime*1+i.studentCourseTimeInfo.giveTime *1)|number:2}}</span>
+                                        <div class="enrollmouse">
+                                            <span class="popMark"></span>
+                                            <div class="enrollmouse_ul">
+                                                <ul ng-repeat="m in i.arrangingCoursesList">
+                                                    <li>
+                                                        <label class="info_tabel">缺课班级：</label>
+                                                        <span class="info_span">{{m.className}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">缺课时间：</label>
+                                                        <span class="info_span">{{getNeedTime(m.beginDate,m.endDate)}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="info_tabel">缺课课时：</label>
+                                                        <span class="info_span">{{m.arrangingCoursesTime}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td width="20%" class="textAlignRt" ng-if="signInshow == 2">
+                                        <span ng-if="i.signStatus == 1">{{i.signNews[0].signTime | yznDate:'HH:mm'}}</span>
+                                        <!--<span  ng-if="i.signStatus == 1" ng-mouseenter="ngMouseenter($event,i.signNews)" ng-mouseleave="ngMouseleave($event)">{{i.signNews[0].signTime | yznDate:'HH:mm'}}</span>-->
+                                        <span ng-if="i.signStatus == 0" class="main_color">未签到</span>
+                                        <!--<div class="enrollmouse">
+                                        <span class="popMark"></span>
+                                        <ul class="enrollmouse_ul">
+                                            <li ng-repeat="y in i.signNews">
+                                                <label class="info_tabel">{{y.type == 0?"到校：":"离校："}}</label>
+                                                <span class="info_span">{{y.signTime | yznDate:'yyyy年MM月dd日 HH:mm'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>-->
+                                    </td>
+                                    <td width="20%" class="textAlignCenter">{{i.leaveStatus ==1?"是":"否"}}</td>
+                                    <td style="width:180px;">
+                                        <span class="statusButton" ng-class='{"0":"red","1":"green","2":"blue"}[i.studentStatus]'>{{i.studentStatus==1?"到课":i.studentStatus=="0"?"缺席":i.studentStatus=="2"?"请假":""}}</span>
+                                        <span class="clickText" style="display: inline-block;line-height: 21px;" ng-if="i.studentCourseTimeInfo.temporaryStudentArrangingCourseRS.length>0 && i.bukeStatus !=0" ng-click="goCommonPop('buke-pop','bukeDetail_pop','560px',i.studentCourseTimeInfo.temporaryStudentArrangingCourseRS)">
+                                            <span style="color:#dcdcdc;margin:0 2px;">|</span>
+                                        <span>{{i.bukeStatus == 1?(i.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==0?"已安排":i.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus==1?"已补课":""):i.bukeStatus == 2?"线下处理":i.bukeStatus == 3?"已结课":""}}</span>
+                                        <span ng-if="i.bukeStatus == 1 && i.studentCourseTimeInfo.makeUparrAngingCourses.arrangingCoursesStatus == 1">{{i.studentCourseTimeInfo.makeupTimeStatus == 1?"(已扣)":i.studentCourseTimeInfo.makeupTimeStatus == 0?"(未扣)":""}}</span>
+                                        <span ng-if="i.bukeStatus == 2">{{i.studentCourseTimeInfo.absentTimeStatus == 1?"(已扣)":i.studentCourseTimeInfo.absentTimeStatus == 0?"(未扣)":""}}</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagitionDiv" style="margin-top:10px;" ng-show="roll_scheduleList.length>0">
+                    <div class="M-box3 classAffair"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--课堂展示-->
+    <div class="popup_form_content huge showPage" ng-if="popNavSelected==3">
+        <!--displayStatus 展示类型0 操作后无展示 1 有展示 2 默认未上传展示-->
+        <div class="popup_scroll" isScroll="true">
+            <div class="pot_pop_peo_nav clearfix">
+                <div class="common_tab_btn" ng-show="operateClass && showIsNull" ng-click="popclassShow('add')">
+                    <i class="icon_addcourse"></i>添加展示
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-show="operateClass && showIsNull && clasShowInfo.displayStatus == 2" ng-click="changeStatus()">
+                    <i class="icon_showNull"></i>没有展示
+                </div>
+                <div class="common_tab_btn" ng-show="operateClass && !showIsNull" ng-click="popclassShow('edit')">
+                    <i class="icon_reSubmit"></i>编辑展示
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-show="operateClass && !showIsNull" ng-click="deleteShow()">
+                    <i class="icon_delete"></i>删除展示
+                </div>
+            </div>
+            <div class="metadata" ng-if="showIsNull"><span class="font_metadata">{{clasShowInfo.displayStatus == 0?"无课堂展示":"未上传展示"}}</span></div>
+            <div ng-if="!showIsNull">
+                <div class="show_textContent" style="width:100%;">
+                    <div class="textContent" ng-bind-html="clasShowInfo.courseDisplayDesc" ng-if="clasShowInfo.courseDisplayDesc"></div>
+                    <div class="textContent" ng-if="!clasShowInfo.courseDisplayDesc">暂无内容</div>
+                </div>
+                <div class="show_imgList">
+                    <div class="col-xs-12 noPadding">
+                        <div ng-repeat="x in clasShowInfo.courseDisplayUrlList" ng-click="openPhotos(x.key,show_picListOld)">
+                            <div class="img_list" ng-show="x.imageUrl || x.imageUrl==''">
+                                <img ng-src="{{x.imageUrl}}" alt="" />
+                            </div>
+                            <div class="img_list" ng-show="x.audioUrl || x.audioUrl_==''">
+                                <audio ng-src="{{x.audioUrl_}}" style="width: 85px; height: 85px;">
+                                        <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                    </audio>
+                                <a class="shop_img_msk audio" target="_blank"></a>
+                            </div>
+                            <div class="img_list" ng-show="x.videoUrl || x.videoUrl==''">
+                                <video ng-src="{{x.videoUrl_}}" style="width: 85px; height: 85px;">
+                                        <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                    </video>
+                                <a class="shop_img_msk video" target="_blank"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--课堂点评-->
+    <div class="popup_form_content huge roolcallPage" ng-show="popNavSelected==4">
+        <div class="popup_scroll" isScroll="false">
+            <div class="pot_pop_peo_nav clearfix">
+                <ul class="temporary_head clearfix">
+                    <li>
+                        <kindsearch class="vagueSearch" select-id="commentId" list-clicks="s_SearchData(n)" list-keyup="s_Enterkeyup(n)" list-data="{{s_kindSearchData}}" select-name="commentName" select-input="false"></kindsearch>
+                    </li>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft"  ng-checked="commentStatus == 0" ng-click="changeComment($event,0)"/>未点评
+                    </label>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft"  ng-checked="commentStatus == 1" ng-click="changeComment($event,1)"/>已点评
+                    </label>
+
+                    <li class="common_tab_btn" style="float: right;" ng-show="operateClass && noneReviews.length>0" ng-click="goBatchComment()">
+                        <i class="icon_batch_comment"></i>批量点评
+                    </li>
+
+                </ul>
+            </div>
+            <div class="nonedata metadata" ng-if="cmt_studentList==''||!cmt_studentList"><span class="font_metadata" style="left:58%;">暂无数据</span></div>
+            <div class="clock_detail" ng-if="cmt_studentList.length>0">
+                <div class="clock_detail_scroll" style="max-height:400px;">
+                    <div class="clock_detail_list" ng-repeat="x in cmt_studentList">
+                        <div class="clock_detail_l">
+                            <div class="clock_detail_pic">
+                                <img ng-src="{{x.potentialCustomer.imgUrl}}" width="100%" height="100%" ng-if="x.potentialCustomer.imgUrl" />
+                                <img src="./static/img/login/touxiangweidenglu.png" width="100%" height="100%" ng-if="!x.potentialCustomer.imgUrl" />
+                            </div>
+                            <span>{{x.potentialCustomer.name}}{{x.potentialCustomer.nickname?("("+x.potentialCustomer.nickname+")"):''}}</span>
+                            <!--// 学生类型 0正式 1试听 2补课 3临时4约课-->
+                            <div class="statusBg" ng-show="x.studentType != 0" ng-class='{1:"green",2:"yellow",3:"prinkRed",4:"blue"}[x.studentType]'>{{x.studentType == 4?"约课学员":x.studentType == 1?"试听学员":x.studentType == 2?"补课学员":x.studentType == 3?"临时学员":""}}</div>
+                        </div>
+                        <div class="clock_detail_r comment_nonedata" ng-if="x.reviews.length<=0">
+                            <span class="clickText goComment" ng-show="operateClass" ng-click="goComment(x,null,'class','add')">点评学员</span>
+                            <div class="nonedata">该学员未点评</div>
+                        </div>
+                        <div class="clock_detail_r comment_nonedata" ng-if="x.reviews.length>0" ng-repeat="m in x.reviews track by $index">
+                            <div class="comment_infos_head">
+                                <div class="pull-left"><span class="comment_title">点评内容</span></div>
+                                <div class="pull-right">
+                                    <span>评分:</span>
+                                    <span id="class_comment{{m.reviewId}}"></span>
+                                    <span>学员积分:</span>
+                                    <span>{{x.pointsValue?x.pointsValue:"0"}}分</span>
+                                </div>
+                            </div>
+                            <div class="comment_infos_content">
+                                <div class="content">
+                                    <span class="name">{{m.teacherName}}</span>
+                                    <div class="desc" ng-bind-html="m.reviewDesc"></div>
+                                    <div>
+                                        <div ng-repeat="y in m.reviewUrlList track by $index" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(y.key,m.reviewUrlListOld)">
+                                            <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                                            <img ng-src="{{y.imageUrl}}" alt="" />
+                                                    </span>
+                                            <span class="img_list" ng-show="y.audioUrl || y.audioUrl_==''">
+                                                        <audio ng-src="{{y.audioUrl_}}" style="width: 66px; height: 66px;">
+                                                            <!--<source ng-src="{{y.audioUrl_}}"></source>-->
+                                                        </audio>
+                                                        <a class="shop_img_msk audio" target="_blank"></a>
+                                                    </span>
+                                            <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                                        <video ng-src="{{y.videoUrl_}}" style="width: 66px; height: 66px;">
+                                                            <!--<source ng-src="{{y.videoUrl_}}"></source>-->
+                                                        </video>
+                                                        <a class="shop_img_msk video" target="_blank"></a>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="clear_both time">
+                                        <!--{{x.reviewDate| yznDate:'yyyy-MM-dd HH:mm'}}-->
+                                        <span class="pull-left">{{m.reviewDate| yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                        <span ng-if="(props.page != 'mySchedule' && operateClass) || (props.page == 'mySchedule' && localTeachId == m.teacherId)" class="clickText pull-right" ng-click="deleteComtInfo(m)" style="margin-left:10px;"><i class="icon_delete" style="color:#444;"></i> 删除</span>
+                                        <span ng-if="(props.page != 'mySchedule' && operateClass) || (props.page == 'mySchedule' && localTeachId == m.teacherId)" class="clickText pull-right" ng-click="goComment(x,m,'class','edit')" style="margin-left:10px;"><i class="icon_edit" style="color:#7d7d7d;"></i> 编辑点评</span>
+                                    </div>
+                                    <div class="tasklist">
+                                        <span class="taskMark"></span>
+                                        <ul class="task_ul">
+                                            <li ng-repeat="y in m.reviewsRecords">
+                                                <div>
+                                                    <span class="taskname"> {{y.userType == 1?y.teacherName:y.userType == 2?y.reviewsPeople:""}}</span>
+                                                    <span class="tasktime">{{y.reviewsTime | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                                    <span ng-show="(props.page != 'mySchedule' && operateClass && y.userType == 1) || (props.page == 'mySchedule' && localTeachId == y.teacherId && y.userType == 1)" class="taskdelete clickText" ng-click="deleteZhui(y)">删除</span>
+                                                </div>
+                                                <p class="taskdesc" ng-bind-html="y.reviewsContent"></p>
+                                                <div>
+                                                    <div ng-repeat="i in y.reviewsRecordUrlList track by $index" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(i.key,y.reviewsRecordUrlListOld)">
+                                                        <span class="img_list" ng-show="i.imageUrl || i.imageUrl==''">
+                                                                    <img ng-src="{{i.imageUrl}}" alt="" />
+                                                            </span>
+                                                        <span class="img_list" ng-show="i.audioUrl || i.audioUrl_==''">
+                                                                <audio ng-src="{{i.audioUrl_}}" style="width: 66px; height: 66px;">
+                                                                    <!--<source ng-src="{{i.audioUrl_}}"></source>-->
+                                                                </audio>
+                                                                <a class="shop_img_msk audio" target="_blank"></a>
+                                                            </span>
+                                                        <span class="img_list" ng-show="i.videoUrl || i.videoUrl==''">
+                                                                <video ng-src="{{i.videoUrl_}}" style="width: 66px; height: 66px;">
+                                                                    <!--<source ng-src="{{i.videoUrl_}}"></source>-->
+                                                                </video>
+                                                                <a class="shop_img_msk video" target="_blank"></a>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="comment_btns_father">
+                                            <div class="marginTop_10 clear_both" ng-show="operateClass">
+                                                <div class="pull-right comment_btns bg_white" ng-click="showContentFun(m)">评论</div>
+                                            </div>
+                                            <div class="comment_content_father marginTop_10 clear_both" ng-show="m.showContent && operateClass">
+                                                <div class="comment_content_text">
+                                                    <span class="input_words" style="bottom: 50px;">{{addcommentData.reviewsContent?addcommentData.reviewsContent.length:0}}/500</span>
+                                                    <textarea class="form-control showContent fixedTextareaWidth" style="min-height:125px;" rows="4" maxlength="500" ng-model="addcommentData.reviewsContent" placeholder="请输入评论内容"></textarea>
+                                                </div>
+                                                <div class="comment_content_media_show marginTop_10 clear_both mb8" ng-show="addcommentData.reviewsRecordUrl.length>0">
+                                                    <div ng-repeat="x in addcommentData.reviewsRecordUrl track by $index">
+                                                        <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                                            <a ng-href="{{x.imageUrl}}" target="_blank">
+                                                                <img ng-src="{{x.imageUrl}}" alt="" />
+                                                            </a>
+                                                            <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                            </a>
+                                                            <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                        </div>
+                                                        <div class="img_list edit" ng-show="x.audioUrl || x.audioUrl_==''">
+                                                            <div class="contain_source">
+                                                                <audio ng-src="{{x.audioUrl_}}">
+                                                                        <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                                                    </audio>
+                                                            </div>
+                                                            <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                            </a>
+                                                            <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                                            <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                        </div>
+                                                        <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                                            <div class="contain_source">
+                                                                <video ng-src="{{x.videoUrl_}}">
+                                                                        <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                                                    </video>
+                                                            </div>
+
+                                                            <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                            </a>
+                                                            <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                                            <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content_content_media marginTop_10 clear_both line28">
+                                                    <ul class="medias pull-left operate">
+                                                        <!--<span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'评论-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>-->
+                                                        <span style="margin-left: 0;" class="clickText" ng-click="add_showInfo('more',addcommentData.reviewsRecordUrl,'comment','hwReview')"><i class="icon_data_upload"></i> 本地上传</span>
+                                                        <!--<li style="margin-left: 0;" class="add_media_btn" ng-click="add_showInfo('img',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_pic"></i>图片</li>
+                                                            <li class="add_media_btn" ng-click="add_showInfo('voice',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_voice"></i>音频</li>
+                                                            <li class="add_media_btn" ng-click="add_showInfo('video',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_video"></i>视频</li>-->
+                                                    </ul>
+                                                    <div class="pull-left newHelp_after" style="margin-left: 10px;line-height: 28px;padding-right: 20px;">
+                                                        <span style="color:#999;">上传文件须知</span>
+                                                        <div class="help_icon noneWidth" data-tips="1、文字最多可输入500字；<br>
+                                                                2、多媒体文件最多可上传3个；<br>
+                                                                3、图片支持JPG、PNG文件，音频支持MP3文件，视<br>
+                                                                频支持MP4文件（大小不得超过500M）"></div>
+                                                    </div>
+                                                    <div class="pull-right comment_btns bg_red cursor_pointer" ng-click="sendComment(x,m,'class')">发送</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--课后作业-->
+    <div class="popup_form_content huge homeWkPage" ng-if="popNavSelected==5">
+        <div class="popup_scroll" isScroll="true">
+            <div class="pot_pop_peo_nav clearfix" style="line-height: 30px;">
+                <div style="float:left;" ng-if="homeWk.teacherTaskTypeNew==1">
+                    <span>截止时间：</span>
+                    <span>{{homeWk.teacherTaskDate | yznDate:'yyyy.MM.dd HH:mm'}} </span>
+                    <span ng-if="homeWk.leaveTime">（还剩 <span class="fontColor_ff595e">{{homeWk.leaveTime.days}}</span> 天 <span class="fontColor_ff595e">{{homeWk.leaveTime.hours}}</span> 小时）</span>
+                </div>
+                <div class="common_tab_btn" ng-show="operateClass && homeWk.teacherTaskTypeNew!=1" ng-click="editHomeWk('add')">
+                    <i class="icon_homeWk"></i>布置作业
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-show="operateClass && homeWk.teacherTaskTypeNew==2" ng-click="changeHomeWk()">
+                    <i class="icon_nohomeWk"></i>没有作业
+                </div>
+                <div class="common_tab_btn" ng-show="operateClass && homeWk.teacherTaskTypeNew==1" ng-click="editHomeWk('add',true)">
+                    <i class="icon_homeWk"></i>编辑作业
+                </div>
+                <div class="common_tab_btn fontRed_BgWhite" ng-show="operateClass && homeWk.teacherTaskTypeNew==1" ng-click="deleteHomeWk()">
+                    <i class="icon_delete"></i>删除作业
+                </div>
+                <!-- <div class="common_tab_btn fontRed_BgWhite" ng-show="operateClass && homeWk.teacherTaskTypeNew==1" ng-click="editHomeWk('edit')">
+                    <i class="icon_changeSub"></i>变更截止时间
+                </div> -->
+            </div>
+            <div class="metadata" ng-if="homeWk.teacherTaskTypeNew!=1"><span class="font_metadata" ng-if="homeWk.teacherTaskTypeNew==2">未布置作业</span><span class="font_metadata" ng-if="homeWk.teacherTaskTypeNew==0">无作业</span></div>
+            <!--作业类型 0 操作无作业 1 有作业 2 默认未布置作业、-->
+            <div ng-if="homeWk.teacherTaskTypeNew==1">
+                <div class="show_textContent" style="width:100%;">
+                    <div class="textContent" ng-bind-html="homeWk.teacherTaskDesc" ng-if="homeWk.teacherTaskDesc"></div>
+                    <div class="textContent" ng-if="!homeWk.teacherTaskDesc">暂无内容</div>
+                </div>
+                <div class="show_imgList">
+                    <div class="col-xs-12 noPadding">
+                        <div ng-repeat="x in homeWk.teacherTaskUrlList" ng-click="openPhotos(x.key,homeWk_picListOld)">
+                            <div class="img_list" ng-show="x.imageUrl || x.imageUrl==''">
+                                <!--<a ng-href="{{x.imageUrl}}" target="_blank">-->
+                                <img ng-src="{{x.imageUrl}}" alt="" />
+                                <!--</a>-->
+                            </div>
+                            <div class="img_list" ng-show="x.audioUrl || x.audioUrl_==''">
+                                <audio ng-src="{{x.audioUrl_}}" style="width: 85px; height: 85px;">
+                                        <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                    </audio>
+                                <a class="shop_img_msk audio" target="_blank"></a>
+                            </div>
+                            <div class="img_list" ng-show="x.videoUrl || x.videoUrl==''">
+                                <video ng-src="{{x.videoUrl_}}" style="width: 85px; height: 85px;">
+                                        <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                    </video>
+                                <a class="shop_img_msk video" target="_blank"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--作业收交-->
+    <div class="popup_form_content huge homeWkDetailPage" ng-if="popNavSelected==6">
+        <div class="popup_scroll" isScroll="false">
+            <div class="pot_pop_peo_nav clearfix">
+                <ul class="temporary_head clearfix">
+                    <li>
+                        <kindsearch class="vagueSearch" select-id="commentId" list-clicks="s_SearchData(n)" list-keyup="s_Enterkeyup(n)" list-data="{{s_kindSearchData}}" select-name="commentName" select-input="false"></kindsearch>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft"  ng-model="unsubmit" ng-change="changeSubmit(unsubmit)"/>未提交
+                        </label>
+                    </li>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft"  ng-checked="commentStatus == 0" ng-click="changeComment($event,0)"/>未点评
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft"  ng-checked="commentStatus == 1" ng-click="changeComment($event,1)"/>已点评
+                        </label>
+                    </li>
+
+                    <li class="common_tab_btn" style="float: right;" ng-show="operateClass && unSubmitStudent.length>0" ng-click="onceSubWk()">
+                        <i class="icon_cuijiao_homeWk"></i>催交作业
+                    </li>
+
+                </ul>
+            </div>
+            <div class="metadata" ng-if="errorCode==206 ||errorCode==207 || homeWk_studentList.length<=0">
+                <span class="font_metadata" ng-if="errorCode==207">未布置作业</span>
+                <span class="font_metadata" ng-if="errorCode==206">无作业</span>
+                <span class="font_metadata" ng-if="homeWk_studentList.length<=0">暂无数据</span>
+            </div>
+            <div ng-if="errorCode==''">
+                <div class="clock_detail" ng-if="homeWk_studentList.length>0">
+                    <div class="clock_detail_scroll" style="max-height:400px;">
+                        <div class="clock_detail_list" ng-repeat="n in homeWk_studentList">
+                            <div class="clock_detail_l">
+                                <div class="clock_detail_pic">
+                                    <img ng-src="{{n.potentialCustomer.imgUrl}}" width="100%" height="100%" ng-if="n.potentialCustomer.imgUrl" />
+                                    <img src="./static/img/login/touxiangweidenglu.png" width="100%" height="100%" ng-if="!n.potentialCustomer.imgUrl" />
+                                </div>
+                                <span>{{n.potentialCustomer.name}}{{n.potentialCustomer.nickname?("("+n.potentialCustomer.nickname+")"):''}}</span>
+                                <!--// 学生类型 0正式 1试听 2补课 3临时4约课-->
+                                <div class="statusBg" ng-show="n.studentType != 0" ng-class='{1:"green",2:"yellow",3:"prinkRed",4:"blue"}[n.studentType]'>{{n.studentType == 4?"约课学员":n.studentType == 1?"试听学员":n.studentType == 2?"补课学员":n.studentType == 3?"临时学员":""}}</div>
+                            </div>
+                            <!--以下是学员未提交作业的状态-->
+                            <div class="clock_detail_r comment_nonedata" ng-if="!n.task">
+                                <div class="comment_infos_head">
+                                    <div class="pull-left"><span class="comment_title">作业内容</span></div>
+                                </div>
+                                <div class="nonedata">该学员未提交作业</div>
+                            </div>
+                            <!--以下是学员提交了作业-->
+                            <div class="clock_detail_r comment_nonedata" ng-if="n.task">
+
+                                <div class="comment_infos_head">
+                                    <div class="pull-left"><span class="comment_title">作业内容</span></div>
+                                    <div class="pull-right">
+                                        <span>评分:</span>
+                                        <span id="homeWk_comment{{n.task.taskId}}"></span>
+                                        <span>学员积分:</span>
+                                        <span>{{n.pointsValue?n.pointsValue:"0"}}分</span>
+                                    </div>
+                                </div>
+                                <!--****以下    是作业内容-->
+                                <div class="comment_infos_content">
+                                    <div class="content">
+                                        <div class="desc" ng-bind-html="n.task.taskDesc"></div>
+                                        <div>
+                                            <div ng-repeat="y in n.task.taskUrlList track by $index" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(y.key,n.task.taskUrlListOld)">
+                                                <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                                        <img ng-src="{{y.imageUrl}}" alt="" />
+                                                </span>
+                                                <span class="img_list" ng-show="y.audioUrl || y.audioUrl_==''">
+                                                    <audio ng-src="{{y.audioUrl_}}" style="width: 66px; height: 66px;">
+                                                        <!--<source ng-src="{{y.audioUrl_}}"></source>-->
+                                                    </audio>
+                                                    <a class="shop_img_msk audio" target="_blank"></a>
+                                                </span>
+                                                <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                                    <video ng-src="{{y.videoUrl_}}" style="width: 66px; height: 66px;">
+                                                        <!--<source ng-src="{{y.videoUrl_}}"></source>-->
+                                                    </video>
+                                                    <a class="shop_img_msk video" target="_blank"></a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="clear_both time">
+                                            <span class="pull-left">{{n.task.updateTime | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--***以上    是作业内容-->
+                                <div class="parting_solidline"></div>
+                                <!--以下是点评内容-->
+                                <div class="clock_detail_r homeWk_comment comment_nonedata" ng-if="n.task.taskReviews.length<=0">
+                                    <div class="comment_infos_head">
+                                        <div class="pull-left"><span class="comment_title">点评内容</span></div>
+                                    </div>
+                                    <span class="clickText goComment" ng-show="operateClass" ng-click="goComment(n,null,'homeWk','add')">点评学员</span>
+                                    <div class="nonedata">该学员未点评</div>
+                                </div>
+                                <div class="clock_detail_r homeWk_comment comment_nonedata" ng-if="n.task.taskReviews.length>0" ng-repeat="m in n.task.taskReviews track by $index">
+                                    <div class="comment_infos_head">
+                                        <div class="pull-left"><span class="comment_title">点评内容</span></div>
+                                    </div>
+                                    <div class="comment_infos_content">
+                                        <div class="content">
+                                            <span class="name">{{m.teacherName}}</span>
+                                            <div class="desc" ng-bind-html="m.taskTeacherDesc"></div>
+                                            <div>
+                                                <div ng-repeat="y in m.taskTeacherUrlList track by $index" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(y.key,m.taskTeacherUrlListOld)">
+                                                    <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                                                <img ng-src="{{y.imageUrl}}" alt="" />
+                                                        </span>
+                                                    <span class="img_list" ng-show="y.audioUrl || y.audioUrl_==''">
+                                                            <audio ng-src="{{y.audioUrl_}}" style="width: 66px; height: 66px;">
+                                                                <!--<source ng-src="{{y.audioUrl_}}"></source>-->
+                                                            </audio>
+                                                            <a class="shop_img_msk audio" target="_blank"></a>
+                                                        </span>
+                                                    <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                                            <video ng-src="{{y.videoUrl_}}" style="width: 66px; height: 66px;">
+                                                                <!--<source ng-src="{{y.videoUrl_}}"></source>-->
+                                                            </video>
+                                                            <a class="shop_img_msk video" target="_blank"></a>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                            <div class="clear_both time">
+                                                <!--{{x.reviewDate| yznDate:'yyyy-MM-dd HH:mm'}}-->
+                                                <span class="pull-left">{{m.taskReviewDate| yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                                <span ng-if="(props.page != 'mySchedule' && operateClass) || (props.page == 'mySchedule' && localTeachId == m.teacherId)" class="clickText pull-right" ng-click="deleteComtInfo(m)" style="margin-left:10px;"><i class="icon_delete" style="color:#444;"></i> 删除</span>
+                                                <span ng-if="(props.page != 'mySchedule' && operateClass) || (props.page == 'mySchedule' && localTeachId == m.teacherId)" class="clickText pull-right" ng-click="goComment(n,m,'homeWk','edit')" style="margin-left:10px;"><i class="icon_edit" style="color:#7d7d7d;"></i> 编辑点评</span>
+                                            </div>
+                                            <div class="tasklist">
+                                                <span class="taskMark"></span>
+                                                <ul class="task_ul">
+                                                    <li ng-repeat="y in m.reviewsRecords">
+                                                        <div>
+                                                            <span class="taskname"> {{y.userType == 1?y.teacherName:y.userType == 2?y.reviewsPeople:""}}</span>
+                                                            <span class="tasktime">{{y.reviewsTime | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                                            <span ng-show="(props.page != 'mySchedule' && operateClass && y.userType == 1) || (props.page == 'mySchedule' && localTeachId == y.teacherId && y.userType == 1)" class="taskdelete clickText" ng-click="deleteZhui(y)">删除</span>
+                                                        </div>
+                                                        <p class="taskdesc" ng-bind-html="y.reviewsContent"></p>
+                                                        <div>
+                                                            <div ng-repeat="i in y.reviewsRecordUrlList track by $index" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(i.key,y.reviewsRecordUrlListOld)">
+                                                                <span class="img_list" ng-show="i.imageUrl || i.imageUrl==''">
+                                                                        <img ng-src="{{i.imageUrl}}" alt="" />
+                                                                </span>
+                                                                <span class="img_list" ng-show="i.audioUrl || i.audioUrl_==''">
+                                                                    <audio ng-src="{{i.audioUrl_}}" style="width: 66px; height: 66px;">
+                                                                        <!--<source ng-src="{{i.audioUrl_}}"></source>-->
+                                                                    </audio>
+                                                                    <a class="shop_img_msk audio" target="_blank"></a>
+                                                                </span>
+                                                                <span class="img_list" ng-show="i.videoUrl || i.videoUrl==''">
+                                                                    <video ng-src="{{i.videoUrl_}}" style="width: 66px; height: 66px;">
+                                                                        <!--<source ng-src="{{i.videoUrl_}}"></source>-->
+                                                                    </video>
+                                                                    <a class="shop_img_msk video" target="_blank"></a>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <div class="comment_btns_father">
+                                                    <div class="marginTop_10 clear_both" ng-show="operateClass">
+                                                        <div class="pull-right comment_btns bg_white" ng-click="showContentFun(m)">评论</div>
+                                                    </div>
+                                                    <div class="comment_content_father marginTop_10 clear_both" ng-show="operateClass && m.showContent">
+                                                        <div class="comment_content_text">
+                                                            <span class="input_words" style="bottom: 50px;">{{addcommentData.reviewsContent?addcommentData.reviewsContent.length:0}}/500</span>
+                                                            <textarea class="form-control showContent fixedTextareaWidth" style="min-height:125px;" rows="4" maxlength="500" ng-model="addcommentData.reviewsContent" placeholder="请输入评论内容"></textarea>
+                                                        </div>
+                                                        <div class="comment_content_media_show marginTop_10 clear_both mb8" ng-show="addcommentData.reviewsRecordUrl.length>0">
+                                                            <div ng-repeat="x in addcommentData.reviewsRecordUrl track by $index">
+                                                                <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                                                    <a ng-href="{{x.imageUrl}}" target="_blank">
+                                                                        <img ng-src="{{x.imageUrl}}" alt="" />
+                                                                    </a>
+                                                                    <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                                    </a>
+                                                                    <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                                </div>
+                                                                <div class="img_list edit" ng-show="x.audioUrl || x.audioUrl_==''">
+                                                                    <div class="contain_source">
+                                                                        <audio ng-src="{{x.audioUrl_}}">
+                                                                            <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                                                        </audio>
+                                                                    </div>
+                                                                    <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                                    </a>
+                                                                    <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                                                    <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                                </div>
+                                                                <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                                                    <div class="contain_source">
+                                                                        <video ng-src="{{x.videoUrl_}}">
+                                                                            <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                                                        </video>
+                                                                    </div>
+                                                                    <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                                                    </a>
+                                                                    <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                                                    <i ng-click="delete_showInfo($index,addcommentData.reviewsRecordUrl)"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content_content_media marginTop_10 clear_both line28">
+                                                            <ul class="medias pull-left operate">
+                                                                <!--<span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'评论-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>-->
+                                                                <span style="margin-left: 0;" class="clickText" ng-click="add_showInfo('more',addcommentData.reviewsRecordUrl,'comment','hwReview')"><i class="icon_data_upload"></i> 本地上传</span>
+                                                                <!--<li style="margin-left: 0;" class="add_media_btn" ng-click="add_showInfo('img',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_pic"></i>图片</li>
+                                                                <li class="add_media_btn" ng-click="add_showInfo('voice',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_voice"></i>音频</li>
+                                                                <li class="add_media_btn" ng-click="add_showInfo('video',addcommentData.reviewsRecordUrl,'comment')"><i class="icon_info_video"></i>视频</li>-->
+                                                            </ul>
+                                                            <div class="pull-left newHelp_after" style="margin-left: 10px;line-height: 28px;padding-right: 20px;">
+                                                                <span style="color:#999;">上传文件须知</span>
+                                                                <div class="help_icon noneWidth" data-tips="1、文字最多可输入500字；<br>
+                                                                    2、多媒体文件最多可上传3个；<br>
+                                                                    3、图片支持JPG、PNG文件，音频支持MP3文件，视<br>
+                                                                    频支持MP4文件（大小不得超过500M）"></div>
+                                                            </div>
+                                                            <div class="pull-right comment_btns bg_red cursor_pointer" ng-click="sendComment(n,m,'homeWk')">发送</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="comment_left" style="width:430px;">
+                    <div class="pot_pop_peo_nav clearfix">
+                        <div class="title" style="float:left;">作业收交</div>
+
+                        <div class="rollcallRecord_search" style="float:right;">
+                            <label class="search_checkbox">
+                                <input type="checkbox" class="checkbox-inline labelLeft" ng-model="$parent.type.unsubmit" ng-change="un_submit()"/>未提交
+                            </label>
+                            <label class="search_checkbox">
+                                <input type="checkbox" class="checkbox-inline labelLeft" ng-model="$parent.type.unComment" ng-change="un_comment()"/>未点评
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width:35%;">姓名</th>
+                                    <th style="width:30%;">提交时间</th>
+                                    <th class="textAlignCenter">评分</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:102%;max-height:366px;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="homeWk_studentList==''||!homeWk_studentList">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="homeWk_studentList.length>0">
+                                    <tr ng-class="{'active_tr':x.isActive}" ng-click="checkSingle(x)" ng-repeat="x in homeWk_studentList">
+                                        <td style="width:35%;">
+                                            <span>{{x.name}}</span>
+                                        </td>
+                                        <td style="width:30%;">
+                                            <span>{{x.taskDate|yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            <div id="homeWk_comment{{$index}}"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>-->
+                <!--<div class="comment_right">
+                    <div class="comment_right_cont">
+                        <div class="metadata" ng-if="stud_homeWkInfo==''||!stud_homeWkInfo"><span class="font_metadata" style="left:58%;">暂无作业详情</span></div>
+                        <div ng-if="stud_homeWkInfo">
+                            <div ng-if="stud_homeWkInfo.taskDesc || stud_homeWkInfo.taskUrlList.length>0">
+                                <div class="table_title">作业内容</div>
+                                <div class="marginTop_10">
+                                    提交时间：{{stud_homeWkInfo.createTime|yznDate:'yyyy-MM-dd HH:mm'}}
+                                </div>
+                                <div class="desc" ng-bind-html="stud_homeWkInfo.taskDesc"></div>
+                                <div class="content">
+                                    <div ng-repeat="y in stud_homeWkInfo.taskUrlList" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(y.key,stud_homeWkInfo.taskTeach_picListOld)">
+                                        <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                                <img ng-src="{{y.imageUrl}}" alt="" />
+                                        </span>
+                                        <span class="img_list" ng-show="y.audioUrl_ || y.audioUrl_==''">
+                                            <audio style="width: 66px; height: 66px;">
+                                                <source ng-src="{{y.audioUrl_}}"></source>
+                                            </audio>
+                                            <a class="shop_img_msk audio" target="_blank"></a>
+                                        </span>
+                                        <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                            <video style="width: 66px; height: 66px;">
+                                                <source ng-src="{{y.videoUrl_}}"></source>
+                                            </video>
+                                            <a class="shop_img_msk video" target="_blank"></a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="stud_homeWkInfo.taskReviews.length>0" style="border-top: 1px dashed #e6e6e6;">
+                                <div class="table_title">点评记录</div>
+                                <div class="content" ng-repeat="x in stud_homeWkInfo.taskReviews">
+                                    <span class="name">{{x.teacherName}}</span>
+                                    <div class="time">{{x.taskReviewDate| yznDate:'yyyy-MM-dd HH:mm'}}<span ng-if="operateClass" class="clickText" ng-click="deleteHomeWk(x)" style="margin-left:10px;">删除</span></div>
+                                    <div class="desc" ng-bind-html="x.taskTeacherDesc"></div>
+                                    <div>
+                                        <div ng-repeat="y in x.taskTeacherUrlList" style="overflow: hidden; zoom: 1;display: inline-block;" ng-click="openPhotos(y.key,x.taskTeach_picListOld)">
+                                            <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                                    <img ng-src="{{y.imageUrl}}" alt="" />
+                                            </span>
+                                            <span class="img_list" ng-show="y.audioUrl_ || y.audioUrl_==''">
+                                                <audio style="width: 66px; height: 66px;">
+                                                    <source ng-src="{{y.audioUrl_}}"></source>
+                                                </audio>
+                                                <a class="shop_img_msk audio" target="_blank"></a>
+                                            </span>
+                                            <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                                <video style="width: 66px; height: 66px;">
+                                                    <source ng-src="{{y.videoUrl_}}"></source>
+                                                </video>
+                                                <a class="shop_img_msk video" target="_blank"></a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="tasklist" ng-if="x.reviewsRecords.length>0">
+                                        <span class="taskMark"></span>
+                                        <ul class="task_ul">
+                                            <li ng-repeat="y in x.reviewsRecords">
+                                                <div>
+                                                    <span class="taskname">{{y.reviewsPeople}}</span>
+                                                    <span ng-if="operateClass" class="taskdelete clickText" ng-click="deleteZhui(y)">删除</span>
+                                                    <span class="tasktime">{{y.reviewsTime | yznDate:'yyyy-MM-dd HH:mm'}}</span>
+                                                </div>
+                                                <p class="taskdesc">{{y.reviewsContent}}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!--课堂附件-->
+    <div class="popup_form_content huge import_popup" ng-if="popNavSelected==7">
+        <div class="popup_scroll" isScroll="false" style="padding:2px 20px 20px 30px;">
+            <div class="comment_left" style="width:528px;">
+                <form class="popup_form" role="form" enctype="multipart/form-data" id="form_load" method="POST">
+                    <div class="pot_pop_peo_nav clearfix border_bt">
+                        <div class="title" style="float:left;">课堂附件</div>
+                    </div>
+                    <div class="popup_line marginTop_10 line28 operate" ng-show="!uploadData.hasFile">
+                        <span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'image,audio,video',callBackName:'课堂附件-资料库',needMany:'1'})"><i class="icon_fileDoc"></i> 资料库</span>
+                        <span style="margin-left: 0;" class="clickText" ng-click="add_annexFile()"><i class="icon_data_upload"></i> 本地上传</span>
+                        <!--<div class="file_input col-xs-7">
+                            <input type="text" class="col-xs-9 form-control fileInput" ng-model="uploadData.web_annexAddress" placeholder="请选择上传附件" readonly/>
+                            <button class="btn sure" ng-click="add_annexFile()">选择附件</button>
+                        </div>-->
+                    </div>
+                    <div class="popup_line" ng-show="!uploadData.hasFile">
+                        <div class="text" style="color:#999;">
+                            上传附件须知：<br> 1、只支持上传word、pdf文件；
+                            <br> 2、只允许上传一个文件；
+                            <br>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="uploadData.hasFile">
+                        <div style="margin:15px 10px 15px 0;">
+                            <span class="fileIcon" ng-class='{"doc":"wordIcon","docx":"wordIcon","DOC":"wordIcon","DOCX":"wordIcon","word":"wordIcon","pdf":"pdfIcon","PDF":"pdfIcon"}[uploadData.type]'></span>
+                            <span class="fileAddress">{{uploadData.web_annexAddress}}</span>
+                        </div>
+                        <div class="operate">
+                            <span><a class="clickText" href="{{uploadData.annexAddressUrl}}" target="_blank">预览</a></span>
+                            <span class="clickText" ng-click="deleteAnnex()">删除</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="comment_right" style="width:350px;">
+                <div class="pot_pop_peo_nav clearfix border_bt_none" style="width:100%;">
+                    <div class="title" style="float:left;">在课学员</div>
+                    <div class="rollcallRecord_search" style="float:right;">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="$parent.unView" ng-change="getClassStuds()"/>未查看
+                        </label>
+                    </div>
+                </div>
+                <div class="popup_table">
+                    <table class="popup_table_head" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:55%;">姓名</th>
+                                <th class="textAlignCenter">查看状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="width:102%;max-height:366px;">
+                        <table>
+                            <tbody class="roll_tbody" ng-if="inclass_studentList==''||!inclass_studentList">
+                                <tr>
+                                    <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="roll_tbody" ng-if="inclass_studentList.length>0">
+                                <tr ng-repeat="x in inclass_studentList">
+                                    <td style="width:55%;">
+                                        <span>{{x.name}}</span>
+                                    </td>
+                                    <td class="textAlignCenter">
+                                        {{x.annexStatus == "0"?"未查看":"已查看"}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加或者编辑课堂展示-->
+<div class="popup_ show_pop" id="show_pop">
+    <h6>{{showTitle}}<span ng-click="closePopup('show_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_classShow()">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">展示内容:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{showDetail.courseDisplayDesc?showDetail.courseDisplayDesc.length:0}}/2000</span>
+                            <textarea class="form-control showContent" rows="4" maxlength="2000" ng-model="showDetail.courseDisplayDesc" placeholder="请输入展示内容"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="pull-left operate ml15">
+                            <span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'展示-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>
+                            <span style="margin-left: 0;" class="clickText" ng-click="add_showInfo('more',showDetail.courseDisplayUrlList,'show','courseDisplay')"><i class="icon_data_upload"></i> 本地上传</span>
+                            <!--<span class="add_info" ng-click="add_showInfo('voice',showDetail.courseDisplayUrlList,'show')">+ 上传音频</span>
+                            <span class="add_info" ng-click="add_showInfo('video',showDetail.courseDisplayUrlList,'show')">+ 上传视频</span>-->
+                        </div>
+                        <div class="pull-left newHelp_after" style="margin-left: 10px;padding-right: 20px;">
+                            <span style="color:#999;">上传文件须知</span>
+                            <div class="help_icon noneWidth" style="top:0;" data-tips="图片支持JPG、PNG文件，音频支持MP3文件，<br>视频支持MP4文件（大小不得超过500M）"></div>
+                        </div>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <span style="margin-left: 0;color:#999999;">(注：图片支持JPG、PNG文件，音频支持MP3文件，视 频支持MP4文件（大小不得超过500M）)</span>
+                        </div>
+                    </div>-->
+                    <div class="popup_line" ng-if="showDetail.courseDisplayUrlList.length>0">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="x in showDetail.courseDisplayUrlList track by $index">
+                                <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                    <a ng-href="{{x.imageUrl}}" target="_blank">
+                                        <img ng-src="{{x.imageUrl}}" alt="" />
+                                    </a>
+                                    <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <i ng-click="delete_showInfo($index,showDetail.courseDisplayUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.audioUrl_ || x.audioUrl_==''">
+                                    <div class="contain_source">
+                                        <audio ng-src="{{x.audioUrl_}}">
+                                            <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                        </audio>
+                                    </div>
+                                    <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,showDetail.courseDisplayUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                    <div class="contain_source">
+                                        <video ng-src="{{x.videoUrl_}}">
+                                            <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                        </video>
+                                    </div>
+                                    <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,showDetail.courseDisplayUrlList)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('show_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--快速点评-->
+<div class="popup_ fastComment" id="fastComment">
+    <h6>{{fromPop=="class"?"课堂":"作业"}}评语<span ng-click="closePopup('fastComment')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="pot_pop_peo_nav clearfix">
+                        <div class="common_tab_btn fontRed_BgWhite" ng-click="addComment('新增')">
+                            <i class="icon_addcourse"></i>新增评语
+                        </div>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="textAlignCenter" style="width:8%;">
+                                        <input type="checkbox" ng-model="selAll" ng-click="checkboxAll(selAll,getRemarkList)" />
+                                    </th>
+                                    <th>评语内容</th>
+                                    <th class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:102%;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="getRemarkList==''||!getRemarkList">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="getRemarkList">
+                                    <tr ng-repeat="x in getRemarkList" ng-click="selSingle_lf(x,getRemarkList,$event)">
+                                        <td class="textAlignCenter" style="width:8%;">
+                                            <input type="checkbox" name="sel_mark" ng-checked="x.hasChecked" />
+                                        </td>
+                                        <td title="{{x.remarkDesc}}">{{x.remarkDesc}}</td>
+                                        <td class="operate overflow-normal textAlignCenter">
+                                            <span class="clickText" ng-click="addComment('编辑',x)">编辑</span>
+                                            <span class="clickText" ng-click="deleteComment(x)">删除</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('fastComment')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="confirm_fastComment()">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--新增评语-->
+<div class="popup_ add_Comment" id="add_Comment">
+    <h6>{{fast_commentType}}评语<span ng-click="closePopup('add_Comment')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_add_Comment()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">评语:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{remarkData.remarkDesc?remarkData.remarkDesc.length:0}}/2000</span>
+                            <textarea class="form-control fixedTextareaWidth" style="min-height:125px;" rows="4" maxlength="2000" ng-model="remarkData.remarkDesc" placeholder="请输入评语内容" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('add_Comment')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--批量点评-->
+<div class="popup_ batch_comment_pop" id="batch_comment_pop">
+    <h6>批量点评<span ng-click="closePopup('batch_comment_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_batch_comment()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="clock_detail" style="border:none;">
+                        <div class="clock_detail_list" ng-repeat="x in noneReviews track by $index" style="border-top:1px solid #D2D2D2;border-left:1px solid #D2D2D2;">
+                            <div class="clock_detail_l" style="width:135px;">
+                                <div class="clock_detail_pic">
+                                    <img ng-src="{{x.potentialCustomer.imgUrl}}" width="100%" height="100%" ng-if="x.potentialCustomer.imgUrl" />
+                                    <img src="./static/img/login/touxiangweidenglu.png" width="100%" height="100%" ng-if="!x.potentialCustomer.imgUrl" />
+
+                                </div>
+                                <span>{{x.potentialCustomer.name}}{{x.potentialCustomer.nickname?("("+x.potentialCustomer.nickname+")"):''}}</span>
+                            </div>
+                            <div class="clock_detail_r" style="width:684px;">
+                                <div class="popup_line">
+                                    <label class="form-label required">评分:</label>
+                                    <div class="pull-left lineHeight28 padding_lf_10">
+                                        <div id="batch_comment_start{{$index}}"></div>
+                                    </div>
+                                    <div class="pull-left  margin_lf_15 clickText" style="line-height: 30px;" ng-click="goFastComment($index,noneReviews)">快速点评</div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label required">评语:</label>
+                                    <div class="col-xs-10">
+                                        <span class="input_words">{{x.reviewDesc?x.reviewDesc.length:0}}/2000</span>
+                                        <textarea class="form-control showContent fixedTextareaWidth" style="min-height: 125px;" rows="4" maxlength="2000" ng-model="x.reviewDesc" placeholder="请输入课堂点评内容" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="popup_line" ng-if="jifen && ketangJifen">
+                                    <label for="" class="form-label">添加积分:</label>
+                                    <div class="col-xs-4">
+                                        <select class="form-control" ng-model="x.pointsValue" required>
+                                            <option value="">请选择积分</option>
+                                            <option value="{{y.pointsValue}}" ng-repeat="y in points_comment">{{y.pointsValue}}分</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('batch_comment_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--点评-->
+<div class="popup_ comment_pop" id="comment_pop">
+    <h6>{{commentTitle}}<var class="color_nameState">（{{stud_comtInfo.name}}）</var><span ng-click="closePopup('comment_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top: 0;">
+        <form class="popup_form" role="form" ng-submit="confirm_comment()">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line" ng-if="fromPop=='homeWk'">
+                        <div class="table_title">作业内容</div>
+                        <div class="content">
+                            <!--<span class="name">{{x.teacherName}}</span>
+                            <div class="time">{{x.taskReviewDate| yznDate:'yyyy-MM-dd HH:mm'}}<span ng-if="operateClass" class="clickText" ng-click="deleteHomeWk(x)" style="margin-left:10px;">删除</span></div>-->
+                            <div class="desc" ng-bind-html="studentComtData.task.taskDesc"></div>
+                            <div class="clear_both">
+                                <div ng-repeat="y in studentComtData.task.taskUrlList track by $index" ng-click="openPhotos(y.key,studentComtData.task.taskUrlListOld)">
+                                    <span class="img_list" ng-show="y.imageUrl || y.imageUrl==''">
+                                            <img ng-src="{{y.imageUrl}}" alt="" />
+                                    </span>
+                                    <span class="img_list" ng-show="y.audioUrl_ || y.audioUrl_==''">
+                                        <audio ng-src="{{y.audioUrl_}}" style="width: 66px; height: 66px;">
+                                            <!--<source ng-src="{{y.audioUrl_}}"></source>-->
+                                        </audio>
+                                        <a class="shop_img_msk audio" target="_blank"></a>
+                                    </span>
+                                    <span class="img_list" ng-show="y.videoUrl || y.videoUrl==''">
+                                        <video ng-src="{{y.videoUrl_}}" style="width: 66px; height: 66px;">
+                                            <!--<source ng-src="{{y.videoUrl_}}"></source>-->
+                                        </video>
+                                        <a class="shop_img_msk video" target="_blank"></a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="desc mt5">提交时间：{{studentComtData.task.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</div>
+                        </div>
+                    </div>
+                    <div class="parting_line" ng-if="fromPop=='homeWk'"></div>
+                    <div class="table_title">点评内容</div>
+                    <div class="popup_line">
+                        <label class="form-label required">评分:</label>
+                        <div class="pull-left lineHeight28 padding_lf_10">
+                            <div id="comment_start"></div>
+                        </div>
+                        <div class="pull-left  margin_lf_15 clickText" style="line-height: 30px;" ng-click="goFastComment()">快速点评</div>
+
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">评语:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{commentData.reviewDesc?commentData.reviewDesc.length:0}}/2000</span>
+                            <textarea class="form-control showContent fixedTextareaWidth" style="min-height: 125px;" rows="4" maxlength="2000" ng-model="commentData.reviewDesc" placeholder="请输入课堂点评内容" required></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="commentData.reviewUrlList.length>0">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="x in commentData.reviewUrlList track by $index">
+                                <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                    <a ng-href="{{x.imageUrl}}" target="_blank">
+                                        <img ng-src="{{x.imageUrl}}" alt="" />
+                                    </a>
+                                    <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <i ng-click="delete_showInfo($index,commentData.reviewUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.audioUrl_ || x.audioUrl_==''">
+                                    <div class="contain_source">
+                                        <audio ng-src="{{x.audioUrl_}}">
+                                            <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                        </audio>
+                                    </div>
+                                    <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,commentData.reviewUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                    <div class="contain_source">
+                                        <video ng-src="{{x.videoUrl_}}">
+                                            <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                        </video>
+                                    </div>
+                                    <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,commentData.reviewUrlList)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line line28">
+                        <label for="" class="form-label"></label>
+                        <ul class="medias pull-left operate" style="margin-left: 15px;">
+                            <span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'点评-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>
+                            <span style="margin-left: 0;" ng-if="fromPop=='homeWk'" class="clickText" ng-click="add_showInfo('more',commentData.reviewUrlList,null,'hwReview')"><i class="icon_data_upload"></i> 本地上传</span>
+                            <span style="margin-left: 0;" ng-if="fromPop=='class'" class="clickText" ng-click="add_showInfo('more',commentData.reviewUrlList,null,'classReview')"><i class="icon_data_upload"></i> 本地上传</span>
+                            <!--<li style="margin-left: 0;" class="add_media_btn" ng-click="add_showInfo('img',commentData.reviewUrlList)"><i class="icon_info_pic"></i>图片</li>
+                            <li class="add_media_btn" ng-click="add_showInfo('voice',commentData.reviewUrlList)"><i class="icon_info_voice"></i>音频</li>
+                            <li class="add_media_btn" ng-click="add_showInfo('video',commentData.reviewUrlList)"><i class="icon_info_video"></i>视频</li>-->
+                        </ul>
+                        <div class="pull-left newHelp_after" style="margin-left: 10px;line-height: 28px;padding-right: 20px;">
+                            <span style="color:#999;">上传文件须知</span>
+                            <div class="help_icon noneWidth" data-tips="1、文字最多可输入2000字；<br>
+                                2、多媒体文件最多可上传8个；<br>
+                                3、图片支持JPG、PNG文件，音频支持MP3文件，视<br>
+                                频支持MP4文件（大小不得超过500M）"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('comment_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--课堂积分-->
+<div class="popup_ points_table" id="points_table">
+    <h6>积分<span ng-click="closePopup('points_table')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>积分值</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in pointsList">
+                                        <td>
+                                            <span>{{x.potentialCustomer.name}}</span>
+                                        </td>
+                                        <td ng-if='pointType == "comment"'>
+                                            <select class="form-control" ng-model="x.pointsRecord.pointsValue" style="width:200px;">
+                                                <option value='' style='display:none;'>请选择积分项</option>
+                                                <option ng-repeat="item in $parent.points_comment" value="{{item.pointsValue}}">{{item.pointsValue}}分</option>
+                                            </select>
+                                        </td>
+                                        <td ng-if='pointType == "homeWk"'>
+                                            <select class="form-control" ng-model="x.pointsRecord.pointsValue" style="width:200px;">
+                                                <option value='' style='display:none;'>请选择积分项</option>
+                                                <option ng-repeat="item in $parent.points_homeWk" value="{{item.pointsValue}}">{{item.pointsValue}}分</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('points_table')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="editPoint()">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--布置作业或者编辑作业-->
+<div class="popup_ homeWk_pop" id="homeWk_pop">
+    <h6>{{homeWkTitle}}<span ng-click="closePopup('homeWk_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_homeWk()">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">提交期限:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control dateIcon" id="submitDate" autocomplete="off" ng-model="homeWkDetail.submitDate" placeholder="选择提交期限时间" ng-required="homeWkDetail.subStatus==0" />
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="homeWkType == 'add'">
+                        <label class="form-label">作业内容:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{homeWkDetail.content?homeWkDetail.content.length:0}}/2000</span>
+                            <textarea class="form-control showContent" rows="4" maxlength="2000" ng-model="homeWkDetail.content" placeholder="请输入作业内容"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line line28" ng-if="homeWkType == 'add'">
+                        <label for="" class="form-label"></label>
+                        <div class="pull-left operate ml15">
+                            <span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'布置作业-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>
+                            <span style="margin-left: 0;" class="clickText" ng-click="add_showInfo('more',homeWkDetail.showList,null,'homework')"><i class="icon_data_upload"></i> 本地上传</span>
+                            <!--<span style="margin-left: 0;" class="add_info" ng-click="add_showInfo('img',homeWkDetail.showList)">+ 上传图片</span>
+                            <span class="add_info" ng-click="add_showInfo('voice',homeWkDetail.showList)">+ 上传音频</span>
+                            <span class="add_info" ng-click="add_showInfo('video',homeWkDetail.showList)">+ 上传视频</span>-->
+                        </div>
+                        <div ng-if="homeWkType == 'add'" class="pull-left newHelp_after" style="margin-left: 10px;padding-right: 20px;">
+                            <span style="color:#999;">上传文件须知</span>
+                            <div class="help_icon noneWidth" data-tips="图片支持JPG、PNG文件，音频支持MP3文件，<br>视频支持MP4文件（大小不得超过500M）"></div>
+                        </div>
+                    </div>
+                    <!--<div class="popup_line" >
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <span style="margin-left: 0;color:#999999;">(注：图片支持JPG、PNG文件，音频支持MP3文件，视 频支持MP4文件（大小不得超过500M）)</span>
+                        </div>
+                    </div>-->
+                    <div class="popup_line" ng-if="homeWkDetail.showList.length>0 && homeWkType == 'add'">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="x in homeWkDetail.showList track by $index">
+                                <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                    <a ng-href="{{x.imageUrl}}" target="_blank">
+                                        <img ng-src="{{x.imageUrl}}" alt="" />
+                                    </a>
+                                    <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <i ng-click="delete_showInfo($index,homeWkDetail.showList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.audioUrl_ || x.audioUrl_==''">
+                                    <div class="contain_source">
+                                        <audio ng-src="{{x.audioUrl_}}">
+                                            <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                        </audio>
+                                    </div>
+                                    <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,homeWkDetail.showList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                    <div class="contain_source">
+                                        <video ng-src="{{x.videoUrl_}}">
+                                            <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                        </video>
+                                    </div>
+                                    <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key">
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,homeWkDetail.showList)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('homeWk_pop')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--添加或者编辑课堂展示-->
+<!--<div class="popup_ look_pop" id="look_pop">
+    <h6>查看<span ng-click="closePopup('look_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="height:450px;">
+                <span class="img_list" ng-show="links.imageUrl || links.imageUrl==''">
+                    <img ng-src="{{links.imageUrl}}" alt="" style="width: 100%; height: 100%"/>
+                </span>
+                <span class="img_list" ng-show="links.audioUrl_ || links.audioUrl_==''">
+                    <audio style="width: 100%; height: 100%" controls>
+                        <source ng-src="{{links.audioUrl_}}">
+                    </audio>
+                </span>
+                <span ng-show="links.videoUrl || links.videoUrl==''">
+                    <video style="width: 100%; height: 100%"  controls>
+                        <source ng-src="{{links.videoUrl_}}">
+                    </video>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>-->
+<!--课务设置-->
+<div class="popup_ classAffair_set" id="classAffair_set">
+    <h6>展示设置<span ng-click="closePopup('class_pop')" class="popup_x icon_drop_x"></span></h6>
+    <!--<ul class="pot_pop_nav clearfix">
+        <li ng-class="{pot_pop_nav_li: setNavSelected == n.tab}" ng-click="changeSetNav(n.tab)" ng-repeat="n in setNav">{{n.name}}<em></em><i></i></li>
+    </ul>-->
+    <div class="popup_form_content">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_line" style="margin-top:15px;">
+                <label class="form-label" style="text-align: left; width: 51px;">提醒课程:</label>
+                <span class="col-xs-4 form-span">
+                    <span class="addParent icon_name_add" ng-click="goCommonPop('course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', courseType:'0',callBackName: '展示课程'})">
+                        {{setNavSelected==1?"添加需要上传展示的课程":setNavSelected==2?"添加需要课堂点评的课程":"添加需要布置作业的课程"}}
+                    </span>
+                </span>
+            </div>
+            <!--<div class="popup_line">
+                <label class="form-label" style="width: 51px;"></label>
+                <span class="col-xs-6 form-span" style="color:#C0C0C0;" ng-if="setNavSelected==1">
+                    (添加课堂展示提醒课程)
+                </span>
+                <span class="col-xs-6 form-span" style="color:#C0C0C0;" ng-if="setNavSelected==2">
+                     (添加课堂点评提醒课程)
+                </span>
+                <span class="col-xs-6 form-span" style="color:#C0C0C0;" ng-if="setNavSelected==3">
+                    (添加课后作业提醒课程)
+                </span>
+            </div>-->
+            <div class="popup_table noneMargin" ng-if="showData.length>0">
+                <table class="popup_table_head" style="width:101.5%;">
+                    <thead>
+                        <tr>
+                            <th>课程名称</th>
+                            <th style="width: 15%;" class="textAlignCenter">操作</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="width:101.5%;max-height:315px;">
+                    <table>
+                        <tbody class="roll_tbody">
+                            <tr ng-repeat="x in showData">
+                                <td title="{{x.courseName}}">{{x.courseName}}</td>
+                                <td style="width: 15%;" class="textAlignCenter" ng-click="del_selClass($index,showData)"><span><i class="icon_delete clickText"></i></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="popup_btn">
+        <button class="btn cancel" ng-click="closePopup('classAffair_set')" type="button">取消</button>
+        <button class="btn sure" type="submit" ng-click="confirm_show()">确定</button>
+    </div>
+</div>
+
+<!--临时学员-->
+<div class="popup_" id="temporary_stu_inclass">
+    <h6>临时学员选择<span ng-click="closePopup('temporary_stu_inclass')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="temporary" list-clicks="inClassStuObj.operateScreen(1, n)" list-keyup="inClassStuObj.operateScreen(1, n)" list-data="{{rollCallInfos.ks}}" select-name="{{rollCallInfos.kn}}" select-input="false"></kindsearch>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="rollCallInfos.course_type==0" ng-click="inClassStuObj.changeCourseType($event,0)">标准课
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="rollCallInfos.course_type==1" ng-click="inClassStuObj.changeCourseType($event,1)">通用课
+                                </label>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="inClassStuObj.operateScreen(5)">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px; text-align: center;"><input type="checkbox" ng-model="checkboxAll" ng-click="inClassStuObj.operate(9, $event, 'temporary')" /></th>
+                                    <th>姓名（昵称）</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th style="width: 200px;">课程</th>
+                                    <th style="text-align: center;">剩余</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos['temporaryList']" ng-class="{back_color_f5: $index%2 != 0}" ng-click="inClassStuObj.operate(10, n, 'temporary')">
+                                        <td style="width: 80px; text-align: center;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td title='{{n.name}} {{n.nickname?"("+n.nickname+")":""}}'>
+                                            <span>{{n.name}}</span>
+                                            <span>{{n.nickname?"("+n.nickname+")":""}}</span>
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[n.sex]"></span>
+                                        </td>
+                                        <td ng-bind-html="caclBirthToAge(n.age,n.birthday)"></td>
+                                        <td>{{n.userPhone}}</td>
+                                        <!--<td>{{n.nickname}}</td>-->
+                                        <td style="width: 200px;" title="{{n.course.courseName}}">{{n.course.courseName}}</td>
+                                        <td style="text-align: center;">
+                                            {{n.totalSurplusTime|keshi_tian_sheng:n.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('temporary_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="inClassStuObj.operate(11, 'temporary')">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--补课学员-->
+<div class="popup_" id="makeup_stu_inclass">
+    <h6>补课学员选择<span ng-click="closePopup('makeup_stu_inclass')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" style="min-height: 310px;">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch class="vagueSearch" select-id="makeup" list-clicks="inClassStuObj.operateScreen(2, n)" list-keyup="inClassStuObj.operateScreen(2, n)" list-data="{{rollCallInfos.bk}}" select-name="{{rollCallInfos.kn}}" select-input="false"></kindsearch>
+                            </li>
+                            <li class="temporary_time_icon">
+                                <input type="text" class="form-control dateIcon" ng-model="rollCallInfos.time" id="makeup_stu_inclass_time" size="30" value="" placeholder="请选择时间">
+                            </li>
+                            <li>
+                                <my-select my-id="makeup_stu_inclass" list-name="班级" list-data="{{rollCallInfos.screenClass}}" list-field="className" list-click="inClassStuObj.operateScreen(3, n)" list-search="true"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学年" list-data="{{rollCallInfos.screen_years}}" list-field="year" list-click="inClassStuObj.operateScreen(6, n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="学期" list-data="{{rollCallInfos.screen_term}}" list-field="schoolTermName" list-click="inClassStuObj.operateScreen(7, n)" list-sort="false"></my-select>
+                            </li>
+                            <li class="screen_onreset clickText" ng-click="inClassStuObj.operateScreen(4)">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;width:40px;"><input type="checkbox" ng-model="checkboxAll" ng-click="inClassStuObj.operate(9, $event, 'makeup')" /></th>
+                                    <th style="width: 120px;text-align: left;">姓名（昵称）</th>
+                                    <!--<th>昵称</th>-->
+                                    <th>课程</th>
+                                    <th style="text-align: center;">剩余</th>
+                                    <th style="width: 120px; text-align: left;">班级</th>
+                                    <th style="width: 240px; text-align: left;">缺课时间</th>
+                                    <th style="text-align: center;">缺课</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="n in rollCallInfos['makeupList']" ng-class="{back_color_f5: $index%2 != 0}" ng-click="inClassStuObj.operate(10, n, 'makeup')">
+                                        <td style="text-align: center;width:40px;"><input type="checkbox" ng-checked="n.hasChecked" /></td>
+                                        <td style="width: 120px;text-align: left;" title='{{n.student.name}} {{n.student.nickname?"("+n.student.nickname+")":""}}'>
+                                            <span>{{n.student.name}}</span>
+                                            <span>{{n.student.nickname?"("+n.student.nickname+")":""}}</span>
+                                            <span ng-class="{'1':'icon_male','0':'icon_female'}[n.student.sex]"></span>
+                                        </td>
+                                        <td>{{n.course.courseName}}</td>
+                                        <td style="text-align: center;">
+                                            {{n.contract.totalSurplusTime|keshi_tian_sheng:n.contract.totalSurplusDayNum:n.contract.buyAllTime:n.contract.buyAllDateNum:n.contract.giveAllTime}}
+                                        </td>
+                                        <td style="width: 120px; text-align: left;">{{n.classInfo.className}}</td>
+                                        <td style="width: 240px; text-align: left;">{{n.arrangingCourses.beginDate | beginEndDate: n.arrangingCourses.endDate: 'yyWeek_hh' : n.arrangingCourses.week}}</td>
+                                        <td style="text-align: center;">{{n.studentCourseTimeInfo.feeType==2?"---":(n.arrangingCourses.arrangingCoursesTime|number:2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('makeup_stu')" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="inClassStuObj.operate(11, 'makeup')">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

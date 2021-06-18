@@ -1,0 +1,205 @@
+<div class="shade_ post_deletePop">
+    <div class="shade_body">
+        <!--<h6>删除</h6>-->
+        <div class="shade_content">
+            <form class="form-horizontal shade_middle_form" role="form">
+                <div class="shade_form_content">
+                    <!-- 内容区 -->
+                    <div class="form-group">
+                        是否确认删除?
+                    </div>
+
+                </div>
+                <div class="shade_btn">
+                    <button class="btn cancel" ng-click="Fns.post_cancel()" type="button">取消</button>
+                    <button class="btn sure" ng-click="post_deleteConfirm()" type="">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="popup_ post_shade">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="iseditoradd ? Fns.editMiscellaneous() : Fns.addMiscellaneous()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">岗位名称:</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" autocomplete="off" ng-model="postName" maxlength="24" placeholder="请输入岗位名称">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">岗位类型:</label>
+                        <div class="col-xs-4">
+                            <select name="" class="form-control charge_shade_fenlei" ng-model="quartersTypeId" ng-change="watchSelect(quartersTypeId)" ng-options="x.quartersTypeId as x.quartersTypeName for x in typeList">
+                                <option value="" selected="">请选择岗位类型</option>
+                                <option ng-repeat="x in typeList" value="{{x.quartersTypeId}}">
+                                    {{x.quartersTypeName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel charge_add_cancel1" ng-click="Fns.post_cancel()" type="button">取消</button>
+                    <button class="btn sure charge_taocan_confirm" ng-click="Fns.save_post()" type="button">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--弹框-->
+<!--<div class="shade_ post_shade1">
+	<div class="post_body">
+		<div class="shade_content">
+			<form class="form-horizontal shade_middle_form" role="form">
+				<div class="form-group charge_shade_group charge_shade_group1">
+					<label class="col-xs-4 control-label">岗位名称</label>
+					<div class="col-xs-8">
+						<input class="form-control" type="text" autocomplete="off" ng-model="postName" maxlength="24">
+					</div>
+				</div>
+				<div class="form-group charge_shade_group">
+					<label class="col-xs-4 control-label">岗位类型</label>
+					<div class="col-xs-8">
+						<select name="" class="form-control charge_shade_fenlei" ng-model="quartersTypeId" ng-change="watchSelect(quartersTypeId)"  ng-options="x.quartersTypeId as x.quartersTypeName for x in typeList">
+							<option value="" selected="" >请选择岗位类型</option>
+							<option ng-repeat="x in typeList" value="{{x.quartersTypeId}}">{{x.quartersTypeName}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group" ng-show="isSelectTeach">
+					<label class="col-xs-4 control-label">教授课程</label>
+					<div class="col-xs-8">
+						<label class="checkbox-inline" ng-repeat="x in postZhizeList">
+							<input type="checkbox" id="postRequest{{x.courseId}}" class="postRequest" id="inlineCheckbox1" courseId="{{x.courseId}}">{{x.courseName}}
+						</label>
+					</div>
+				</div>
+				<div class="shade_btn">
+					<button class="btn cancel charge_add_cancel1" ng-click="post_cancel()" type="button">取消</button>
+					<button class="btn sure charge_taocan_confirm" ng-click="post_confirm()" type="">确定</button>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</div>-->
+
+<div class="common_content">
+    <div class="relative_dm">
+        <!--树-->
+        <div class="common_body tree_body">
+            <div style="width:100%;height:100%;overflow: hidden;position: relative;">
+                <p style="line-height: 35px;" class="f14">权限设置
+                    <span class="post_active">{{constants.defaultnme}}</span>
+                </p>
+                <div class="tree_content1">
+                    <div class="tree_content">
+
+                        <!--<div></div>-->
+                        <ul>
+                            <!--一级-->
+                            <li ng-show="constants.data.length == 0" class="textAlignCenter">
+                                暂无权限数据
+                            </li>
+                            <li class="parent_li_1 cursor line28" ng-repeat="item in constants.data track by $index" ng-class="{'parent_li_expend':item.isopen}">
+
+                                <p class="line28" ng-click="Fns.shouqi($event,$index,constants.data)">
+                                    <span ng-hide="item.menuList && item.menuList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                                    <span class="tree_arrow" ng-show="item.menuList && item.menuList.length!==0" ng-class="{'tree_canopen':item.isopen,'tree_canotopen':!item.isopen}"></span>
+                                    <span class="ml6" ng-class="{'tree_checked':item.checkStatus == 1,'tree_nochecked':item.checkStatus == 0,'tree_noallchecked':item.checkStatus == 2}" ng-click="Fns.allChecked($event,item)"></span>
+                                    <span class="ml6">{{item.menuName}}</span></p>
+                                <ul>
+                                    <!--二级-->
+                                    <li class="parent_li_1 cursor line28" style="margin-left:22px;" ng-repeat="x in item.menuList track by $index" ng-class="{'parent_li_expend':x.isopen}">
+                                        <p class="line28 clearfix" ng-click="Fns.shouqi($event,$index,item.menuList)">
+                                            <span ng-hide="x.menuList && x.menuList.length!==0" style="display:inline-block;width:10px;height:14px;"></span>
+                                            <span class="tree_arrow" ng-show="x.menuList && x.menuList.length!==0" ng-class="{'tree_canopen':x.isopen,'tree_canotopen':!x.isopen}"></span>
+                                            <span class="ml6" ng-class="{'tree_checked':x.checkStatus == 1,'tree_nochecked':x.checkStatus == 0,'tree_noallchecked':x.checkStatus == 2}" ng-click="Fns.allChecked($event,x,item)"></span>
+                                            <span class="ml6">{{x.menuName}}</span>
+
+                                        </p>
+                                        <ul>
+                                            <!--三级-->
+                                            <li class="line28" style="margin-left:42px;" ng-repeat="y in x.menuList" ng-click="Fns.Checked($event,y,x,item)">
+                                                <span ng-class="{'tree_checked':y.checkStatus == 1,'tree_nochecked':y.checkStatus == 0}"></span>
+                                                <span class="ml6">{{y.menuName}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="recoveryBtn" ng-click="Fns.recovery()">恢复默认</div>
+                <div class="common_tab_btn tree_save_btn" style="right:10px;" ng-click="Fns.save()">保存</div>
+
+            </div>
+
+        </div>
+        <!--表格-->
+        <div class="common_body post_content">
+            <div class="tab_nav">
+                <span ng-if="('51' | _authId) || isOperate" ng-click="Fns.switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">员工管理</span>
+                <span ng-if="'49' | _authId" ng-click="Fns.switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">岗位管理</span>
+            </div>
+            <div class="table-responsivecharge_table">
+                <div class="common_tab">
+                    <ul class="ul_left clearfix">
+                        <li>
+                            <my-select list-name="岗位类型" list-data="{{screen_type}}" list-field="quartersTypeName" list-click="Fns.TypeId(n)" list-sort="false"></my-select>
+                        </li>
+                        <li class="common_tab_libtn">
+                            <div class="common_tab_btn" ng-click="Fns.addPost()"><i class="icon_Addpost"></i>新增岗位</div>
+                        </li>
+
+                    </ul>
+                </div>
+                <table class="table table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th width="25%">岗位名称</th>
+                            <th width="25%">岗位类型</th>
+                            <th width="10%" class="textAlignRt">员工数</th>
+                            <th width="15%"></th>
+                            <th width="25%" class="textAlignCenter">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="demo_tbody" ng-if="trList==''">
+                        <tr>
+                            <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="post_tbody" ng-if="trList">
+                        <tr ng-repeat="x in trList track by $index" class="cursor" ng-class="{'post_active_tr':x.isActive}" ng-click="Fns.getreeSingle(x)">
+                            <td>{{x.quartersName}}</td>
+                            <td>{{x.quartersTypeInfo.quartersTypeName}}</td>
+                            <td class="textAlignRt">
+                                {{x.useTotal}}
+                            </td>
+                            <td></td>
+                            <td class="textAlignCenter operate">
+                                <span class="clickText" ng-click="Fns.editPost(x,$event)">编辑</span>
+                                <span class="clickText" ng-click="Fns.delectPost(x,$event)">删除</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagitionDiv">
+                    <!--分页-->
+                    <div class="M-box3-total">
+                        共计{{constants.totalNum}}条数据
+                    </div>
+                    <div class="M-box3"></div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

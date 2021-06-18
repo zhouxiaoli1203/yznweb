@@ -1,0 +1,62 @@
+<div class="common_body">
+        <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <!--<li>
+                <my-select list-name="选择老师" list-data="{{teachersList}}" list-field="teacherName" list-click="changeTeach(n)" list-search="true"></my-select>
+            </li>-->
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="enableType == 1" ng-click="changesType($event,1)">启用
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="enableType == 0" ng-click="changesType($event,0)">禁用
+                </label>
+            </li>
+            <li class="common_tab_libtn" >
+                <div class="common_tab_btn fontRed_BgWhite" style="padding:0;"><a style="display: inline-block;width: 100%;height: 100%;padding: 0 10px;color: #ff595e;" href="https://mp.weixin.qq.com/s?__biz=MzIxNzgwNjAwNA==&mid=2247486410&idx=2&sn=0749ada966cc6c460fdd983bc6c61b5d&chksm=97f56e11a082e70775d7d36eaf73984a33daf3f0333fb0f9c20e310d6596893bf5343c07d965&token=619045162&lang=zh_CN#rd" target="_blank"><i class="icon_head_help"></i>使用说明</a></div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+        <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="courselist==''||courselist==[]">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in courselist">
+                        <td title='{{x.studentName}}' class="clickText" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:1,fromPage:'myClass'})">
+                            <span title="{{x.name}}">{{x.name}}</span>
+                        </td>
+                        <td>{{x.beginDate | yznDate:"yyyy-MM-dd"}}</td>
+                        <td title="{{x.teacherStr}}">{{x.teacherStr}}</td>
+                        <td class="clickText textAlignRt" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:1,fromPage:'myClass'})">{{x.lessonCount}}</td>
+                        <td class="clickText textAlignRt" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:2,fromPage:'myClass'})">{{x.studentCount}}</td>
+                        <td class="clickText textAlignRt" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:3,fromPage:'myClass'})">{{x.taskCommitCount*1-x.taskReviewCount*1}}</td>
+                        <td class="clickText textAlignRt" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:5,fromPage:'myClass'})">{{x.leaveMessageNum}}</td>
+                        <td class="textAlignCenter">
+                        	<span ng-class='{"isEnable":x.status == 1,"isDisable":x.status == 0}' ng-click="changeBtn(x)"></span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="goCommonPop('online-pop','courseDetail_pop', '960px',{toModel:'课程详情',item:x,tab:4,fromPage:'myClass'})">数据</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3 onlinec"></div>
+    </div>
+</div>
+

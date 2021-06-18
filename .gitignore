@@ -1,0 +1,10 @@
+.idea
+.project
+*.iml
+node_modules
+bower_components
+.DS_Store
+dest
+package-lock.json
+dist
+${tmpdir}

@@ -1,0 +1,87 @@
+
+<!--商品规格-->
+<course_package></course_package>
+
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"  select-input="false"></kindsearch>
+            </li>
+            <li>
+                <my-select list-name="商品类型" list-data="{{mallTypeList}}" list-field="name" list-click="screen_operate(n, 1)" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox" style="margin-right: 10px;">
+                    <input type="checkbox" ng-checked="_screen.shelfType == 1" ng-click="sel_screen(1, $event)" class="checkbox-inline labelLeft">上架
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-checked="_screen.shelfType == 0" ng-click="sel_screen(2, $event)"  class="checkbox-inline labelLeft">下架
+                </label>
+            </li>
+            <li class="common_tab_libtn" ng-if="powerJud.operate">
+                <div class="common_tab_btn" ng-click="operationScreen(1)"><i class="icon_shopping_mall_add"></i>新建商品</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!mallList || mallList.length==0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in mallList">
+                        <td class="clickText" ng-click="operationList(x, 'mall_edit')">{{x.productName}}</td>
+                        <td ng-if="x.productType == 0">课程</td>
+                        <td ng-if="x.productType == 1">学杂</td>
+                        <td ng-if="x.productType == 2">套餐</td>
+                        <td>¥{{x.amount | _qf}}</td>
+                        <td><span ng-click="operationList(x, 'mall_on')" ng-class="{'enable_showcourse': x.productStatus==1, 'disable_showcourse': x.productStatus==0}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="operationList(x, 'share')">分享</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3 M_box3_1"></div>
+    </div>
+</div>
+
+<!--点击分享-->
+<div class="popup_ mall_share" id="mall_share">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <dl class="mall_share_title clearfix">
+                    	<dt><img src="{{mallShareData.productImageUrl}}" alt="" /><span>封面</span></dt>
+                    	<dd>
+                    	    <h3>{{mallShareData.productName}}</h3>
+                    	    <p style="white-space: pre-wrap; word-wrap: break-word;">{{mallShareData.productDesc}}</p>
+                    	</dd>
+                    </dl>
+                    <div class="mall_share_code">
+                        <span id="mall_share_code"></span>
+                        <p>扫一扫分享到微信或者支付宝</p>
+                    </div>
+                    <div class="mall_share_url">
+                        <strong>链接分享</strong>
+                        <input type="text" ng-model="mallShareData._url" />
+                        <span ng-click="clickShareCopy()">复制链接</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

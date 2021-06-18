@@ -1,0 +1,136 @@
+{
+  "BANKLIST": [
+    {
+      "bankName": "中国工商银行",
+      "bankCode": "102"
+    },
+    {
+      "bankName": "中国农业银行",
+      "bankCode": "103"
+    },
+    {
+      "bankName": "中国银行",
+      "bankCode": "104"
+    },
+    {
+      "bankName": "中国建设银行",
+      "bankCode": "105"
+    },
+    {
+      "bankName": "国家开发银行",
+      "bankCode": "201"
+    },
+    {
+      "bankName": "中国进出口银行",
+      "bankCode": "202"
+    },
+    {
+      "bankName": "中国农业发展银行",
+      "bankCode": "203"
+    },
+    {
+      "bankName": "交通银行",
+      "bankCode": "301"
+    },
+    {
+      "bankName": "中信银行",
+      "bankCode": "302"
+    },
+    {
+      "bankName": "中国光大银行",
+      "bankCode": "303"
+    },
+    {
+      "bankName": "华夏银行",
+      "bankCode": "304"
+    },
+    {
+      "bankName": "中国民生银行",
+      "bankCode": "305"
+    },
+    {
+      "bankName": "广东发展银行",
+      "bankCode": "306"
+    },
+    {
+      "bankName": "平安银行",
+      "bankCode": "307"
+    },
+    {
+      "bankName": "招商银行",
+      "bankCode": "308"
+    },
+    {
+      "bankName": "兴业银行",
+      "bankCode": "309"
+    },
+    {
+      "bankName": "上海浦东发展银行",
+      "bankCode": "310"
+    },
+    {
+      "bankName": "城市商业银行",
+      "bankCode": "313"
+    },
+    {
+      "bankName": "农村商业银行",
+      "bankCode": "314"
+    },
+    {
+      "bankName": "恒丰银行",
+      "bankCode": "315"
+    },
+    {
+      "bankName": "浙商银行",
+      "bankCode": "316"
+    },
+    {
+      "bankName": "农村合作银行",
+      "bankCode": "317"
+    },
+    {
+      "bankName": "渤海银行",
+      "bankCode": "318"
+    },
+    {
+      "bankName": "徽商银行",
+      "bankCode": "319"
+    },
+    {
+      "bankName": "村镇银行",
+      "bankCode": "320"
+    },
+    {
+      "bankName": "重庆三峡银行",
+      "bankCode": "321"
+    },
+    {
+      "bankName": "上海农村商业银行",
+      "bankCode": "322"
+    },
+    {
+      "bankName": "民营银行",
+      "bankCode": "323"
+    },
+    {
+      "bankName": "上海银行",
+      "bankCode": "325"
+    },
+    {
+      "bankName": "城市信用合作社",
+      "bankCode": "401"
+    },
+    {
+      "bankName": "农村信用合作社",
+      "bankCode": "402"
+    },
+    {
+      "bankName": "中国邮政储蓄银行",
+      "bankCode": "403"
+    },
+    {
+      "bankName": "上海商业银行",
+      "bankCode": "511"
+    }
+  ]
+}

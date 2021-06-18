@@ -1,0 +1,167 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">签约概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">签约人数</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">签约科目</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">报课金额</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>报课金额</th>
+                    <th>新报金额</th>
+                    <th>续报金额</th>
+                    <th>扩科金额</th>
+                    <th>退课金额</th>
+                    <th>转入金额</th>
+                    <th>转出金额</th>
+                    <th>新报金额比</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr ng-repeat="x in dataTotal">
+                    <td>{{x.data1}}</td>
+                    <td>￥{{x.data2|number:2}}</td>
+                    <td>￥{{x.data3|number:2}}</td>
+                    <td>￥{{x.data4|number:2}}</td>
+                    <td>￥{{x.data5|number:2}}</td>
+                    <td>￥{{x.data6|number:2}}</td>
+                    <td>￥{{x.data7|number:2}}</td>
+                    <td>￥{{x.data8|number:2}}</td>
+                    <td>{{x.rate}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pot_pop_peo_nav clearfix">
+        <div class="tab_course_history">
+            <div ng-class="{bg_active:isactive==1}" ng-click="tab_course_history(1)">按顾问</div>
+            <div ng-class="{bg_active:isactive==2}" ng-click="tab_course_history(2)">按课程</div>
+        </div>
+    </div>
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+                </li>
+                <li class="li_left ml5" ng-hide="isactive == 1">
+                    <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-defalut="{{xiaoKe.time}}" list-search="true"></my-select>
+                </li>
+                <li class="li_left ml15" ng-show="isAnqi && isactive != 1">
+                    <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="changeYear(n)" list-sort="false"></my-select>
+                </li>
+                <li class="li_left ml15" ng-show="isactive != 1">
+                    <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="changeTerm(n)" list-sort="false"></my-select>
+                </li>
+                <li class="margin_lf_15">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="chargeType(true)">按应收统计
+                    </label>
+                </li>
+                <li class="margin_lf_15">
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(false)">按实收统计
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="common_tab" style="margin-bottom: 15px;">
+            <ul class="ul_left clearfix">
+                <li class="li_left date" style="margin-left:0;">
+                    <ul>
+                        <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                        <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                        <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                    </ul>
+                </li>
+                <li class="li_left margin_lf_15" ng-show="isactive == 1">
+                    <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="changeAdviser(n)" list-sort="false" list-search="true"></my-select>
+                </li>
+                <li class="li_left margin_lf_15">
+                    <my-select list-name="签约人数" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)" list-all="no" list-sort="false"></my-select>
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;元&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;margin-top: 6px;">
+                    <span>统计规则 </span>
+                    <div style="top:0;" ng-show="compareType" class="help_icon noneWidth" data-tips="报课金额：新报金额+续报金额+扩科金额<br>
+新报金额：按订单时间统计，学员签约课程类型为“新报”的应收金额之和<br>
+续报金额：按订单时间统计，学员签约课程类型为“续报”的应收金额之和<br>
+扩科金额：按订单时间统计，学员签约课程类型为“扩科”的应收金额之和<br>
+退课金额：按订单时间统计，学员签约课程类型为“退课”的应退金额之和<br>
+转入金额：按订单时间统计，学员“转入”课程的应收金额之和<br>
+转出金额：按订单时间统计，学员“转出”课程的应退金额之和<br>
+新报金额比：新报金额÷报课金额"></div>
+                    <div ng-hide="compareType" style="top:0;" class="help_icon noneWidth" data-tips="因系统原因按实收统计只统计2019年8月后生成的订单<br>
+      报课金额：新报金额+续报金额+扩科金额<br>
+      新报金额：按支付时间统计，学员签约课程类型为“新报”的实收金额之和<br>
+      续报金额：按支付时间统计，学员签约课程类型为“续报”的实收金额之和<br>
+      扩科金额：按支付时间统计，学员签约课程类型为“扩科”的实收金额之和<br>
+      退课金额：按退款时间统计，学员签约课程类型为“退课”的实退金额之和<br>
+      转入金额：按支付时间统计，学员“转入”课程的实收金额之和<br>
+      转出金额：按支付时间统计，学员“转出”课程的实退金额之和<br>
+      新报金额比：新报金额÷报课金额"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0;">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.data1}}</td>
+                        <td class="TextRight">￥{{x.data2|number:2}}</td>
+                        <td class="TextRight">￥{{x.data3|number:2}}</td>
+                        <td class="TextRight">￥{{x.data4|number:2}}</td>
+                        <td class="TextRight">￥{{x.data5|number:2}}</td>
+                        <td class="TextRight">￥{{x.data6|number:2}}</td>
+                        <td class="TextRight">￥{{x.data7|number:2}}</td>
+                        <td class="TextRight">￥{{x.data8|number:2}}</td>
+                        <td class="TextRight">{{x.rate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0">
+                <tbody>
+                    <tr>
+                        <td width="12%">总计</td>
+                        <td width="11%" class="main_color">￥{{"data2" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data3" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data4" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data5" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data6" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data7" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">￥{{"data8" |_total :tableList|number:2}}</td>
+                        <td width="11%" class="main_color">{{(("data3" |_total :tableList)/("data2" |_total :tableList))*100|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

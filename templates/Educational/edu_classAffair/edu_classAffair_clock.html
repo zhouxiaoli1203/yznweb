@@ -1,0 +1,206 @@
+<!--布置打卡作业-->
+<div class="popup_ setClock_pop" id="setClock_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_setClock()">
+            <div class="popup_form_content" style="max-height:450px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">作业标题:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" placeholder="请输入作业标题" ng-model="clockDetail.homework.title" maxlength="20" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">班级:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in clockDetail.classList">{{x.className}}<i ng-click="delClass(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkClass()">选择班级</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">开始时间:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control dateIcon laydate"  autocomplete="off" ng-model="clockDetail.homework.beginTime" name="clocktime" placeholder="选择开始时间" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">结束时间:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control dateIcon laydate" autocomplete="off" ng-model="clockDetail.homework.endTime" name="clocktime" placeholder="选择结束时间" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">总打卡次数:</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control"  ng-model="clockDetail.homework.num" yzn-filter="num" required> 
+                        </div>
+                        <span style="color: #999;line-height: 28px;" ng-show="clockDetail.homework.endTime">(所选时间段内最多可打卡 <span style="color: #ff595e;">{{clockDetail_oldnum}}</span> 次)</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">作业内容:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{clockDetail.homework.desc?clockDetail.homework.desc.length:0}}/2000</span>
+                            <textarea class="form-control showContent" rows="4" maxlength="2000" ng-model="clockDetail.homework.desc" placeholder="请输入作业内容"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="clockDetail.homework.homeWkUrlList.length>0">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="x in clockDetail.homework.homeWkUrlList track by $index">
+                                <div class="img_list edit" ng-show="x.imageUrl || x.imageUrl==''">
+                                    <a ng-href="{{x.imageUrl}}" target="_blank">
+                                        <img ng-src="{{x.imageUrl}}" alt="" />
+                                    </a>
+                                     <a ng-href="{{x.imageUrl}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key" >
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <i ng-click="delete_showInfo($index,clockDetail.homework.homeWkUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.audioUrl_ || x.audioUrl_==''">
+                                    <div class="contain_source" >
+                                        <audio ng-src="{{x.audioUrl_}}">
+                                            <!--<source ng-src="{{x.audioUrl_}}"></source>-->
+                                        </audio>
+                                    </div>
+                                     <a ng-href="{{x.audioUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key" >
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk audio" ng-href="{{x.audioUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,clockDetail.homework.homeWkUrlList)"></i>
+                                </div>
+                                <div class="img_list edit" ng-show="x.videoUrl || x.videoUrl==''">
+                                    <div class="contain_source" >
+                                        <video ng-src="{{x.videoUrl_}}">
+                                            <!--<source ng-src="{{x.videoUrl_}}"></source>-->
+                                        </video>
+                                    </div>
+                                     <a ng-href="{{x.videoUrl_}}" target="_blank" class="shop_img_zhezhao" ng-show="!x.key" >
+                                        <span class="error" ng-show="x.uploadErr" class="icon_warning main_color" ng-mouseenter="showErrorMsg($event,$index,x.uploadErr)" ng-mouseleave="hideErrorMsg($index)"></span>
+                                        <span class="percent" ng-show="!x.uploadErr">{{x.percent}}</span>
+                                    </a>
+                                    <a class="shop_img_msk video" ng-href="{{x.videoUrl_}}" ng-show="x.key" target="_blank"></a>
+                                    <i ng-click="delete_showInfo($index,clockDetail.homework.homeWkUrlList)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line line28">
+                        <label for="" class="form-label"></label>
+                        <div class="pull-left operate ml15">
+                            <span style="margin-left: 0;" class="clickText" ng-click="goCommonPop('database-pop','database_pop','860px',{excludedIds:'word',callBackName:'打卡作业-资料库'})"><i class="icon_fileDoc"></i> 资料库</span>
+                            <span style="margin-left: 0;" class="clickText" ng-click="add_showInfo('more',clockDetail.homework.homeWkUrlList)"><i class="icon_data_upload"></i> 本地上传</span>
+                            <!--<span style="margin-left: 0;" class="add_info" ng-click="add_showInfo('img',clockDetail.homework.homeWkUrlList)">+ 上传图片</span>
+                            <span class="add_info" ng-click="add_showInfo('voice',clockDetail.homework.homeWkUrlList)">+ 上传音频</span>
+                            <span class="add_info" ng-click="add_showInfo('video',clockDetail.homework.homeWkUrlList)">+ 上传视频</span>-->
+                        </div>
+                        <div class="pull-left newHelp_after" style="margin-left: 10px;padding-right: 20px;">
+                            <span style="color:#999;">上传文件须知</span>
+                            <div  class="help_icon noneWidth" data-tips="图片支持JPG、PNG文件，音频支持MP3文件，<br>视频支持MP4文件（大小不得超过500M）"></div>
+                        </div>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label for="" class="form-label"></label>
+                        <div class="col-xs-10">
+                            <span style="margin-left: 0;color:#999999;">(注：图片支持JPG、PNG文件，音频支持MP3文件，视 频支持MP4文件（大小不得超过500M）)</span>
+                        </div>
+                    </div>-->
+                    <div class="popup_line">
+                        <label for="" class="form-label">定时提醒</label>
+                        <div class="col-xs-10">
+                            <span class="enable_showcourse" ng-click="changeIcon()" style="display:inline-block;margin-top: 5px;margin-right:5px;" ng-class="{'enable_showcourse': clockDetail.homework.noticeStatus == 1, 'disable_showcourse': clockDetail.homework.noticeStatus == 0}"></span>
+                            <span style="line-height: 28px;display: inline-block;vertical-align: top; margin-top: 2px;">开启后，每天18:00左右系统自动提醒当天未提交打卡作业的学员(已完成打卡的学员除外)</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)">上课记录</span>
+        <span ng-click="switchVisitNav(2)">课堂展示</span>
+        <span ng-click="switchVisitNav(3)">课堂点评</span>
+        <span ng-click="switchVisitNav(4)">课后作业</span>
+        <span ng-click="switchVisitNav(5)" class="tab_nav_show">打卡作业</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+             <li class="dropdown dropdown110">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择打卡时间"  autocomplete="off" >
+            </li>
+            <li>
+                <my-select list-name="课程" list-data="{{courseList}}" list-field="courseName" list-click="courseSelect(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="班级" list-data="{{classList}}" list-field="className" list-click="classSelect(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasSelect == '0'" ng-click="changeFun($event,'0')">未开始
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasSelect == '1'" ng-click="changeFun($event,'1')">进行中
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="hasSelect == '2'" ng-click="changeFun($event,'2')">已结束
+                </label>
+            </li>
+            <li class="common_tab_libtn" ng-if="operateClass">
+                <div class="common_tab_btn" ng-click="openClockPop()"><i class="icon_set_homework"></i>布置打卡作业</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{scheduleListThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="scheduleRecord==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in scheduleRecord">
+                        <td>
+                            <span class="clickText" title="{{x.homework.title}}" ng-click='goCommonPop("clock-pop","clockDetail_pop","960px",{tab:1,item:x,page:"clock"})'>{{x.homework.title}}</span>
+                        </td>
+                        <td title="{{x.classInfo.className}}">{{x.classInfo.className}}</td>
+                        <td>{{x.homework.beginTime | yznDate:'yyyy-MM-dd'}}</td>
+                        <td>{{x.homework.endTime | yznDate:'yyyy-MM-dd'}}</td>
+                        <td>{{x.homework.homeworkType=='0'?"未开始":x.homework.homeworkType=='1'?"进行中":x.homework.homeworkType=='2'?"已结束":""}}</td>
+                        <td>{{x.homework.homeworkType=='1'?(x.homework.dayNumInNow+"/"+x.homework.dayNum):"-"}}</td>
+                        <td>{{x.homework.homeworkType=='1'?(x.studentNum+"/"+x.allStudentNum):"-"}}</td>
+                        <td class="textAlignCenter clickText" >
+                            <span ng-if="operateClass" ng-click="homeWk_delete(x)">删除作业</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

@@ -1,0 +1,184 @@
+<div class="summer_2">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/bargain/shell/css/index.css"/>
+    <div class="summer_2_con">
+        <div class="b_banner">
+            <audio id="bacMusic" src=""></audio>
+            <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+            <img class="b_bg" src="templates/show_template/bargain/shell/img/bg.png" alt="" />
+            <div class="b_banner_con">
+                <div class="b_peo">
+                    <img src="templates/show_template/bargain/shell/img/header.jpg" alt="" />
+                    <div>
+                        <p>FLY</p>
+                        <p>剩余名额500份</p>
+                        <p>原价1200元，底价200元，已砍0元</p>
+                    </div>
+                </div>
+                <div class="b_tit pos_ele_1">
+                    <p>xx教育夏季招生促销大砍价</p>
+                </div>
+                <div class="b_btn">
+                    <button class="b_btn_1"></button>
+                </div>
+                <div class="b_time">
+                    <p><span>23</span><span>23</span><span>59</span><span>59</span></p>
+                </div>
+            </div>
+        </div>
+        <div style="background-color: #CAE6F1;overflow: auto;padding-bottom:0.9rem;position: relative">
+            <div class="shells"></div>
+        <div class="b_prize pos_ele_2">
+            <div class="b_box">
+                <h2 class="b_con_tit_prize"></h2>
+                <div class="b_text">
+                    <p>麦兜成长教育原价1000元幼儿小班课低至200元。</p>
+                    <img src="templates/show_template/bargain/shell/img/prizeimg.png" alt="" />
+                </div>
+            </div>
+        </div>
+        </div>
+        <div style="background-color: #CAF1CE;overflow: auto;padding-bottom:0.9rem;position: relative">
+            <div class="shells"></div>
+        <div class="b_rule pos_ele_3">
+            <div class="b_box">
+                    <h2 class="b_con_tit_role"></h2>
+                    <div class="b_text">
+                        <p></p>
+                    </div>
+            </div>
+        </div>
+        </div>
+        <div style="background-color: #F1EFCA;overflow: auto;padding-bottom:0.9rem;position: relative">
+            <div class="shells"></div>
+        <div class="b_logs">
+            <div class="b_box">
+                <h2 class="b_con_tit_bang"></h2>
+                <div class="b_text">
+                    <p class="b_nodata">暂无人砍价</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div style="background-color: #F1FAB8;overflow: auto;padding-bottom:0.9rem;position: relative">
+            <div class="shells"></div>
+        <div class="b_joins">
+            <div class="b_box">
+                <h2 class="b_con_tit b_con_tit_rank"></h2>
+                <div class="b_text">
+                    <p class="b_nodata">暂无排行</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div style="background-color: #F2D6E5;overflow: auto;padding-bottom:0.9rem;position: relative">
+            <div class="shells"></div>
+        <div class="b_organ pos_ele_4">
+            <div class="b_box">
+                <h2 class="b_con_tit_organ"></h2>
+                <div class="b_text">
+                    <p>麦兜成长教育创办于2000年，专注于少年儿童的兴趣教育，致力于让孩子更快乐、更轻松的学习，采用师生优化配对，根据学员年龄、性格特点、等实际情况推荐合适的老师，制定适合学员的教学方案及辅导考级。</p>
+                    <img src="templates/show_template/bargain/shell/img/organ_lis.png" alt="" />
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="copyright pos_ele_5">
+            <div style="position: relative;">
+                <p class="copyright_erweima" style="margin-top:0"></p>
+                <p class="copyright_organ" style="margin-top:0">易知鸟教育培训</p>
+                <p class="copyright_phone">0571-85789582</p>
+                <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+                <p style="margin-top: 0.2rem;"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        //渲染数据
+        function getShowData(data) {
+            // 如果没有数据则使用show.js里面的初始数据
+            if(!data) {
+                var data = h5_tempalteData['bargain/shell'];
+            }
+            console.log('修改了数据', data);
+            var organHtml = '';
+            var yuyueHtml = '';
+            var music_url = '';
+            var peoHtml = '<img src="templates/show_template/bargain/shell/img/header.jpg" alt="" />';
+            peoHtml += '<div><p>FLY</p><p>剩余名额'+data.prizeInfo.num+'份</p><p>原价'+data.prizeInfo.originalPrice+'元，底价'+data.prizeInfo.floorPrice+'元，已砍0元</p></div>';
+            $('.b_peo').html(peoHtml);
+            
+            $('.b_tit p').html(data.basicInfo.activityName);
+            $('.b_rule .b_text p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>"));
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if(data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>'+ data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    prizeHtml += '<img src='+ data.prizeInfo.describeList[i].value +' alt="奖品描述图片">';
+                }
+            }
+            $('.b_prize .b_text').html(prizeHtml);
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            
+            //渲染底部信息
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src='+ data.organ.code +'> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: '+data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: '+data.organ.address);
+            
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+                if(data.organInfo[i].type == 'text') {
+                    organHtml += '<p>'+ data.organInfo[i].value.replace(/\n/g, "<br/>") +'</p>';
+                } else {
+                    organHtml += '<img src='+ data.organInfo[i].value +' alt="校区介绍图片">';
+                }
+            };
+            
+            $('.b_organ .b_text').html(organHtml);
+        }
+    </script>
+</div>

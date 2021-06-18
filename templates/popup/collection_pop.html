@@ -1,0 +1,42 @@
+<!--快速收款-->
+<div class="popup_" id="collection_popup">
+    <h6>快速收款<span ng-click="closePopup('collection_popup')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.nextStep()">
+            <div class="popup_form_content">
+                <input class="collection_input" type="text" ng-model="constants.paymentMoney" placeholder="请输入收款金额" yzn-filter="num_" maxlength="10" required>
+                <div class="collection_item">
+                    <input type="text" class="collection_search" placeholder="请输入学员姓名" ng-focus="constants.ulShow = true" ng-model="constants.studentName" ng-change="Fns.getStudentList()" required>
+                    <div class="common_tab_btn textAlignCenter" ng-click="Fns.chooseStudent()">选择学员</div>
+                    <ul ng-if="constants.studentList && constants.studentList.length && constants.ulShow">
+                        <li ng-repeat="x in constants.studentList track by $index" ng-click='Fns.studentClick(x)'>
+                            <span title="{{x.name}}">{{x.name}}</span>
+                            <span>{{x.potentialCustomerParentPhone}}</span>
+                            <span>{{x.studentFrom | _studentType}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="collection_item"><input type="text" ng-model="constants.phone" maxlength="11" yzn-filter="num" placeholder="请输入主要联系人手机号码（非必填）"></div>
+                <div class="collection_item"><input type="text" ng-model="constants.remark" maxlength="30" placeholder="添加备注（例：暑假班20节)(非必填）"></div>
+                <button class="common_tab_btn textAlignCenter" type="sumit" style="width: 160px;margin:20px auto 0;display: block;">扫码收款</button>
+                <div class="collection_tip">
+                    <img src="./static/img/collection_tip.png">
+                    <p class="mt20"><a href="https://detail.tmall.com/item.htm?id=574909867310&spm=a1z09.2.0.0.1b842e8dlUptqF&_u=gp2o81894af&skuId=4226562661264" target="_blank">没有小白盒？点击前往购买>></a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--扫码支付-->
+<div class="popup_" id="collection_pay">
+    <h6>扫码收款<span ng-click="clearStatus('close',true);" class="popup_x icon_drop_x"></span></h6>
+    <h3><span>¥</span>{{constants.paymentMoney | number}}</h3>
+    <div class="codeWrap">
+        <input id="codeInput" type="text" placeholder="请客户出示支付宝／微信的付款码" yzn-filter="num" ng-model="constants.authCode" ng-change="codeFn($event)">
+    </div>
+    <div class="onlinePay_order">
+        <img src="static/img/whiteBox.png">
+        <p>确认已完成付款未跳转吗？<span class="clickText" ng-click="reloadOnlinePay()">点击刷新支付状态</span></p>
+        <p><a href="https://detail.tmall.com/item.htm?id=574909867310&spm=a1z09.2.0.0.1b842e8dlUptqF&_u=gp2o81894af&skuId=4226562661264" target="_blank">没有小白盒？点击前往购买>></a></p>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="popup_" id="check_answer">
+    <h6>查看答卷{{answerInfo.name}}<span class="popup_x icon_drop_x" ng-click="closePopup('add_coursepackage')"></span>
+    </h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="del()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false" style="box-shadow: 0px 0px 4px 2px #E8E8E8;z-index: 1;">
+                    <div class="popup_line noneMargin">
+                        <div class="col-xs-8">
+                            <div class="pull-left" style="margin-right:60px;">
+                                <label class="form-label">姓名(昵称)：</label>
+                                <span class="line28">{{surveyDetail.potentialCustomer.name}}{{surveyDetail.potentialCustomer.nickname?"("+ surveyDetail.potentialCustomer.nickname +")" : ""}}</span>
+                            </div>
+                            <div class="pull-left" style="margin-right:60px;" ng-show='surveyDetail.potentialCustomer.age'>
+                                <label class="">年龄：</label>
+                                <span class="line28">{{surveyDetail.potentialCustomer.age}}岁</span>
+                            </div>
+                            <div class="pull-left">
+                                <label class="">联系方式：</label>
+                                <span class="line28">{{surveyDetail.potentialCustomer.potentialCustomerParentPhone}}</span>
+                            </div>
+                        </div>
+                        <div ng-hide="props.self" ng-class="{'common_tab_btn_disable': surveyInfo.currentIndex == surveyInfo.ids.length - 1}" class="pull-right common_tab_btn" ng-click="switchFn('next')">下一份</div>
+                        <div ng-hide="props.self" ng-class="{'common_tab_btn_disable': surveyInfo.currentIndex == 0}" class="pull-right common_tab_btn" ng-click="switchFn('forward')" style="margin-right: 0;">上一份</div>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <div class="col-xs-8">
+                            <label class="form-label">提交时间：</label>
+                            <span class="line28">{{surveyDetail.createTime | yznDate:'yyyy-MM-dd hh:mm'}}</span>
+                        </div>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <div class="col-xs-8">
+                            <label class="form-label">备注：</label>
+                            <div class ="col-xs-8 pl0">
+                                <span class="line28">{{surveyDetail.remark}}</span>
+                                <span ng-show='survey_opra' ng-click="openRemark()" ng-show="!surveyDetail.remark" class="icon_name_edit cursor line28"></span>
+                                <span ng-show='survey_opra' ng-click="openRemark()" ng-show="surveyDetail.remark" class="clickText cursor line28">修改备注</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="popup_scroll" isScroll="false" style="padding:2px 60px 20px">
+                    <div class="popup_line noneMargin" ng-repeat='x in surveyDetail.questionnaireContentList'>
+                        <div class="">
+                            <!--填空题-->
+                            <div ng-if="x.questionType == 1">
+                                <div>
+                                    <label ng-class="{'required':x.questionNotNull == 1}" ng-style="{'margin-left':x.questionNotNull == 1?'-10px':'0'}" class="line28" style="width: auto;">{{$index+1}}、{{x.questionName}}</label>
+                                </div>
+                                <div style="padding: 0 20px;margin-bottom: 10px;">
+                                    <div ng-repeat="n in x.questionnaireAnserList">
+                                        <span class="line25" style="padding-bottom: 2px;border-bottom: 1px solid #DCDCDC;;">{{n.textAnser}}</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!--单选题-->
+                            <div ng-if="x.questionType == 2">
+                                <div>
+                                    <label ng-class="{'required':x.questionNotNull == 1}" class="line28" style="width: auto;">{{$index+1}}、{{x.questionName}}</label>
+                                </div>
+                                <div style="padding: 0px 20px;">
+                                    <div ng-repeat="n in x.questionnaireAnserList" class="line25">
+                                        <input type="radio" style="margin-bottom: -2px;" ng-checked="n.checked == 1" ng-disabled="true"/>
+                                        {{n.anser}}
+                                        <span ng-show="n.anserFillIn == 1 && n.checked == 1" class="line25" style="padding-bottom: 2px;border-bottom: 1px solid #DCDCDC;;">{{n.textAnser}}</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!--多选题-->
+                            <div ng-if="x.questionType == 3">
+                                <div>
+                                    <label ng-class="{'required':x.questionNotNull == 1}" class="line28" style="width: auto;">{{$index+1}}、{{x.questionName}}</label>
+                                </div>
+                                <div style="padding: 0px 20px;">
+                                    <div ng-repeat="n in x.questionnaireAnserList" class="line25">
+                                        <input type="checkbox" style="margin-right:5px;margin-bottom: -2px;" ng-checked="n.checked == 1" disabled="true" />
+                                        {{n.anser}}
+                                        <span ng-show="n.anserFillIn == 1 && n.checked == 1" class="line25" style="padding-bottom: 2px;border-bottom: 1px solid #DCDCDC;;">{{n.textAnser}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class="popup_btn">
+                <span ng-hide="props.self" class="pull-left" style="margin-left: 20px;line-height: 30px;">当前份数：{{surveyInfo.currentIndex + 1}} / {{surveyInfo.ids.length}}</span>
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button ng-show='survey_opra' class="btn sure" type="submit">删除答卷</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup_ survey-remark">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="addRemark()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-8">
+                            <span class="input_words" >{{remark?remark.length:0}}/500</span>
+                            <textarea class="form-control" autocomplete="off"
+                                   ng-model="remark" maxlength="500" placeholder="请填写备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel charge_add_cancel1" ng-click="closeRemark()" type="button">取消</button>
+                    <button class="btn sure charge_taocan_confirm" type="submit">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

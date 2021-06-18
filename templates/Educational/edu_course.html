@@ -1,0 +1,385 @@
+<!--课程包新增或者编辑-->
+<course_package></course_package>
+
+<!--学期设置-->
+<div class="popup_ course_set_package" id="course_set_package">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>学期名称</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:101.3%;max-height:240px;" ng-if="constants.packageList.length>0">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in constants.packageList track by $index">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{x.schoolTermName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="mt10">注：该功能将影响学员按期报课时下拉选择数据。学期课程点名时，系统将根据学年+学期顺序依次消耗学员课时</p>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn sure" type="button" ng-click="Fns.closePop()">我知道了</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--添加或编辑学期-->
+<div class="popup_ course_add_package" id="course_add_package">
+    <!--<h6>学期设置<span ng-click="closePopup('course_set_package')" class="popup_x icon_drop_x"></span></h6>-->
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.confirm_addPack()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">学期名称:</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" ng-model="constants.packageInfo.schoolTermName" maxlength="20" placeholder="请输入学期名称" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">开始时间:</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control dateIcon" id="schoolTermBeginTime" size="30" ng-model="schoolTermBeginTime" placeholder="请选择开始时间" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">结束时间:</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control dateIcon" id="schoolTermEndTime" size="30" ng-model="schoolTermEndTime" placeholder="请选择结束时间" autocomplete="off">
+                            <span class="pull-left fontColor_999" style="margin-top:5px;">(系统会根据学期时间,提醒不同学期的学员进行分班操作)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="Fns.closePackPop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--新增学杂窗口-->
+<div class="popup_ course_shade_miscellaneous">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="iseditoradd ? Fns.editMiscellaneous() : Fns.addMiscellaneous()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">学杂名称:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="请输入学杂名称" maxlength="20" ng-model="constants.currentMiscellaneous.goodsName" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">类型:</label>
+                        <div class="col-xs-4 line28">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="leixing" ng-model="constants.currentMiscellaneous.goodsType" value="1" ng-disabled = "iseditoradd"/>物品
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="leixing" ng-model="constants.currentMiscellaneous.goodsType" value="2" ng-disabled = "iseditoradd"/>费用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="constants.currentMiscellaneous.goodsType == 2">
+                        <label class="form-label required">售卖单价:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" yzn-filter="num_" placeholder="请输入售卖单价" ng-model="constants.currentMiscellaneous.goodsPrice" maxlength="6" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="constants.currentMiscellaneous.goodsType == 1">
+                        <label class="form-label required">规格设置:</label>
+                        <div class="col-xs-10 cursor popup_form_content">
+                            <div class="line28" style="display: inline-block;">
+                                <div class="pull-left mr5" ng-click="Fns.addGoodsSpec()">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">添加规格</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="padding-left: 103px;" ng-if="constants.currentMiscellaneous.goodsType == 1">
+                        <div class="popup_scroll no_padding">
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr class="order_course">
+                                            <th>规则名称</th>
+                                            <th>售卖单价（元）</th>
+                                            <th class="textAlignCenter">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="demo_tbody" ng-if="constants.currentMiscellaneous.goodsSpecList.length == 0">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody" ng-if="constants.currentMiscellaneous.goodsSpecList.length">
+                                        <!--按课时-->
+                                        <tr ng-repeat="item in constants.currentMiscellaneous.goodsSpecList track by $index">
+                                            <td class="textAlignCenter">
+                                                <input type="text" class="form-control mr5 input-w100 pull-left" placeholder="规格名" ng-model="item.name" maxlength="20" required/>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control mr5 input-w100 pull-left" yzn-filter="num_" placeholder="规格单价" ng-model="item.price" required/>
+                                            </td>
+                                            <td class="text_center_im" ng-click="Fns.removeItem(constants.currentMiscellaneous.goodsSpecList,$index)"><span class="icon_delete clickText"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="Fns.closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="common_body">
+    <!--tabs切换-->
+    <div class="tab_nav">
+        <span ng-click="Fns.switchcourseNav(1)" ng-class="{tab_nav_show: constants.tabType==1}">课程管理</span>
+        <span ng-click="Fns.switchcourseNav(3)" ng-class="{tab_nav_show: constants.tabType==3}">学杂管理</span>
+        <span ng-click="Fns.switchcourseNav(4)" ng-class="{tab_nav_show: constants.tabType==4}">课程包</span>
+    </div>
+    <!--筛选项-->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="Fns.Enterkeyup(n)" select-id="courseSearch" list-keyup="Fns.Enterkeyup(n)" select-input="false" list-data="{{constants.kindSearchData}}" select-name="{{constants.selectInfoNameId}}"></kindsearch>
+            </li>
+
+            <li ng-show="constants.tabType == 3">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.goodsType"
+                           ng-change="Fns.changesType('goodsType',true,'goodsType1')">物品
+                </label>
+            </li>
+            <li ng-show="constants.tabType == 3">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.goodsType1"
+                           ng-change="Fns.changesType('goodsType',false,'goodsType1')">费用
+                </label>
+            </li>
+            <li class="part_leftLine" ng-show="constants.tabType == 3">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.enableType"
+                           ng-change="Fns.changesType('enableType',true,'enableType1')">启用
+                </label>
+            </li>
+            <li ng-show="constants.tabType == 3">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.enableType1"
+                           ng-change="Fns.changesType('enableType',false,'enableType1')">禁用
+                </label>
+            </li>
+
+            <li class="screen_onreset clickText" ng-click="Fns.initCondition()" ng-hide="constants.tabType == 1 || constants.tabType == 4">重置</li>
+
+            <li class="common_tab_libtn" ng-show="constants.tabType == 1">
+                <div class="common_tab_btn" ng-click="Fns.addCoursewin()"><i class="icon_addcourse"></i>新增课程</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="constants.tabType == 1">
+                <div class="common_tab_btn" ng-click="Fns.addPackage()"><i class="icon_semesterSet"></i>学期说明</div>
+            </li>
+            <!--<li class="common_tab_libtn" ng-show="constants.tabType == 1">
+                <div class="common_tab_btn" ng-click="Fns.addCoursewin()"><i class="icon_pro"></i>升班规则</div>
+            </li>-->
+            <li class="common_tab_libtn" ng-show="constants.tabType == 3">
+                <div class="common_tab_btn" ng-click="Fns.addMiscellaneouswin()"><i class="icon_addcourse"></i>新增学杂
+                </div>
+            </li>
+            <li class="common_tab_libtn" ng-show="constants.tabType == 4">
+                <div class="common_tab_btn" ng-click="openCoursepackage('add_coursepackage', '1160px', {type: 0, title:'新增课程包', item:{}})"><i class="icon_addcourse"></i>新增课程包</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop" ng-show="constants.tabType == 1">
+            <li>
+                <ul class="common_tab_box">
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.courseType"
+                                   ng-change="Fns.changesType('courseType',true,'courseType1')">标准课
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.courseType1"
+                                   ng-change="Fns.changesType('courseType',false,'courseType1')">通用课
+                        </label>
+                    </li>
+
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.compareType"
+                                   ng-change="Fns.changesType('compareType',true,'compareType1')">一对一
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.compareType1"
+                                   ng-change="Fns.changesType('compareType',false,'compareType1')">一对多
+                        </label>
+                    </li>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.enableType"
+                                   ng-change="Fns.changesType('enableType',true,'enableType1')">启用
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="constants.enableType1"
+                                   ng-change="Fns.changesType('enableType',false,'enableType1')">禁用
+                        </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="Fns.initCondition()">重置</li>
+                </ul>
+                <li>
+                    <ul>
+    </div>
+    <!--课程列表-->
+    <div class="common_content" ng-show="constants.tabType==1">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{constants.courseSet}}" list-clicks="Fns.sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="constants.tableList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in constants.tableList track by $index">
+                        <td class="clickText" ng-click="Fns.addCoursewin(true,x)">
+                            {{x.courseName}}
+                        </td>
+                        <td>
+                            <span ng-show="x.courseType == 0">标准课</span>
+                            <span ng-show="x.courseType == 1">通用课</span>
+                        </td>
+                        <td>
+                            {{x.teachingMethod=="1"?"一对一":x.teachingMethod=="2"?"一对多":""}}
+                        </td>
+
+                        <td class="textAlignCenter">{{x.beginAge}}-{{x.endAge}}岁</td>
+
+                        <td class="remarks overflow-normal cursor textAlignCenter">
+                            <!--ng-click="Fns.updateCourse(x)"-->
+                            <!--<span ng-class='{"isDisable":x.courseStatus == 0,"isEnable":x.courseStatus == 1}'>{{x.courseStatus == 0?"禁用":"启用"}}</span>-->
+                            <span>{{x.courseStatus == 0?"禁用":"启用"}}</span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click='Fns.goCommonPop("course-pop","course_popup","1060px",{page:"course",addOrEdit:"edit",tab:2,item:x});'>套餐设置</span>
+                            <span class="clickText" ng-click='Fns.goCommonPop("course-pop","course_popup","1060px",{page:"course",addOrEdit:"copy",tab:1,item:x});'>复制</span>
+                            <span class="clickText" ng-click="Fns.updateCourse(x)">{{x.courseStatus == 0?"启用":"禁用"}}</span>
+                            <span class="clickText" ng-click="Fns.deleteCourse(x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--学杂列表-->
+    <div class="common_content" ng-show="constants.tabType==3">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{constants.Miscellaneous}}" list-clicks="Fns.sortCllict3(data)"></thead>
+                <tbody class="demo_tbody" ng-if="constants.MiscellaneousList.length == 0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in constants.MiscellaneousList">
+                        <td class="clickText" ng-click="Fns.addMiscellaneouswin(x)">
+                            {{x.goodsName}}
+                        </td>
+                        <td>{{x.specNames}}</td>
+                        <td class="textAlignCenter">{{x.goodsType == 1?"物品":x.goodsType == 2?"费用":""}}</td>
+                        <td style="text-align: center" class="cursor" ng-click="Fns.updateStatusofxueza(x)">
+                            <span ng-class='{"isEnable":x.goodsStatus == 1,"isDisable":x.goodsStatus == 0}'></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="common_content" ng-show="constants.tabType==4">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{constants.addcoursePackage}}" list-clicks="Fns.sortCllict4(data)"></thead>
+                <tbody class="demo_tbody" ng-if="constants.coursePackageList.length == 0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in constants.coursePackageList">
+                        <td style="text-align: left;">
+                            {{x.coursePackageName}}
+                        </td>
+                        <td style="text-align: right;">{{x.courseNum}}</td>
+                        <td style="text-align: right;">{{x.goodsNum}}</td>
+                        <td style="text-align: right;">¥{{x.coursePackagePrice | m}}</td>
+                        <!--<td style="text-align: center" class="cursor" ng-click="Fns.updateStatusCoursePackage(x)">
+                            <span ng-class='{"isEnable":x.coursePackageStatus == 1,"isDisable":x.coursePackageStatus == 0}'></span>
+                        </td>-->
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="Fns.coursePackageInfo(x)">编辑</span>
+                            <span class="clickText" ng-click="Fns.deleteCoursePackage(x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{constants.totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>
+
+<!--上课主题新增或编辑-->
+<!--<div class="popup_ addOreditCourseTl_">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.deter_courseTheme()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                     <div class="popup_line" >
+                        <label class="form-label required">上课主题:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="20" ng-model="constants.courseTitleName.name" placeholder="请输入上课主题" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.operateCourseTit(null, 3)" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>-->

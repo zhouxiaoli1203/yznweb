@@ -1,0 +1,112 @@
+<div class="common_body">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: studNavJud==1}">试听记录</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: studNavJud==2}">试听课课表</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li class="dropdown dropdown110">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择上课时间" autocomplete="off" >
+            </li>
+            <li class="common_tab_libtn" ng-show='"41"|_authId'>
+                <div class="common_tab_btn" ng-click='goCommonPop("listen-pop","set_listenCourse","660px",{page:"listenlist"})'><i class="icon_paike"></i>安排试听课</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <ul class="common_tab_box">
+                    <li>
+                        <my-select list-name="选择课程" list-data="{{courseList}}" list-field="courseName" list-click="courseSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="选择老师" list-data="{{teacherList}}" list-field="teacherName" list-click="teacherSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <!--全部试听权限-->
+                    <li ng-show='"40"|_authId'>
+                        <my-select list-name="创建人" list-data="{{personList}}" list-field="teacherName" list-click="personSelect(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="classStatus == 1" ng-click="changeStatus($event,1)">已上
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="classStatus == 0" ng-click="changeStatus($event,0)">未上
+                        </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{scheduleListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="scheduleList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="11">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in scheduleList">
+                        <td>
+                            <span class="clickText" title="{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}" ng-click='goCommonPop("clsaffair-pop","affair_pop","960px",{tab:1,item:x,page:"schedule",listenPage:true})'>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}</span>
+                        </td>
+                        <td title="{{x.course.courseName}}">{{x.course.courseName}}</td>
+                        <td title="{{x.teacherStr}}">{{x.teacherStr}}</td>
+                        <td title="{{x.classRoomName}}">{{x.classRoomName}}</td>
+                        <td class="textAlignRt">
+                            <span ng-if="x.arrangingCoursesStatus==0">0/{{x.studentTotal}}</span>
+                            <span ng-if="x.arrangingCoursesStatus==1">{{x.studentTotal}}/{{x.studentAllTotal}}</span>
+                        </td>
+                        <td class="textAlignCenter">
+                            <span ng-class='{"main_color":x.arrangingCoursesStatus!="1"}'>{{x.arrangingCoursesStatus=="1"?"已上":"未上"}}</span>
+                        </td>
+                        <td>{{x.operator.teacherName}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==0 && ("41"|_authId)'>点名</span>
+                            <span class="clickText" ng-click='goCommonPop("arange-pop","arange_pop","760px",{"name":"listen","isSingle":"0","title":"排课变更","isChangePaike":true,item:x})' ng-if='x.arrangingCoursesStatus==0 && ("41"|_authId)'>排课变更</span>
+                            <span class="clickText" ng-click="listDelete(x)" ng-if='x.arrangingCoursesStatus==0 && ("41"|_authId)'>删除</span>
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==1 && ("41"|_authId)'>编辑点名</span>
+                            <span class="clickText" ng-click="deleteSignup(x)" ng-if='x.arrangingCoursesStatus==1 && ("41"|_authId)'>删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>
+<!--删除排课-->
+<!--<div class="popup_ delCourseDialog" id="delCourseDialog">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label for="" class="form-label">班级名称:</label>
+                        <span class="col-xs-4 form-span">{{courseInfo.classInfo.className}}</span>
+                        <label for="" class="form-label">时间:</label>
+                        <span class="col-xs-4 form-span">{{courseInfo.arrangingCoursesBeginDate | beginEndDate: courseInfo.arrangingCoursesEndDate}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">教室:</label>
+                        <span class="col-xs-4 form-span">{{courseInfo.classRoomName}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="doDelThisCourse()">确定</button>
+            </div>
+        </form>
+    </div>
+</div>-->

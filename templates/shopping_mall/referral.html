@@ -1,0 +1,465 @@
+<!--发放奖励-->
+<div class="popup_ extendPop" id="extendPop">
+    <div class="popup_content" style="padding:0;">
+        <form class="popup_form" role="form" ng-submit="confirm_extend()">
+            <div class="popup_form_content" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <div class="table_title clearfix">
+                            <span class="span_title">选择本次核销的推荐报课记录</span>
+                        </div>
+                        <div class="popup_table">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th class="textAlignCenter" style="width:40px;">
+                                            <input type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,extend.students,params_data,'potentialCustomerId')">
+                                        </th>
+                                        <th>被推荐学员</th>
+                                        <th>联系方式</th>
+                                        <th>首次报课时间</th>
+                                        <th>报课金额</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="popup_table_body" style="max-height: inherit;">
+                                <table>
+                                    <tbody class="roll_tbody" ng-if="extend.students && extend.students.length > 0">
+                                        <tr ng-repeat="x in extend.students" ng-click="sel_singleFun(x,params_data,'potentialCustomerId')">
+                                            <td class="textAlignCenter" style="width:40px;">
+                                                <input type="checkbox" name="sel_stu" ng-checked="x.hasChecked" />
+                                            </td>
+                                            <td title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>
+                                                <span>{{x.studentName}}</span>
+                                                <span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span>
+                                                <span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentSex]"></span>
+                                            </td>
+                                            <td>{{x.phoneNum}}</td>
+                                            <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                            <td>¥{{x.amount|number:2}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="popup_line">
+                        <div class="table_title clearfix">
+                            <span class="span_title">奖励学员</span>
+                        </div>
+                        <div class="col-xs-10 noPadding">
+                            <div class="teacher_select" ng-show="extend.reference.name">
+                                <span>{{extend.reference.name}} ({{extend.reference.potentialCustomerParentPhone}})<i ng-click="delStudent(extend.reference, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span ng-show="!extend.reference.name" class="form-span icon_name_add bef_mg_0" ng-click="goCommonPop('student-sel','selectStuds_potential', '760px', {type: 'potential',choseType:'radio',callBackName:'添加学员'})">选择学员</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <div class="table_title clearfix">
+                            <span class="span_title">发放方式</span>
+                        </div>
+                        <div style="line-height: 28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="extend.cancellation" value="0"/>发放奖励
+                            </label>
+                            <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+                                <input type="radio" name="type" ng-model="extend.cancellation" value="1"/>已单独发放过奖励
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="extend.cancellation == 0">
+                        <div class="table_title clearfix">
+                            <span class="span_title">奖励内容</span>
+                        </div>
+                        <div class="clearfix line28">
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop('course-sel', 'choseCoupons', '1060px',{name:'coupons', type: 'checkbox', callBackName: '发放奖励-添加优惠券'})">赠送优惠券</div>
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="goCommonPop('course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '发放奖励-课程'})">赠送课时</div>
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="addParams(extend.params3,3)">现金奖励</div>
+                            <div class="addParent icon_name_add signUpMode_d" ng-click="addParams(extend.params4,4)">赠送礼品</div>
+                        </div>
+                        <div ng-show="extend.params1.length>0">
+                            <div class="table_title clearfix">
+                                <span class="span_title">优惠券</span>
+                            </div>
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead my-thead="{{paramsHead}}" list-clicks="sortCllict(data)"></thead>
+                                    <tbody class="roll_tbody">
+                                        <tr ng-repeat="x in extend.params1">
+                                            <td title="{{x.couponName}}">{{x.couponName}}</td>
+                                            <td>
+                                                <span ng-if="x.discountType == 1">￥{{x.discounts|number:2}}</span>
+                                                <span ng-if="x.discountType == 2">{{x.discounts / 10}}折</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="x.validity == 1">{{x.validityBeginTime | yznDate:'yyyy-MM-dd'}}至{{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</span>
+                                                <span ng-if="x.validity == 2">领取后{{x.validityDays}}天内有效</span>
+                                                <span ng-if="x.validity == 3">长期有效</span>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" ng-model="x.num" maxlength="40" yzn-filter="num" required/>
+                                            </td>
+                                            <td class="operate overflow-normal textAlignCenter">
+                                                <span class="clickText" ng-click="extend_operateDelete(extend.params1,$index)">删除</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div ng-show="extend.params2.length>0">
+                            <div class="table_title clearfix">
+                                <span class="span_title">赠送课时</span>
+                            </div>
+                            <div class="popup_table" ng-repeat="x in extend.params2 track by $index" ng-class='{"mt5":!$first}'>
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <th width="30%">课程名称</th>
+                                        <th width="120px">发放方式</th>
+                                        <th width="70%">赠送</th>
+                                        <th width="150px" class="textAlignCenter">操作</th>
+                                    </thead>
+                                    <tbody class="roll_tbody">
+                                        <tr>
+                                            <td width="30%" title="{{x.courseName}}">{{x.courseName}}</td>
+                                            <td width="120px">
+                                                <select style="width: 90px;" class="form-control" ng-model="x.feeType" required>
+                                                    <option value="" style="display: none;">选择方式</option>
+                                                    <option value="{{y.id}}" ng-repeat="y in feeTypeList">{{y.name}}</option>
+                                                </select>
+                                            </td>
+                                            <td width="70%">
+                                                <select style="width: 80px;display: inline-block;" ng-show="x.feeType == 1" class="form-control" ng-model="x.schoolYear" ng-required="x.feeType == 1">
+                                                    <option value="" ng-disable="false ">学年</option>
+                                                    <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                                </select>
+                                                <select style="width: 90px;display: inline-block;" ng-show="x.feeType == 1" class="form-control" ng-model="x.schoolTermId" ng-required="x.feeType == 1">
+                                                    <option value="">选择学期</option>
+                                                    <option value="{{y.schoolTermId}}" ng-repeat="y in schoolTermList">{{y.schoolTermName}}</option>
+                                                </select>
+                                                <div style="display: inline-block;">
+                                                    <input type="text" style="width:80px;display: inline-block;" class="form-control" ng-model="x.num" maxlength="40" required/>
+                                                    <span style="display: inline-block;">{{x.feeType == 2?"天":"课时"}}</span>
+                                                </div>
+                                            </td>
+                                            <td width="150px" class="operate overflow-normal textAlignCenter">
+                                                <span class="clickText" ng-click="extend_operateDelete(extend.params2,$index)">删除</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div ng-show="extend.params3.length>0">
+                            <div class="table_title clearfix">
+                                <span class="span_title">现金奖励</span>
+                            </div>
+                            <div class="chargeistItem" ng-repeat="x in extend.params3 track by $index">
+                                <span class="pos_rg_delete cursor" ng-click="extend_operateDelete(extend.params3,$index)"></span>
+                                <!--支付方式-->
+                                <div class="popup_line">
+                                    <label for="" class="form-label">支付方式:</label>
+                                    <div class="col-xs-10">
+                                        <ul class="pay_type_icon clearfix">
+                                            <!--<li ng-if="!isOnlinePayType && isRepay" class="pay_type_icon_hide" ng-click="clickPayTypeIcon(null, $event)"></li>-->
+                                            <li ng-repeat="y in payTypeObj" ng-class="{'pay_type_icon_show': x.paymentMode==y.val}" ng-click="clickPayTypeIcon(x,y.val)"><span class="pay_type_icon_{{y.val+1}}"></span>{{y.name}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label for="" class="form-label required">奖励金额:</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control" placeholder="请输入奖励金额" ng-model="x.paymentMoney" yzn-filter="num_" required/>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label required">发放时间:</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control dateIcon" id="extend_time{{$index}}" name="name" ng-mouseover="selTimeFrame(x, $event)" ng-model="x.extend_time" placeholder="选择时间" required autocomplete="off" required/>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label required">经办人:</label>
+                                    <div class="col-xs-4">
+                                        <select class="form-control" ng-model="x.handleId" required>
+                                            <option value="">请选择经办人</option>
+                                            <option value="{{x.shopTeacherId}}" ng-repeat="x in handlerList">{{x.teacherName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="extend.params4.length>0">
+                            <div class="table_title clearfix">
+                                <span class="span_title">赠送礼品</span>
+                            </div>
+                            <div class="chargeistItem" ng-repeat="x in extend.params4 track by x.mixid">
+                                <span class="pos_rg_delete cursor" ng-click="extend_operateDelete(extend.params4,$index,'_outStock')"></span>
+                                <div class="popup_line">
+                                    <label class="form-label">物品:</label>
+                                    <div class="col-xs-4">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_outStock{{x.mixid}}" list-name="请选择物品" list-data="{{goodslist}}" list-field="goodsName" list-click="selectStock_out(n,x)" list-sort="false" list-search="true" list-all="no"></my-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4" style="line-height:28px;">
+                                        <span class="moneyColor">( 库存数量:{{x.oldNum}} )</span>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left">规格:</label>
+                                    <div class="col-xs-4">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_outStock{{x.mixid}}_" list-name="请选择物品规格" list-data="{{x.goodsSpecList}}" list-field="name" list-click="specClickout(n,x)" list-sort="false" list-search="true" list-all="no" list-default="请选择物品规格"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label">数量:</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control" ng-model="x.num" placeholder="请输入数量" yzn-filter="num" required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-if="extend.cancellation == 1">
+                        <div class="table_title clearfix">
+                            <span class="span_title">备注</span>
+                        </div>
+                        <div class="col-xs-12 popup_rt noPadding">
+                            <span class="input_words">{{extend.remark?extend.remark.length:0}}/800</span>
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="extend.remark" maxlength="800" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--有效邀请-->
+<div class="popup_ validInvit" id="validInvit">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>邀请时间</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!youxiaoList || youxiaoList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="youxiaoList && youxiaoList.length > 0">
+                            <tr ng-repeat="x in youxiaoList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--推荐报课-->
+<div class="popup_ referralSignup" id="referralSignup">
+    <div class="popup_form_content mt20">
+        <div class="popup_scroll" isScroll="false">
+            <div class="popup_table">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>学员姓名（昵称）</th>
+                            <th>联系方式</th>
+                            <th>报课时间</th>
+                            <th>报课金额</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="popup_table_body" style="max-height: inherit;">
+                    <table>
+                        <tbody class="demo_tbody" ng-if="!tuijianList || tuijianList.length==0">
+                            <tr>
+                                <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="roll_tbody" ng-if="tuijianList && tuijianList.length > 0">
+                            <tr ng-repeat="x in tuijianList">
+                                <td ng-if="x.studentName" title='{{x.studentName}} {{x.studentNickname?"("+x.studentNickname+")":""}}'>{{x.studentName}}<span>{{x.studentNickname?"("+x.studentNickname+")":""}}</span></td>
+                                <td ng-if="!x.studentName" style="color:#999;">该学员已被删除</td>
+                                <td>{{x.phoneNum}}</td>
+                                <td>{{x.signTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>￥{{x.amount|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--发放记录-->
+<div class="popup_ recordDetial_pop" id="recordDetial_pop">
+    <!--<h6>查看详情<span ng-click="closePopup('bukeDetail_pop')" class="popup_x icon_drop_x"></span></h6>-->
+    <div class="popup_form_content">
+        <div class="popup_scroll" isScroll="true">
+            <div class="metadata" ng-if="extendRecord==''"><span class="font_metadata">没有相关数据</span></div>
+            <ul class="record_pop marginTop_10">
+                <li ng-repeat="x in extendRecord">
+                    <div ng-if="x.cancellation == 0">
+                        <div class="col-xs-3 textAlignRt">
+                            <div class="time">{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</div>
+                            <div class="marginTop_m7">操作人 : <span class="person_name">{{x.operator}}</span></div>
+                        </div>
+                        <div class="col-xs-1 icon_circel"><span></span></div>
+                        <!--新增沟通-->
+                        <div class="col-xs-8 textAlignLf">
+                            <div class="oprate_name main_color">【发放奖励】<span class="clickText" ng-click="operatePop(x,5)">撤销</span></div>
+                            <div class="oprate_name clearfix" ng-if="x.couponList.length>0">
+                                <span class="pull-left noPadding">赠送优惠券：</span>
+                                <span class="col-xs-9 noPadding">
+                                    <span ng-repeat="y in x.couponList">【{{y.couponName}}】{{y.sendNumber}}张</span>
+                                </span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.orderCourseList.length>0">
+                                <span class="pull-left noPadding">赠送课时：</span>
+                                <span class="col-xs-9 noPadding">
+                                    <span ng-repeat="y in x.orderCourseList" >
+                                        <span ng-if="y.feeType == 0">【{{y.courseName}}】赠送{{y.giveTime}}课时</span>
+                                <span ng-if="y.feeType == 1">【{{y.courseName}} {{y.schoolYear}} {{y.schoolTermName}}】赠送{{y.giveTime}}课时</span>
+                                <span ng-if="y.feeType == 2">【{{y.courseName}}】赠送{{y.buyTime}}天</span>
+                                </span>
+                                </span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.shopCostRecord">
+                                <span class="pull-left noPadding">现金奖励：</span>
+                                <span class="col-xs-9 noPadding">{{x.shopCostRecord.shopCostRecordPrice}}元（支付方式：{{x.shopCostRecord.payType}}）</span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.stockRecordGoodsList.length>0">
+                                <span class="pull-left noPadding">赠送礼品：</span>
+                                <span class="col-xs-9 noPadding">
+                                    <span ng-repeat="y in x.stockRecordGoodsList">【{{y.goodsName}}{{y.goodsSpecName?'*'+y.goodsSpecName:''}}】{{y.num}}{{y.unit}}</span>
+                                </span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.students.length>0">
+                                <span class="pull-left noPadding">被推荐学员：</span>
+                                <span class="col-xs-9 noPadding">
+                                    <span ng-repeat="y in x.students">{{y.name}}（{{y.potentialCustomerParentPhone}}）</span>
+                                </span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.rewardStudents">
+                                <span class="pull-left noPadding">奖励学员：</span>
+                                <span class="col-xs-9 noPadding">{{x.rewardStudents.name}}（{{x.rewardStudents.potentialCustomerParentPhone}}）</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="x.cancellation == 1">
+                        <div class="col-xs-3 textAlignRt">
+                            <div class="time">{{x.createTime | yznDate:'yyyy-MM-dd HH:mm'}}</div>
+                            <div class="marginTop_m7">操作人 : <span class="person_name">{{x.operator}}</span></div>
+                        </div>
+                        <div class="col-xs-1 icon_circel"><span></span></div>
+                        <!--新增沟通-->
+                        <div class="col-xs-8 textAlignLf">
+                            <div class="oprate_name main_color">【直接核销】<span class="clickText" ng-click="operatePop(x,5)">撤销</span></div>
+                            <div class="oprate_name"><span>备注：{{x.remark}}</span></div>
+                            <div class="oprate_name" ng-if="x.students.length>0">
+                                <span class="pull-left noPadding">被推荐学员：</span>
+                                <span class="col-xs-9 noPadding">
+                                    <span ng-repeat="y in x.students">{{y.name}}（{{y.potentialCustomerParentPhone}}）</span>
+                                </span>
+                            </div>
+                            <div class="oprate_name" ng-if="x.rewardStudents">
+                                <span class="pull-left noPadding">奖励学员：</span>
+                                <span class="col-xs-9 noPadding">{{x.rewardStudents.name}}（{{x.rewardStudents.potentialCustomerParentPhone}}）</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="tab_nav">
+        <span ng-click="switchClassNav(1)" ng-class="{tab_nav_show: classNavJud==1}">推荐人</span>
+        <span ng-click="switchClassNav(2)" ng-class="{tab_nav_show: classNavJud==2}">推荐报课记录</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <label class="search_checkbox" style="margin-right: 10px;">
+                    <input type="checkbox" ng-checked="waitingFlag == 1" ng-click="changeType($event,1)" class="checkbox-inline labelLeft">推荐奖励待发放
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!referralList || referralList.length==0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in referralList">
+                        <td ng-if="x.studentName" class="remarks overflow-normal">
+                            <!-- <span>{{x.studentName}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentSex]"></span> -->
+                                <remark-view view-data="{{x.studentName}}"></remark-view>
+                                <remark-edit edit-id="{{x.referralDataId}}" edit-title="推荐人姓名" edit-text="{{x.studentName}}"  edit-otext="{{x.studentName}}"  p-height="100" edit-length="12" edit-height="25" edit-click="editRemark(n)" ></remark-edit>
+                        </td>
+                        <td ng-if="!x.studentName">
+                            <span style="color:#999;">该推荐人已被删除</span>
+                        </td>
+                        <td>{{x.phoneNum}}</td>
+                        <td class="clickText" style="white-space: inherit;">
+                            <span ng-repeat="n in x.potentialCustomerList track by $index" ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':'0','fromPage':'studentPop','item':n,'tab':1})">{{n.name}}{{($index == x.potentialCustomerList.length -1)?'':'，'}}</span>
+                        </td>
+                        <td class="clickText textAlignRt" ng-click="x.inviteNumber>0?operatePop(x,3):return;">{{x.inviteNumber}}</td>
+                        <td class="clickText textAlignRt" ng-click="x.recommendedNumber?operatePop(x,4):return;">{{x.recommendedNumber}}</td>
+                        <td class="textAlignRt">{{x.waitingNumber}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="operatePop(x,1)">发放记录</span>
+                            <span class="clickText" ng-if="x.waitingNumber>0" ng-click="operatePop(x,2)">发放奖励</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

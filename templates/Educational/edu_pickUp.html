@@ -1,0 +1,140 @@
+<!--节假日调整-->
+<div class="popup_ adjust_time">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="adjust_time_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label width45">调整:</label>
+                        <div class="col-xs-10">
+                            <input type="text" style="width:100px;display:inline-block;" class="form-control dateIcon" id="adjustTime1" size="30" ng-model="adjustTime1" placeholder="请调整时间"  autocomplete="off"  required>
+                                <span style="color:#999;">({{adjustDay1}})</span> 
+                                                                                 按 <input type="text" style="width:100px;display:inline-block;" class="form-control dateIcon" id="adjustTime2" size="30" ng-model="adjustTime2" placeholder="请调整时间"  autocomplete="off" required>
+                                <span style="color:#999;">({{adjustDay2}})</span>  的名单接送
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label width45"></label>
+                        <div class="col-xs-10" style="padding:0;color:#999;">
+                            例：国家法定节假日安排通知，星期日上星期五的班，则调整星期日按星期五的接送名单接送。
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--取消接送-->
+<div class="popup_ cancel_pickup">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="cancel_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">取消接送原因:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{cancelReason?cancelReason.length:0}}/100</span>
+                            <textarea style="resize: none;height: 120px;" class="form-control" maxlength="100" rows="3" ng-model="cancelReason" placeholder="请填写取消接送原因" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body">
+        <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch " list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择签到时间"  autocomplete="off" >
+            </li>
+            <li ng-show="newDate">
+                <div class="line28">已调整按{{newDate|yznDate:'yyyy-MM-dd'}} {{newDate| _week:'date'}}的接送名单接送</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="openAdjust()"><i class="icon_paike"></i>节假日调整</div>
+            </li>
+        </ul>
+         <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <ul class="common_tab_box">
+                    <li>
+                        <my-select list-name="学校" list-data="{{schoollist}}" list-field="schoolName" list-click="changeSchool(n)" list-search="true"></my-select>
+                    </li>
+                    <li>
+                        <my-select list-name="年级" list-data="{{screen_grade}}" list-field="name" list-click="changeGrade(n)" list-search="true" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected1=='0'" ng-click="changeByTime($event,'0')">午托
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected1=='1'" ng-click="changeByTime($event,'1')">晚托
+                        </label>
+                    </li>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected2=='2'" ng-click="changeByStatus($event,'2')">未接
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected2=='1'" ng-click="changeByStatus($event,'1')">已接到
+                        </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                            <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="selected2=='0'" ng-click="changeByStatus($event,'0')">不用接
+                        </label>
+                    </li>
+                    
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="pickuplist==[]||pickuplist==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="pickuplist.length>0">
+                    <tr ng-repeat="x in pickuplist track by $index">
+                        <td>{{x.pickUpType == 1?"晚托":"午托"}}</td>
+                        <td>{{x.name}}</td>
+                        <td>{{x.potentialCustomerParentPhone}}</td>
+                        <td>{{x.schoolName}}</td>
+                        <td>{{x.grade | _grade}}</td>
+                        <td>{{(x.pickUpStatus===undefined||x.pickUpStatus==2)?"未接":(x.pickUpStatus == 1?"已接到":"不用接")}}</td>
+                        <td>{{x.teacherName}}</td>
+                        <td class="textAlignCenter">
+                            <span class="clickText" ng-click="cancelPickup(x)" ng-if="x.pickUpStatus===undefined || x.pickUpStatus==2">取消接送</span>
+                            <span class="clickText" ng-click="viewDetail(x)" ng-if="x.pickUpStatus==0 || x.pickUpStatus==1">{{x.pickUpStatus == 0?"查看详情":""}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

@@ -1,0 +1,820 @@
+/*
+ * 公共样式文件 NewCommonStyle
+ */
+
+//确定按钮背景色
+@btnSurebgColor: #ff595e;
+//滑过确定按钮背景色
+@hoverBtnSurebgColor: #fe6c71;
+//取消按钮背景色
+@btnCancelbgColor: #ddd;
+//滑过取消按钮背景色
+@hoverBtnCancelbgColor: #fafafa;
+//主要border颜色
+@borderColor: #d6d6d6;
+//第一主主色调
+@mainColor: #e04e53;
+//第二主色（用的较多）
+@secMainColor: #ff595e;
+//可点击文字颜色
+@clickFontColor: #397fd4;
+//滑过可点击文字颜色
+@hoverClickFontColor: #60a4f7;
+//常规文字字体颜色
+@normalFontColor: #444;
+//下拉滑过背景色
+@hoverSelectbgColor: #edf0f7;
+//偶数table tr背景色
+@evenTrbgColor: #f7f8fa;
+//常规色白
+@regularColor: #fff;
+//鼠标移入样式
+@cursorPointer:pointer;
+/*
+ * 矢量图文件 FontIconImg
+ */
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?viya0m');
+    src: url('../fonts/icomoon.eot?viya0m#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?viya0m') format('truetype'), url('../fonts/icomoon.woff?viya0m') format('woff'), url('../fonts/icomoon.svg?viya0m#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class$="_icon"],
+[class*="_icon"],
+[class$="icon_"],
+[class*="icon_"],
+.sideslip_back {
+    font-family: 'icomoon' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#work_icon:before {
+    content: "\ea15";
+    font-size: 17px;
+}
+#show_icon:before {
+    content: "\ea13";
+}
+#logo_icon:before {
+    content: "\e94f";
+}
+
+#base_icon:before {
+    content: "\e904";
+}
+
+#sale_icon:before {
+    content: "\ea11";
+}
+
+#send_icon:before {
+    content: "\e907";
+}
+
+#edu_icon:before {
+    content: "\ea10";
+}
+#daily_icon:before {
+    content: "\e9e2";
+}
+#edu_myicon:before {
+    content: "\e912";
+}
+
+#people_icon:before {
+    content: "\ea0f";
+}
+#setting_icon:before {
+    content: "\ea15";
+}
+#other_icon:before {
+    content: "\e905";
+}
+
+#statistics_icon:before {
+    content: "\ea0d";
+}
+
+#financial_icon:before {
+    content: "\ea0e";
+}
+#data_icon:before{
+    content: "\e9c9";
+}
+#organ_icon:before{
+    content: "\e9c8";
+}
+#organ_analysis_icon:before{
+    content: "\e9ca";
+}
+#icon_shopping_mall:before {
+    content: "\ea12";
+}
+.icon_name_add:before {
+    float: left;
+    content: "\e979";
+    color:#ff595e;
+    font-size: 16px;
+    margin: 0 3px 0 0;
+}
+.icon_name_add {
+    height: 28px;
+    color:#ff595e;
+    cursor: pointer;
+    line-height: 28px;
+}
+.icon_name_sub:before {
+    float: left;
+    content: "\ea05";
+    color:#ff595e;
+    font-size: 16px;
+    margin: 0 3px 0 0;
+}
+.icon_name_sub {
+    height: 28px;
+    color:#ff595e;
+    cursor: pointer;
+    line-height: 28px;
+}
+
+.icon_name_edit:before {
+    content: "\e966";
+    font-size: 12px;
+    color: #7d7d7d;
+}
+
+.icon_warning:before {
+    content: "\e969";
+    margin-right: 5px;
+}
+
+
+/*左侧icon*/
+
+
+/*右侧icon*/
+
+.icon_add:before {
+    content: '+';
+    font-size: 18px;
+}
+
+.icon_Addclassroom:before {
+    content: '\e932';
+}
+
+.icon_delete:before {
+    content: "\e999";
+}
+.icon_print:before {
+    content: "\e998";
+}
+.icon_order:before {
+    content: "\e973";
+}
+.icon_order_out:before {
+    content: "\e9e0";
+}
+
+.icon_edit {
+    color: #fa575d;
+}
+
+.icon_edit:before {
+    content: "\e966";
+}
+
+.icon_cancel:before {
+    content: "\e95d";
+    margin-right: 2px;
+}
+
+.icon_addtype:before {
+    content: "\e945";
+}
+
+.icon_chahca:before {
+    content: "\e953";
+}
+.icon_down:before {
+    content: "\e958";
+}
+
+.icon_up:before {
+    content: "\e959";
+}
+
+.icon_newyear:before {
+    content: "\e944";
+}
+
+.icon_change:before {
+    content: "\e942";
+}
+
+.icon_pro:before {
+    content: "\e934";
+}
+
+.icon_addcourse:before {
+    content: "\e935";
+}
+
+.icon_Addpotential:before {
+    content: "\e93c";
+}
+
+.icon_import:before {
+    content: "\e937";
+}
+
+.icon_record:before {
+    content: "\e939";
+}
+
+.icon_sign:before {
+    content: "\e93b";
+}
+
+.icon_audition:before {
+    content: "\e93d";
+    color: #FF7B5D;
+}
+
+.icon_frozen:before {
+    color: #fa575d;
+    content: "\e938";
+}
+
+.icon_distribution:before {
+    color: #fa575d;
+    content: "\e93a";
+}
+
+.icon_pay:before {
+    content: "\e931";
+}
+
+.icon_addmodel:before {
+    content: "\e948";
+}
+
+.icon_pushmsg:before {
+    content: "\e947"
+}
+
+.icon_push:before {
+    content: "\e946";
+}
+
+.icon_Addstudent:before {
+    content: "\e93c";
+}
+
+.icon_Addcontract:before {
+    content: "\e94b";
+}
+
+.icon_surepay:before {
+    content: "\e931";
+}
+
+.icon_chaban:before {
+    content: "\e949";
+}
+
+.icon_Refund:before {
+    content: "\e94a";
+}
+
+.icon_shangban:before {
+    content: "\e92d";
+    color: #ff595e;
+}
+
+.icon_biye:before {
+    content: "\e92a";
+    color: #ff595e;
+}
+
+.icon_stu:before {
+    content: "\e95a";
+}
+
+.icon_paike:before {
+    content: "\e933";
+}
+
+.icon_shiting:before {
+    content: "\e93e";
+    margin-right:5px;
+}
+
+.icon_qingjia:before {
+    content: "\e93f";
+}
+
+.icon_Addpost:before {
+    content: "\e930";
+}
+
+.icon_complete:before {
+    content: "\e940";
+}
+
+.icon_download:before {
+    content: "\e95c";
+    margin-right: 10px;
+}
+
+.icon_upload:before {
+    content: "\e95b";
+}
+.icon_upload.marginRt:before {
+    margin-right: 10px;
+}
+
+.icon_dropdown:before {
+    content: "\e950";
+    color: #fff;
+}
+
+.icon_bback:before {
+    content: "\e941";
+    color: #2B3C49;
+    font-size: 14px;
+}
+
+.icon_roll:before {
+    content: "\e955";
+}
+
+.icon_daike:before {
+    content: "\e954";
+}
+
+.icon_cpk:before {
+    content: "\e93e";
+}
+
+.icon_editpwd:before {
+    content: "\e95f";
+}
+
+.icon_out:before {
+    content: "\e95e";
+}
+
+.icon_gou:before {
+    content: "\e961";
+    font-size: 24px;
+    color: #1B7EB6;
+}
+.icon_yes:before {
+    content: "\e995";
+}
+
+.icon_select:before {
+    content: "\e97a";
+    font-size: 12px!important;
+}
+
+.icon_common_but_search:before {
+    content: "\e992";
+    font-size: 15px;
+}
+
+.icon_destri_name:before {
+    content: "\e996";
+}
+.icon_male:before{
+     content: "\e99c";
+     color:@hoverClickFontColor;
+     margin-left: 3px;
+}
+
+.icon_female:before{
+     content: "\e99d";
+     color:@secMainColor;
+     margin-left: 3px;
+}
+.icon_more:before{
+     content: "\e99a";
+     margin-right:3px;
+}
+.icon_pending:before{
+     content: "\e91e";
+}
+.icon_v:before{
+    content: "\e976";
+}
+.icon_export:before{
+    content: "\e92e";
+}
+.icon_allot:before{
+    content: "\e99e";
+}
+.icon_appo:before{
+    content: "\e96b";
+}
+.icon_signup:before{
+    content: "\e92f";
+}
+.icon_warn:before{
+    content: "\e969";
+    color: @secMainColor;
+}
+.icon_pageUp:before{
+    float: right;
+//  margin-top: 5px;
+    content: "\e97a";
+    transform: rotate(180deg);
+}
+.icon_orderConfirm:before{
+    content: "\e974";
+}
+.icon_withdrawals:before{
+    content: "\e972";
+}
+.icon_recharge:before{
+    content: "\e94e";
+}
+.icon_moreshengban:before{
+    content: "\e9a9";
+}
+.icon_shengban:before{
+    content: "\e9b7";
+}
+.icon_graduate:before{
+    content: "\e9b4";
+}
+//.icon_gotoRight:before{
+//  content: "\e9b8";
+//  font-size: 24px;
+////  color: #E0E0E0;
+//}
+.icon_changeStud:before{
+    content: "\e9ab";
+}
+.icon_changeClassRoom:before{
+    content: "\e9a4";
+}
+.icon_changeTime:before{
+    content: "\e9c4";
+}
+.icon_changeTeach:before{
+    content: "\e9a5";
+}
+.icon_paike:before{
+    content: "\e9a6";
+}
+.icon_shunyan:before{
+    content: "\e9a7";
+}
+.icon_operateSome:before{
+    content: "\e9a8";
+}
+.icon_list_x:before {
+    content: "\e94d";
+}
+.icon_return:before {
+    content: "\e9ae";
+}
+.icon_newdelete:before {
+    content: "\e999";
+    font-size: 14px;
+    color: #fff;
+}
+.icon_right_key:before {
+    content: "\e956";
+}
+
+//工作台快捷入口图标
+//.icon_workNavImg1:before {
+//  content: "\e9bc";
+//}
+//.icon_workNavImg2:before {
+//  content: "\e9b2";
+//}
+//.icon_workNavImg3:before {
+//  content: "\e9ba";
+//}
+//.icon_workNavImg4:before {
+//  content: "\e9af";
+//}
+//.icon_workNavImg5:before {
+//  content: "\e9bb";
+//}
+//.icon_workNavImg6:before {
+//  content: "\e9b9";
+//}
+//.icon_workNavImg7:before {
+//  content: "\e9b1";
+//}
+//.icon_workNavImg8:before {
+//  content: "\e9b3";
+//}
+//.icon_workNavImg9:before {
+//  content: "\e9bd";
+//}
+//.icon_workNavImg10:before {
+//  content: "\e9cc";
+//}
+//.icon_workNavImg11:before {
+//  content: "\e9f6";
+//}
+//.icon_workNavImg12:before {
+//  content: "\e9fc";
+//}
+
+.icon_funnelplot_1:before {
+    content: "\e9b0";
+}
+.icon_funnelplot_2:before {
+    content: "\e9c0";
+}
+.icon_funnelplot_3:before {
+    content: "\e9bf";
+}
+.icon_funnelplot_4:before {
+    content: "\e9be";
+}
+.icon_funnelplot_5:before {
+    content: "\e97a";
+    transform: rotate(180deg);
+}
+.icon_head_set:before{
+    content: "\e9c6";
+}
+.icon_head_msg:before{
+    content: "\e9c7";
+}
+.icon_head_help:before{
+    content: "\e9c5";
+}
+.icon_head_Back:before{
+    margin-right:5px;
+}
+.icon_changePaike:before{
+    content: "\e9c1";
+}
+.icon_rollcall:before{
+    content: "\e9d2";
+}
+
+.icon_comment:before{
+    content: "\e9cf";
+}
+.icon_homeWk:before{
+    content: "\e9d0";
+}
+.icon_nohomeWk:before{
+    content: "\e9d1";
+}
+.icon_setClasshomeWk:before{
+    content: "\e9ce";
+}
+.icon_onceSubhomeWk:before{
+    content: "\e9d3";
+}
+.icon_semesterSet:before{
+    content: "\e9d6";
+}
+.icon_chargeStandard:before{
+    content: "\e9d7";
+}
+.icon_piliangWarn:before{
+    content: "\e9d8";
+}
+.icon_setWarn:before{
+    content: "\e9d9";
+}
+.icon_inform_send:before {
+    content: "\e9da";
+}
+.icon_inform_add:before {
+    content: "\e9dc";
+}
+.icon_shopping_mall_add:before {
+    content: "\e9e8";
+}
+.icon_storage_check:before {
+    content: "\e9e3";
+}
+.icon_outStorage:before {
+    content: "\e9e4";
+}
+.icon_inStorage:before {
+    content: "\e9e5";
+}
+.icon_addStorage:before {
+    content: "\e9e6";
+}
+.icon_messageSend:before {
+    content: "\e9ed";
+}
+.icon_messageRecharge:before {
+    content: "\e9ec";
+}
+.icon_messageQm:before {
+    content: "\e9ef";
+}
+.icon_addRecord:before {
+    content: "\e9ea";
+}
+.icon_classify:before {
+    content: "\e9f1";
+}
+.icon_addClassify:before {
+    content: "\e9f4";
+}
+.icon_salaryModel:before {
+    content: "\e9f2";
+}
+.icon_importPayroll:before {
+    content: "\e9f0";
+}
+.icon_confirm:before {
+    content: "\e9de";
+}
+.icon_creatPerformance:before {
+    content: "\e9f5";
+}
+.icon_addPerformanceRule:before {
+    content: "\e9f3";
+}
+.icon_newStudSign:before {
+    content: "\e9f5";
+}
+.icon_showNull:before {
+    content: "\ea05";
+}
+.icon_changeSub:before {
+    content: "\ea07";
+}
+.icon_reSubmit:before {
+    content: "\e9ff";
+}
+.icon_confirRecieve:before {
+    content: "\ea01";
+}
+.icon_buy:before {
+    content: "\ea03";
+}
+.icon_bill:before {
+    content: "\ea06";
+}
+
+.icon_addRrd:before {
+    content: "\e94c";
+}
+.icon_attend_1:before {
+    content: "\ea0b";
+}
+.icon_attend_2:before {
+    content: "\ea0a";
+}
+.icon_attend_3:before {
+    content: "\ea09";
+}
+.icon_attend_4:before {
+    content: "\ea08";
+}
+.icon_attend_5:before {
+    content: "\ea07";
+}
+.icon_attend_6:before {
+    content: "\ea00";
+}
+.icon_sendcoupon:before {
+    content: "\ea16";
+}
+.icon_git:before {
+    content: "\ea17";
+}
+
+.icon_integral_rule:before {
+    content: "\ea18";
+}
+.icon_set_homework:before {
+    content: "\eb3b";
+}
+
+.icon_integral:before {
+    content: "\ea19";
+}
+.icon_ditui:before{
+    content: "\e900";
+}
+.icon_normalSet:before{
+    content: "\ea18";
+}
+.icon_comeInout:before{
+    content: "\ea06";
+}
+.icon_head_notice:before{
+    content: "\e906";
+}
+.icon_head_setting:before{
+    content: "\e908";
+}
+.icon_head_help:before{
+    content: "\e909";
+}
+.icon_setHead{
+    margin-left: 5px;
+    color: #397fd4;
+}
+.icon_setHead:before{
+    content: "\e90a";
+}
+.icon_info_pic:before{
+    content: "\e90d";
+}
+.icon_info_voice:before{
+    content: "\e90b";
+}
+.icon_info_video:before{
+    content: "\e90e";
+}
+.icon_batch_comment:before{
+    content: "\e90f";
+}
+.icon_cuijiao_homeWk:before{
+    content: "\e910";
+}
+.icon_addOnlinec:before{
+    content: "\e918";
+}
+.icon_filePic:before{
+    content: "\e919";
+}
+.icon_fileAudio:before{
+    content: "\e91a";
+}
+.icon_fileVideo:before{
+    content: "\e917";
+}
+.icon_fileDoc:before{
+    content: "\e916";
+}
+.icon_use_survey:before{
+    content: "\e913";
+}
+
+.icon_num_mins:before{
+    content: "\e91c";
+}
+
+.icon_num_add:before{
+    content: "\e91b";
+}
+.icon_data_set:before{
+    content: "\e923";
+}
+.icon_data_upload:before{
+    content: "\e91d";
+}
+.icon_data_add:before{
+    content: "\e91f";
+}
+.icon_data_suolve:before{
+    font-size: 14px;
+    content: "\e925";
+}
+.icon_data_list:before{
+    font-size: 14px;
+    content: "\e924";
+}
+.icon_addLike:before{
+    content: "\e928";
+}
+.icon_deleteLike{
+    color:#e04e53;
+}
+.icon_deleteLike:before{
+    content: "\e927";
+}
+.icon_answer:before{
+    content: "\e929";
+}
+.icon_pay_fast:before{
+    content: "\e943";
+}
+.icon_pay_code:before{
+    content: "\e92c";
+}
+.icon_pay_know:before {
+    content: "\e957";
+}
+.icon_pay_info:before {
+    content: "\e92b";
+}

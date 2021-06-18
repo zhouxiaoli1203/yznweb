@@ -1,0 +1,483 @@
+<!--新增物品-->
+<div class="popup_ add_goods">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_addGoods()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">物品名称:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="20" ng-model="goods.goodsName" placeholder="请输入物品名称" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">条形编码:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" ng-model="goods.barCoding" yzn-filter="num" placeholder="请输入条形编码" />
+                        </div>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label required">单位:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" autocomplete="off" ng-model="goods.unit" placeholder="请输入物品单位" required yzn-filter="notNum"/>
+                        </div>
+                    </div>-->
+                    <div class="popup_line">
+                        <label class="form-label required">学杂:</label>
+                        <div class="col-xs-4 popup_rt" style="line-height:26px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="sell" ng-model="goods.sellStatus" value="1"/>是
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="sell" ng-model="goods.sellStatus" value="0"/>否
+                            </label>
+                        </div>
+                        <!-- <label class="form-label required" ng-if="goods.sellStatus == 1">售卖价格:</label>
+                        <div class="col-xs-4" ng-if="goods.sellStatus == 1">
+                            <input type="text" class="form-control" autocomplete="off" ng-model="goods.goodsPrice" yzn-filter="num_" placeholder="请输入售卖价格" required/>
+                        </div> -->
+                    </div>
+
+                    <div class="popup_line">
+                        <label class="form-label required">规格设置:</label>
+                        <div class="col-xs-10 cursor popup_form_content">
+                            <div class="line28" style="display: inline-block;">
+                                <div class="pull-left mr5" ng-click="addGoodsSpec()">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">添加规格</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="padding-left: 103px;">
+                        <div class="popup_scroll no_padding">
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr class="order_course">
+                                            <th>规则名称</th>
+                                            <th>售卖单价（元）</th>
+                                            <th class="textAlignCenter">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="demo_tbody" ng-if="goods.goodsSpecList.length == 0">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody" ng-if="goods.goodsSpecList.length">
+                                        <!--按课时-->
+                                        <tr ng-repeat="item in goods.goodsSpecList track by $index">
+                                            <td class="textAlignCenter">
+                                                <input type="text" class="form-control mr5 input-w100 pull-left" placeholder="规格名" ng-model="item.name" maxlength="20" required/>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control mr5 input-w100 pull-left" yzn-filter="num_" placeholder="规格单价" ng-model="item.price" required/>
+                                            </td>
+                                            <td class="text_center_im" ng-click="delStudent(goods.goodsSpecList,$index)"><span class="icon_delete clickText"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--清点物品-->
+<div class="popup_ check_goods">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_checkGoods()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label">物品名称:</label>
+                        <span class="col-xs-10 form-span">{{goods.goodsName}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label pull-left required">规格:</label>
+                        <div class="col-xs-5">
+                            <div class="drop_select screen_no" style="overflow: visible;">
+                                <span class="drop_select_icon"></span>
+                                <my-select my-id="clearSelect" list-name="请选择物品规格" list-data="{{goods.goodsSpecList}}" list-field="name" list-click="speClickforclear(n)" list-sort="false" list-search="true" list-all="no" list-default="请选择物品规格"></my-select>
+                            </div>
+                        </div>
+                        <span class="line28">当前库存：{{goods.stockNum}}</span>
+                        <span class="moneyColor line28">( 待领取库存：{{goods.unclaimedNum?goods.unclaimedNum:"0"}} )</span>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label">清点方式:</label>
+                        <div class="col-xs-4 popup_rt" style="line-height:26px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="goods.recordMode" value="1"/>增加库存
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="goods.recordMode" value="0"/>减少库存
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">{{goods.recordMode==1?"找回":"丢失"}}数量:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" ng-model="goods.newnum" placeholder="请输入{{goods.recordMode==1?'找回':'丢失'}}数量" yzn-filter="num" required/>
+                        </div>
+                    </div>-->
+                    <div class="popup_line">
+                        <label class="form-label required">清点数量:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" ng-model="goods.newnum" placeholder="请输入清点数量" yzn-filter="num" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--物品详情-->
+<div class="popup_ goodsDetail">
+    <div class="popup_content" style="padding-top:10px;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false" style="padding-bottom:35px;">
+                    <div class="popup_line">
+                        <div class="pot_pop_peo_nav clearfix noPadding">
+                            <div class="common_tab_btn" ng-click="addGoods('edit',goodsDetail)">
+                                <i class="icon_edit"></i>编辑
+                            </div>
+                            <div class="common_tab_btn fontRed_BgWhite" ng-click="checkGoods(goodsDetail)" ng-if="goodsDetail.goodsStatus == 1">
+                                <i class="icon_storage_check"></i>清点
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">物品名称:</label>
+                        <span class="col-xs-5 form-span">{{goodsDetail.goodsName}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">条形编码:</label>
+                        <span class="col-xs-5 form-span">{{goodsDetail.barCoding}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">学杂:</label>
+                        <span class="col-xs-5 form-span">{{goodsDetail.sellStatus == 1?"是":"否"}}</span>
+                    </div>
+                    <div class="popup_line noneMargin" ng-if="goodsDetail.goodsSpecList && goodsDetail.goodsSpecList.length">
+                        <label class="form-label">规格信息:</label>
+                    </div>
+                    <div class="popup_line" style="padding-left: 35px;" ng-if="goodsDetail.goodsSpecList && goodsDetail.goodsSpecList.length">
+                        <div class="popup_scroll no_padding">
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr class="order_course">
+                                            <th>规格名称</th>
+                                            <th>售卖单价</th>
+                                            <th>库存数量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="roll_tbody">
+                                        <tr class="order_course" ng-repeat="x in goodsDetail.goodsSpecList">
+                                            <td>{{x.name}}</td>
+                                            <td>{{x.price | number:2}}</td>
+                                            <td>{{x.stockNum}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--新增入库-->
+<div class="popup_ add_Storage" id="add_Storage">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_storage()">
+            <div class="popup_form_content" style="max-height: 471px;">
+                <div class="popup_scroll" isScroll="true" style="padding-top:5px;">
+                    <!--内容区域-->
+                    <div class="popup_line" ng-if="storageType == 'in'">
+                        <label class="form-label required">入库:</label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="item in inStorage track by item.mixid" class="chargeistItem">
+                                <!--✘-->
+                                <span class="cursor pos_rg_delete" ng-click="removeItem(inStorage,$index,'_inStock_')"></span>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">入库物品:</label>
+                                    <div class="col-xs-6">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_inStock_{{item.mixid}}" list-name="请选择入库物品" list-data="{{goodslist}}" list-field="goodsName" list-click="selectStock_in(n,item)" list-sort="false" list-search="true" list-all="no" list-default="请选择入库物品"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">规格:</label>
+                                    <div class="col-xs-6">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_inStock_{{item.mixid}}_" list-name="请选择物品规格" list-data="{{item.goodsSpecList}}" list-field="name" list-click="specClickin(n,item)" list-sort="false" list-search="true" list-all="no" list-default="请选择物品规格"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">采购数量:</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" ng-model="item.num" placeholder="请输入采购数量" yzn-filter="num" required/>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">采购单价:</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" ng-model="item.price" placeholder="请输入采购单价" yzn-filter="num_" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="openopText line28 cursor inline_dm" ng-click="addItem(inStorage)">
+                                <span class="icon_name_add">添加入库</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line currentSemesteradd" ng-if="storageType == 'out'">
+                        <label class="form-label required">出库:</label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="item in outStorage track by item.mixid" class="chargeistItem">
+                                <span class="cursor pos_rg_delete" ng-click="removeItem(outStorage,$index,'_outStock_')"></span>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">出库物品:</label>
+                                    <div class="col-xs-5">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_outStock_{{item.mixid}}" list-name="请选择出库物品" list-data="{{goodslist}}" list-field="goodsName" list-click="selectStock_out(n,item)" list-sort="false" list-search="true" list-all="no"></my-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5 noPadding" style="line-height:28px;">
+                                        <span class="moneyColor">( 库存数量:{{item.oldNum}} | 待领取:{{item.old_unclaimedNum}} )</span>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">规格:</label>
+                                    <div class="col-xs-5">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="_outStock_{{item.mixid}}_" list-name="请选择物品规格" list-data="{{item.goodsSpecList}}" list-field="name" list-click="specClickout(n,item)" list-sort="false" list-search="true" list-all="no" list-default="请选择物品规格"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">出库数量:</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" ng-model="item.num" placeholder="请输入出库数量" yzn-filter="num" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cursor inline_dm openopText line28" ng-click="addItem(outStorage)">
+                                <span class="icon_name_add">添加出库</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">{{storageType == 'in'?"入库":"出库"}}时间:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="startTime" ng-model="startTime" placeholder="请选择{{storageType == 'in'?'入库':'出库'}}时间" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label pull-left required">经办人:</label>
+                        <div class="col-xs-4">
+                            <div class="drop_select screen_no" style="overflow: visible;">
+                                <span class="drop_select_icon"></span>
+                                <my-select my-id="confirmReciveSel" list-name="经办人" list-data="{{handlerList}}" list-field="teacherName" list-click="confirmRecive_click(n)" list-sort="false" list-search="true" list-all="no" list-default="请选择经办人"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label pull-left">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{desc?desc.length:0}}/500</span>
+                            <textarea class="form-control noResize" rows="4" maxlength="500" ng-model="desc" placeholder="{{storageType == 'in'?'请输入入库信息':'请输入出库信息'}}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">
+                    确定
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--兑换礼品-->
+<div class="popup_ " id="gitExchange">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_gitExchange()">
+            <div class="popup_form_content" style="max-height: 471px;">
+                <div class="popup_scroll" isScroll="true" style="padding-top:5px;">
+                    <!--内容区域-->
+                    <div class="popup_line">
+                        <label class="form-label required">学员:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in gitData.apt_students">{{x.name}}<i ng-click="delStudent(null, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkStudent()">选择学员</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">消耗积分:</label>
+                        <div class="col-xs-2">
+                            <input class="form-control" type="text" yzn-filter="numMoreThanZero" ng-model="gitData.pointsValue" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">选择物品:</label>
+                        <div class="col-xs-10">
+                            <div ng-repeat="item in gitData.stockRecordGoodsList track by item.mixid" class="chargeistItem">
+                                <span class="cursor pos_rg_delete" ng-click="removeItem(gitData.stockRecordGoodsList,$index,'git_outStock_')"></span>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">物品:</label>
+                                    <div class="col-xs-6">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="git_outStock_{{item.mixid}}" list-name="请选择出库物品" list-data="{{goodslist}}" list-field="goodsName" list-click="selectStock_out(n,item)" list-sort="false" list-search="true" list-all="no"></my-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 noPadding" style="line-height:28px;">
+                                        (库存数量: <span class="fontColor_ff595e">{{item.oldNum}}</span>)
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">规格:</label>
+                                    <div class="col-xs-5">
+                                        <div class="drop_select screen_no" style="overflow: visible;">
+                                            <span class="drop_select_icon"></span>
+                                            <my-select my-id="git_outStock_{{item.mixid}}_" list-name="请选择物品规格" list-data="{{item.goodsSpecList}}" list-field="name" list-click="gitSpecClick(n,item)" list-sort="false" list-search="true" list-all="no" list-default="请选择物品规格"></my-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup_line">
+                                    <label class="form-label pull-left width65">每人份数:</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" ng-model="item.num" placeholder="请输入出库数量" yzn-filter="numMoreThanZero" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cursor inline_dm openopText line28" ng-click="addItem(gitData.stockRecordGoodsList)">
+                                <span class="icon_name_add">添加物品</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">兑换时间:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control dateIcon" autocomplete="off" id="outInTime" ng-model="gitData.outInTime" placeholder="请选择兑换时间" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">
+                    确定
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">库存</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">记录</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="useType" ng-change="changeType(true)">启用
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="useType1" ng-change="changeType(false)">禁用
+                </label>
+            </li>
+
+            <li class="common_tab_libtn drop" ng-if="operateStorage">
+                <div class="common_tab_btn fontRed_BgWhite" data-toggle="dropdown">
+                    <i class="icon_more">更多</i>
+                </div>
+                <div class="dropdown-menu drop-list">
+                    <span class="mark"></span>
+                    <ul>
+                        <li ng-click="addGoods('add')">新增物品</li>
+                        <li ng-click="goCommonPop('import-pop','import_popup','860px',{page:'物品'})">导入物品</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operateStorage">
+                <div class="common_tab_btn" ng-click="addInStorage()"><i class="icon_inStorage"></i>新增入库</div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operateStorage">
+                <div class="common_tab_btn" ng-click="addOutStorage()"><i class="icon_outStorage"></i>新增出库</div>
+            </li>
+            <li class="common_tab_libtn" ng-if="operateStorage && isShow">
+                <div class="common_tab_btn" ng-click="git_exchange()"><i class="icon_git"></i>兑换礼品</div>
+            </li>
+            <!--<li class="common_tab_libtn" ng-if="operateStorage">
+                <div class="common_tab_btn" ng-click="addGoods('add')"><i class="icon_addStorage"></i>新增物品</div>
+            </li>-->
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{stockListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="stocklist==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in stocklist">
+                        <td class="clickText" ng-click="gotoGoodsDetail(x)" title="{{x.goodsName}}">{{x.goodsName}}</td>
+                        <td>{{x.goodsSpecListNames || '-'}}</td>
+                        <td>{{x.stockNum}}</td>
+                        <td>{{x.unclaimedNum}}</td>
+                        <td>
+                            <span ng-class='{"isEnable":x.goodsStatus == 1,"isDisable":x.goodsStatus == 0}' ng-click="changeBtn(x)"></span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="operateStorage" ng-click="addGoods('edit',x)">编辑</span>
+                            <span class="clickText" ng-if="operateStorage && x.goodsStatus == 1" ng-click="checkGoods(x)">清点</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

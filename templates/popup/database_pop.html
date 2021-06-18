@@ -1,0 +1,122 @@
+<div class="popup_ database_pop" id="database_pop">
+    <h6>资料库<span ng-click="closePopup('database_pop')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" when-scrolled="loadMore()" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="true">
+                        <div class="popup_line">
+                            <ul class="temporary_head clearfix">
+                                 <li>
+                                    <kindsearch class="vagueSearch" select-id = "select_data" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                                </li>
+                            </ul>
+                            <ul class="ul_left clearfix mt15">
+                                <li ng-show="!searchName" style="display: inline-block;">
+                                    <span ng-if="listPath.length>0 && fileInfoParant.name != '全部文件'">
+                                        <span class="clickText verticalAlign_bt" ng-click="toFileDetail(listPath[listPath.length-1],'parent')">返回上一级 | </span>
+                                        <span ng-hide="listPath.length>2 && !$first && !last" ng-repeat="x in listPath track by $index" >
+                                            <span ng-hide="$index==0"> > </span>
+                                            <span class="clickText lastFilename" ng-click="toFileDetail(x,'parent')" title="{{x.name}}">{{x.name}}</span>
+                                        </span>
+                                        <span ng-show="listPath.length>2 && !$first && !last">
+                                            <span ng-hide="$index==0"> > </span>
+                                            <span >...</span>
+                                        </span>
+                                        <span> > </span>
+                                    </span>
+                                    <span class="lastFilename" title="{{fileInfoParant.name}}">{{fileInfoParant.name}}</span>
+                                </li>
+                                <li ng-show="searchName" style="display: inline-block;">
+                                    <span class="clickText verticalAlign_bt" ng-click="toFileDetail({parentId: 0, name: '全部文件'},'parent')">返回上一级 | </span>
+                                    <span class="clickText verticalAlign_bt" ng-click="toFileDetail({parentId: 0, name: '全部文件'},'parent')">全部文件</span>
+                                    <span class="lastFilename"> > 搜索: {{searchName}}</span>
+                                </li>
+                                <li class="pull-right" style="display: inline-block;">
+                                    <span class="clickText" ng-click="listModel = !listModel" ng-class='{"icon_data_list":!listModel,"icon_data_suolve":listModel}'></span>
+                                </li>
+                            </ul>
+                        </div>
+                    <div class="popup_table" ng-show="listModel">
+                        <table class="popup_table_head">
+                            <thead>
+                                <th width="40px" class="textAlignCenter">
+                                    <input type="checkbox" name="sel_stu" ng-model="sel_all" ng-click="checkboxAll(sel_all,dataList,params_data,'dataBankId')"/>
+                                </th>
+                                <th width="70%">文件名称</th>
+                                <th width="30%">大小</th>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.8%;max-height: inherit;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="!dataList || dataList == ''">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="dataList">
+                                    <tr class="order_course" ng-repeat="x in dataList">
+                                        <td class="textAlignCenter" style="width:40px;"  ng-click="sel_singleFun(x,params_data,'dataBankId')">
+                                            <input type="checkbox" name="sel_stu" ng-checked="x.hasChecked" ng-if="x.type != 'folder'"/>
+                                        </td>
+                                        <td width="70%" title="{{x.name}}" ng-if="x.type=='folder'" ng-click="toFileDetail(x)">
+                                            <span class="cursor_pointer"><span class="fileIcon {{x.type}} mr5"></span>{{x.name}}</span>
+                                        </td>
+                                        <td width="70%" title="{{x.name}}" ng-if="x.type!='folder'">
+                                            <a class="cursor_pointer" ng-href="{{x.url}}" target="_blank" style="color:#444;"><span class="fileIcon {{x.type}} mr5"></span>{{x.name}}</a>
+                                        </td>
+                                        <td width="30%">
+                                            <span>{{x.type=="folder"?"-":(x.size | _getBt)}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-show="!listModel" style="clear: both;overflow: hidden;">
+                        <div class="data_thumbnail">
+                            <div class="data_icons" ng-class='{"active":x.hasChecked}' ng-repeat="x in dataList" >
+                                <div class="data_icon_head">
+                                    <span class="select_icon pull-left"  ng-click="sel_singleFun(x,params_data,'dataBankId')" ><input type="checkbox" name="data_file" ng-if="x.type != 'folder'" ng-checked="x.hasChecked"/></span>
+                                    <!--<span class="operate_icon pull-right common_tab_libtn drop" >
+                                        <i class="icon_data_set" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu drop-list">
+                                            <ul>
+                                                <li class="cursor_pointer" ng-click="viewOperate(2,x)">重命名</li>
+                                                <li class="cursor_pointer" ng-click="viewOperate(4,x,'single')">移动到文件夹</li>
+                                                <li class="cursor_pointer" ng-click="viewOperate(5,x,'single')">删除</li>
+                                            </ul>
+                                        </div>
+                                    </span>-->
+                                </div>
+                                <div class="file_icon" >
+                                    <span ng-if="x.type=='folder'" class="file_icon_list folder" ng-click="toFileDetail(x)"></span>
+                                    <a ng-if="x.type=='image'" class="file_icon_list" ng-href="{{x.url}}" target="_blank">
+                                        <img ng-src="{{x.url}}" alt="" width="100%" height="100%" style="object-fit: cover;"/>
+                                    </a>
+                                    <span ng-if="x.type=='video'" class="file_icon_list">
+                                        <video style="width: 74px; height: 74px;">
+                                            <source ng-src="{{x.url_}}"></source>
+                                        </video>
+                                        <a class="shop_img_msk video" ng-href="{{x.url}}" target="_blank"></a>
+                                    </span>
+                                    <a ng-if="x.type=='audio'" class="file_icon_list audio" ng-href="{{x.url}}" target="_blank"></a>
+                                    <a ng-if="x.type=='word'"  class="file_icon_list word" ng-href="{{x.url}}" target="_blank"></a>
+                                    <a ng-if="x.type=='pdf'"  class="file_icon_list pdf" ng-href="{{x.url}}" target="_blank"></a>
+                                </div>
+                                <p class="file_name">{{x.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 databasePage"></div>
+            </div>-->
+            <div class="popup_btn">
+                <p class="screen_params">已选中<span>{{params_data.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('database_pop')" type="button">取消</button>
+                <button class="btn sure" ng-click="sureSelect('database_pop')" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

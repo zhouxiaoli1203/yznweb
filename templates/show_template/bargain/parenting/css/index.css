@@ -1,0 +1,248 @@
+@charset "utf-8";
+.summer_2_con {
+    position: relative;
+    width: 100%;
+    background: url("../img/bg_1.png");
+    background-size: contain;
+    font-size: 0.28rem;
+}
+.b_bg {
+    display: block;
+    width: 100%;
+}
+.b_banner_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.b_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    margin: 0.22rem;
+    border-radius: 50%;
+}
+.b_peo div {
+    color: #fff;
+    padding-top: 0.15rem;
+    line-height: 0.35rem;
+}
+.b_peo div p {
+    color: #3E829E;
+}
+.b_peo div span {
+    color: #FEF60A;
+    font-size: 0.36rem;
+}
+.b_tit {
+    margin: 0.47rem 0 0.3rem;
+}
+.b_tit p {
+    width:5.74rem;
+    margin: 0 auto;
+    font-size: 0.42rem;
+    text-align: center;
+    background:url("../img/title_bg.png") no-repeat;
+    background-size: cover;
+    height:1.55rem;
+    line-height: 1.55rem;
+    color: #3E829E;
+}
+.b_time {
+    width: 4.8rem;
+    margin: 7rem auto;
+    color: #3E829E;
+}
+.b_time p {
+    font-size: 0.24rem;
+}
+.b_time p span {
+    display: inline-block;
+    margin: 0 0.03rem;
+    color: #fff;
+    font-size: 0.24rem;
+}
+.pos_imgs {
+    position: relative;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.b_btn {
+    position: absolute;
+    top: 10.8rem;
+    left: 0;
+    width: 100%;
+}
+.b_btn_1 {
+    display: block;
+    width: 2.36rem;
+    height: 0.92rem;
+    margin: 0 auto;
+    padding-bottom: 0.05rem;
+    border: none;
+    background: url("../img/btn.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    text-align: center;
+    line-height: 0.87rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.b_prize, .b_rule, .b_logs, .b_joins, .b_organ {
+    position: relative;
+    width: 6.4rem;
+    margin: 1.4rem auto 0;
+}
+.b_box {
+    position: relative;
+    width: 100%;
+    min-height: 4.2rem;
+    padding: 0.5rem 0.21rem 0.1rem;
+    background-color: #F2F8CF;
+    border-radius: 10px;
+    border: 2px solid #789B31;
+}
+.b_box p {
+    margin-bottom: 0.25rem;
+    color: #347b0c;
+    font-size: 0.3rem;
+}
+.b_box img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+.b_con_tit_prize {
+    position: absolute;
+    top: -0.53rem;
+    left: 1.6rem;
+    width: 3.23rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    background: url("../img/prize.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_role {
+    position: absolute;
+    top: -0.53rem;
+    left: 1.6rem;
+    width: 3.23rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    background: url("../img/role.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_bang {
+    position: absolute;
+    top: -0.53rem;
+    left: 1.6rem;
+    width: 3.23rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    background: url("../img/bang.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_rank {
+    position: absolute;
+    top: -0.53rem;
+    left: 1.6rem;
+    width: 3.23rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    background: url("../img/rankingList.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_con_tit_organ {
+    position: absolute;
+    top: -0.53rem;
+    left: 1.6rem;
+    width: 3.23rem;
+    height: 0.76rem;
+    margin: 0 auto;
+    background: url("../img/organ.png") no-repeat;
+    background-size: 100% 100%;
+}
+.b_nodata {
+    width: 100%;
+    height: 4.2rem;
+    color: #F280A7;
+    line-height: 4.2rem;
+    text-align: center;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #347b0c;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

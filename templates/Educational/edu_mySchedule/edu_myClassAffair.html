@@ -1,0 +1,120 @@
+<div class="common_body">
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li class="dropdown dropdown110">
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择上课时间" autocomplete="off" >
+            </li>
+            <li>
+                <my-select list-name="排课类型" list-data="{{paikeType}}" list-field="name" list-click="pkTypeSelect(n)" list-all="no" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="班级" list-data="{{classList}}" list-field="className" list-click="classSelect(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="arrangingCoursesStatus == 1" ng-click="scheduleStatus($event,'1')">已上
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="arrangingCoursesStatus == 0" ng-click="scheduleStatus($event,'0')">未上
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="status == 4" ng-click="chargeType($event,4)">未上传展示
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="status == 1" ng-click="chargeType($event,1)">未点评学员
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="status == 3" ng-click="chargeType($event,3)">未布置作业
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="status == 2" ng-click="chargeType($event,2)">未点评作业
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover">
+                <thead my-id="my_scheduleHead" my-thead="{{scheduleListThead_}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="scheduleList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="{{scheduleListThead_.length}}">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" my-id="my_scheduleTdChange" ng-show="scheduleList" my-tr='<tr ng-repeat="x in scheduleList">' my-td td-head="{{checkedHead}}" td-list="{{scheduleListThead}}">
+                    <!--<tr ng-repeat="x in scheduleList">
+                        <td></td>
+                        <td title="{{x.course.courseName}}">{{x.course.courseName}}</td>
+                        <td title="{{x.classInfo.className}}">{{x.classInfo.className}}</td>
+                        <td title="{{x.classRoomName}}">{{x.classRoomName}}</td>
+                        <td class="textAlignRt">{{x.arrangingCoursesTime}}</td>
+                        <td class="textAlignCenter">{{x.courseType == 0?x.arrangingCourseOrd:"—"}}</td>
+                        <td title="{{x.teacherStr}}">{{x.teacherStr}}</td>
+                        <td title="{{x.arrangingCoursesTheme.courseThemeName}}">{{x.arrangingCoursesTheme.courseThemeName}}</td>
+                        <td>
+                            <span ng-class='{"main_color":x.arrangingCoursesStatus!="1"}'>{{x.arrangingCoursesStatus=="1"?"已上":"未上"}}</span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==0 && changePaike'>点名</span>
+                            <span class="clickText" ng-click='goCommonPop("arange-pop","arange_pop","760px",{"pop":"paike","name":"lesson","isSingle":"0","title":"排课变更","isChangePaike":true,item:x})' ng-if='x.arrangingCoursesStatus==0 && changePaike'>排课变更</span>
+                            <span class="clickText" ng-click="listDelete(x)" ng-if='x.arrangingCoursesStatus==0 && changePaike'>删除</span>
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==1 && changePaike'>编辑点名</span>
+                            <span class="clickText" ng-click="deleteSignup(x)" ng-if='x.arrangingCoursesStatus==1 && changePaike'>删除</span>
+                        </td>
+                    </tr>-->
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:270px;">
+                <thead  my-thead="{{scheduleListThead_left}}" list-clicks="sortCllict(data)"></thead>
+                <tbody>
+                    <tr ng-repeat="x in scheduleList">
+                        <td>
+                            <span class="clickText" title="{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}" ng-click='goCommonPop("clsaffair-pop","affair_pop","960px",{tab:1,item:x,page:"mySchedule"})'>{{x.arrangingCoursesBeginDate | beginEndDate: x.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCoursesWeek}}</span>
+                             <span ng-if="x.classInfo.activityStatus == 0">
+                                <span ng-class='{"1":"listenIcon","2":"bukeIcon"}[x.courseType]'></span>
+                            </span>
+                            <span ng-if="x.classInfo.activityStatus == 1" class="actvitIcon"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r" >
+            <table style="width:160px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter cursor_pointer" ng-click="goCommonPop('custom-pop','customTable','560px',{data:checkedHead,customTagId:getHeads.customTagId,customTagType:6,callBackName:'我的课表-自定义'})">自定义显示列<i class="icon_setHead" ></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in scheduleList">
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==0 && xiukeConfig'>点名</span>
+                            <span class="clickText" ng-click="gotolistRollCall(x)" ng-if='x.arrangingCoursesStatus==1 && xiukeConfig'>编辑点名</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

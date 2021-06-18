@@ -1,0 +1,97 @@
+<!--导入教室-->
+<import-pop openfn="importFile"></import-pop>
+<div class="shade_ class_shade">
+    <div class="shade_body">
+        <div class="shade_content">
+            <form class="popup_form" role="form" ng-submit="addClassRoom()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:20px;">
+                        <div class="popup_line">
+                            <label class="form-label required" style="margin-left:60px;">教室名:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control" id="class_addName" maxlength="24" ng-model="className" required type="text" autocomplete="off" placeholder="请输入教室名称" />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required" style="margin-left:60px;">座位:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control txtQnum" yzn-filter="numMoreThanZero" id="class_addStudent" required ng-model="classNum" maxlength="2" autocomplete="off" type="text" placeholder="请输入座位数" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="classreset()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="common_body">
+    <!-- <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+        <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+        <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+    </div> -->
+    <div class="tab_nav">
+        <!-- <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">约课预警</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">积分设置</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">教室管理</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">请假设置</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">周边学校</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">分享设置</span> -->
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn class_tab_btn" ng-click="importFile('import_popup','860px',{page:'教室'})"><i class="icon_import"></i>导入教室</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn class_tab_btn" ng-click="class_tab_btn()"><i class="icon_Addclassroom"></i>新增教室</div>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>教室名称</th>
+                        <th>座位</th>
+                        <!-- <th>使用班级数</th> -->
+                        <th class="textAlignCenter">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="class_tbody" ng-if="list==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="class_tbody" ng-if="list">
+                    <tr ng-repeat="x in list">
+                        <td class="clickText" ng-click="class_edit(x)">{{x.classRoomName}}</td>
+                        <td>{{x.classRoomSeat}}</td>
+                        <!-- <td>{{x.count}}</td> -->
+                        <td class="textAlignCenter">
+                            <span style="cursor: pointer;" ng-class='{"isEnable":x.deleted == 0,"isDisable":x.deleted == 1}' ng-click="changeBtn(x)"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3" data-status="true"></div>
+    </div>
+</div>

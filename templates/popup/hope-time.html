@@ -1,0 +1,96 @@
+<div class="bigbox">
+    <div class="popup_table hope_time" style="width: 660px;margin: 0 auto;margin-bottom: 13px;">
+        <table class="popup_table_head">
+            <thead>
+                <tr>
+                    <th>星期一</th>
+                    <th>星期二</th>
+                    <th>星期三</th>
+                    <th>星期四</th>
+                    <th>星期五</th>
+                    <th>星期六</th>
+                    <th>星期天</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="popup_table_body">
+            <table>
+                <tbody class="roll_tbody">
+                    <tr>
+                        <td class="inithopeTimeBtn">
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'1')" ng-if="!modeltime1">+</button>
+                            <span ng-if="modeltime1">{{modeltime1}} <a class="delete" ng-click="dademodeltime('del','1')">x</a></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'2')" ng-if="!modeltime2">+</button>
+                            <span ng-if="modeltime2">{{modeltime2}}<a class="delete" ng-click="dademodeltime('del','2')">x</a></span>
+                        </td>
+                        <td class="lasthopeTimeBtn">
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'3')" ng-if="!modeltime3">+</button>
+                            <span ng-if="modeltime3">{{modeltime3}}<a class="delete" ng-click="dademodeltime('del','3')">x</a></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'4')" ng-if="!modeltime4">+</button>
+                            <span ng-if="modeltime4">{{modeltime4}}<a class="delete" ng-click="dademodeltime('del','4')">x</a></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'5')" ng-if="!modeltime5">+</button>
+                            <span ng-if="modeltime5">{{modeltime5}}<a class="delete" ng-click="dademodeltime('del','5')">x</a></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'6')" ng-if="!modeltime6">+</button>
+                            <span ng-if="modeltime6">{{modeltime6}}<a class="delete" ng-click="dademodeltime('del','6')">x</a></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn hopeTimeBtn" ng-click="addtimebox($event,'7')" ng-if="!modeltime7">+</button>
+                            <span ng-if="modeltime7">{{modeltime7}}<a class="delete" ng-click="dademodeltime('del','7')">x</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 时间设置浮层(新增to-upward向上) -->
+    <div id="float-panel">
+        <div class="float-panel-arrow"></div>
+        <div class="float-panel-header">
+            <div class="title">添加时间</div>
+            <div class="float-panel-close" ng-click="floatpanelclose()">×</div>
+        </div>
+        <div class="float-panel-content">
+            <div class="select-time" name="beginTimeHour">
+                 <div index="1"><input class="select-time-data" type="text" yzn-filter='num:{"min":0,"max":23}' ng-model="chosebeginhourtime" ng-blur="checkH_m( chosebeginhourtime,'hour','begin',hourtimelist)"/></div>
+                <div class="select-time-drop icon_v"></div>
+                <ul class="select-time-list">
+                    <li ng-class="{active:chosebeginhourtime==x}" ng-repeat="x in hourtimelist" ng-click="clickbeginhourtime(x)"><span>{{x}}</span></li>
+                </ul>
+            </div>
+            <div class="split">:</div>
+            <div class="select-time" name="beginTimeMinute">
+                <div><input class="select-time-data select-time-data1" type="text" yzn-filter='num:{"min":0,"max":59}' ng-model="chosebeginmintime" ng-blur="checkH_m( chosebeginmintime,'minus','begin',stat_mintimelist)"/></div>
+                <div class="select-time-drop icon_v"></div>
+                <ul class="select-time-list">
+                    <li ng-class="{active:chosebeginmintime==x}" ng-repeat="x in stat_mintimelist" ng-click="clickbeginmintime(x)"><span>{{x}}</span></li>
+                </ul>
+            </div>
+            <div class="split">-</div>
+            <div class="select-time" name="endTimeHour">
+                <div index="2"><input class="select-time-data" type="text" yzn-filter='num:{"min":0,"max":23}' ng-model="choseendhourtime" ng-blur="checkH_m( choseendhourtime,'hour','end',hourtimelist)"/></div>
+                <div class="select-time-drop icon_v"></div>
+                <ul class="select-time-list">
+                    <li ng-class="{active:choseendhourtime==x}" ng-repeat="x in hourtimelist" ng-click="clickendhourtime(x)"><span>{{x}}</span></li>
+                </ul>
+            </div>
+            <div class="split">:</div>
+            <div class="select-time" name="endTimeMinute">
+                <div><input class="select-time-data select-time-data2" type="text" yzn-filter='num:{"min":0,"max":59}' ng-model="choseendmintime" ng-blur="checkH_m( choseendmintime,'minus','end',end_mintimelist)"/></div>
+                <div class="select-time-drop icon_v"></div>
+                <ul class="select-time-list">
+                    <li ng-class="{active:choseendmintime==x}" ng-repeat="x in end_mintimelist" ng-click="clickendmintime(x)"><span>{{x}}</span></li>
+                </ul>
+            </div>
+            <div class="btn btn-add" ng-click="dademodeltime('add')">添加</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

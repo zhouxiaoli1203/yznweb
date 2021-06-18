@@ -1,0 +1,78 @@
+<div class="popup_ addClsroom" id="addClsroom">
+    <h6>新增教室<span ng-click="closeOperate()" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="pot_pop_peo_nav clearfix">
+                        <div class="common_tab_btn fontRed_BgWhite" ng-click="openClassroom('add')">
+                            <i class="icon_addcourse"></i>新增教室
+                        </div>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>教室名称</th>
+                                    <th>容量</th>
+                                    <th class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width: 101.3%;">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in list">
+                                        <td class="clickText" ng-click="openClassroom('edit',x)">{{x.classRoomName}}</td>
+                                        <td>{{x.classRoomSeat}}</td>
+                                        <td class="textAlignCenter">
+                                            <span style="cursor: pointer;" ng-class='{"isEnable":x.deleted == 0,"isDisable":x.deleted == 1}' ng-click="changeBtn(x)"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 coursePage"></div>
+            </div>-->
+            <div class="popup_btn">
+                <!--<p class="screen_params" ng-if="choseType == 'checkbox'">已选中<span>{{params_goods.length}}</span>个</p>
+                <button class="btn cancel" ng-click="closePopup('choseGoods')" type="button">取消</button>-->
+                <button class="btn sure" ng-click="closeOperate()" type="submit">关闭</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="popup_" id="class_shade">
+    <h6>{{operateType == 'add'?'新增':'编辑'}}教室<span ng-click="closePopup('class_shade')" class="popup_x icon_drop_x"></span></h6>
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="addClassRoom()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false" style="padding-top:20px;">
+                        <div class="popup_line">
+                            <label class="form-label required">教室名:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control" id="class_addName" maxlength="24" ng-model="classroom.classRoomName" required type="text" autocomplete="off" placeholder="教室名称或者编号" />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">容量（学员）:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control txtQnum" yzn-filter="numMoreThanZero" required ng-model="classroom.classRoomSeat" maxlength="2" autocomplete="off" type="text" placeholder="场地内最大学员容纳数量" />
+                                <div class="help_icon" data-tips="教室的学员容量将影响开班时所能容纳的最大学员数量，同时在插班和调班时也会有所限制"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePopup('class_shade')" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>

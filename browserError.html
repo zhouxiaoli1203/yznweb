@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>温馨提示：您的浏览器不支持该系统^_^</title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: "微软雅黑";
+        }
+        
+        h2 {
+            padding: 30px 0;
+            background: #557c9b;
+            color: #ffffff;
+            font-size: 18px;
+            text-shadow: 1px 1px 3px #000;
+        }
+        
+        .download {
+            text-align: center;
+            width: 470px;
+            margin: 100px auto;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+        
+        .desc {
+            /*float: right;*/
+            /*width: 300px;*/
+        }
+        
+        .link {
+            width: 401px;
+            padding: 0 37px;
+            height: 92px;
+        }
+        
+        p {
+            text-align: left;
+            font-size: 18px;
+            line-height: 27px;
+            color: #444;
+            margin-bottom: 50px;
+        }
+        
+        a {
+            float: left;
+            width: 80px;
+            display: block;
+            color: #ffffff;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        
+        a.mr {
+            margin-right: 80px;
+        }
+        
+        span {
+            display: inline-block;
+            font-size: 16px;
+            line-height: 24px;
+            color: #444;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        if (myBrowser() && getQueryParam('mall') === undefined) {
+            location.href = "./login.html";
+        }
+
+        function myBrowser() {
+            if (getmyBrowser() == "rtChrome" || getmyBrowser() == "Safari" || getmyBrowser() == "AppleWebKit" || getmyBrowser() == "edge") {
+                return true;
+            }
+            return false;
+        }
+
+        function getQueryParam(key) {
+            var query = location.search.substring(1)
+            var arr = query.split('&')
+            for (var i = 0; i < arr.length; i++) {
+                var pair = arr[i].split('=')
+                if (pair[0] == key) {
+                    return pair[1]
+                }
+            }
+            return undefined
+        }
+
+
+        function getmyBrowser() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE浏览器
+            var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+            var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+            var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+            var isSafari = userAgent.indexOf("Safari") > -1; //判断是否Safari浏览器
+            var isChrome = userAgent.indexOf("Chrome") > -1; //判断是否为Chrome浏览器
+            if (isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if (fIEVersion <= 10) {
+                    return "lfIE10";
+                } else {
+                    return "rtIE10";
+                }
+            } else if (isEdge) {
+                return 'edge'; //edge
+            } else if (isIE11) {
+                return 'isIE11'; //IE11  
+            } //isIE end
+            if (isChrome) {
+                var ischrome = false;
+                var reChrm = new RegExp("Chrome\/(\[\\d\.\]+)");
+                reChrm.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                ischrome = fIEVersion;
+                if (ischrome) {
+                    if (ischrome <= 50) { //判断chrome浏览器版本低于50则定为sougou,不能用
+                        return "lfChrome";
+                    } else {
+                        return "rtChrome";
+                    }
+                }
+            }
+            if (isFF) {
+                return "FF";
+            }
+            if (isOpera) {
+                return "Opera";
+            }
+            if (isSafari) {
+                return "Safari";
+            }
+            if (isAppleWebKit) {
+                var reAppleWebKit = new RegExp("AppleWebKit\/(\[\\d\.\]+)");
+                reAppleWebKit.test(userAgent);
+                var fVersion = parseFloat(RegExp["$1"]);
+                if (fVersion >= 537) {
+                    return "AppleWebKit";
+                }
+            }
+            if (!(isIE && isIE11 && isEdge && isSafari && isChrome)) {
+                return "none";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h2>抱歉,我们暂不支持该版本的浏览器</h2>
+    <div class="download">
+        <!--<img src="static/img/login/chrome.png"/>-->
+        <div class="desc">
+            <p>
+                为了更好的操作体验易知鸟智慧教育云服务平台，我们为您推荐以下浏览器
+            </p>
+            <div class="link">
+                <div class="360">
+                    <a href="https://browser.360.cn/" class="mr">
+                        <img src="static/img/login/360.png" alt="" />
+                        <span>360浏览器</span>
+                    </a>
+                </div>
+                <div class="google">
+                    <a href="http://www.chromeliulanqi.com/" class="mr">
+                        <img src="static/img/login/google.png" alt="" />
+                        <span>谷歌浏览器</span>
+                    </a>
+                </div>
+                <!--<div class="sogou">
+	        	<a href="https://ie.sogou.com/">
+	        		<img src="static/img/login/sogou.png" alt="" />
+	        	    <span>搜狗浏览器</span>
+	        	</a>
+	        </div>-->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

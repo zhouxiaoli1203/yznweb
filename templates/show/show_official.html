@@ -1,0 +1,217 @@
+<div id="miniAppsQrCode" class="clearfix">
+    <p></p>
+    <dl>
+        <dt id="miniWebsiteUrl"><span></span><img alt="校区二维码" /></dt>
+        <dd>h5微官网</dd>
+    </dl>
+    <dl>
+        <dt>
+            <img ng-if="officialData.miniAppsQrCode" src="{{officialData.miniAppsQrCode}}" alt="校区二维码" />
+            <img ng-if="!officialData.miniAppsQrCode" src="static/img/miniAppsQrCode.png" alt="校区二维码" />
+        </dt>
+        <dd>小程序微官网</dd>
+    </dl>
+</div>
+<!--提交申请-->
+<div class="popup_" id="submit_apply">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_apply()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label for="" class="form-label">机构联系人:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" ng-model="applyOffData.name" placeholder="请填写机构联系人" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">手机号:</label>
+                        <div class="col-xs-6">
+                            <input type="text" ng-model="applyOffData.phone" class="form-control" maxlength="11" placeholder="请输入手机号" yzn-filter="phone" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePopup()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="common_body" ng-if="judgeOfficialState == 0 || judgeOfficialState == 1" ng-clock style="min-width: 1090px;">
+    <h2 style="width: 868px; text-align: center;font-size: 36px; line-height: 90px;">线上线下销售一体化</h2>
+    <div class="apply_official">
+        <img src="static/img/applyOff.png" alt="" />
+        <p class="apply_official_1" ng-if="judgeOfficialState == 0"><button ng-click="btn_apply(1)">立即购买</button><button ng-click="btn_apply(2)">功能介绍</button></p>
+        <p class="apply_official_2" ng-if="judgeOfficialState == 1"><button>已提交</button><button ng-click="btn_apply(2)">功能介绍</button><span>我们的工作人员会在1~3个工作日联系您，请耐心等待</span></p>
+        <div class="apply_official_3">
+            <p><strong>原价</strong><span>¥3000</span></p>
+            <p><strong>易知鸟客户专享价格</strong><em>¥1580</em></p>
+        </div>
+    </div>
+</div>
+<div class="common_body" ng-if="judgeOfficialState == 2">
+    <div class="common_tab_btn" style="float: right;width: 100px;" ng-click="btn_apply(3)"><i class="icon_addtype"></i>查看二维码</div>
+    <h2 class="min_official_h2">官网首页</h2>
+    <form ng-submit="submit_official()"><!--onkeydown="if(event.keyCode==13){return false;}"-->
+        <div class="min_official">
+            <div class="popup_line">
+                <label for="" class="form-label">首页图片:</label>
+                <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                    <img src="{{officialData.homeImg}}" alt="" />
+                    <span class="shop_img_msk"><em ng-click="add_organInfo('homeImg')">{{officialData.homeImg?'更换图片':'添加图片'}}</em></span>
+                </div>
+                <p class="img_tagging">（建议尺寸750*420像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+            </div>
+            <div class="popup_line">
+                <label for="" class="form-label">校区介绍:</label>
+                <ul class="pop_float_l min_official_organ">
+                    <li ng-repeat="x in officialData.organList">
+                        <div ng-show="x.imageUrl || x.imageUrl==''" class="img_hover shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                            <p><img ng-src="{{x.imageUrl}}" alt="" /></p>
+                            <span class="shop_img_msk"><em ng-click="add_organInfo('organImg', x)">更换图片</em></span>
+                            <i ng-click="delete_organInfo('organImg', $index)" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除图片</var></i>
+                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(officialData.organList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(officialData.organList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                        </div>
+                        <div ng-show="x.content || x.content=='' ">
+                            <textarea class="form-control" ng-model="x.content" ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word; width: 420px; height: 173px;" rows="3"></textarea>
+                            <i ng-click="delete_organInfo('organText', $index)" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除文字</var></i>
+                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(officialData.organList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(officialData.organList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                        </div>
+                        <div ng-show="x.videoUrl || x.videoUrl==''" class="img_hover">
+                            <video style="width: 420px; height: 196px;" controls>
+                                <source ng-src="{{x.videoUrl_}}">
+                            </video>
+                            <i ng-click="delete_organInfo('organVideo', $index)" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除视频 </var></i>
+                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(officialData.organList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(officialData.organList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                        </div>
+                    </li>
+                    <li class="popup_line">
+                        <span style="margin-left: 0;" class="add_info" ng-click="add_organInfo('organText')">+ 添加文字</span>
+                        <span class="add_info" ng-click="add_organInfo('organImg')">+ 添加图片</span>
+                        <span class="add_info" ng-click="add_organInfo('organVideo')">+ 添加视频</span>
+                    </li>
+                </ul>
+                <p class="img_tagging">（建议尺寸720*540像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+            </div>
+        </div>
+        <div class="parting_solidline"></div>
+        <h2 class="min_official_h2">师资介绍</h2>
+        <div class="min_official">
+            <div class="popup_line">
+                <label for="" class="form-label">师资介绍:</label>
+                <div class="pop_float_l min_official_teacher">
+                    <dl class="clearfix" ng-repeat="n in officialData.teacherList">
+                        <dt class="icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                            <img src="{{n.imageUrl}}" alt="" />
+                            <span ng-click="add_organInfo('teacherImg', n)" class="shop_img_msk"><em>{{n.imageUrl?'更换图片':'添加图片'}}</em></span>
+                        </dt>
+                        <dd>
+                            <h2><input type="text" ng-model="n.name" class="form-control" style="border-radius: 0 2px 0 0;" maxlength="25" placeholder="填写老师姓名"/></h2>
+                            <p><textarea class="form-control" ng-model="n.content" ng-trim="false" style="white-space: pre-wrap; word-wrap: break-word; height: 87px; resize: none; border-top: none; border-radius: 0 0 2px 0;" placeholder="填写老师介绍"></textarea></p>
+                            <i ng-click="delete_organInfo('teacher', $index)" ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete"><var>删除老师 </var></i>
+                            <var class="move_up_down" ng-mouseover="$event.stopPropagation()">
+                                <i ng-click="moveUpDown(officialData.teacherList, $index, 1, $event)" btnType="{{$first?'n':'y'}}" ng-class="{'move_up_down_u_':$first, 'move_up_down_u': !$first}"></i>
+                                <i ng-click="moveUpDown(officialData.teacherList, $index, 2, $event)" btnType="{{$last?'n':'y'}}" ng-class="{'move_up_down_d_':$last, 'move_up_down_d': !$last}"></i>
+                            </var>
+                        </dd>
+                    </dl>
+                    <div class="popup_line">
+                        <span style="margin:0" class="add_info" ng-click="add_organInfo('teacher')">+ 添加老师</span>
+                    </div>
+                </div>
+                <p class="img_tagging">（建议尺寸200*200像素，图片支持JPG、PNG格式，图片小于1MB）</p>
+            </div>
+        </div>
+        <div class="parting_solidline"></div>
+        <h2 class="min_official_h2">特色课程</h2>
+        <div class="min_official">
+            <div class="popup_line">
+                <label for="" class="form-label">选择课程:</label>
+                <div style="float: left; width: 690px; margin-left: -10px;">
+                    <div style="width: 420px" ng-if="screen_showCourseList.length == 0">
+                        <span class="form-span" style="float: left; color: #999; margin-right: 10px;">暂未设置特色课程</span>
+                        <span class="form-span" style="float: left; color: #1d8eee; cursor: pointer;" ng-click="gotoSetShowCourse()">立即设置</span>
+                    </div>
+                    <div class="col-xs-9 my_select_special" ng-if="screen_showCourseList.length > 0">
+                        <div class="clearfix">
+                            <span class="myselect_list" ng-repeat="x in officialData.courseList">{{x.experienceCourseName}}<i class="icon_list_x" ng-click="delete_showCourse(x, $index)"></i></span>
+                        </div>
+                        <div class="drop_add_teacher screen_no">
+                            <i class="icon_name_add"></i>
+                            <my-select my-id="experienceCourse_" list-name="添加特色课程" list-data="{{screen_showCourseList}}" list-field="experienceCourseName" list-click="add_showCourse(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_line">
+                <label for="" class="form-label">预约信息:</label>
+                <div class="pop_float_l">
+                    <label for="" class="form-label text_al_lf required" style="width: 81px;">学员姓名</label>
+                    <label for="" class="form-label text_al_lf required" style="width: 81px;">联系电话</label>
+                    <label for="" class="form-label text_al_lf required" style="width: 81px;">学员年龄</label>
+                </div>
+            </div>
+            <div class="popup_line info_optional">
+                <label for="" class="form-label" style="margin-right: 0;"></label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="officialData.appointment.address" class="checkbox-inline labelLeft">家庭住址
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="officialData.appointment.nickname" class="checkbox-inline labelLeft">昵称
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="officialData.appointment.sex" class="checkbox-inline labelLeft">性别
+                </label>
+                <label class="search_checkbox">
+                    <input type="checkbox" ng-model="officialData.appointment.parentname" class="checkbox-inline labelLeft">家长姓名
+                </label>
+            </div>
+        </div>
+        <div class="popup_line">
+            <span style="margin-left:5px;color: #f5787c;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help"><span class="tippaopao1">系统将自动查询本课程的试听课，并作为可预约课次</span></span>
+            <span>预约试听课次: </span>
+            <span style="display: inline-block;margin-bottom: -8px;" ng-click="switchConfigStatus()" ng-class="{'enable_showcourse': officialData.configStatus, 'disable_showcourse': !officialData.configStatus}"></span>
+            <span class="fontColor_999">(开启后，允许家长通过微官网预约试听课)</span>
+        </div>
+        <div class="parting_solidline"></div>
+        <button type="submit" class="min_official_btn">保存</button>
+    </form>
+</div>
+
+<!--扫码支付-->
+<div class="popup_ onlinePay" id="onlinePay_miniweb">
+    <h2>扫一扫付款</h2>
+    <h3>¥{{onlindePayData.money}}</h3>
+    <div class="onlinePay_code">
+        
+    </div>
+    <p ng-click="reloadOnlinePay()">点击刷新支付状态</p>
+    <div class="onlinePay_order">
+        <strong>浙江筑森网络科技有限公司</strong>
+        <!--<em>订单号：{{onlindePayData.externalOrderId}}</em>-->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

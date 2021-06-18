@@ -1,0 +1,266 @@
+<div class="popup_ signUp-popup" id="creat_coupon">
+    <h6>{{couponType.popupName}}<span class="popup_x icon_drop_x" ng-click="closePopup('add_coursepackage')"></span>
+    </h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirmData()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="dialogWarnTip" ng-if="iswarnShow">
+                        该优惠券已有学员领取，编辑保存后，已领取的优惠券会同步修改。
+                    </div>
+                    <!--优惠券基本信息-->
+                    <div class="popup_line noneMargin">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;基本信息</label>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">优惠券名称：</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" ng-model="couponSubData.couponName" maxlength="20"
+                                   placeholder="请输入优惠券名称" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">优惠券类型：</label>
+                        <div class="col-xs-10">
+                            <div class="col-xs-4" style="padding:0">
+                                <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                    <input type="radio" name="discountType" value="1"
+                                           ng-model="couponSubData.discountType" ng-change="initdiscounts('discountType')" ng-disabled="couponType.nomodify">代金券
+                                </label>
+                                <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                    <input type="radio" name="discountType" value="2"
+                                           ng-model="couponSubData.discountType" ng-change="initdiscounts('discountType')" ng-disabled="couponType.nomodify">折扣券
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">{{couponSubData.discountType == 1?"减":"折扣"}}：</label>
+                        <div class="col-xs-4">
+                            <input ng-if="couponSubData.discountType == 1" yzn-filter="num_" type="text" class="form-control" ng-model="couponSubData.discounts"
+                                   maxlength="15" ng-disabled="couponType.nomodify" style="display: inline-block;"
+                                   required/>
+                            <select ng-if="couponSubData.discountType == 2" class="form-control" ng-model="couponSubData.discounts" ng-options="x.val as x.name for x in discountArr" style="width: 100%;" ng-disabled="couponType.nomodify" required>
+                                <option value="" disabled selected style='display:none;'>选择折扣</option>
+                            </select>
+
+                        </div>
+                            <label class="form-label" style="width: auto;">{{couponSubData.discountType == 1 ? "元":""}}</label>
+                        <span class="c999 line28">（ 优惠券类型/折扣创建后不可更改。）</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">使用门槛：</label>
+                        <!--<div class="">-->
+                        <div class="col-xs-4" style="width: 36%">
+                            <label class="checkbox-inline labelLeft" style="width:77px;">
+                                <input type="radio" name="useLimits" value="0"
+                                       ng-model="couponSubData.useLimits" ng-change="initdiscounts('useLimits')">不限制
+                            </label>
+                            <label class="checkbox-inline labelLeft" style="width:auto;">
+                                <input type="radio" name="useLimits" value="1"
+                                       ng-model="couponSubData.useLimits">
+                                满
+                            </label>
+                            <input type="text" class="form-control" ng-model="couponSubData.useMoney" maxlength="15"
+                                   style="width: 60px;display: inline-block;"
+                                   yzn-filter="num_"
+                                   ng-required="couponSubData.useLimits == 1" ng-disabled="couponSubData.useLimits == 0">
+                            <span style="width: auto">元可用</span>
+                        </div>
+                        <span class="c999 line28">（ 为避免造成亏损，请谨慎选择“无门槛”选项。）</span>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">有效期：</label>
+                        <div class="col-xs-10">
+                            <label class="" style="width:100%;">
+                                <input type="radio" name="validity" value="1"
+                                       ng-model="couponSubData.validity" ng-change="initdiscounts('validity',1)">固定日期
+                                <input style="display: inline-block;width: 36%;" class="form-control dateIcon ml18"
+                                       type="text" id="couponExpir"
+                                       autocomplete="off" placeholder="请选择时间段"
+                                       ng-model="validityTime"
+                                       ng-required="couponSubData.validity == 1" ng-disabled="couponSubData.validity == 2 || couponSubData.validity == 3">
+                            </label>
+                            <br>
+                            <label class="checkbox-padding" style="width:auto;">
+                                <input type="radio" name="validity" value="2"
+                                       ng-model="couponSubData.validity" ng-change="initdiscounts('validity',2)">领取后
+                                <input type="text" class="form-control" ng-model="couponSubData.validityDays"
+                                       maxlength="4" style="width: 40px;display: inline-block;"
+                                       ng-required="couponSubData.validity == 2" yzn-filter="num_" ng-disabled="couponSubData.validity == 1 || couponSubData.validity == 3">
+                                天内有效
+                                <span class="c999 line28">（ 若设置领取后1天内有效，3月25日领取，则表示3月25日24点前有效。）</span>
+                            </label>
+                            <br>
+                            <label class="checkbox-padding" style="width:auto;">
+                                <input type="radio" name="validity" value="3"
+                                       ng-model="couponSubData.validity" ng-change="initdiscounts('validity',3)">长期有效
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">优惠券总量：</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" ng-model="couponSubData.totalNumber" yzn-filter="num"
+                                   placeholder="请输入优惠券总量" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">使用说明：</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{couponSubData.instructions?couponSubData.instructions.length:0}}/300</span>
+                            <textarea class="form-control" rows="4" maxlength="300"
+                                      ng-model="couponSubData.instructions" placeholder="请输入使用说明"></textarea>
+                        </div>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>
+                    <!--优惠券规则-->
+                    <div class="popup_line noneMargin">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;更多设置</label>
+                    </div>
+                    <div class="popup_line newHelp_before">
+                        <span class="help_icon" data-tips='新学员包括首次参与的学员和系统内已有的潜在学员；老学员包括在读学员和历史学员。' style="left: 10px;"></span>
+                        <label class="form-label required" style="width: 100px;">适用学员：</label>
+                        <div class="col-xs-8">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="userScope" value="0"
+                                       ng-model="couponSubData.userScope">不限
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="userScope" value="1"
+                                       ng-model="couponSubData.userScope">新学员
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="userScope" value="2"
+                                       ng-model="couponSubData.userScope">老学员
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line newHelp_before">
+                        <span class="help_icon" data-tips='所有优惠券线下都可使用。适用商品设置仅限制线上商城的优惠券使用范围。' style="left: 10px;"></span>
+                        <label class="form-label required" style="width: 100px;">适用商品：</label>
+                        <div class="col-xs-10">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:auto;">
+                                <input type="radio" name="productScope" value="0"
+                                       ng-model="couponSubData.productScope">不限
+                            </label>
+                            <br>
+                            <label class="checkbox-inline labelLeft checkbox-padding pull-left" style="width:auto;">
+                                <input type="radio" name="productScope" value="1"
+                                       ng-model="couponSubData.productScope">
+                                <span>指定商品</span>
+                            </label>
+                            <div class="col-xs-10">
+                                <div class="teacher_select" ng-show="couponSubData.productScope == 1">
+                                    <span ng-repeat="x in products track by $index">{{x.productName}}<i ng-click="delnoeedPro($index)" class="icon_drop_x"></i></span>
+                                </div>
+                                <div ng-click="choosePro()" class="pull-left" style="padding-top:1px;">
+                                    <i class="icon_name_add"></i><span style="color: #f5565b;padding-top: 2px;">选择商品</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line newHelp_before">
+                        <span class="help_icon" data-tips='支付金额表示学员领取优惠券时需要支付一定的费用；消耗积分表示学员领取优惠券时需要消耗一定的积分。' style="left: 10px;"></span>
+                        <label class="form-label required">领券条件：</label>
+                        <div class="col-xs-10">
+                            <label class="mr20" style="width:auto;">
+                                <input type="radio" name="number" value="0"
+                                       ng-model="couponSubData.conditions" ng-change="initdiscounts('conditions',0)" ng-disabled="couponType.nomodify">免费领取
+                            </label>
+                            <label class="mr20" style="width:auto;">
+                                <input type="radio" name="number" value="1"
+                                       ng-model="couponSubData.conditions" ng-disabled="couponType.nomodify" ng-change="initdiscounts('conditions',1)">支付
+                                <input type="text" class="form-control" ng-model="number_rmb"
+                                       maxlength="15"
+                                       style="width: 66px;display: inline-block;"
+                                       ng-required="couponSubData.conditions == 1" yzn-filter="num_" ng-disabled="couponType.nomodify || couponSubData.conditions == 0 || couponSubData.conditions == 2">
+                                元
+                            </label>
+                            <label style="width:auto;">
+                                <input type="radio" name="number" value="2"
+                                       ng-model="couponSubData.conditions" ng-disabled="couponType.nomodify" ng-change="initdiscounts('conditions',2)">消耗
+                                <input type="text" class="form-control" ng-model="number_score"
+                                       maxlength="15"
+                                       style="width: 66px;display: inline-block;"
+                                       ng-required="couponSubData.conditions == 2" yzn-filter="num_" ng-disabled="couponType.nomodify || couponSubData.conditions == 0 || couponSubData.conditions == 1">
+                                积分
+                            </label>
+                            <span class="c999 line28">（ 领券条件创建后不可更改。）</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('creat_coupon')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--选择商品-->
+<div class="popup_ choosePro">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)"
+                                            list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}"
+                                            select-input="false"></kindsearch>
+                            </li>
+                            <li class="part_leftLine">
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="search_productType1"  ng-change="chargeType(true)">课程
+                                </label>
+                            </li>
+                            <li>
+                                <label class="search_checkbox">
+                                    <input type="checkbox" class="checkbox-inline labelLeft"
+                                           ng-model="search_productType2" ng-change="chargeType(false)">套餐
+                                </label>
+                            </li>
+                            <li ng-click="onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead my-thead='[{"name":"checkbox","width":"10%"},{"name":"商品名称名称","width":"30%"},{"name":"类型","width":"30%"},{"name":"商品金额","width":"30%"}]'
+                                   che-clicks="potial_checkboxClick(data)"></thead>
+                        </table>
+                        <div class="popup_table_body" id="course_loading">
+                            <table>
+                                <tbody class="roll_tbody">
+                                <tr ng-show="!mallList || mallList.length == 0">
+                                    <td colspan="6" style="text-align: center;">暂无商品</td>
+                                </tr>
+                                <tr ng-repeat="x in mallList" ng-click="sel_potial(x)">
+                                    <td class="textAlignCenter" style="width: 10%">
+                                        <input type="checkbox" ng-checked="x.hasChecked"/>
+                                    </td>
+                                    <td title="{{x.productName}}">{{x.productName}}</td>
+                                    <td>{{x.productType=="2"?"套餐":x.productType=="0"?"课程":""}}</td>
+                                    <td>{{x.amount | _qf}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagitionDiv mr_bm_10">
+                <div class="M-box3 M_box3_77"></div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePro()" type="button">取消</button>
+                <button class="btn sure" ng-click="deterSel_course()" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

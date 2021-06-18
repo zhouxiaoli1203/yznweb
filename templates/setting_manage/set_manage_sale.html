@@ -1,0 +1,297 @@
+<!--编辑-->
+<div class="popup_ shade_editchannel">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="channelSure()">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">二级渠道名称:</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" maxlength="20" type="text" autocomplete="off" ng-model="channelName" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">所属一级渠道:</label>
+                        <div class="col-xs-9">
+                            <select class="form-control" ng-model="channelTypeId" required>
+                                <option value="">请选择所属一级渠道</option>
+                                <option value="{{x.id}}" ng-repeat="x in getChannelTypeList">{{x.channelTypeName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words">{{channelDesc?channelDesc.length:0}}/100</span>
+                            <textarea class="form-control fixedTextareaWidth" maxlength="100" rows="3" ng-model="channelDesc"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="popup_ shade_channel">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="channelSure_1()">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">一级渠道名称:</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" maxlength="20" type="text" autocomplete="off" ng-model="channelTypeName" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words">{{channelDesc?channelDesc.length:0}}/100</span>
+                            <textarea class="form-control fixedTextareaWidth" maxlength="100" rows="3" ng-model="channelDesc"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}" ng-if="routerBefore">
+    <div class="back_icon icon_return" ng-click="routerSkip(routerBefore)">返回</div>
+</div>
+<div class="common_body visit_common" ng-style="{'margin-top':routerBefore?'34px':'0px'}">
+    <div class="tab_nav">
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+    <div ng-if="visitNavJud == 1">
+        <div class="second_nav">
+            <span ng-click="switchangeNav(1)" ng-class="{show_sp: studNavJud==1}">一级渠道</span>
+            <span ng-click="switchangeNav(2)" ng-class="{show_sp: studNavJud==2}">二级渠道</span>
+        </div>
+        <!--下拉选择-->
+        <div ng-if="studNavJud==1">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li>
+                        <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{searchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                    </li>
+                    <li class="common_tab_libtn">
+                        <div class="common_tab_btn charge_tab_por " ng-click="channel_tab_por()">
+                            <i class="icon_addtype"></i>新增一级渠道
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="common_content">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover abnormal">
+                        <thead my-thead="{{nameListThead_1}}" list-clicks="sortCllict(data)"></thead>
+                        <tbody class="demo_tbody" ng-if="getChannelList==''">
+                            <tr>
+                                <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="demo_tbody" ng-if="getChannelList">
+                            <tr ng-repeat="x in getChannelList">
+                                <td>{{x.channelTypeName}}</td>
+                                <td>{{x.channelNum}}</td>
+                                <td class="remarks overflow-normal">
+                                    <remark-view view-data="{{x.desc}}"></remark-view>
+                                    <!-- <remark-edit edit-id="{{x}}" edit-length="100" edit-title="备注" edit-text="{{x.channelDesc}}" edit-otext="{{x.channelDesc}}" edit-click="editRemark(n)" ng-if="!fromOrgn"></remark-edit> -->
+                                </td>
+                                <td class="textAlignCenter" ng-if="x.admin==1">
+                                    <span ng-class='{"isEnable":x.status==1,"isDisable":x.status!=1}' ng-click="changeStatus_(x)"></span>
+                                </td>
+                                <td class="operate overflow-normal textAlignCenter" ng-if="x.admin==0">
+                                    <span class="clickText" ng-click="editOperation(x)">编辑</span>
+                                    <span class="clickText" ng-click="deleteOperation(x)">删除</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagitionDiv">
+                        <div class="M-box3-total">
+                            共计{{totalNum}}条数据
+                        </div>
+                        <div class="M-box3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="studNavJud==2">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li>
+                        <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{searchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                    </li>
+                    <li class="common_tab_libtn">
+                        <div class="common_tab_btn charge_tab_por " ng-click="channel_tab_por()">
+                            <i class="icon_addtype"></i>新增二级渠道
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="common_content">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover abnormal">
+                        <thead my-thead="{{nameListThead_2}}" list-clicks="sortCllict(data)"></thead>
+                        <tbody class="demo_tbody" ng-if="getChannelList==''">
+                            <tr>
+                                <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="demo_tbody" ng-if="getChannelList">
+                            <tr ng-repeat="x in getChannelList">
+                                <td>{{x.channelName}}</td>
+                                <td>{{x.channelTypeName}}</td>
+                                <td class="remarks overflow-normal">
+                                    <remark-view view-data="{{x.channelDesc}}"></remark-view>
+                                    <remark-edit edit-id="{{x}}" edit-length="100" edit-title="备注" edit-text="{{x.channelDesc}}" edit-otext="{{x.channelDesc}}" edit-click="editRemark(n)" ng-if="!fromOrgn"></remark-edit>
+                                </td>
+                                <td class="operate overflow-normal textAlignCenter">
+                                    <span class="clickText" ng-click="editOperation(x)">编辑</span>
+                                    <span class="clickText" ng-click="deleteOperation(x)">删除</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagitionDiv">
+                        <div class="M-box3-total">
+                            共计{{totalNum}}条数据
+                        </div>
+                        <div class="M-box3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div ng-if="visitNavJud == 2">
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th width='250px'>功能</th>
+                            <th width='600'>功能描述</th>
+                            <th class="textAlignCenter">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr>
+                            <td>自动转入</td>
+                            <td>若顾问超过<input type="text" class="form-control" ng-blur="shopInstal_confirm()" ng-model="shopInstal.recycleDayNum" style="width:60px;display: inline-block;margin: 0 4px;" ng-disabled="shopInstal.recycleStatus != 1" yzn-filter="numMoreThanZero">天未跟进，则该潜客自动转入公池（在读学员、历史学员不自动转入公池）</td>
+                            <td class="textAlignCenter">
+                                <span ng-class='{"isEnable":shopInstal.recycleStatus == 1,"isDisable":shopInstal.recycleStatus != 1}' ng-click="changeStatus('recycleStatus')"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>领取上限</td>
+                            <td>公池潜客每人每天最多领取<input type="text" class="form-control" ng-blur="shopInstal_confirm()" ng-model="shopInstal.customersDayNum" ng-disabled="shopInstal.customersMaxStatus != 1" style="width:60px;display: inline-block;margin: 0 4px;"
+                                    yzn-filter="numMoreThanZero">人次</td>
+                            <td class="textAlignCenter">
+                                <span ng-class='{"isEnable":shopInstal.customersMaxStatus==1,"isDisable":shopInstal.customersMaxStatus!=1}' ng-click="changeStatus('customersMaxStatus')"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if=" visitNavJud==3 ">
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th width='250px'>功能</th>
+                            <th>功能描述</th>
+                        </tr>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr>
+                            <td>预警设置</td>
+                            <td>课程课时≤ <input type="text" ng-model="currentShop.warnTime" class="form-control width45" ng-blur="deterRenew()" oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" /> 课时，课程天数≤ <input type="text" ng-model="currentShop.warnDayNum"
+                                    class="form-control width45" oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" ng-blur="deterRenew()" /> 天 将提示预警</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix mb10">
+            <p class="pull-left" style="margin-top:16px;"><span>自定义预警</span>(设置后，系统将根据预警规则提醒预警；未设置则按统一规则进行预警)</p>
+            <div class="common_tab_btn fontRed_BgWhite pull-right" style="margin-right:0" ng-click="aewarnCourse()"><i class="icon_add"></i>添加预警</div>
+        </div>
+        <div class="common_content">
+            <div class="table-responsivecharge_table">
+                <table class="table table-hover abnormal">
+                    <thead>
+                        <tr>
+                            <th>预警课程</th>
+                            <th class="relative_dm newHelp_before">
+                                预警值
+                                <div class="help_icon noneWidth" style="left: 42px;top:9px" data-tips="学员所报课程剩余课时/天数满足预警条件时将提示预警。<br>若学员所报课程有课时、按月2种收费类型时且都满足预警条件时将提示预警<br>（单个课时/天数满足预警条件时，不提示预警）"></div>
+                            </th>
+                            <th class="textAlignCenter" width='140px'>操作</th>
+                    </thead>
+                    <tbody class="demo_tbody">
+                        <tr ng-if="!warnCourseList || !warnCourseList.length">
+                            <td colspan="3" class="textAlignCenter">暂无相关数据</td>
+                        </tr>
+                        <tr ng-repeat="x in warnCourseList track by $index">
+                            <td title="{{x.c_str}}" class="relative_dm">{{x.c_str}}</td>
+                            <td>课时≦ {{x.warnTime}}课时，课程天数≦ {{x.warnDayNum}}天将提示预警</td>
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-click="aewarnCourse(x)">编辑</span>
+                                <span class="clickText" ng-click="renewListDel(x)">删除</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--预警设置-->
+<div class="popup_" id="renew_set">
+    <div class="popup_content">
+        <form class="popup_form" ng-submit="renewAddEdit()">
+            <div class="popup_form_content" style="max-height: 500px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label for="" class="form-label required">
+                            预警设置:
+                        </label>
+                        <div class="col-xs-10">课程课时≤ <input type="text" ng-model="aewarnCourseInfo.warnTime" class="form-control width45" oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" required /> 课时，课程天数≤ <input type="text" ng-model="aewarnCourseInfo.warnDayNum"
+                                class="form-control width45" oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" required /> 天 将提示预警</div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label required">预警课程:</label>
+                        <div class="col-xs-8">
+                            <div class="teacher_select">
+                                <span ng-repeat='x in aewarnCourseInfo.courseList track by $index'>{{x.courseName}}<i ng-click="renewDel($index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="goCommonPop('course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '预警课程',warnCourseStatus:1})">添加课程</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

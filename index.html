@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh" id="id-yizhiniao">
+
+<head>
+    <title>易知鸟管理系统</title>
+    <meta name="description" content="易知鸟机构管理端登录页面">
+    <meta name="keywords" content="易知鸟,教务管理系统,培训机构管理系统,学校管理系统,机构管理软件,机构信息化系统">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-store">
+    <link rel="icon" href="static/img/must/favicon.ico" type="image/x-icon">
+
+    <!--css-->
+    <link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/style/font-css.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="static/style/common.css" />
+    <link rel="stylesheet" type="text/css" href="static/style/zj.css" />
+    <link rel="stylesheet" type="text/css" href="static/style/new-szp.css" />
+    <link rel="stylesheet" type="text/css" href="static/style/zxl.css" />
+    <link rel="stylesheet" type="text/css" href="static/style/cz.css" />
+    <link rel="stylesheet" type="text/css" href="libs/nprogress/nprogress.css" />
+    <!--css-->
+
+    <!--js-->
+    <script type="text/javascript" src="libs/nprogress/nprogress.js"></script>
+    <script type="text/javascript" src="libs/libsJs/jquery.min.js"></script>
+    <script type="text/javascript" src='static/js/config.js'></script>
+    <script type="text/javascript" src="static/js/constant.js"></script>
+    <script type="text/javascript" src="static/js/commonFunctions.js"></script>
+    <script type="text/javascript" src="libs/libsJs/md5.js"></script>
+    <!--js-->
+
+
+    <script data-main="static/app.js" src="components/requirejs/require.js" data-main="libs/libsJs/jquery.min" defer async="true"></script>
+
+    <!--<script>-->
+    <!--window.NProgress.configure({-->
+    <!--showSpinner: false-->
+    <!--});-->
+    <!--window.NProgress.start();-->
+    <!--</script>-->
+    <script language="javascript">
+        //防止页面后退
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function() {
+            history.pushState(null, null, document.URL);
+        });
+    </script>
+
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1278511729"]);
+    </script>
+</head>
+
+<body class="ng-scope" style="background: white;">
+    <!--易知鸟通知广告位-->
+    <div id='yzn_ad_flag'>
+        <div class="yzn_ad_msk"></div>
+        <div class="yzn_ad_content">
+            <img class="yzn_ad_banner" />
+            <img src="static/img/ol_mall_close.png" class="yzn_ad_close" ng-click="closeAd()" />
+        </div>
+    </div>
+
+    <!--查看版本号图片-->
+    <div class="nersion_msk">
+        <img src="" alt="" />
+    </div>
+    <div id="page-wrapper" style="overflow: hidden;height: 100%;display: none;">
+        <div id="page-container" ng-controller="headerCtrl" style="height: 100%;" class="header-fixed-top sidebar-visible-lg-full" ng-click="allClk($event)">
+            <div class="sidebar-big">
+                <div id="sidebar">
+                    <div id="sidebar-brand" class="themed-background">
+                        <a class="sidebar-title">
+                            <img ng-src="{{headShopImgUrl}}" ng-click="changeOrgn_img()" />
+                            <span class="headShopName" title='{{compName}} {{isOrgn?"（总部）":""}}' ng-cloak>{{compName}}{{isOrgn?"（总部）":""}}</span>
+                        </a>
+                    </div>
+                    <div id="sidebar-scroll">
+                        <div class="sidebar-content">
+                            <ul class="sidebar-nav" id="navigation">
+                                <li class="sidebar-nav-li">
+                                    <a href="#"></a>
+                                </li>
+                                <!--model-->
+                                <li ng-cloak ng-repeat="levelOne in menuModel track by $index">
+                                    <a class="sidebar-nav-menu base_sidebar" ng-class="{open:selectedNavItem==levelOne.id,red_color:selectedNavBg==levelOne.id}" ng-click="gotoWork(levelOne.id,$event)">
+                                        <span class="left_bac_icon base_icon" id="{{levelOne.id}}"></span>
+                                        <span class="sidebar-nav-mini-hide">{{levelOne.name}}</span>
+                                        <i class="downArrow" ng-if="$index!=0 && levelOne.id !== 'show_icon'"></i>
+                                    </a>
+                                    <ul class="left_color" ng-if="levelOne.items">
+                                        <li ng-repeat="levelTwo in levelOne.items track by $index" ng-class="{common_active:selectUiSelf==levelTwo.sref}">
+                                            <a ui-sref="{{levelTwo.sref}}" ui-sref-opts="{reload:false}">
+                                                <i class="icon-user icon-left {{levelTwo.id}}"></i>{{levelTwo.name}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--<div class="left_line"></div>-->
+                                </li>
+                                <!--model-->
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="sidebar-footer">
+                        <span class="firmLogo logo_icon" id="logo_icon"></span>
+                        <span class="remarker"></span>
+                        <span class="versionNum" ng-click="openNersion(version)">v {{version}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--登陆者操作-->
+            <div id="main-container" style="height: 100%;">
+                <header class="navbar-inverse navbar-fixed-top" id="top-navbar" style="background: white;">
+                    <!--到期信息-->
+                    <div class="broadcast_notifications" ng-show="broadcastNotificationsJud">
+                        <p style="">通知：系统使用将于{{broadcastNotificationsTime}}到期，如有疑问请联系客户经理或客服0571-85789582。</p>
+                    </div>
+                    <ul class="nav navbar-nav-custom pull-left">
+
+                        <li class="shoufang" ng-click="showMenu()">
+                            <a>
+                                <i class="icon_bback"></i>
+                            </a>
+                        </li>
+                        <li class="name" style="margin-left:5px;" ng-cloak ng-show="!fromOrgn">
+                            <div class="instName" ng-click="institutionShow($event)" ng-show="institutionInfoCopy.length>1">
+                                切换校区<span ng-if="institutionJudLen"></span></div>
+                            <div class="institution" ng-show="institutionJud">
+                                <span class="institutionSign"></span>
+                                <div class="institution_1">
+                                    <div class="shopSearch" ng-click="shopSearch_not_hide($event)" ng-show="institutionInfoCopy.length>10">
+                                        <input type="text" ng-model="shopName_search" ng-keyup="listSearch(institutionInfoCopy, shopName_search, $event)" placeholder="搜索"><em ng-click="cleanSearch($event)" class="icon_drop_x" ng-show="shopName_search"></em>
+                                    </div>
+                                    <div class="institution_2">
+                                        <p ng-click="institutionSel(x)" ng-repeat="x in institutionInfo track by $index" ng-class='{"orgnIcon":!x.shopId}'><span>{{x.shopName}} </span></p>
+                                        <p ng-show="institutionInfo.length == 0">无匹配</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="global_search">
+                            <div class="global_search_input" ng-click=stopPropagation($event)>
+                                <label for="q" ng-hide="keyup" ng-class='{"toleft":onfocus}'>请搜索学员、课程、班级、功能</label>
+                                <!-- <label for="q" ng-hide="onfocus">请输入搜索内容</label> -->
+                                <input id="q" type="text" class="form-control" ng-model="searchVal" autocomplete="off" ng-focus="focusFun($event)" ng-blur="onblur()" ng-change="checkSearch(menuModel,searchVal,$event)" ng-keyup="keyupSearch($event)">
+                                <i class="search icon_common_but_search" ng-class='{"toleft":onfocus}'></i>
+                                <span ng-show="searchVal" ng-click="clearSearch_g()"></span>
+                                <!-- <button class="btn icon_common_but_search" ng-click="searchClick()"></button> -->
+                            </div>
+                            <div class="global_search_content" ng-if="searchContentShow && searchContent.length>0">
+                                <ul>
+                                    <li ng-if="searchParams.kuaijie.length>0">
+                                        <div class="title_mark">快捷功能</div>
+                                        <div class="search_text line28">
+                                            <span ng-repeat="x in searchParams.kuaijie" ng-click="kuaijieToPage(x)" ng-bind-html="x.name|stringKeyword:x.color"></span>
+                                        </div>
+                                    </li>
+                                    <li ng-if="searchParams.studentCenterList.length>0">
+                                        <div class="title_mark">学员信息</div>
+                                        <ul class="search_text line28">
+                                            <li class="search_text_li" ng-repeat="x in searchParams.studentCenterList" ng-click="toPage(1,{pop: {el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 1, 'fromPage': 'studentPop','item': x,'tab':1}}})">{{x.name}}</li>
+                                        </ul>
+                                    </li>
+                                    <li ng-if="searchParams.potentialCustomerList.length>0">
+                                        <div class="title_mark">潜在客户</div>
+                                        <ul class="search_text line28">
+                                            <li class="search_text_li" ng-repeat="x in searchParams.potentialCustomerList" ng-click="toPage(2,{pop: {el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 0, 'fromPage': 'studentPop','item': x,'tab':1}}})">{{x.name}}</li>
+                                        </ul>
+                                    </li>
+                                    <li ng-if="searchParams.classInfoList.length>0">
+                                        <div class="title_mark">班级信息</div>
+                                        <ul class="search_text line28">
+                                            <li class="search_text_li" ng-repeat="x in searchParams.classInfoList" ng-click="toPage(3,{pop: { el: 'class-pop', id: 'class_pop', width: '1060px', param: { 'location': 'outside', 'item': x,'tab':1}}})">{{x.className}}</li>
+                                        </ul>
+                                    </li>
+                                    <li ng-if="searchParams.courseList.length>0">
+                                        <div class="title_mark">课程信息</div>
+                                        <ul class="search_text line28">
+                                            <li class="search_text_li" ng-repeat="x in searchParams.courseList" ng-click="toPage(4,{ pop: { el: 'course-pop', id: 'course_popup',width:'1060px' ,param: { 'page': 'course', 'addOrEdit':'edit',tab:1,item:x}}})">{{x.courseName}}</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="name" style=" margin-top: 10px; margin-left: 10px;" ng-cloak ng-if="fromOrgn">
+                            <div class="icon_head_Back" ng-click="gotoOrg()">返回总部</div>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav-custom pull-right account" style="padding-right:35px;">
+                        <!-- <li class="icon_head" ng-click="Fns.openDialog()" ng-show="isApplyed">
+                            <span class="ysb_update">升级易收宝</span>
+                        </li> -->
+                        <li class="icon_head">
+                            <a style="color: #444;" target="_blank" href="https://www.yizhiniao.com/helpcenter/index.html"><span class="icon_head_help"></span>帮助中心</a>
+                        </li>
+                        <!-- <li class="icon_head" ng-click="gotoBasicSet()" ng-if="viewBasic">
+                            <em style="color: #444;font-style: normal;float: left;padding: 6px 7px;line-height: 33px;cursor: pointer;" href="javaScript:;"><span class="icon_head_setting"></span>基础设置</em>
+                        </li> -->
+                        <!--登陆着下拉操作-->
+                        <li class="dropdown header_img_new">
+                            <span class="header_img_new_img" ng-if="!(isOrgn || fromOrgn)" ng-click="openEditUser('.editUser_pop','更换头像')"><img ng-src="{{imgUrl}}" src="" alt=""/></span>
+                            <span href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+									<span style="color: #f5565b;" ng-cloak>你好，{{username}}</span>
+                            </span>
+                            <ul class="dropdown-menu dropdown-menu-right sign_pop">
+                                <li class="marker"></li>
+                                <li class="drop_list" ng-click="openEditPwdPop()"><i></i><span>修改密码</span></li>
+                                <li class="drop_list" ng-click="openEditUser('.loginOut_pop','退出账号')">
+                                    <i></i><span>退出账号</span></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </header>
+
+                <div id="page-content" style="background:#F5F7FC;width: 100%;height: 100%;position: relative;">
+                    <div class="uiview-content" ui-view>
+
+                    </div>
+                </div>
+                <div class="shade_ editPwd_pop">
+                    <div class="shade_body ">
+                        <!--<h6>修改密码</h6>-->
+                        <div class="shade_content ">
+                            <form class="form-horizontal shade_middle_form shade_middle_form_charge" role="form" name="setPwd_form">
+                                <div class="shade_form_content" id="change_Pwd">
+                                    <div class="form-group">
+                                        为确认你的有效身份，请输入正确的短信验证码
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control_label">绑定手机</label>
+                                        <div class="input_ctrl">
+                                            <input class="form-control" name="number" ng-model="setNewPwdData.phone" maxlength="11" autocomplete="off" ng-keyup="bindPhoneEnter_edit()" ng-blur="validatePhone_edit(setNewPwdData.phone)" required>
+                                        </div>
+                                        <span class="usererr assertive" ng-cloak ng-if="validatePhoneError_edit">请输入正确的11位手机号</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control_label">验证码</label>
+                                        <div class="input_ctrl testCode">
+                                            <input class="form-control" type="text" name="testCode" ng-model="setNewPwdData.code" autocomplete="off" required ng-keyup="bindCodeEnter_edit()">
+                                        </div>
+                                        <span class="get_testCode" type="button" ng-click="getTestCode(setNewPwdData.phone)" ng-bind="description" ng-disabled="canClick"></span>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="control_label">新密码</label>
+                                        <div class="input_ctrl">
+                                            <input class="form-control" type="password" name="newpwd1" ng-model="setNewPwdData.pwd" maxlength="30" autocomplete="new-password" ng-keyup="bindPwdEnter_edit()" ng-blur="validatePwd_edit(setNewPwdData.pwd)" required>
+                                            <input class="form-control" type="password" name="newpwd2" style="display:none;" ng-model="setNewPwdData.pwd" maxlength="30" autocomplete="new-password" ng-keyup="bindPwdEnter_edit()" ng-blur="validatePwd_edit(setNewPwdData.pwd)" required>
+                                        </div>
+                                        <span class="login_tip login_tip3" ng-if="isNewPwdError">{{setNew_tipText}}</span>
+                                        <span class="usererr assertive" ng-cloak ng-if="validatePwdError_edit">密码由6-30位字母数字组合</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="shade_btn">
+                                    <button class="btn cancel charge_add_cancel1 " ng-click="pop_cancel()" type="button">
+                                    取消
+                                </button>
+                                    <button class="btn sure charge_add_confirm1 " ng-click="editClass_confirm(setNewPwdData)">确定
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="shade_ editUser_pop">
+                    <div class="shade_body ">
+                        <!--<h6>更换头像</h6>-->
+                        <div class="shade_content ">
+                            <form class="form-horizontal shade_middle_form shade_middle_form_charge" role="form" name="setPwd_form">
+                                <div class="shade_form_content" style="width: 720px;">
+                                    <div class="form-group">
+                                        <div class="imgbox">
+                                            <img src="" ng-src="{{img_pop}}" alt="上传图片" class="index_user_img sourceLink" />
+                                        </div>
+
+                                        <!--<div class="imageBox user_img">
+                                            <div class="thumbBox"></div>
+                                            <div class="spinner" style="display: none">Loading...</div>
+                                        </div>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="user_img_btn" type="button" id="index_changeImg">
+                                            <!--<span class="addImg_icon">选择图片</span>-->
+                                            <a href="javascript:void(0)" class="upload-img addImg_icon">
+                                                <label>选择图片</label>
+                                            </a>
+                                            <!--<input type="file" class="" id="index_imgUpId" name="upload-file" accept="image/gif, image/jpeg, image/png" ng-click="selectUserImg($event)" />-->
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="shade_btn">
+                                    <button class="btn cancel charge_add_cancel1" ng-click="pop_cancel()" type="button">取消
+                                </button>
+                                    <button class="btn sure charge_add_confirm1" ng-click="editUser_confirm(username)">确定
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="shade_ loginOut_pop">
+                    <div class="shade_body ">
+                        <!--<h6>退出账号</h6>-->
+                        <div class="shade_content">
+                            <form class="form-horizontal shade_middle_form shade_middle_form_charge" role="form" name="setPwd_form">
+                                <div class="shade_form_content">
+                                    <div class="form-group">
+                                        是否退出该账号？
+                                    </div>
+                                </div>
+
+                                <div class="shade_btn">
+                                    <button class="btn cancel charge_add_cancel1 " ng-click="pop_cancel()" type="button">
+                                    取消
+                                </button>
+                                    <button class="btn sure charge_add_confirm1 " ng-click="gotoLoginPage()">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="index_testCan" width="" height="" style="display: none;"></canvas>
+                <div id="index_imgCutContainer" class="common_hide"></div>
+            </div>
+        </div>
+    </div>
+    <!--裁剪-->
+    <div id="cropperContain" style="display: none;">
+        <div class="imgContain">
+            <img src="" alt="" id="cropperImg" />
+        </div>
+        <div class="cropperBtn">
+            <button class="closeCut">取消</button>
+            <button class="confirmCut">裁剪</button>
+        </div>
+    </div>
+    <!--版本号弹框-->
+    <div class="popup_ openNersion">
+        <div class="popup_content">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <ul class="record_pop" style="padding-top: 40px;">
+                        <li ng-repeat="v in nersionInfo" class="clearfix" style="height: inherit;margin-bottom: 18px;">
+                            <div class="col-xs-2 textAlignRt" style="margin-right: 80px;">
+                                <div class="time">{{v.versionDate | yznDate:'yyyy-MM-dd'}}</div>
+                                <div class="marginTop_m7" style="color: #397fd4;cursor: pointer;" ng-click="openNersionDetail(v)">v{{v.versionCode}}版本
+                                </div>
+                            </div>
+                            <!--<div class="col-xs-1 icon_circel" style="height: 100%;"><span></span></div>-->
+                            <div class="col-xs-6 textAlignLf open_nersion_icon">
+                                <div class="oprate_name">更新内容：</div>
+                                <p style="white-space: pre-wrap; word-wrap: break-word;margin-top: 10px;">{{v.versionShortDesc}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--版本号详情弹框-->
+    <div class="popup_ openNersionDetail">
+        <div class="popup_content">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <h2 style="font-size: 16px;font-weight: bold;margin-bottom: 15px;">更新内容：</h2>
+                    <div class="openNersionDetail_text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input class="avatar-input hide" id="inputImage" name="avatar_file" type="file">
+    <!--多张图片上传-->
+    <input class="avatar-input hide" id="inputImages" name="avatar_file" type="file" multiple>
+    <input class="avatar-input hide" id="inputImage_" name="avatar_file" type="file">
+    <ul class="upload_img_err" style="display: none;"></ul>
+    <!--帮助图标-->
+    <div class="help_tip"></div>
+
+    <div style="display:none">
+        <script type="text/javascript" src="https://v1.cnzz.com/z_stat.php?id=1278511729&web_id=1278511729"></script>
+    </div>
+</body>
+<script>
+    //鼠标移入添加滚动条
+    //        $('body').off().on('mouseover', '.popup_form_content', function() {
+    //            var _this = $(this);
+    //            if(_this.find('.popup_scroll').attr('isScroll') == 'true') {
+    //                if(_this.attr('hasScroll') != 'true') {
+    //                    creatDarg(_this[0]);
+    //                    _this.attr('hasScroll', 'true');
+    //                } else {
+    //                    creatDarg(_this[0], 'ture');
+    //                }
+    //            }
+    //        })
+</script>
+
+</html>

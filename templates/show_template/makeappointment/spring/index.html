@@ -1,0 +1,376 @@
+<div class="tp1" ng-controller="show_tp">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />-->
+    <link rel="stylesheet" href="templates/show_template/makeappointment/spring/css/index.css" />
+    <audio id="bacMusic" src=""></audio>
+    <span class="r_music music_rotate" id="bacMusicBtn" btnType="on"></span>
+    <div class="tp1_header"><img src="templates/show_template/makeappointment/spring/img/header.png" alt="主题图片" /></div>
+    <div class="tp1_organ">
+        <div class="tp1_title tp1_organ_title"></div>
+        <div class="cloud cloud_1"></div>
+        <div class="cloud cloud_2"></div>
+        <div class="cloud cloud_3"></div>
+        <div class="cloud cloud_5"></div>
+        <!--<div class="tp1_organName">易知鸟教育培训</div>-->
+        <ul class="tp1_organ_lis clearfix"></ul>
+        <div class="cut_line"></div>
+    </div>
+    <div class="tp1_teacher">
+        <div class="tp1_title tp1_teacher_title"></div>
+        <span class="cloud cloud_3"></span>
+        <span class="btn_right"></span>
+        <span class="btn_left"></span>
+        <div class="tp1_teacher_con">
+            <ul class="tp1_teacher_lis clearfix"></ul>
+        </div>
+        <div class="cut_line"></div>
+    </div>
+    <div class="tp1_course">
+        <div class="tp1_title tp1_course_title"></div>
+        <span class="cloud cloud_1"></span>
+        <span class="cloud cloud_2"></span>
+        <span class="cloud cloud_3"></span>
+        <span class="cloud cloud_4"></span>
+        <ul class="tp1_course_lis clearfix"></ul>
+        <div class="cut_line"></div>
+    </div>
+    
+    <div class="tp1_course_detail">
+        <div class="return_page icon_return"></div>
+        <div class="course_detail_img"><img src="" alt="" /></div>
+        <div class="course_detail_name detail_name">课程名称:<span>钢琴</span></div>
+        <div class="course_detail_name detail_type">上课形式:<span>一对一</span></div>
+        <div class="tit_power"></div>
+        <div class="tit_abstract"></div>
+        <div class="tit_con"></div>
+        <span class="cloud cloud_6"></span>
+        <span class="cloud cloud_7"></span>
+        <span class="cloud cloud_8"></span>
+        <span class="cloud cloud_9"></span>
+        <div class="cut_line"></div>
+    </div>
+    
+    <div class="tp1_yuyue">
+        <div class="tp1_title tp1_yuyue_title"></div>
+        <span class="cloud cloud_1"></span>
+        <span class="cloud cloud_2"></span>
+        <span class="cloud cloud_3"></span>
+        <span class="cloud cloud_4"></span>
+        <form class="tp1_yuyue_lis">
+            <span class="flower_1"></span>
+            <span class="flower_2"></span>
+            <ul></ul>
+            <button class="yuyue_sumbit">提交预约</button>
+        </form>
+        <div class="copyright">
+            <p class="copyright_erweima">
+                <img src="" alt="" />
+            </p>
+            <p class="copyright_organ">易知鸟教育培训</p>
+            <p class="copyright_phone">0571-85789582</p>
+            <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+            <p style="margin-top: 0.2rem;">易知鸟提供技术支持</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //课程详情默认数据
+        var courseDetailData = {
+            experienceCourseImageUrl: 'templates/show_template/makeappointment/spring/img/course_detail_tit.png',
+            experienceCourseName: '钢琴',
+            courseType: 1,
+            fosterAbilities: '通过一对一的钢琴课引导学生步入音乐之门，使学生学会理解音乐、表现音乐、喜欢音乐。',
+            courseSummary: '1、教学计划以单元安排，每单元4周。2、每周两节课。每学期的教学量除规定的内容应选用外，可根据学生的自身条件选用程度相当的乐曲及四手联弹曲目。3、每阶段期末进行汇报演奏会。4、教学进度与曲目安排。',
+            courseDetails: [
+                {imageUrl: 'templates/show_template/makeappointment/spring/img/course_detail_1.png'},
+                {imageUrl: 'templates/show_template/makeappointment/spring/img/course_detail_2.png'},
+                {content: '针对钢琴普及教育启蒙阶段教学而制定，教学对象为4周岁以上儿童。本课程的教学目的与任务，在于通过一对一的钢琴课引导学生步入音乐之门，使学生学会理解音乐、表现音乐、喜欢音乐，将音乐的基本知识和对音乐形象的理解力、表现力以及钢琴弹奏技巧三方面的教学密切地结合起来，使学生获得有关钢琴演奏的基本知识，掌握钢琴基本弹奏方法与技能，并使其音乐素质得到全面的提高。'},
+            ]
+        }
+        
+        //初始化渲染手机页面
+        function getShowData(data) {
+            // 如果没有数据则使用show.js里面的初始数据
+            if(!data) {
+                var data = h5_tempalteData['makeappointment/spring'];
+            }
+            console.log('修改了数据', data);
+            var courseHtml = '';
+            var organHtml = '';
+            var teacherHtml = '';
+            var studentHtml = '';
+            var studentHtml_ = '';
+            var phoneHtml = '';
+//            $('.tp1_organName').html(data.organ.name);  //渲染校区名称
+            //渲染校区二维码
+            if(data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima img').attr('src', data.organ.code);
+            } else {
+                $('.copyright_erweima').hide();
+            }
+            
+            //判断是音乐库音乐还是自定义的音乐
+            if(data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if(data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for(var i = 0; i < data.musicList.length; i++) {
+                        if(data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+            
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if(music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if(data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if(data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            
+            //渲染预约模块信息
+            studentHtml += '</select></div></li>';
+            studentHtml += '<li><label class="show_required" for="">学员姓名:</label><input type="text" placeholder="请输入学员姓名" required/></li>';
+            if (data.appoinInfo.nickname) {
+                studentHtml += '<li><label for="">学员昵称:</label><input type="text" placeholder="请输入学员昵称"></li>';
+            }
+            if (data.appoinInfo.sex) {
+                studentHtml += '<li><label for="">学员性别:</label><input type="text" placeholder="请输入学员性别"></li>';
+            }
+            studentHtml += '<li><label class="show_required" for="">学员年龄:</label><input type="text" placeholder="请输入学员年龄" required/></li>';
+
+            studentHtml += '<li><label class="show_required" for="">学员电话:</label><input type="text" placeholder="请输入学员电话" required/></li>';
+            if (data.appoinInfo.parentname) {
+                studentHtml += '<li><label for="">家长姓名:</label><input type="text" placeholder="请输入家长姓名"></li>';
+            }
+            if (data.appoinInfo.address) {
+                studentHtml += '<li><label for="">学员地址:</label><input type="text" placeholder="请输入学员地址"></li>';
+            }
+            //渲染底部版权信息模块
+            for (var i = 0; i < data.organ.phone.length; i++) {
+                phoneHtml += data.organ.phone[i] + '   ';
+            }
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html(phoneHtml);
+            $('.copyright_dress').html(data.organ.address);
+            $('.tp1_yuyue_lis ul').html(studentHtml);
+            
+            //渲染校区模块信息
+            if(data.organInfo.length > 0) {
+                $('.tp1_organ').show();
+                for (var i = 0; i < data.organInfo.length; i++) {
+                    if(data.organInfo[i].type == 'text') {
+                        organHtml += '<li><dl><dd>'+data.organInfo[i].value.replace(/\n/g, "<br/>")+'</dd>';
+                        organHtml += '<dt class="show_none"></dt></dl></li>';
+                    } else {
+                        organHtml += '<li><dl><dd class="show_none"></dd>';
+                        organHtml += '<dt><img src="'+data.organInfo[i].value+'" alt="校区图片" /></dt></dl></li>';
+                    }
+                };
+            } else {
+                $('.tp1_organ').hide();
+            }
+            
+            //渲染老师模块信息
+            if(data.teacherInfo.length > 0) {
+                $('.tp1_teacher').show();
+                for (var i = 0; i < data.teacherInfo.length; i++) {
+                    teacherHtml += '<li><dl><dt>';
+                    teacherHtml += '<span class="flower_1"></span><span class="flower_2"></span><span class="flower_3"></span><span class="flower_4"></span>';
+                    teacherHtml += '<div class="teacher_img"><img src="'+data.teacherInfo[i].imgsrc+'" alt="老师头像" /></div></dt>';
+                    teacherHtml += '<dd><p class="teacher_detail">'+(data.teacherInfo[i].introduce.replace(/\n/g, "<br/>"))+'</p></dd></dl></li>';
+                }
+            } else {
+                $('.tp1_teacher').hide();
+            }
+            
+            //渲染展示课程模块信息
+            if(data.showCourseList.length > 0) {
+                $('.tp1_course').show();
+                studentHtml_ += '<li class="sel_courseId"><label for="">体验课程:</label><div class="yuyue_course"><select name="" id="selCourseId">';
+                for (var i = 0; i < data.showCourseList.length; i++) {
+                    courseHtml += '<li>';
+                    courseHtml += '<span class="tp1_course_lisname">'+data.showCourseList[i].experienceCourseName+'</span>';
+                    courseHtml += '<div class="tp1_course_lisimg">';
+                    courseHtml += '<img src="'+data.showCourseList[i].experienceCourseImageUrl+'" alt="课程图片" />';
+                    courseHtml += '<span class="flower_1"></span>';
+                    courseHtml += '<span class="flower_2"></span>';
+                    courseHtml += '<span class="flower_3"></span>';
+                    courseHtml += '<span class="flower_4"></span></div></li>';
+                
+                    studentHtml_ += '<option value="'+data.showCourseList[i].courseId+'">'+data.showCourseList[i].experienceCourseName+'</option>';
+                };
+                studentHtml_ += '</select></div></li>';
+            } else {
+                $('.tp1_course').hide();
+            }
+            
+            $('.tp1_yuyue_lis ul').html(studentHtml_ + $('.tp1_yuyue_lis ul').html());
+            $('.tp1_organ_lis').html(organHtml);
+            $('.tp1_teacher_lis').html(teacherHtml);
+            $('.tp1_course_lis').html(courseHtml);
+            initShowData(data);
+        }
+        
+        //渲染页面完毕，页面存在元素节点之后运行的方法
+        function initShowData(data) {
+            //用计时器防止页面未渲染完成
+            setTimeout(function() {
+                consWidth = $('.tp1_teacher_lis li').width();   //获取图片的宽用于滚动
+                $('.tp1_teacher_lis').width(consWidth*(data.teacherInfo.length + 1));
+                consLen = data.teacherInfo.length;
+                box = $('.tp1_teacher_con')[0];
+                con = $('.tp1_teacher_lis')[0];
+                box.scrollLeft = 0;
+                
+                //如果老师介绍大于一个则出现左右的点击滚动按钮
+                if(data.teacherInfo.length > 1) {
+                    $('.btn_left').show();
+                    $('.btn_right').show();
+                    //向左滚动一张图片
+                    $('.btn_left').off().on('click', function() {
+                        if (timer) {
+                            return;
+                        };
+                        num -= consWidth;
+                        if (num == -consWidth) {
+                            num = consWidth * (consLen - 1);
+                        };
+                        startMove(num);
+                    });
+                    //向右滚动一张图片
+                    $('.btn_right').off().on('click', function() {
+                        if (timer) {
+                            return;
+                        };
+                        num += consWidth;
+                        if (num == consWidth * consLen) {
+                            num = 0;
+                        };
+                        startMove(num);
+                    });
+                } else {
+                    $('.btn_left').hide();
+                    $('.btn_right').hide();
+                }
+                
+                //展示课程列表点击进入详情
+                $('.tp1_course_lis li').off().on('click', function() {
+                    var _index = $(this).index();
+                    var lsCourseDetail = data.showCourseList[_index];
+                    if(!lsCourseDetail.experienceCourseId) {
+                        lsCourseDetail = courseDetailData;
+                    }
+                    console.log(lsCourseDetail);
+                    initCourseDetail(lsCourseDetail);
+                    
+                    //oa端由于不能进行跳转页面所以隐藏课程详情之外的元素
+                    $('.sel_courseId').hide();
+                    $('.tp1_header').hide();
+                    $('.tp1_organ').hide();
+                    $('.tp1_teacher').hide();
+                    $('.tp1_course').hide();
+                    $('.tp1_course_detail').show();
+                    $('#show_contain').scrollTop(0);
+                });
+                
+                //点击返回按钮隐藏课程详情元素，展示活动信息
+                $('.return_page').off().on('click', function() {  //课程详情返回按钮
+                    $('.sel_courseId').show();
+                    $('.tp1_header').show();
+                    $('.tp1_organ').show();
+                    $('.tp1_teacher').show();
+                    $('.tp1_course').show();
+                    $('.tp1_course_detail').hide();
+                    $('#show_contain').scrollTop($('.tp1_course').offset().top);
+                });
+            });
+        }
+        
+        //点击展示课程之后进入渲染展示课程详情
+        function initCourseDetail(d) {
+            var detailHtml = '';
+            var lsCourseDetail = d;
+            $('.tit_power').html('');
+            $('.tit_abstract').html('');
+            
+            $('.course_detail_img img').attr('src', lsCourseDetail.experienceCourseImageUrl);
+            $('.detail_name span').html(lsCourseDetail.experienceCourseName);
+            if(lsCourseDetail.courseType == 1) {
+                $('.detail_type span').html('一对一');
+            } else {
+                $('.detail_type span').html('一对多');
+            }
+            
+            if(lsCourseDetail.fosterAbilities) {
+                $('.tit_power').html('<h2 class="course_detail_tit">培养能力:</h2>'+'<p class="course_detail_text">'+lsCourseDetail.fosterAbilities.replace(/\n/g, "<br/>")+'</p>');
+            }
+            if(lsCourseDetail.courseSummary) {
+                $('.tit_abstract').html('<h2 class="course_detail_tit">课程摘要:</h2>'+'<p class="course_detail_text">'+lsCourseDetail.courseSummary.replace(/\n/g, "<br/>")+'</p>');
+            }
+            if(lsCourseDetail.courseDetails && lsCourseDetail.courseDetails.length > 0) {
+                detailHtml += '<h2 class="course_detail_tit">课程详情:</h2><ul class="course_detail_con">';
+                for (var i = 0; i < lsCourseDetail.courseDetails.length; i++) {
+                    var lsdata = lsCourseDetail.courseDetails[i];
+                    if(lsdata.imageUrl || lsdata.imageUrl == '') {
+                        detailHtml += '<li><img src="'+lsdata.imageUrl+'" alt="课程详情图片" /></li>';
+                    } else {
+                        detailHtml += '<li><p>'+lsdata.content.replace(/\n/g, "<br/>")+'</p></li>';
+                    }
+                }
+                detailHtml += '</ul>';
+            }
+            $('.tit_con').html(detailHtml);
+        }
+        
+        /*
+         * 老师滚动效果封装
+         */
+        var timer, num=0, consWidth, consLen, box, con;
+        function startMove(targetVal) {
+            var startVal = box.scrollLeft;
+            var targetVal = targetVal;
+            var step = 0;
+            timer = setInterval(move, 20);
+            function move() {
+                //判断，如果小于临界值则向右滚动
+                if (startVal < targetVal) {
+                    //利用改变步长实现缓冲的效果
+                    step = Math.ceil((targetVal - startVal) / 10);
+                    startVal += step;
+                    if (startVal >= targetVal) {
+                        startVal = targetVal;
+                        clearInterval(timer);
+                        timer = null;
+                    };
+                //判断，如果大于临界值则向左滚动
+                } else if (startVal > targetVal){
+                    step = Math.ceil((startVal - targetVal ) / 10);
+                    startVal -= step;
+                    if (targetVal >= startVal) {
+                        startVal = targetVal;
+                        clearInterval(timer);
+                        timer = null;
+                    };
+                };
+                box.scrollLeft = startVal;
+            };
+        };
+    </script>
+</div>

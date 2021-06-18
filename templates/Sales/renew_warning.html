@@ -1,0 +1,278 @@
+<!--预警设置needdel__cz-->
+<!-- <div class="popup_" id="renew_set">
+    <div class="popup_content">
+        <form class="popup_form" ng-submit="poten_register_confirm()">
+            <div class="popup_form_content" style="max-height: 500px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label for="" class="form-label newHelp_before">预警设置:
+                            <div  class="help_icon noneWidth" style="left: 15px;" data-tips="学员所报课程剩余课时/天数满足预警条件时将提示预警。<br>若学员所报课程有课时、按月2种收费类型时且都满足预警条件时将提示预警<br>（单个课时/天数满足预警条件时，不提示预警）"></div>
+                        </label>
+                        <div class="col-xs-10">课程课时≤ <input type="text" ng-model="currentShop.warnTime" class="form-control width45" oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" /> 课时，课程天数≤ <input type="text" ng-model="currentShop.warnDayNum" class="form-control width45"
+                                oninput="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" /> 天 将提示预警</div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">非预警课程:</label>
+                        <span class="col-xs-2 form-span icon_name_add bef_mg_0" ng-click="goCommonPop('course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '非预警课程'})">添加课程</span>
+                    </div>
+                    <div class="popup_table" ng-if="selCourseList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;"></th>
+                                    <th>课程</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in selCourseList">
+                                    <td></td>
+                                    <td>{{x.courseName}}</td>
+                                    <td><span class="roll_icon icon_roll_state_del" ng-click="delCourse(x, $index)"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="deterRenew()">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<!--提醒续费-->
+<div class="popup_ remindPop" id="remindPop">
+    <div class="popup_content">
+        <form class="popup_form">
+            <div class="popup_form_content" style="max-height: 500px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line warningBg">
+                        <i class="main_color icon_warning"></i> 续费提醒默认通过微信服务消息发送给学员，请确保学员已绑定微信服务号通知，可以前往"学员中心"了解绑定情况。如需通过短信发送，请前往“校区设置＞其他设置＞校区通知设置”开启。
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label for="" class="form-label">提醒对象:</label>
+                        <span class="col-xs-4 form-span">{{remindDetail.name}}</span>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label for="" class="form-label">消息内容:</label>
+                        <div class="col-xs-10 form-span">
+                            您好，您在我校报读的 {{remindDetail.lastCourseName}} 剩余课时不足。<span>{{remindDetail.remark}}</span>
+                            <div>学员姓名:<span >{{isSingle?remindDetail.name:"xxx"}}</span></div>
+                            <div ng-show="isSingle">剩余:<span>{{remindDetail.totalSurplusTime|keshi_tian_sheng:remindDetail.totalSurplusDayNum:remindDetail.buyAllTime:remindDetail.buyAllDateNum:remindDetail.giveTime}}</span></div>
+                            <div ng-show="!isSingle">剩余课时:<span>xxx</span></div>
+                            <div>{{currentShop.smsMsg}}</div>
+                        </div>
+                    </div>
+                    <div class="popup_line marginTop_10">
+                        <label for="" class="form-label">续费说明:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" style="bottom: 20px;">{{remindDetail.remark?remindDetail.remark.length:0}}/200</span>
+                            <textarea class="form-control" style="resize: none;" rows="4" maxlength="200" ng-model="remindDetail.remark" placeholder="请输入备注信息"></textarea>
+                            <div style="color:#999;">(续费说明会显示在消息内容中。)</div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">优惠券:</label>
+                        <div class="col-xs-10 coupon_info" style="line-height:28px;">
+                            <ul class="coupon_list clearfix">
+                                <!--// 适用用户范围 0：不限制 1：新用户 2；老用户-->
+                                <li ng-repeat="x in sendData.apt_coupons" class="noneBorder">
+                                    <span class="coupon_li_delete" ng-click="delCoupon(x, $index)"></span>
+                                    <span class="coupon_li_type" ng-class="{'coupon_li_type3': x.userScope == 2}"></span>
+                                    <h3>
+                                        <strong ng-if="x.discountType == 1" title="{{x.discounts}}"><em>¥</em>{{x.discounts}}</strong>
+                                        <strong ng-if="x.discountType == 2" title="{{x.discounts}}">{{x.discounts / 10}}折</strong>
+                                        <p ng-if="x.useLimits == 0">不限制</p>
+                                        <p ng-if="x.useLimits == 1">满{{x.useMoney}}可用</p>
+                                    </h3>
+                                    <h4>
+                                        <p><strong title="{{x.couponName}}">{{x.couponName}}</strong></p>
+                                        <!--有效期 1:固定日期区间 2：领取后多少天 3：长期有效-->
+                                        <em ng-if="x.validity==1">{{x.validityBeginTime | yznDate:'yyyy-MM-dd'}} 至 {{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</em>
+                                        <em ng-if="x.validity==2">领取后{{x.validityDays}}天内有效</em>
+                                        <em ng-if="x.validity==3">长期有效</em>
+                                        <var ng-if="x.instructions" ng-mouseover="x.showIns=true" ng-mouseout="x.showIns=false">详细信息<i></i></var>
+                                    </h4>
+                                    <div class="coupon_ins" ng-if="x.showIns && x.instructions">
+                                        <p>使用说明：{{x.instructions}}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="form-span icon_name_add bef_mg_0" ng-click="checkCoupons()">添加优惠券</div>
+                            <div style="clear: both;color:#999;">(可选。添加优惠券后，将直接发放优惠券给学员，默认发送微信服务消息提醒。)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit" ng-click="sendRenew()">发送</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发放优惠券-->
+<div class="popup_ dispendCoupon" id="dispendCoupon">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="sendCoupon_confirm()">
+            <div class="popup_form_content" style="overflow: inherit;">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label">发送对象:</label>
+                        <div class="col-xs-4" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="duixiang" ng-model="sendData.type" value="1" required />班级
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="duixiang" ng-model="sendData.type" value="2" required />学员
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="sendData.type == 1">
+                        <label class="form-label">班级:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in sendData.apt_class">{{x.className}}<i ng-click="delClass(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkClass()">选择班级</span>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="sendData.type == 2">
+                        <label class="form-label">学员:</label>
+                        <div class="col-xs-10" style="line-height:28px;">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in sendData.apt_students">{{x.name}}<i ng-click="delStudent(x, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkStudent()">选择学员</span>
+                        </div>
+                    </div>
+                    <div class="parting_line popup_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label">优惠券:</label>
+                        <div class="col-xs-10 coupon_info" style="line-height:28px;">
+                            <ul class="coupon_list clearfix">
+                                <!--// 适用用户范围 0：不限制 1：新用户 2；老用户-->
+                                <li ng-repeat="x in sendData.apt_coupons" ng-class="{'coupon_li_2': x.userScope == 2}" class="noneBorder">
+                                    <span class="coupon_li_delete" ng-click="delCoupon(x, $index)"></span>
+                                    <h3>
+                                        <strong ng-if="x.discountType == 1" title="{{x.discounts}}"><em>¥</em>{{x.discounts}}</strong>
+                                        <strong ng-if="x.discountType == 2" title="{{x.discounts}}">{{x.discounts / 10}}折</strong>
+                                        <p ng-if="x.useLimits == 0">不限制</p>
+                                        <p ng-if="x.useLimits == 1">满{{x.useMoney}}可用</p>
+                                    </h3>
+                                    <h4>
+                                        <p><strong title="{{x.couponName}}">{{x.couponName}}</strong></p>
+                                        <!--有效期 1:固定日期区间 2：领取后多少天 3：长期有效-->
+                                        <em ng-if="x.validity==1">{{x.validityBeginTime | yznDate:'yyyy-MM-dd'}} 至 {{x.validityEndTime | yznDate:'yyyy-MM-dd'}}</em>
+                                        <em ng-if="x.validity==2">领取后{{x.validityDays}}天内有效</em>
+                                        <em ng-if="x.validity==3">长期有效</em>
+                                        <var ng-if="x.instructions" ng-mouseover="x.showIns=true" ng-mouseout="x.showIns=false">详细信息<i></i></var>
+                                    </h4>
+                                    <div class="coupon_ins" ng-if="x.showIns && x.instructions">
+                                        <p>使用说明：{{x.instructions}}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <span class="form-span icon_name_add bef_mg_0" ng-click="checkCoupons()">添加优惠券</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--发放优惠券 提示信息-->
+<div class="popup_ remindMsg" id="remindMsg">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line textAlignCenter" ng-repeat="x in remindList">
+                        {{x}}优惠券
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="sendCoupon_confirm2('2')">重复发放</button>
+                <button class="btn sure" type="button" ng-click="sendCoupon_confirm2('1')">过滤发放</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body renew_warning">
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch select-id="search" class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{searchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="selectCourse(n)" list-search="true"></my-select>
+            </li>
+            <li ng-show="isAllStudent">
+                <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="selectAdviser(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked="$surplusTime==1" ng-click="changeTimes($event,1)">欠课
+                </label>
+            </li>
+            <li class="part_leftLine">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="unRemind" ng-change="changeWarn()">未提醒
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+            <li class="common_tab_libtn" ng-if="isWarning">
+                <div class="common_tab_btn" ng-click='export_config()'><i class="icon_export"></i>导出记录</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="'21' | _authId">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageSale',{ tab:3,before:'renew_warning' })"><i class="icon_setWarn"></i>预警设置</div>
+            </li>
+        </ul>
+    </div>
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-id="renewHead" my-thead="{{renewListHead1}}" list-clicks="sortCllict(data)" che-clicks="sel_allFun(data)"></thead>
+                <tbody class="demo_tbody" ng-if="renewList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in renewList">
+                        <td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'contractId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked" /></td>
+                        <td>
+                            <span class="clickText" ng-click="goCommonPop('pot-pop', 'potential_pop','1060px',{'page':0,'fromPage':'studentPop','item':x,'tab':1})">{{x.name}} {{x.nickname?("("+x.nickname+")"):""}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                        </td>
+                        <td>{{caclBirthToAge(x.age, x.birthday)}}</td>
+                        <td>{{x.potentialCustomerParentPhone}}</td>
+                        <td title="{{x.lastCourseName}}">{{x.lastCourseName}}</td>
+                        <td class="textAlignCenter">{{x.totalSurplusTime|keshi_tian_sheng:x.totalSurplusDayNum:x.buyAllTime:x.buyAllDateNum:x.giveTime:true}}</td>
+                        <td class="textAlignCenter" ng-class='{"main_color":x.oweTime}'>{{x.oweTime?((x.oweTime|number:2)+"课时"):"-"}}</td>
+                        <td>{{x.lastRemindTime | yznDate:'yyyy-MM-dd'}}</td>
+                        <td style="text-align: center;" class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="courseRenew(x)" ng-if="isRenew">续费</span>
+                            <span class="clickText" ng-click="remind_Pay(x,true)" ng-if="isRenew">提醒续费</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagitionDiv">
+                <div class="M-left">
+                    <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+                    <div class="M-button common_tab_btn fontRed_BgWhite" ng-click="batchOperate()">批量提醒</div>
+                </div>
+                <div class="M-box3 renewPage"></div>
+            </div>
+        </div>
+    </div>
+</div>

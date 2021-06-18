@@ -1,0 +1,453 @@
+@charset "utf-8";
+.bargain_con {
+    background-color: #F2E3D0;
+}
+
+.b_bg {
+    display: block;
+    width: 100%;
+}
+
+.bargain_con span,
+.bargain_con p,
+.bargain_con h3,
+.bargain_con em,
+.bargain_con strong {
+    font-size: 0.28rem;
+}
+
+.con_1 {
+    position: relative;
+    width: 100%;
+    height: 12.06rem;
+}
+
+.con_1_bg {
+    display: block;
+    width: 100%;
+}
+
+.con_1_bg2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.con_1_c {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.con_1_text {
+    width: 7.28rem;
+    height: 4.8rem;
+    margin: 7.1rem auto 0;
+    color: #fff;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.con_1_tit {
+    height: 1.75rem;
+}
+
+.s_peo img {
+    float: left;
+    width: 0.88rem;
+    height: 0.88rem;
+    border-radius: 50%;
+    position: absolute;
+    top: -0.44rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.s_peo p {
+    padding-top: 0.45rem;
+    text-align: center;
+}
+
+.con_1_tit h3 {
+    width: 5.74rem;
+    margin: 0 auto;
+    min-height: 1.2rem;
+    position: relative;
+}
+
+.con_1_tit h3 span {
+    display: block;
+    width: 100%;
+    line-height: 0.52rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.42rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.con_1_time {
+    height: 0.44rem;
+    line-height: 0.44rem;
+    position: absolute;
+    top: 0.4rem;
+    left: 0;
+    font-size: 0.12rem;
+    background-color: #FCDB04;
+    padding: 0 0.12rem 0 0.05rem;
+    color: #D62B23;
+    border-radius: 0 0.44rem 0.44rem 0;
+}
+
+.con_1_time span {
+    display: inline-block;
+}
+
+.con_1_btn {
+    display: block;
+    width: 2.61rem;
+    height: .71rem;
+    margin: 0.22rem auto 0;
+    border: none;
+    background: url("../img/btn1.png") no-repeat;
+    background-size: contain;
+}
+
+.con_2,
+.con_3,
+.con_4,
+.con_5,
+.con_6 {
+    position: relative;
+    /* margin-top: .86rem; */
+    padding-top: .43rem;
+    margin-top: .43rem;
+    /* background: url("../img/boxBg.png") repeat-y;
+    background-size: contain; */
+}
+
+.con_2 {
+    margin-top: .86rem;
+}
+
+.con_tit {
+    width: 3.23rem;
+    z-index: 1;
+    height: .83rem;
+    background: url("../img/tit (1).png") no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+.con_tit_2 {
+    background: url("../img/tit (2).png") no-repeat;
+    background-size: contain;
+}
+
+.con_tit_3 {
+    background: url("../img/tit (3).png") no-repeat;
+    background-size: contain;
+}
+
+.con_tit_4 {
+    background: url("../img/tit (4).png") no-repeat;
+    background-size: contain;
+}
+
+.con_tit_5 {
+    background: url("../img/tit (5).png") no-repeat;
+    background-size: contain;
+}
+
+.con_box {
+    width: 7.2rem;
+    margin: 0 auto;
+    position: relative;
+    background-size: 100%;
+    background-color: #FCF9F4;
+    border-radius: .1rem;
+}
+
+.con_box:after {
+    content: "";
+    width: .38rem;
+    height: .38rem;
+    background: url(../img/pendant.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: .1rem;
+    right: .1rem;
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.con_box:before {
+    content: "";
+    width: .38rem;
+    height: .38rem;
+    background: url(../img/pendant.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: .1rem;
+    left: .1rem;
+    transform: rotate(180deg);
+    transform-origin: center;
+}
+
+.con_text {
+    width: 100%;
+    min-height: 3rem;
+    padding: .89rem .5rem .4rem;
+    color: #572A1B;
+    /* box-shadow: 0 0 .4rem .4rem #F6EAE0 inset; */
+    border-radius: .1rem;
+}
+
+.con_text:after {
+    content: "";
+    width: .38rem;
+    height: .38rem;
+    background: url(../img/pendant.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: .1rem;
+    right: .1rem;
+    transform: rotate(0);
+    transform-origin: center;
+}
+
+.con_text:before {
+    content: "";
+    width: .38rem;
+    height: .38rem;
+    background: url(../img/pendant.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: .1rem;
+    left: .1rem;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.con_text .s_nodata {
+    display: block;
+    text-align: center;
+    line-height: 3rem;
+}
+
+.con_text p {
+    font-size: 0.28rem;
+    margin-bottom: 0.1rem;
+}
+
+.con_text img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.1rem;
+}
+
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: .86rem 0 0.6rem;
+    color: #572A1B;
+}
+
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+
+/*音乐*/
+
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../../../bargain/redEnvelopesMonster/img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+
+
+/*旋转*/
+
+.music_rotate {
+    background: url("../../../bargain/redEnvelopesMonster/img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+
+@keyframes mu_sport {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -o-transform: rotate(0deg);
+    }
+    to {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@keyframes mu_sport {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.progress_wrapper {
+    width: 6.4rem;
+    margin: 0.8rem auto 0;
+    height: 0.24rem;
+    position: relative;
+}
+
+.progress_wrapper:before {
+    content: '';
+    position: absolute;
+    margin-left: -0.18rem;
+    top: -0.25rem;
+    left: 80%;
+    height: 0;
+    width: 0;
+    border-top: 0.2rem solid #F6AD09;
+    border-left: 0.12rem solid transparent;
+    border-right: 0.12rem solid transparent;
+}
+
+.progress_out {
+    height: 100%;
+    background-color: #fff;
+    border-radius: 0.24rem;
+}
+
+.progress_in {
+    height: 100%;
+    width: 80%;
+    transition: width 0.5s;
+    background-color: #FCDB04;
+    border-radius: 0.24rem;
+    z-index: 22;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.progress_current {
+    padding: 0 0.2rem;
+    height: 0.5rem;
+    width: 2.2rem;
+    text-align: center;
+    line-height: 0.5rem;
+    background-color: #F6AD09;
+    position: absolute;
+    top: -0.7rem;
+    left: 70%;
+    overflow: auto;
+    border-radius: 0.05rem;
+}
+
+.title_name {
+    text-align: center;
+    width: 4.5rem;
+    margin: 0.1rem auto;
+    min-height: 1rem;
+    position: relative
+}
+
+.title_name h3 {
+    font-size: 0.36rem;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    line-height: 0.54rem
+}
+
+.priceCase {
+    overflow: auto;
+}
+
+.priceCase div:nth-of-type(1) {
+    float: left;
+    margin-left: 0.45rem;
+    margin-top: 0.1rem;
+}
+
+.priceCase div:nth-of-type(2) {
+    float: right;
+    margin-right: 0.45rem;
+    margin-top: 0.1rem;
+}
+
+.mr10 {
+    margin-right: 0.1rem;
+}
+
+.copyright p:last-child {
+    width: 6.08rem;
+    height: 0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin: 0.6rem auto 0 !important;
+}

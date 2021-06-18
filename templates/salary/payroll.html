@@ -1,0 +1,222 @@
+<!--月份 工资详情-->
+<div class="popup_ payrollInfo" id="payrollInfo">
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll common_tab" isScroll="false">
+                    <ul class="pot_pop_peo_nav ul_left clearfix">
+                        <li>
+                            <kindsearch list-clicks="s_SearchData(n)" list-keyup="s_Enterkeyup(n)" list-data="{{s_kindSearchData}}" select-name="{{s_selectInfoNameId}}" select-input="false"></kindsearch>
+                        </li>
+                        <li class="common_tab_libtn">
+                            <div class="common_tab_btn" ng-click="sendOrDeletePayroll('confirm',payrollRecord)" ng-if="confirmPerformance && payrollRecord.payrollStatus==0"><i class="icon_confirm"></i>确认工资单</div>
+                        </li>
+                    </ul>
+                    <div class="pot_pop_peo_nav clearfix">
+                        <label>数据汇总：实发工资：</label><span style="color: #fa575d;">￥{{payrollRecord.allPayPrice | number:2}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+
+                    <div class="popup_table">
+                        <div class="popup_table_body" style="width:100%;">
+                            <table class="popup_table_head">
+                                <thead my-id="pop_head" my-thead="{{payRecordDetailHead}}" list-clicks="sortCllict0(data)"></thead>
+                                <!--<thead>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th ng-repeat="x in payRecordDetailHead track by $index" title="{{x.name}}">{{x.name}}</th>
+                                        <th class="textAlignCenter" style="width:180px;">操作</th>
+                                    </tr>
+                                </thead>-->
+                                <tbody class="roll_tbody" ng-if="payRecordDetaillist==''||!payRecordDetaillist">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="{{arrHead.length+2}}">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in payRecordDetaillist" ng-click="addTrcolor($event)">
+                                        <td title="{{x.shopTeacher.teacherName}}">{{x.shopTeacher.teacherName}}</td>
+                                        <td ng-repeat="y in arrHead track by $index" title='{{"￥"+(x["data" + ($index + 1)] | number:2)}}'>￥{{x["data" + ($index + 1)] | number:2}}</td>
+                                        <td class="operate overflow-normal textAlignCenter" style="width:180px;">
+                                            <span class="clickText" ng-click="sendOrDeletePayroll('send',x)" ng-if="operatePerformance && payrollRecord.payrollStatus==1">发送工资单</span>
+                                            <span class="clickText" ng-click="sendOrDeletePayroll('deleteWorkers',x)" ng-if="operatePerformance && payrollRecord.payrollStatus==0">删除</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pagitionDiv marginTop_10" style="padding:0;">
+                        <div class="M-box3 payrollDetail"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--工资模板设置-->
+<!-- <div class="popup_ salaryModel" id="salaryModel">needdel__cz
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll common_tab" isScroll="false">
+                    <ul class="pot_pop_peo_nav ul_left clearfix">
+                        <li class="common_tab_libtn">
+                            <div class="common_tab_btn" ng-click="addModel('add')"><i class="icon_addClassify"></i>新增工资表头</div>
+                        </li>
+                    </ul>
+                    <div class="popup_table">
+                        <table class="popup_table_head" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>工资表头</th>
+                                    <th class="textAlignCenter">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" style="width:102%;">
+                            <table>
+                                <tbody class="roll_tbody" ng-if="salaryTable==''||!salaryTable">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody" ng-if="salaryTable" style="max-height:370px;">
+                                    <tr ng-repeat="x in salaryTable track by $index" ng-class='{"cannotMove":x.deleteStatus==0,"canMove":x.deleteStatus!=0}' ng-drop="x.deleteStatus==1" ng-drop-success="onDropComplete($index, $data, $event)" ng-drag="x.deleteStatus==1" ng-drag-data="x" style="cursor: move;">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{x.payrollHeadName}}</td>
+                                        <td class="operate overflow-normal textAlignCenter" style="cursor: default;">
+                                            <span class="clickText" ng-if="x.deleteStatus==1" ng-click="addModel('edit',x)">编辑</span>
+                                            <span class="clickText" ng-if="x.deleteStatus==1" ng-click="deleteModel(x)">删除</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" ng-click="orderConfirm()">确定</button>
+            </div>
+        </form>
+    </div>
+
+</div> -->
+
+<!--新增工资表头-->
+<div class="popup_ addSalary">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="addSalary_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">表头名称:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="20" placeholder="请输入表头名称" ng-model="salaryHead.payrollHeadName" required>
+                            <span class="marginTop_7" style="color:#999;display: inline-block;">注：最多可创建15个工资表头</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeSalaryPop()" type="button">取消</button>
+                <button class="btn sure">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--工资单-->
+<div class="popup_ payroll_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="payrollEdit_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">标题:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" maxlength="20" autocomplete="off" placeholder="请输入标题" ng-model="expenseDetail.payrollRecordTitle" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">发薪月份:</label>
+                        <div class="col-xs-5">
+                            <input class="form-control dateIcon" type="text" id="payrollMonth" ng-model="expenseDetail.payrollMonth" autocomplete="off" placeholder="请选择发薪月份" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">结算日期:</label>
+                        <div class="col-xs-5">
+                            <input class="form-control dateIcon" type="text" id="payrollDate" ng-model="expenseDetail.payrollDate" autocomplete="off" placeholder="请选择结算日期" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工资单</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">绩效设置</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">绩效规则</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择时间筛选发薪月份" autocomplete="off">
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-model="waitConfirm" ng-change="changeType()">待确认
+                </label>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="goCommonPop('import-pop','import_popup','860px',{page:'工资单'})" ng-if="operatePerformance"><i class="icon_importPayroll"></i>导入工资单</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageOther',{tab:5,before:'performance'})" ng-show="'184' | _authId"><i class="icon_salaryModel"></i>工资模板设置</div>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-id="table_head" my-thead="{{recordListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="recordList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="6">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in recordList">
+                        <td class="clickText" ng-click="monthPayroll(x)">{{x.payrollRecordTitle}}</td>
+                        <td>{{x.payrollMonth | yznDate:'yyyy-MM'}}</td>
+                        <td>{{x.staffNum}}</td>
+                        <td>{{x.payrollDate | yznDate:'yyyy-MM-dd'}}</td>
+                        <td class="textAlignRt">{{x.payrollStatus ==0?"未确认":"已确认"}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="editPayroll(x)" ng-if="operatePerformance">编辑</span>
+                            <span class="clickText" ng-click="sendOrDeletePayroll('deletePayroll',x)" ng-if="operatePerformance">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3 pageList"></div>
+    </div>
+</div>

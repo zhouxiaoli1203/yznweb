@@ -1,0 +1,177 @@
+<span class="lef_btn">联系机构</span>
+<div class="leaflet_h5">
+    <link rel="stylesheet" href="templates/show_template/robBuy/christmas_20/css/index.css" />
+    <audio id="bacMusic" src="" loop="loop"></audio>
+    <span class="r_music music_rotate" id="bacMusicBtn" btnType="on"></span>
+    <div class="leaflet_h5_con">
+        <div class="lef_c1">
+            <div class="lef_c1_img">
+                <img src="https://cdn.yizhiniao.com/robBuy/christmas_20.png" alt="" class="lef_c1_bg">
+            </div>
+            <div class="lef_share">
+                <div class="msk"></div>
+                <div class="contents">
+                    <span>20066</span>人查看
+                    <span>6888</span>人分享
+                    <span>5000</span>人报名
+                </div>
+            </div>
+            <div class="lef_c1_fun">
+                <p class="lef_time">活动截止时间<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒</p>
+                <h2>感恩节感恩大回馈，仅100个名额，赶快来报名</h2>
+            </div>
+        </div>
+        <div class="lefbox lef_c2">
+            <h2></h2>
+            <div>
+                <div>
+                    <p>课程标题</p>
+                    <div class="mt20">
+                        <span class="redBor">课时</span>
+                        <span class="redBor">赠送课时</span>
+                    </div>
+                    <div class="mt20">
+                        <span class="originP">¥0</span>
+                        <span class="throughP">¥0</span>
+                    </div>
+                    <div class="buyBtn">
+                        <span>仅剩0份</span><br />
+                        <span>我要报名</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lefbox lef_c3">
+            <h2></h2>
+            <div>
+
+            </div>
+
+        </div>
+        <div class="lefbox lef_c4">
+            <h2></h2>
+            <div></div>
+        </div>
+        <div class="lefbox lef_c5">
+            <h2></h2>
+            <div></div>
+        </div>
+        <div class="copyright">
+            <div style="position: relative;">
+                <p class="copyright_erweima" style="margin-top:0"></p>
+                <p class="copyright_organ" style="margin-top:0">易知鸟教育培训</p>
+                <p class="copyright_phone">0571-85789582</p>
+                <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+                <p style="margin-top: 0.2rem;"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getShowData(data) {
+            console.log(data);
+            var modList = '',
+                studentHtml = ''; //模块信息
+            $('.lef_c1_img img').attr('src', data.basicInfo.coverImg); //封面图片
+            $('.lef_c1_fun h2').html(data.basicInfo.activityName); //活动标题
+
+            //判断是音乐库音乐还是自定义的音乐
+            if (data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if (data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for (var i = 0; i < data.musicList.length; i++) {
+                        if (data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if (music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if (data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if (data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+            //          课程列表
+            var modContent = "";
+            for (var i = 0; i < data.activityPrizeList.length; i++) {
+                var d_ = data.activityPrizeList[i];
+                if (!d_.package) {
+                    d_.package = {}
+                }
+                if (!d_.package.activityPrice) {
+                    d_.package.activityPrice = 0;
+                }
+                d_.package.activityPrice += "";
+                modContent += "<div><p>" +
+                    (d_.package.feeType == 1 ? (d_.schoolYear + " " + (d_.schoolTerm ? d_.schoolTerm.schoolTermName + " " : '')) : "") + d_.courseName + "</p>" +
+                    "<div class='mt20 pr17'>" +
+                    (d_.package.feeType == 2 ? ("<span class='c666'>上课时间：" + (d_.beginTime ? d_.beginTime : "") + "至" + (d_.endTime ? d_.endTime : "") + (d_.package.feeType == 2 && d_.package.giveTime > 0 ? ("&nbsp;&nbsp;赠送" + d_.package.giveTime + "天") : "") + "</span>") : ("<span class='redBor'>" + (d_.package.packageTime ? d_.package.packageTime : 0) + "课时</span>" + "<span class='redBor'>赠送" + (d_.package.giveTime ? d_.package.giveTime : 0) + "课时</span>")) +
+                    "</div>" +
+                    "<div class='mt20'>" +
+                    "<span class='originP'>¥" + (d_.package.activityPrice.split('.')[1] ? (d_.package.activityPrice.split('.')[0] + "." + "<span class='zero'>" + d_.package.activityPrice.split('.')[1] + '</span>') : (d_.package.activityPrice.split('.')[0] + ".</span><span class='zero'>00</span>")) +
+                    "<span class='throughP'>¥" + (d_.package.packagePrice ? d_.package.packagePrice : 0) + "</span>" +
+                    "</div>" +
+                    "<div class='buyBtn'>" +
+                    "<span>仅剩" + (d_.package.activityPlaces ? d_.package.activityPlaces : 0) + "份</span>" +
+                    "<span></span>" +
+
+                    "</div></div>"
+            }
+            modContent ? $('.lef_c2>div').html(modContent) : $('.lef_c2>div').html('<div class="empty">暂无数据</div>');
+
+            var prizeBigIntroContent = "";
+            //          课程介绍
+            for (var i = 0; i < data.prizeBigIntro.length; i++) {
+                var d_ = data.prizeBigIntro[i];
+                if (d_.type == 'text') {
+                    prizeBigIntroContent += '<p>' + d_.value.replace(/\n/g, "<br/>") + '</p>';
+                } else {
+                    prizeBigIntroContent += '<img  src="' + d_.value + '" alt="图片">';
+                }
+            }
+            prizeBigIntroContent ? $('.lef_c3>div').html(prizeBigIntroContent) : $('.lef_c3>div').html('<div class="empty">暂无数据</div>');
+            //          活动规则
+            data.prizeInfo.activityRule ? $('.lef_c4>div').html("<p>" + data.prizeInfo.activityRule.replace(/\n/g, "<br/>") + "</p>") : $('.lef_c4>div').html('<div class="empty">暂无数据</div>');
+            //          校区介绍
+            var organContent = "";
+            for (var i = 0; i < data.organInfo.length; i++) {
+                var d_ = data.organInfo[i];
+                if (d_.type == 'text') {
+                    organContent += '<p>' + d_.value.replace(/\n/g, "<br/>") + '</p>';
+                } else {
+                    organContent += '<img  src="' + d_.value + '" alt="图片">';
+                }
+            }
+            organContent ? $('.lef_c5>div').html(organContent) : $('.lef_c5>div').html('<div class="empty">暂无数据</div>');
+
+            //渲染底部信息
+            if (data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src=' + data.organ.code + ' alt="校区二维码">');
+            } else {
+                $('.copyright_erweima').hide();
+            }
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: ' + data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: ' + data.organ.address);
+        }
+    </script>
+</div>

@@ -1,0 +1,140 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">消课金额详情</div>
+</div>
+<div class="common_body new_summary_body">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">课时消课</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">按月消课</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <!--<th>到课人次</th>-->
+                    <th>消课金额</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr ng-repeat="x in dataTotal">
+                    <td>{{x.data1}}</td>
+                    <!--<td class="">{{x.personTime}}</td>-->
+                    <td class="">￥{{x.total|number:2}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="pot_pop_peo_nav clearfix">
+            <div class="tab_course_history">
+                <div ng-class="{bg_active:isactive==1}" ng-click="tab_course_history(1)">按老师</div>
+                <div ng-class="{bg_active:isactive==2}" ng-click="tab_course_history(2)">按课程</div>
+                <div ng-class="{bg_active:isactive==3}" ng-click="tab_course_history(3)">按班级</div>
+            </div>
+        </div>-->
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段" autocomplete="off">
+                </li>
+                <!--<li>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="chargeType(true)">一对一
+                    </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(false)">一对多
+                    </label>
+                </li>-->
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                    <!--<li class="li_left margin_lf_15">
+                        <my-select list-name="统计类别" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" list-defalut="{{typeName}}"></my-select>
+                    </li>-->
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeCourse(n)" list-defalut="{{xiaoKe.time}}" list-search="true"></my-select>
+                    </li>
+                    <!--<li class="li_left margin_lf_15">
+                        <my-select list-name="学年" list-data="{{screen_years}}" list-field="year" list-click="changeYear(n)" list-sort="false"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="学期" list-data="{{screen_term}}" list-field="schoolTermName" list-click="changeTerm(n)" list-sort="false"></my-select>
+                    </li>-->
+
+                    <!--<li class="li_left margin_lf_15" ng-show="isactive == 1">
+                        <my-select list-name="老师" list-data="{{screen_teacher}}" list-field="teacherName" list-click="changeByTeach(n)"  list-search="true"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15" ng-show="isactive == 3">
+                        <my-select list-name="班级" list-data="{{screen_class}}" list-field="className" list-click="changeByClass(n)"  list-search="true"></my-select>
+                    </li>
+                    <li class="margin_lf_15" ng-show="isactive == 1">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="teacher1" ng-change="changeTeach(true)">主教老师
+                        </label>
+                    </li>
+                    <li class="margin_lf_15" ng-show="isactive == 1">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="teacher0" ng-change="changeTeach(false)">助教老师
+                        </label>
+                    </li>-->
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1">
+                    <span>单位:&nbsp;元&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;">
+                    <span>统计规则 </span>
+                    <div style="top:0;" class="help_icon noneWidth" data-tips="消课金额：按课程维度统计，每天学员自动耗课金额之和"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.data1}}</td>
+                        <td class="textAlignCenter">￥{{x.total|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0">
+                <tbody>
+                    <tr>
+                        <td width="20%">总计</td>
+                        <td width="80%" class="textAlignCenter main_color">￥{{"total" |_total :tableList|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

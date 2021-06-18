@@ -1,0 +1,39 @@
+<div class="popup_ photosPop" id="photosPop">
+    <div class="photo_padding">
+        <div class="photos_head">
+            <div class="photos_index">{{pic+1}}/{{imglist.length}}</div>
+            <div class="photos_btns">
+                <span ng-click="down()">
+                    <i class="icon_down mg_rt5"></i>下载
+                    <img class="icon_down" ng-src="{{imgSrc}}"  ng-hide="true" alt=""/>
+                </span>
+                <span ng-click="closePopup('photosPop')"><i class="icon_chahca mg_rt5"></i>关闭</span>
+            </div>
+        </div>
+        <div class="photos_content">
+            <div class="content">
+                <ul id="c_ul">
+                	<li ng-repeat="y in imglist track by $index"  ng-click="openPhotos($index)">
+                        <span ng-show="y.imageUrl || y.imageUrl==''">
+                                <img ng-src="{{y.imageUrl}}" alt="" />
+                        </span>
+                        <span style="width: 880px; height: 470px;" ng-show="y.audioUrl_ || y.audioUrl_==''">
+                            <audio>
+                                <source ng-src="{{y.audioUrl_}}"></source>
+                            </audio>
+                            <a class="shop_img_msk audio" ng-href="{{y.audioUrl_}}" target="_blank"></a>
+                        </span>
+                        <span ng-show="y.videoUrl || y.videoUrl==''">
+                            <video>
+                                <source ng-src="{{y.videoUrl_}}"></source>
+                            </video>
+                            <a class="shop_img_msk video" ng-href="{{y.videoUrl_}}" target="_blank"></a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns to_rt" ng-click="next()"></div>
+            <div class="btns to_lf" ng-click="prev()"></div>
+        </div>
+    </div>
+</div>

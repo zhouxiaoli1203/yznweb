@@ -1,0 +1,308 @@
+<div class="workbench_4">
+    <div class="workbench_4_con">
+        <ul class="clearfix">
+            <li ng-repeat="x in bainners">
+                <a title="{{x.name}}" ng-href="{{x.url}}" ng-click="clickBannner($index)" target="_blank"><img ng-src="{{x.webImgUrl}}" alt="" /></a>
+            </li>
+            <!--<li><a title="3.8版本" href="" ng-click="openNewWindow('https://mp.weixin.qq.com/s?__biz=MzIxNzgwNjAwNA==&mid=2247486127&idx=1&sn=b005227b61a2fedabbea699fd25677dc&chksm=97f56f74a082e662c11ba8d8d0cfccc7a093348d1377bd2d88abe2253d9a30c46f72ae9cb1dc&token=2018448471&lang=zh_CN#rd')"><img src="static/img/workbench/work_banner3.png" alt="" /></a></li>
+            <li><a title="刷脸" href="" ng-click="openNewWindow('https://mp.weixin.qq.com/s?__biz=MzIxNzgwNjAwNA==&mid=2247485358&idx=2&sn=0bc8fafbfbbd7d7a930367ff4d8bb3e5')"><img src="static/img/workbench/work_banner2.png" alt="" /></a></li>-->
+        </ul>
+    </div>
+</div>
+<div class="workbench_entrance">
+    <h2 class="workbench_tit">
+        <span class="workbench_tit_name">快捷入口</span>
+        <!--<span class="workbench_tit_1">(按住拖动调整排序)</span>-->
+        <span class="workbench_tit_2" ng-click="toSetNav()">自定义</span>
+    </h2>
+    <div class="workbench_entrance_con">
+        <ul class="clearfix">
+            <li ng-repeat="x in shortcutEntrance" class="workbench_nav">
+                <strong ng-class="'icon_workNavImg'+x.index" ng-click="navJump(x)"></strong>
+                <span>{{x.name}}</span>
+                <i ng-if="x.count">{{x.count}}</i>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--<div id="canvas">
+    <div class="circle" id="circles-1" value="40"></div>
+    <div class="circle" id="circles-2" value="50"></div>
+    <div class="circle" id="circles-3" value="60"></div>
+    <div class="circle" id="circles-4" value="70"></div>
+</div>-->
+<div class="workbench_2">
+    <div class="workbench_lf">
+
+        <div class="workbench_lf_con">
+            <div class="workbench_tp3_lf_con">
+                <div class="nodata_show nodata_show_1">
+                    <h2 class="workbench_tit_">数据汇总</h2><span>暂无数据</span></div>
+                <h2 class="workbench_tit">
+                    <span class="workbench_tit_name" style="margin-right: 0;">数据汇总</span>
+                    <em class="workbench_datacollection_eye" ng-class="{true: 'icon_eye_open', false: 'icon_eye_close'}[showEyesJud]" ng-click="showEyes()"></em>
+                    <div class="workbench_tit_icon">
+                        <em></em>
+                        <!--<em ng-class="{true: 'icon_eye_open', false: 'icon_eye_close'}[showEyesJud]" ng-click="showEyes()"></em>-->
+                        <em class="icon_reload" ng-click="clkReload('statistics', $event)"></em>
+                        <i></i>
+                        <span ng-click="getStatisticsInfos(1)" ng-class="{'workbench_tit_icon_active': staReload==1}">今天</span>
+                        <span ng-click="getStatisticsInfos(2)" ng-class="{'workbench_tit_icon_active': staReload==2}">本周</span>
+                        <span ng-click="getStatisticsInfos(3)" ng-class="{'workbench_tit_icon_active': staReload==3}">本月</span>
+                    </div>
+                </h2>
+                <ul class="workbench_datacollection_lis">
+                    <li class="workbench_datacollection_lis_4" ng-show="'142'| _authId">
+                        <strong>新增潜客</strong>
+                        <em ng-show="showEyesJud=='true'" ng-click="datacollection_click(4)" count-up duration="1" options="{'separator': ''}" start-val="0" end-val="statisticsInfos.potentialCustomerTotal"></em>
+                        <em ng-show="showEyesJud=='false'" style="line-height: 42px;" ng-click="datacollection_click(4)">****</em>
+                    </li>
+                    <li class="workbench_datacollection_lis_1" ng-show="'143'| _authId">
+                        <strong>报课金额</strong>
+                        <em ng-show="showEyesJud=='true'" ng-click="datacollection_click(1)">¥<span count-up duration="1" decimals="2" start-val="0" end-val="statisticsInfos.contractPrice"></span></em>
+                        <em ng-show="showEyesJud=='false'" style="line-height: 42px;" ng-click="datacollection_click(1)">****</em>
+                    </li>
+                    <li class="workbench_datacollection_lis_2" ng-show="'144'| _authId">
+                        <strong>消课课时</strong>
+                        <em ng-show="showEyesJud=='true'" ng-click="datacollection_click(2)" count-up duration="1" options="{'separator': ''}" decimals="2" start-val="0" end-val="statisticsInfos.time"></em>
+                        <em ng-show="showEyesJud=='false'" style="line-height: 42px;" ng-click="datacollection_click(2)">****</em>
+                    </li>
+                    <li class="workbench_datacollection_lis_3" ng-show="'145'| _authId">
+                        <strong>消课金额</strong>
+                        <em ng-show="showEyesJud=='true'" ng-click="datacollection_click(3)">¥<span count-up duration="1" decimals="2" start-val="0" end-val="statisticsInfos.coursePrice"></span></em>
+                        <em ng-show="showEyesJud=='false'" style="line-height: 42px;" ng-click="datacollection_click(3)">****</em>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="workbench_rg">
+        <div class="workbench_rg_con">
+            <div class="workbench_needtodo">
+                <div class="nodata_show nodata_show_2">
+                    <h2 class="workbench_tit_">待办事项</h2><span>暂无数据</span></div>
+                <h2 class="workbench_tit">
+                    <span class="workbench_tit_name">待办事项</span>
+                    <i class="workbench_tit_count">{{needtodoData.length}}</i>
+                    <em class="icon_reload" ng-click="clkReload('待办事项', $event)"></em>
+                    <var class="needtodo_set icon_head_set" ng-click="otherObj.operate(2)"></var>
+                </h2>
+                <div class="workbench_needtodo_box">
+                    <div class="workbench_needtodo_lis">
+                        <ul>
+                            <li ng-repeat="i in needtodoData">
+                                <span ng-click="todo(i)">去处理</span>
+                                <p>
+                                    <em ng-if="i.label == 3">课次</em>
+                                    <em ng-if="i.label == 2" style="border-color: #ECF0D3;background-color: #FCFEEE;color: #BFB438;">班级</em>
+                                    <em ng-if="i.label == 1" style="border-color: #D3E1F1;background-color: #EEF6FE;color: #6384BB;">学员</em>
+                                    <em ng-if="i.label == 4" style="border-color: #D6F1DF;background-color: #EEFEF0;color: #47D0AA;">潜客</em>
+                                    <em ng-if="i.label == 5">订单</em>
+                                    <strong>{{i.value}}</strong>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="workbench_3">
+    <div class="workbench_lf">
+        <div class="workbench_lf_con">
+            <div class="workbench_tp2_lf">
+                <div class="nodata_show nodata_show_3">
+                    <h2 class="workbench_tit_">数据统计</h2><span>暂无数据</span></div>
+                <h2 class="workbench_tit">
+                    <span class="workbench_tit_name" data-toggle="dropdown">{{trendmapType.name}}<i class="icon_right_key"></i></span>
+                    <ul class="dropdown-menu workSta_sel_li" role="menu">
+                        <li ng-repeat="n in trendmapDataTit" ng-click="getTrendmapData(n)">{{n.name}}</li>
+                    </ul>
+                    <!--<div class="cat_trendmap_time">
+                        <span ng-click="trendmapTime=30; getTrendmapData()" ng-class="{'workbench_tit_icon_active': trendmapTime==30}">近30天</span>
+                        <span ng-click="trendmapTime=7; getTrendmapData()" ng-class="{'workbench_tit_icon_active': trendmapTime==7}">近7天</span>
+                    </div>-->
+                </h2>
+                <div class="trendmap mainechart_" id="mainechart_">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="workbench_rg">
+        <div class="workbench_rg_con">
+            <div class="workbench_tp2_rg">
+                <div class="nodata_show nodata_show_4">
+                    <h2 class="workbench_tit_">销售漏斗图</h2><span>暂无数据</span></div>
+                <h2 class="workbench_tit">
+                    <span style="cursor: pointer;" class="workbench_tit_name" data-toggle="dropdown">{{currentlist.name}}<i class="icon_right_key"></i></span>
+                    <ul class="dropdown-menu workSta_sel_li" role="menu">
+                        <li ng-repeat="n in Lists" ng-click="switchType(n)" ng-if="n.isshow">{{n.name}}</li>
+                    </ul>
+                    <div class="sale_funnelplot_time_" ng-if="!isfunnel">本数据为昨日数据<span class="icon_head_help"></span></div>
+                    <div class="sale_funnelplot_time" ng-show="isfunnel">
+                        <input id="sale_funnelplot_time" type="text" placeholder="请选择时间段" />
+                        <i class="icon_right_key" style="margin-left: 0;"></i>
+                    </div>
+                </h2>
+                <ul class="sale_funnelplot_lis" ng-if="isfunnel">
+                    <li>
+                        <div class="sale_funnelplot_lis_lf"></div>
+                        <div class="sale_funnelplot_lis_rg sale_funnelplot_lis_rg_1">
+                            <span></span>
+                            <div>全部</div>
+                            <strong class="sale_funnelplot_count"><i style="width: 16px; left: -16px;"></i>{{funnelplotData.allTotal}}人</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sale_funnelplot_lis_lf" style="background-color: #f0fcfa;"><strong class="icon_funnelplot_1"><span class="icon_funnelplot_5"></span></strong></div>
+                        <div class="sale_funnelplot_lis_rg sale_funnelplot_lis_rg_2">
+                            <span></span>
+                            <div>跟进中</div>
+                            <strong class="sale_funnelplot_count"><i style="width: 32px; left: -32px;"></i>{{funnelplotData.genJinTotal}}人</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sale_funnelplot_lis_lf" style="background-color: #fff7e8;"><strong class="icon_funnelplot_2"><span class="icon_funnelplot_5"></span></strong></div>
+                        <div class="sale_funnelplot_lis_rg sale_funnelplot_lis_rg_3">
+                            <span></span>
+                            <div>预约试听</div>
+                            <strong class="sale_funnelplot_count"><i style="width: 48px; left: -48px;"></i>{{funnelplotData.yiYuYueTotal}}人</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sale_funnelplot_lis_lf" style="background-color: #ebf7ff;"><strong class="icon_funnelplot_3"><span class="icon_funnelplot_5"></span></strong></div>
+                        <div class="sale_funnelplot_lis_rg sale_funnelplot_lis_rg_4">
+                            <span></span>
+                            <div>已试听</div>
+                            <strong class="sale_funnelplot_count"><i style="width: 64px; left: -64px;"></i>{{funnelplotData.yiShiTingTotal}}人</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sale_funnelplot_lis_lf" style="background-color: #f5f5f5;"><strong class="icon_funnelplot_4"><span class="icon_funnelplot_5"></span></strong></div>
+                        <div class="sale_funnelplot_lis_rg sale_funnelplot_lis_rg_5">
+                            <span></span>
+                            <div>已签约</div>
+                            <strong class="sale_funnelplot_count"><i style="width: 80px; left: -80px;"></i>{{funnelplotData.yiQianYueTotal}}人</strong>
+                        </div>
+                    </li>
+                </ul>
+
+                <div ng-if="!isfunnel" class="sale_funnelplot_puzzle">
+                    <div>
+                        <p style="color: #f7a457;font-size:24px">{{funnelplotData.studentTotal}}</p>
+                        <p style="color: #858585;font-size:12px;">在读人数(人)</p>
+                    </div>
+                    <div>
+                        <div class="jiaoww_l">
+                            <p>{{funnelplotData.classFullRate | number:2}}%</p>
+                            <span>满班率<span style="margin-left:5px;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help"><span class="tippaopao">班级在读人数与班级设定人之比</span></span>
+                            </span>
+                        </div>
+                        <div class="jiaoww_r">
+                            <p>{{funnelplotData.attendanceRate | number:2}}%</p>
+                            <span>出勤率
+                                <span style="margin-left:5px;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help">
+                                    <span class="tippaopao">到课人数与到课,请假,缺席总人数之比</span>
+                            </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--自定义快捷入口-->
+<div class="popup_ setnav">
+    <div class="popup_content">
+        <form class="popup_form" ng-submit="setnav_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line" style="margin-bottom: 0;">
+                        <p class="setnav_tit_1">温馨提示：工作台最多可添加<span>11</span>个快捷功能</p>
+                        <div class="setnav_lis_1">
+                            <ul class="clearfix">
+                                <li ng-repeat="x in myNavShow" class="workbench_nav" ng-drop="true" ng-drop-success="onDropComplete($index, $data, $event, 1)" ng-drag="true" ng-drag-data="x">
+                                    <strong style="cursor: move;" ng-class="'icon_workNavImg'+x.index"><i ng-click="subOrAddMyNav(x, $index, 'sub')" class="icon_workNavImg_sub"></i></strong>
+                                    <span>{{x.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="parting_solidline popup_line" style="margin: -14px 0 20px;"></div>
+                    <div class="popup_line">
+                        <p class="setnav_tit_1">选择您要添加的快捷入口</p>
+                        <div class="setnav_lis_1">
+                            <ul class="setnav_lis_1">
+                                <li ng-repeat="x in myNavHide" class="workbench_nav">
+                                    <strong style="cursor: auto;" ng-class="'icon_workNavImg'+x.index"><i ng-click="subOrAddMyNav(x, $index, 'add')" class="icon_workNavImg_add"></i></strong>
+                                    <span>{{x.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="setnav_close()" type="button">取消</button>
+                <button class="btn sure" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--签到二维码-->
+<div class="work_signCode">
+    <div>
+        <img class="work_signCode_code" ng-src="{{workSignCode}}" alt="" />
+        <p>请打开微信扫一扫或打开微信小程序进行签到</p>
+        <button ng-click="singCodeBtn()">下载签到码</button>
+    </div>
+</div>
+<div class="face_time" ng-if="faceTimeData.show">
+    <p>{{faceTimeData.content}}</p>
+    <span ng-click="faceTimeData.jump()">去付款</span>
+    <em ng-click="faceTimeData.show=false"></em>
+</div>
+
+<!--待办事项管理-->
+<div class="popup_ needtodo_set_pop">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="otherObj.operate(4)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px"></th>
+                                    <th style="width: 180px">待办事项</th>
+                                    <th style="width: 200px">功能描述</th>
+                                    <th style="width: 200px">实例</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr style="background-color: #fff;cursor: move;" ng-repeat="x in needtodoSetList" ng-drop="true" ng-drop-success="onDropComplete($index, $data, $event, 2)" ng-drag="true" ng-drag-data="x">
+                                    <td><span class="three_bar"></span></td>
+                                    <td>{{x.title}}</td>
+                                    <td>{{x.desc}}</td>
+                                    <td>{{x.example}}</td>
+                                    <td style="cursor: initial;"><span style="cursor:pointer;" ng-click="otherObj.operate(3, x)" ng-class="{isEnable: x.status==1, isDisable: x.status==0}"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="setnav_close()" type="button">取消</button>
+                <button class="btn sure" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+</div>

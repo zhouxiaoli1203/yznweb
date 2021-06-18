@@ -1,0 +1,78 @@
+<!--新增、编辑学校-->
+<div class="popup_" id="school_set">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirm_set()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label">学校名称:</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" ng-model="schoolInfo.schoolName" autocomplete="off" maxlength="24" placeholder="请输入学校名称">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="common_body stud_common">
+    <!-- <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+        <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+        <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+    </div> -->
+    <div class="tab_nav">
+        <!-- <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">约课预警</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">积分设置</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">教室管理</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">请假设置</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">周边学校</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">分享设置</span> -->
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <div class="line28">注：新增周边学校的名称，便于登记学员信息时快速选择学员的就读学校</div>
+            </li>
+            <li class="common_tab_libtn">
+                <div class="common_tab_btn class_tab_btn" ng-click="addOreditSchool(x,'add')"><i class="icon_addcourse"></i>新增学校</div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="schoolList == '' || schoolList == []">
+                    <tr>
+                        <td class="textAlignCenter" colspan="2">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in schoolList">
+                        <td>{{x.schoolName}}</td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="addOreditSchool(x,'edit')">编辑</span>
+                            <span class="clickText" ng-click="deleteSchool(x)">删除</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--<div class="pagitionDiv">
+                <div class="M-box3-total">共计{{totalNum}}条数据</div>
+                <div class="M-box3"></div>
+            </div>-->
+        </div>
+    </div>
+</div>

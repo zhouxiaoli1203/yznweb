@@ -1,0 +1,305 @@
+<!--订单设置-->
+<!-- <div class="popup_ setPrint">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="setPrint_confirm()">
+            <div class="popup_form_content" style="max-height:400px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">logo:</label>
+                        <div class="col-xs-10">
+                            <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                <img src="{{BillSettingInfo.logo}}" alt="" />
+                                <span class="shop_img_msk"><em ng-click="add_organInfo('logo')" style="margin:32px auto 0">{{officialData.homeImg?'更换图片':'添加图片'}}</em></span>
+                            </div>
+                            <i ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete" ng-click="BillSettingInfo.logo = ''"></i>
+                            <ul class="printTips">
+                                <li>建议尺寸800*800像素，图片支持JPG、PNG格式 </li>
+                                <li>请尽量试用文字logo或镂空logo</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">校区名称:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="校区名称，展示在收据抬头位置" ng-model="BillSettingInfo.billSettingTitle">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">联系电话:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="请输入校区联系电话" ng-model="BillSettingInfo.billSettingPhone">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">校区地址:</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="请输入校区地址" ng-model="BillSettingInfo.billSettingAddress">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">二维码:</label>
+                        <div class="col-xs-10">
+                            <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                <img src="{{BillSettingInfo.miniWebsite}}" alt="" />
+                                <span class="shop_img_msk"><em ng-click="add_organInfo('miniWebsite')" style="margin:32px auto 0">{{officialData.homeImg?'更换图片':'添加图片'}}</em></span>
+                            </div>
+                            <i ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete" ng-click="BillSettingInfo.miniWebsite = ''"></i>
+                            <ul class="printTips" style="margin-top:70px;">
+                                <li>可上传微信公众号二维码 </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">附加信息:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{BillSettingInfo.billSettingDesc?BillSettingInfo.billSettingDesc.length:0}}/2000</span>
+                            <textarea class="form-control" style="max-width:100%;" maxlength="2000" rows="3" ng-model="BillSettingInfo.billSettingDesc" placeholder="可填写报名须知，近期宣传信息或祝福语"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" ng-click="printSet.updateBillSettingInfo()">确定</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<div class="common_body stud_common">
+    <!-- 搜索 -->
+    <div class="tab_nav">
+        <span ng-click="switchOrderNav(1)" ng-class="{tab_nav_show: orderNavJud==1}">订单记录</span>
+        <span ng-click="switchOrderNav(2)" ng-class="{tab_nav_show: orderNavJud==2}">结课记录</span>
+    </div>
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择订单时间" autocomplete="off">
+            </li>
+            <!--<li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="类型" list-data="{{orderTypeList}}" list-field="name" list-click="searchByType(n)" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1">
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="arrear_order" ng-change="arrearageStatus()">欠费订单
+                 </label>
+            </li>
+             <li ng-show="orderNavJud==1">
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="unConfirm_order" ng-change="unConfirm()">未确认
+                 </label>
+            </li>
+             <li class="part_leftLine" ng-show="orderNavJud==1">
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="income" ng-change="incomeorloss(true)">盈收
+                 </label>
+            </li>
+             <li ng-show="orderNavJud==1">
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="loss" ng-change="incomeorloss(false)">亏损
+                 </label>
+            </li>-->
+            <!--<li>
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="toConfirm_order" ng-change="toConfirm()">已确认
+                 </label>
+            </li>-->
+            <li ng-show="orderNavJud==2">
+                <button class="common_tab_reset clickText" ng-click="onReset()">重置</button>
+            </li>
+            <li class="common_tab_libtn" ng-show="'170' | _authId">
+                <div class="common_tab_btn" ng-click="export_config()"><i class="icon_export"></i>订单导出</div>
+            </li>
+            <li class="common_tab_libtn" ng-show="orderNavJud==1 && ('180' | _authId)">
+                <div class="common_tab_btn" ng-click="routerSkip('setManageOther',{tab:1,before:'ordermanage'})"><i class="icon_normalSet"></i>订单设置</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="类型" list-data="{{orderTypeList}}" list-field="name" list-click="searchByType(n)" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="经办人" list-data="{{screen_handle}}" list-field="teacherName" list-click="searchByHandle(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="来源" list-data="{{screen_source}}" list-field="name" list-click="searchBySource(n)" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1" class="orderment_type">
+                <my-select list-name="确认人" list-data="{{screen_handle}}" list-field="teacherName" list-click="searchByConfirm(n)" list-sort="false"></my-select>
+            </li>
+            <li ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="arrear_order" ng-change="arrearageStatus()">欠费订单
+                 </label>
+            </li>
+            <li class="part_leftLine" ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="unConfirm_order" ng-change="unConfirm()">未确认
+                 </label>
+            </li>
+            <li ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="enConfirm_order" ng-change="enConfirm()">已确认
+                 </label>
+            </li>
+            <li ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="abolish" ng-change="abolishOrder()">已废除
+                 </label>
+            </li>
+            <li class="part_leftLine" ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="income" ng-change="incomeorloss(true)">盈收
+                 </label>
+            </li>
+            <li ng-show="orderNavJud==1">
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="loss" ng-change="incomeorloss(false)">亏损
+                 </label>
+            </li>
+            <!--<li>
+                 <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="toConfirm_order" ng-change="toConfirm()">已确认
+                 </label>
+            </li>-->
+            <li ng-show="orderNavJud==1">
+                <button class="common_tab_reset clickText" ng-click="onReset()">重置</button>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix" style="margin-top:10px;" ng-show="orderNavJud==1">
+            <li>
+                <span>应收 : </span><span class="bigTitle">￥{{(orderTotal.collectReceivable | number:2) || 0.00}}</span>
+            </li>
+            <li>
+                <span>实收 : </span><span class="bigTitle">￥{{(orderTotal.collectReceived  | number:2) || 0.00}}</span>
+            </li>
+            <li>
+                <span>欠费 : </span><span class="bigTitle" ng-class='{"main_color":orderTotal.arrearage>0}'>￥{{(orderTotal.arrearage  | number:2) || 0.00}}</span>
+            </li>
+            <li>
+                <span>退款金额 : </span><span class="bigTitle">￥{{(orderTotal.retireReceivable |abs | number:2) || 0.00}}</span>
+            </li>
+            <!--<li>
+               <span>实退 : </span><span class="bigTitle">￥{{(orderTotal.retireReceived  |abs | number:2) || 0.00}}</span>
+            </li>-->
+            <li>
+                <span>手续费盈收 : </span><span class="bigTitle">￥{{(orderTotal.income  | number:2) || 0.00}}</span>
+            </li>
+            <li>
+                <span>手续费亏损 : </span><span class="bigTitle" ng-class='{"main_color":0-orderTotal.loss>0}'>￥{{(0-orderTotal.loss  | number:2) || 0.00}}</span>
+            </li>
+        </ul>
+    </div>
+    <!-- 列表 -->
+    <div class="common_content table-box" ng-show="orderNavJud==1">
+        <div class="table-responsivecharge_table table-center">
+            <table id="qwer" class="table table-hover">
+                <thead my-id="orderHead" my-thead="{{orderListThead_}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="orderList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="{{orderListThead_.length}}">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody my-id="orderTdChange" my-tr='<tr ng-repeat="x in orderList">' my-td td-head="{{checkedHead}}" td-list="{{orderListThead}}">
+                    <!--<tr>-->
+                    <!--<td class="clickText"></td>-->
+                    <!--<td>{{x.type}}</td>-->
+                    <!--&lt;!&ndash;1：商城购课、2：线下报名:3：订单推送:4：易知独秀&ndash;&gt;-->
+                    <!--<td>{{x.dataSource == "1"?"商城购课":x.dataSource == "2"?"线下报名":x.dataSource == "3"?"订单推送":x.dataSource == "4"?"易知独秀":""}}</td>-->
+                    <!--<td>{{x.orderTime | yznDate:'yyyy-MM-dd'}}</td>-->
+                    <!--<td class="clickText" ng-click="gotoViewStudent(x.studentInfo)">{{x.studentInfo.name}}<span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentInfo.sex]"></span></td>-->
+                    <!--<td class="textAlignRt">￥{{x.receivable}}</td>-->
+                    <!--<td class="textAlignRt">￥{{x.received}}</td>-->
+                    <!--<td class="textAlignRt">-->
+                    <!--<span ng-if="x.arrearage>0" class="main_color">￥{{x.arrearage}}</span>-->
+                    <!--<span ng-if="x.arrearage<=0">￥{{x.arrearage}}</span>-->
+                    <!--</td>-->
+                    <!--<td class="textAlignRt">-->
+                    <!--<span>￥{{x.serviceChange?(x.serviceChange|number:2):"0.00"}}</span>-->
+                    <!--</td>-->
+                    <!--<td class="remarks overflow-normal">-->
+                    <!--<remark-view view-data="{{x.remark}}"></remark-view>-->
+                    <!--</td>-->
+                    <!--<td title="{{x.counselor}}">{{x.counselor}}</td>-->
+                    <!--<td>{{x.teacherInfo.teacherName}}</td>-->
+                    <!--&lt;!&ndash;<td>{{x.orderStatus==0?(x.confirmStatus==0?"未确认":"已确认"):"已废除"}}</td>&ndash;&gt;-->
+                    <!--<td class="clickText textAlignCenter"></td>-->
+                    <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:280px;">
+                <!--<thead>-->
+                <!--<tr>-->
+                <!--<th width="50px" class="textAlignCenter"><input type="checkbox" name="sel_order" ng-model="sel_all" ng-click="sel_allFun(sel_all,orderList,select_params,'orderId')"/></th>-->
+                <!--<th width="120px" >订单号</th>-->
+                <!--<th width="100px">姓名</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <thead my-thead="{{fixedThead_left}}" list-clicks="sortCllict(data)" che-clicks="sel_allFun(data)"></thead>
+                <tbody>
+                    <tr ng-repeat="x in orderList">
+                        <td class="textAlignCenter" ng-click="sel_singleFun(x,select_params,'orderId')"><input type="checkbox" name="sel_order" ng-checked="x.hasChecked" /></td>
+                        <td class="clickText" ng-click="goCommonPop('order-info', 'orderInfo','960px',{data:x,page:'订单管理'})" title="{{x.externalOrderId}}">
+                            <span>{{x.externalOrderId}}</span>
+                            <span ng-if="x.orderStatus != 0"><img src="./static/img/feichu.png"/></span>
+                        </td>
+                        <td class="clickText" ng-click="gotoViewStudent(x.studentInfo)" title="{{x.studentInfo.name}}">{{x.studentInfo.name}}<span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentInfo.sex]"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r">
+            <table style="width:120px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter cursor_pointer" ng-click="goCommonPop('custom-pop','customTable','560px',{data:checkedHead,customTagId:getHeads.customTagId,customTagType:4,callBackName:'订单表头-自定义'})">自定义显示列<i class="icon_setHead"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in orderList">
+                        <td class="clickText textAlignCenter"><span ng-if="isConfirmOrder && x.orderStatus==0" ng-click="confirm_order(x)">{{x.confirmStatus==0?"确认订单":""}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="common_content table-box" ng-show="orderNavJud==2">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{completeCourseThead}}"></thead>
+                <tbody class="demo_tbody" ng-if="orderList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr ng-repeat="x in orderList">
+                        <td class="clickText" ng-click="goCommonPop('order-info', 'orderInfo','960px',{data:x,page:'订单管理'})">
+                            {{x.externalOrderId}}
+                            <span ng-if="x.orderStatus != 0"><img src="./static/img/feichu.png"/></span>
+                        </td>
+                        <td>{{x.orderTime | yznDate:'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="clickText" ng-click="gotoViewStudent(x.studentInfo)">{{x.studentInfo.name}}<span ng-class="{'1':'icon_male','0':'icon_female'}[x.studentInfo.sex]"></span></td>
+                        <td class="textAlignCenter addPaddingRight_30">￥{{x.serviceChange | number:2}}</td>
+                        <td>{{x.teacherInfo.teacherName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-left" ng-show="orderNavJud==1">
+            <div class="M-button">已选中 <span class="selected">{{select_params.length}}</span> 个</div>
+            <div class="M-button common_tab_btn fontRed_BgWhite" ng-click="patchConfirm()">批量确认</div>
+        </div>
+        <div class="M-box3"></div>
+    </div>
+</div>

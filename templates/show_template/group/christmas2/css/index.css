@@ -1,0 +1,452 @@
+@charset "utf-8";
+.flicker div, .flicker p, .flicker span, .flicker em, .flicker var {
+    font-size: 0.28rem;
+    font-style: inherit;
+}
+.group_flicker {
+    background: url("../img/bg.png") repeat-y;
+    background-size: 100% auto;
+}
+.flicker {
+    position: relative;
+    width: 100%;
+    background: url("../img/bg3.png") repeat-y;
+    background-size: 100% auto;
+}
+.g_1_img {
+    position: relative;
+}
+.g_1_img img {
+   display: block;
+   width: 100%;
+}
+.g_1_img strong {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../img/bg3.png") repeat-y;
+    background-size: 100% auto;
+}
+.g_1_img em {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../img/bg4.png") repeat-y;
+    background-size: 100% auto;
+}
+.g_bg_2 {
+    background: url("../img/bg4.png") repeat-y;
+    background-size: 100% auto;
+}
+.g_1_con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.g_1_img1 {
+    position: absolute;
+    top: 2.9rem;
+    left: 0.5rem;
+    width: 6.56rem;
+    height: 5.45rem;
+    background: url("../img/img1.gif") no-repeat;
+    background-size: contain;
+}
+.g_1_img2 {
+    position: absolute;
+    top: 7.31rem;
+    left: 0.46rem;
+    width: 6.6rem;
+    height: 1rem;
+    background: url(../img/img2.png) no-repeat;
+    background-size: contain;
+}
+.g_1_img3 {
+    position: absolute;
+    top: -1.4rem;
+    left: 1.48rem;
+    width: 3.33rem;
+    height: 3.47rem;
+    background: url(../img/img3.png) no-repeat;
+    background-size: contain;
+}
+.g_1_img4 {
+    position: absolute;
+    top: 2.55rem;
+    left: 1rem;
+    width: 4.59rem;
+    height: 5.77rem;
+    background: url(../img/img4.png) no-repeat;
+    background-size: contain;
+}
+.g_peo {
+    padding: 0.15rem 0 0 0.2rem;
+    height: 1.25rem;
+}
+.g_peo img {
+    float: left;
+    width: 1.01rem;
+    height: 1.01rem;
+    margin: 0.1rem 0.21rem 0 0;
+    border-radius: 50%;
+}
+.g_peo div {
+    float: left;
+}
+.g_peo p {
+    height: 0.38rem;
+    color: #36150F;
+}
+.g_peo span, .g_tit span {
+    color: #EE1314;
+}
+.g_fun {
+    position: relative;
+    width: 7rem;
+    margin: 7.1rem auto 0;
+    padding-bottom: 0.2rem;
+    background: url("../img/box.png") no-repeat;
+    background-size: 100% 100%;
+}
+.g_fun_con {
+    width: 100%;
+    height: 100%;
+}
+.g_1_tit {
+    text-align: center;
+}
+.g_1_tit p {
+    overflow: hidden;
+    color: #fff;
+    font-size: 0.4rem;
+    font-weight:bold;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.g_fun h2 {
+    height: 0.3rem;
+    margin: 0.1rem;
+    color: #fff;
+    text-align: center;
+    line-height: 0.3rem;
+    font-size: 0.18rem;
+}
+.g_fun h3 {
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    font-weight: bold;
+    line-height: 0.47rem;
+}
+.g_fun h3 span {
+    display: inline-block;
+    margin: 0 0.1rem;
+    color: #ccc;
+    text-decoration: line-through;
+    font-size: 0.24rem;
+}
+.g_fun_ul {
+    width: 100%;
+    height: 0.8rem;
+}
+.g_fun_ul ul {
+    width: 4.3rem;
+    height: 0.8rem;
+    margin: 0 auto;
+}
+.g_fun li {
+    position: relative;
+    float: left;
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 0.03rem solid #DCAC4B;
+    margin-right: 0.23rem;
+    border-radius: 50%;
+}
+.g_fun li img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.g_fun li span {
+    position: absolute;
+    top: 0.62rem;
+    left: -0.08rem;
+    width: 0.9rem;
+    height: 0.3rem;
+    border-radius: 0.15rem;
+    background-color: #DCAC4B;
+    color: #fff;
+    text-align: center;
+    line-height: 0.3rem;
+    font-size: 0.24rem;
+}
+.g_btns {
+    height: 0.7rem;
+    margin-top: 0.3rem;
+}
+.g_btn1 {
+    display: block;
+    width: 5.3rem;
+    height: 0.7rem;
+    margin: 0 auto;
+    border: none;
+    border-radius: 0.32rem;
+    background-color: #E11023;
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    line-height: 0.56rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.g_btn2, .g_btn3 {
+    float: left;
+    width: 2.2rem;
+    height: 0.7rem;
+    border: none;
+    border-radius: 0.32rem;
+    background-color: #EB1011;
+    color: #fff;
+    font-size: 0.36rem;
+    text-align: center;
+    line-height: 0.56rem;
+    cursor: pointer;
+}
+.g_btn2 span, .g_btn3 span, .g_btn1 span {
+    display: block;
+    height: 0.28rem;
+    text-align: center;
+    line-height: 0.28rem;
+    font-size: 0.28rem;
+    font-weight: bold;
+}
+.g_btn2 em, .g_btn3 em, .g_btn1 em {
+    display: block;
+    height: 0.18rem;
+    margin-top: 0.08rem;
+    text-align: center;
+    line-height: 0.18rem;
+    font-size: 0.18rem;
+    font-weight: normal;
+    font-style: inherit;
+}
+.g_btn2 {
+    margin: 0 0.6rem 0 1rem;
+}
+.g_btn3 {
+    background-color: #DCAC4B;
+}
+.g_btn_1 {
+    background-color: #C5C5C5;
+}
+/*音乐*/
+.r_music {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: url("../img/music_off.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+/*旋转*/
+.music_rotate {
+    background: url("../img/music_on.png") no-repeat;
+    background-size: contain;
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -moz-transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    animation: mu_sport 3s linear 0s infinite;
+    -webkit-animation: mu_sport 3s linear 0s infinite;
+    -o-animation: mu_sport 3s linear 0s infinite;
+}
+@keyframes mu_sport {
+    from{transform: rotate(0deg);}
+    to{transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-moz-transform: rotate(0deg);}
+    to{-moz-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-o-transform: rotate(0deg);}
+    to{-o-transform: rotate(360deg);}
+}
+@keyframes mu_sport {
+    from{-webkit-transform: rotate(0deg);}
+    to{-webkit-transform: rotate(360deg);}
+}
+.g_text {
+    position: relative;
+    width: 7.1rem;
+    margin: 2rem auto 0;
+    background:#fff url("../img/con2.png") repeat-y;
+    background-size: 100% auto;
+}
+.g_head {
+    position: absolute;
+    top: -1.25rem;
+    left: 50%;
+    width: 3.76rem;
+    height: 1.12rem;
+    margin-left: -1.88rem;
+    background: url("../img/tit1.png") no-repeat;
+    background-size: contain;
+}
+.g_head_2 {
+    background: url("../img/tit2.png") no-repeat;
+    background-size: contain;
+}
+.g_head_3 {
+    background: url("../img/tit3.png") no-repeat;
+    background-size: contain;
+}
+.g_head_4 {
+    background: url("../img/tit4.png") no-repeat;
+    background-size: contain;
+}
+.g_text:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7.1rem;
+    height: 0.37rem;
+    background: url("../img/con1.png") no-repeat;
+    background-size: contain;
+}
+.g_text:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 7.1rem;
+    height: 0.36rem;
+    background: url("../img/con3.png") no-repeat;
+    background-size: contain;
+}
+.g_text_bg {
+    position: absolute;
+    top: -1rem;
+    right: 0.14rem;
+    width: 1.3rem;
+    height: 1.19rem;
+    background: url("../img/con4.png") no-repeat;
+    background-size: contain;
+}
+.g_text_con {
+    width: 100%;
+    min-height: 2.6rem;
+    padding: 0.3rem 0.35rem;
+}
+.g_text_con p {
+    color: #000;
+    margin-bottom: 0.15rem;
+}
+.g_text_con img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.15rem;
+}
+/*正在拼团列表*/
+.grop_list li {
+    height: 1.18rem;
+    border-bottom: 0.02rem solid #000;
+    line-height: 1.18rem;
+}
+.grop_list li img {
+    float: left;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin: 0.19rem 0.15rem 0 0;
+    border: 0.03rem solid #E11023;
+    border-radius: 50%;
+}
+.grop_list li strong {
+    overflow: hidden;
+    float: left;
+    width: 1.8rem;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.grop_list li em {
+    float: left;
+    margin-right: 0.19rem;
+}
+.grop_list li var {
+    color: #E11023;
+}
+.grop_list li span {
+    float: left;
+    width: 1.52rem;
+    height: 0.45rem;
+    margin-top: 0.36rem;
+    border-radius: 0.23rem;
+    background-color: #E11023;
+    color: #fff;
+    text-align: center;
+    line-height: 0.45rem;
+}
+.grop_list li:last-child {
+    border: none;
+}
+.copyright {
+    position: relative;
+    width: 100%;
+    font-size: 0.28rem;
+    padding: 0.6rem 0 0.3rem;
+    color: #DCAC4B;
+}
+.copyright p {
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.13rem;
+}
+.copyright_erweima {
+    overflow: hidden;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.19rem auto;
+    display: block;
+}
+.copyright_erweima img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.copyright span {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.22rem;
+    width: 1.03rem;
+    height: 1.28rem;
+}
+.copyright em {
+    position: absolute;
+    top: 0;
+    right: 0.22rem;
+    width: 1.02rem;
+    height: 1rem;
+}
+.copyright p:last-child{
+    width:6.08rem;
+    height:0.65rem;
+    background: url(https://cdn.yizhiniao.com/yzncopyright.png) no-repeat;
+    background-size: contain;
+    margin :0.6rem auto 0 !important;
+}

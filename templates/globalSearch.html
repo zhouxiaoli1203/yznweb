@@ -1,0 +1,132 @@
+    <div class="global_search_page" ng-class='{"bgfff":arr_.length==0}'>
+        <!-- <div class="search_title">
+            包含 "<span style="color:#fa575d;">{{currentVal}}</span>" 的内容
+        </div> -->
+        <div class="emptyPage" ng-show="searchContent.length==0">
+            <div class="img_"></div>
+            <div class="empty_text">没有找到你要查询的内容，请搜索：学员姓名、班级名称、课程名称、功能</div>
+        </div>
+        <div class="search_content"  ng-show="searchContent.length>0">
+            <div class="search_content_kuaijie" ng-if="searchParams_.levels.length>0">
+                <div class="title_mark">快捷功能</div>
+                <div class="search_content_items">
+                    <ul>
+                        <li ng-repeat="x in searchParams_.levels track by $index">
+                            <div><span ng-bind-html="x.name|stringKeyword:x.color" ng-click="kuaijieToPage(x)" class="cursor"></span> <span ng-if="x.childs.length>0"> > </span></div>
+                            <div ng-repeat="y in x.childs" ng-if="x.childs.length>0">
+                                <span ng-hide="$first"> | </span><span class="cursor" ng-click="kuaijieToPage(y)" ng-bind-html="y.name|stringKeyword:y.color"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="search_content_data">
+                <ul>
+                    <li ng-show="searchParams_.studentCenterList.length>0">
+                        <div class="title_mark yellow">学员信息<span ng-if="searchParams_.studentCenterList.length>4" class="lookMore" ng-click="lookMoreFun('edu_student')">查看更多 ></span></div>
+                        <div class="search_content_items ">
+                            <ul>
+                                <li class="items student" ng-repeat="x in searchParams_.studentCenterList track by $index" ng-hide="$index>3">
+                                    <div class="items_head student">
+                                        <img ng-src="{{x.imgUrl}}" width="100%" height="100%" ng-if="x.imgUrl">
+                                        <span class="name clickText" ng-click="toPage(1,{authId: 28, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 1, 'fromPage': 'studentPop','item': x,'tab':1}}})" title="{{x.name}}">{{x.name}}</span>
+                                        <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                                    </div>
+                                    <div class="items_middle student">
+                                        <p>主要联系人：<span class="fontColor_ff595e">{{x.potentialCustomerParentPhone}}</span>({{x.potentialCustomerParentType| _relation}})</p>
+                                    </div>
+                                    <div class="items_foot">
+                                        <span class="items_foot_i" ng-if="30 | _authId" ng-click="toPage(1,{authId: 30, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 1, 'fromPage': 'studentPop','item': x,'tab':4}}})">报名/续签</span>
+                                        <span class="items_foot_i" ng-click="toPage(1,{authId: 30, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 1, 'fromPage': 'studentPop','item': x,'tab':5}}})">消课记录</span>
+                                        <span class="items_foot_i" ng-if="30 | _authId" ng-click="toPage(1,{authId: 30, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 1, 'fromPage': 'studentPop','item': x,'tab':4}}})">分班/退班</span>
+                                        <div class="items_foot_i dropdown" style="width:40px;" >
+                                            <span class="dropdown-toggle" data-toggle="dropdown">更多</span>
+                                            <ul class="dropdown-menu dropdown-menu-right sign_pop">
+                                                <li ng-repeat="y in studentDrop" ng-click="litoPage('edu_student',x,y)">{{y.name}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-show="searchParams_.potentialCustomerList.length>0">
+                        <div class="title_mark red">潜在客户<span ng-if="searchParams_.potentialCustomerList.length>4" class="lookMore" ng-click="lookMoreFun('potial_customer')">查看更多 ></span></div>
+                        <div class="search_content_items ">
+                            <ul>
+                                <li class="items potail"  ng-repeat="x in searchParams_.potentialCustomerList track by $index" ng-hide="$index>3">
+                                    <div class="items_head">
+                                        <span class="name clickText" ng-click="toPage(2,{authId: 12, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 0, 'fromPage': 'studentPop','item': x,'tab':1}}})" title="{{x.name}}">{{x.name}}</span>
+                                        <span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span>
+                                    </div>
+                                    <div class="items_middle potail">
+                                        <p>主要联系人: <span class="fontColor_ff595e">{{x.potentialCustomerParentPhone}}</span>({{x.potentialCustomerParentType| _relation}})</p>
+                                    </div>
+                                    <div class="items_foot">
+                                        <span class="items_foot_i" ng-if="14 | _authId" ng-click="toPage(2,{authId: 14, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page': 0, 'fromPage': 'studentPop','item': x,'tab':4}}})">报名/续签</span>
+                                        <span class="items_foot_i" ng-if="14 | _authId" ng-click="toPage(2,{authId: 14, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page':0, 'fromPage': 'studentPop','item': x,'tab':2}}})">跟进记录</span>
+                                        <span class="items_foot_i" ng-if="14 | _authId" ng-click="toPage(2,{authId: 14, pop: { myself:false,el: 'pot-pop', id: 'potential_pop',width: '1060px', param: { 'page':0, 'fromPage': 'studentPop','item': x,'tab':2}}})">安排试听</span>
+                                        <div class="items_foot_i dropdown" style="width:40px;" >
+                                            <span class="dropdown-toggle" data-toggle="dropdown">更多</span>
+                                            <ul class="dropdown-menu dropdown-menu-right sign_pop">
+                                                <li ng-repeat="y in potailDrop" ng-click="litoPage('potial_customer',x,y)">{{y.name}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-show="searchParams_.classInfoList.length>0">
+                        <div class="title_mark green">班级信息<span ng-if="searchParams_.classInfoList.length>4" class="lookMore" ng-click="lookMoreFun('edu_class')">查看更多 ></span></div>
+                        <div class="search_content_items">
+                            <ul>
+                                <li class="items class_"  ng-repeat="x in searchParams_.classInfoList track by $index" ng-hide="$index>3">
+                                    <div class="items_head">
+                                        <span class="name clickText" ng-click="toPage(3,{authId: 32, pop: { myself: false, el: 'class-pop', id: 'class_pop', width: '1060px', param: { 'location': 'outside', 'item': x,'tab':1}}})" title="{{x.className}}">{{x.className}}</span>
+                                    </div>
+                                    <div class="items_middle class_">
+                                        <p>学员: {{x.studentTotal}}/{{x.classMax}}</p>
+                                        <p>授课老师: <span>{{x.teachers | _newStr :"teacherName"}}</span></p>
+                                        <p>上课教室: {{x.classRoomName}}</p>
+                                    </div>
+                                    <div class="items_foot">
+                                        <span class="items_foot_i" ng-if="38 | _authId" ng-click="toPage(3,{authId: 38, pop: { myself: false, el: 'class-pop', id: 'class_pop', width: '1060px', param: { 'location': 'outside', 'item': x,'tab':2}}})">快速排课</span>
+                                        <span class="items_foot_i" ng-if="37 | _authId" ng-click="toPage(3,{authId: 37, pop: { myself: false, el: 'class-pop', id: 'class_pop', width: '1060px', param: { 'location': 'outside', 'item': x,'tab':2}}})">上课点名</span>
+                                        <span class="items_foot_i" ng-if="32 | _authId" ng-click="toPage(3,{authId: 32, pop: { myself: false, el: 'class-pop', id: 'class_pop', width: '1060px', param: { 'location': 'outside', 'item': x,'tab':3}}})">添加学员</span>
+                                        <div class="items_foot_i dropdown" style="width:40px;" >
+                                            <span class="dropdown-toggle" data-toggle="dropdown">更多</span>
+                                            <ul class="dropdown-menu dropdown-menu-right sign_pop">
+                                                <li ng-repeat="y in classDrop" ng-click="litoPage('edu_class',x,y)">{{y.name}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-show="searchParams_.courseList.length>0">
+                        <div class="title_mark blue">课程信息<span ng-if="searchParams_.courseList.length>4" class="lookMore" ng-click="lookMoreFun('edu_course')">查看更多 ></span></div>
+                        <div class="search_content_items">
+                            <ul>
+                                <li class="items course"  ng-repeat="x in searchParams_.courseList track by $index" ng-hide="$index>3">
+                                    <div class="items_head">
+                                        <span class="name clickText"  ng-click="toPage(4,{authId: 47, pop: { myself:false,el: 'course-pop', id: 'course_popup',width:'1060px' ,param: { 'page': 'course', 'addOrEdit':'edit',tab:1,item:x}}})" title="{{x.courseName}}">{{x.courseName}}</span>
+                                    </div>
+                                    <div class="items_middle course">
+                                        <p>课程类型: {{x.courseType == 0?"标准课":x.courseType == 1?"通用课":""}}</p>
+                                        <p>上课方式: {{x.teachingMethod=="1"?"一对一":x.teachingMethod=="2"?"一对多":""}}</p>
+                                    </div>
+                                    <div class="items_foot" ng-if="47 | _authId">
+                                        <span class="items_foot_i" ng-click="toPage(4,{authId: 47, pop: { myself:false,el: 'course-pop', id: 'course_popup',width:'1060px' ,param: { 'page': 'course', 'addOrEdit':'edit',tab:1,item:x}}})">扣课设置</span>
+                                        <span class="items_foot_i" ng-click="toPage(4,{authId: 47, pop: { myself:false,el: 'course-pop', id: 'course_popup',width:'1060px', param: { 'page': 'course', 'addOrEdit':'edit',tab:2,item:x}}})">家校服务</span>
+                                        <span class="items_foot_i" ng-click="toPage(4,{authId: 47, pop: { myself:false,el: 'course-pop', id: 'course_popup',width:'1060px', param: { 'page': 'course', 'addOrEdit':'edit',tab:2,item:x}}})">套餐设置</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>

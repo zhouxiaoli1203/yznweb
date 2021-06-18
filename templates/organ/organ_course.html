@@ -1,0 +1,235 @@
+<div class="common_content">
+    <!--表格-->
+    <div class="common_body post_content">
+        <div class="table-responsivecharge_table">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li>
+                        <kindsearch list-clicks="Fns.SearchData(n)" list-keyup="Fns.bindKeyEnter(n)" list-data='{"searchName":"课程名称"}' select-name="searchName" select-input="false"></kindsearch>
+                    </li>
+                    <li>
+                        <my-select list-name="售卖校区" list-data="{{constants.listShop}}" list-field="shopShortName" list-click="Fns.screenClick(n)" list-search="false" list-sort="false"></my-select>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                          <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="constants.screen.courseType == '0'" ng-click="Fns.checkboxChange($event,'courseType',0)">标准课
+                      </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                          <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="constants.screen.courseType == 1" ng-click="Fns.checkboxChange($event,'courseType',1)">通用课
+                      </label>
+                    </li>
+                    <li class="part_leftLine">
+                        <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="constants.screen.teachingMethod == 1" ng-click="Fns.checkboxChange($event,'teachingMethod',1)">一对一
+                    </label>
+                    </li>
+                    <li>
+                        <label class="search_checkbox">
+                        <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="constants.screen.teachingMethod == 2" ng-click="Fns.checkboxChange($event,'teachingMethod',2)">一对多
+                    </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="Fns.onReset()">重置</li>
+                    <li class="common_tab_libtn">
+                        <div class="common_tab_btn" ng-click="Fns.operate('add')"><i class="icon_Addpost"></i>新增课程</div>
+                    </li>
+
+                </ul>
+            </div>
+            <table class="table table-hover" width="100%">
+                <thead my-thead="{{constants.thead}}" list-clicks="Fns.sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="!constants.list.length">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="post_tbody" ng-if="constants.list.length">
+                    <tr ng-repeat="x in constants.list track by $index" class="cursor" ng-class="{'post_active_tr':x.isActive}" ng-click="Fns.getreeSingle(x)">
+                        <td class="clickText" ng-click="Fns.operate('edit',x)">{{x.courseName}}</td>
+                        <td>{{x.courseType == 1?'通用课':'标准课'}}</td>
+                        <td>{{x.teachingMethod == 1?'一对一':'一对多'}}</td>
+                        <td>{{x.shopNameStr}}<span ng-show="x.shopList && x.shopList.length>2">等<span class="clickText" title="{{x.shopNameStrAll}}">{{x.shopList.length}}家</span>校区</span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="Fns.operate('edit_name',x)">修改课程名</span>
+                            <span class="clickText" ng-click="Fns.operate('edit_package',x)">添加套餐</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagitionDiv">
+            <div class="M-box3 M_box3_1"></div>
+        </div>
+    </div>
+</div>
+<!-- 修改课程名 -->
+<div class="popup_ organ_edit_course">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.editCourse()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">课程名称：</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" ng-model="editCourseInfo.courseName_" maxlength="40" placeholder="请输入课程名称" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.close()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 添加套餐 -->
+<div class="popup_ organ_edit_package">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="Fns.editPackage()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label">套餐设置:</label>
+                        <div class="col-xs-10 cursor popup_form_content">
+                            <div class="line28" style="display: inline-block;">
+                                <div class="pull-left mr5" ng-click="Fns.addPackagewin(0)">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">课时套餐</span>
+                                </div>
+                                <div class="pull-left mr5" ng-click="Fns.addPackagewin(1)">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">按期套餐</span>
+                                </div>
+                                <div class="pull-left mr5" ng-click="Fns.addPackagewin(2)">
+                                    <span class="icon_name_add"></span>
+                                    <span class="openopText">按月套餐</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="padding-left: 35px;">
+                        <div class="popup_scroll no_padding">
+                            <div class="popup_table">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr class="order_course">
+                                            <th class="textAlignCenter">收费方式</th>
+                                            <th width="200">套餐名称</th>
+                                            <th>购买</th>
+                                            <th>赠送</th>
+                                            <th>课程价格</th>
+                                            <th>单课价</th>
+                                            <th class="textAlignCenter">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <!-- <thead my-id="fullCourseHead" my-thead="{{constants.packageThead}}"></thead> -->
+                                    <tbody class="demo_tbody" ng-if="constants.packageList_keshi.length == 0 && constants.packageList_xueqi.length == 0 && constants.packageList_anyue.length == 0">
+                                        <tr>
+                                            <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="roll_tbody">
+                                        <!--按课时-->
+                                        <tr ng-repeat="item in constants.packageList_keshi track by $index">
+                                            <td style="border-right: 1px solid #d6d6d6;text-align: center;" ng-if="$index == 0" rowspan="{{constants.packageList_keshi.length}}">课时套餐</td>
+                                            <td>
+                                                <input type="text" class="form-control mr5 input-w120 pull-left" placeholder="套餐名称" ng-model="item.packageName" maxlength="40" required/>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packageTime" placeholder="购买课时" yzn-filter="num_" ng-change="Fns.inputPackageTime(item)"  required/>课时
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.giveTime" placeholder="赠送课时" yzn-filter="num_" />课时
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packagePrice" placeholder="课程价" yzn-filter="num_" ng-disabled="item.packageTime*1<=0" required/>元
+                                      </span>
+                                            </td>
+                                            <td class="line28" ng-if="item.feeType !== 2">
+                                                ¥ {{(item.packageTime>0?item.packagePrice/item.packageTime:item.packagePrice || '0') | number:2}}
+                                            </td>
+                                            <td class="text_center_im" ng-click="Fns.removePackageItem($index,constants.packageList_keshi)"><span class="icon_delete clickText"></span>
+                                            </td>
+                                        </tr>
+                                        <!--按期-->
+                                        <tr ng-repeat="item in constants.packageList_xueqi track by $index">
+                                            <td style="border-right: 1px solid #d6d6d6;text-align: center;" ng-if="$index == 0" rowspan="{{constants.packageList_xueqi.length}}">按期套餐</td>
+                                            <td>
+                                                <input type="text" class="form-control mr5 input-w120 pull-left" placeholder="套餐名称" ng-model="item.packageName" maxlength="40" required/>
+                                                <select class="form-control input-w60 pull-left" ng-model="item.schoolTermId" required>
+                                          <option value='' selected>学期</option>
+                                          <option ng-repeat="x in constants.packageList track by $index"
+                                                  value="{{x.schoolTermId}}">{{x.schoolTermName}}
+                                          </option>
+                                      </select>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packageTime" placeholder="购买课时" yzn-filter="num_" ng-change="Fns.inputPackageTime(item)"  required/>课时
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.giveTime" placeholder="赠送课时" yzn-filter="num_" />课时
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packagePrice" placeholder="课程价" yzn-filter="num_" ng-disabled="item.packageTime*1<=0" required/>元
+                                      </span>
+                                            </td>
+                                            <td class="line28" ng-if="item.feeType !== 2">
+                                                ¥ {{(item.packageTime>0?item.packagePrice/item.packageTime:item.packagePrice || '0') | number:2}}
+                                            </td>
+                                            <td class="text_center_im" ng-click="Fns.removePackageItem($index,constants.packageList_xueqi)"><span class="icon_delete clickText"></span>
+                                            </td>
+                                        </tr>
+                                        <!--按月-->
+                                        <tr ng-repeat="item in constants.packageList_anyue track by $index">
+                                            <td style="border-right: 1px solid #d6d6d6;text-align: center;" ng-if="$index == 0" rowspan="{{constants.packageList_anyue.length}}">按月套餐</td>
+                                            <td>
+                                                <input type="text" class="form-control mr5 input-w120 pull-left" placeholder="套餐名称" ng-model="item.packageName" maxlength="40" required/>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packageTime" placeholder="购买月数" yzn-filter="num" ng-change="Fns.inputPackageTime(item)"  required/>月
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.giveTime" placeholder="赠送天数" yzn-filter="num" />天
+                                      </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                          <input type="text" class="form-control input-w60" ng-model="item.packagePrice" placeholder="课程价" yzn-filter="num_" ng-disabled="item.packageTime*1<=0" required/>元
+                                      </span>
+                                            </td>
+                                            <td class="line28">
+                                                ¥ {{(item.packageTime>0?item.packagePrice/item.packageTime:item.packagePrice || '0') | number:2}}元/月
+                                            </td>
+                                            <td class="text_center_im" ng-click="Fns.removePackageItem($index,constants.packageList_anyue)"><span class="icon_delete clickText"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="Fns.close()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

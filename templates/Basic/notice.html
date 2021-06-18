@@ -1,0 +1,103 @@
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchVisitNav(1)" ng-class="{tab_nav_show: visitNavJud==1}">校区设置</span>
+        <span ng-click="switchVisitNav(2)" ng-class="{tab_nav_show: visitNavJud==2}">营业时间</span>
+        <span ng-click="switchVisitNav(3)" ng-class="{tab_nav_show: visitNavJud==3}">节假日</span>
+        <span ng-click="switchVisitNav(7)" ng-class="{tab_nav_show: visitNavJud==7}">周边学校</span>
+        <span ng-click="switchVisitNav(4)" ng-class="{tab_nav_show: visitNavJud==4}">教室管理</span>
+        <span ng-click="switchVisitNav(5)" ng-class="{tab_nav_show: visitNavJud==5}">功能设置</span>
+        <span ng-click="switchVisitNav(6)" ng-class="{tab_nav_show: visitNavJud==6}">通知设置</span>
+        <span ng-click="switchVisitNav(8)" ng-class="{tab_nav_show: visitNavJud==8}">分享设置</span>
+    </div>
+    <div class="common_content">
+        <div style="font-size: 16px;margin-bottom:7px;">老师端</div>
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead_2}}"></thead>
+                <tbody class="demo_tbody" ng-if="!messageSetList1">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in messageSetList1">
+                        <td>{{x.name}}</td>
+                        <td title="{{x.description}}">{{x.description}}</td>
+                        <td ng-if="x.wxappStatus!=null"><span ng-click="operationList_msg(1, x)" ng-class="{'enable_showcourse': x.wxappStatus, 'disable_showcourse': !x.wxappStatus}"></span></td>
+                        <td ng-if="x.wxappStatus==null" style="text-align: center;">-</td>
+                        <td><span ng-click="operationList_msg(2, x)" ng-class="{'enable_showcourse': x.smsStatus, 'disable_showcourse': !x.smsStatus}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="x.wxappPreivew" ng-click="operationList_msg(4, x)">应用端效果图</span>
+                            <span class="clickText" ng-if="x.smsPreview" ng-click="operationList_msg(3, x)">短信效果图</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="common_tab" style="padding-bottom:8px;">
+            <ul class="ul_left clearfix">
+                <li style="font-size: 16px;line-height: 28px;">家长端</li>
+                <li class="common_tab_libtn">
+                    <div class="common_tab_btn" ng-click="moreSet()">更多设置</div>
+                </li>
+            </ul>
+        </div>
+        <!--<div style="font-size: 16px;margin-bottom:7px;">家长端</div>-->
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead_2}}"></thead>
+                <tbody class="demo_tbody" ng-if="!messageSetList2">
+                    <tr>
+                        <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody">
+                    <tr ng-repeat="x in messageSetList2">
+                        <td>{{x.name}}</td>
+                        <td title="{{x.description}}">{{x.description}}</td>
+                        <td ng-if="x.wxappStatus!=null"><span ng-click="operationList_msg(1, x)" ng-class="{'enable_showcourse': x.wxappStatus, 'disable_showcourse': !x.wxappStatus}"></span></td>
+                        <td ng-if="x.wxappStatus==null" style="text-align: center;">-</td>
+                        <td><span ng-click="operationList_msg(2, x)" ng-class="{'enable_showcourse': x.smsStatus, 'disable_showcourse': !x.smsStatus}"></span></td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-if="x.wxappPreivew" ng-click="operationList_msg(4, x)">应用端效果图</span>
+                            <span class="clickText" ng-if="x.smsPreview" ng-click="operationList_msg(3, x)">短信效果图</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--点击预览短信通知-->
+<div class="message_see">
+    <span class="message_see_x" ng-click='operationList_msg(5, 0)'></span>
+    <img src="{{previewImg}}" style="width:100%;height:auto;" alt="预览" />
+</div>
+<div class="popup_" id="moreSetPop">
+    <div class="popup_content">
+        <form class="popup_form" ng-submit="set_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line mb8 font_size14" style="padding-left: 15px;font-weight: 600;">显示学员账户余额</div>
+                    <div class="popup_line">
+                        <div class="col-xs-12 popup_rt">
+                            <input class="checkbox-inline labelLeft" style="margin-right: 5px;" type="checkbox" ng-model="setData.smsStudentBalanceShow">
+                                                                       勾选后，课时消耗提醒通知中显示学员账户余额。
+                            <span class="clickText" ng-click='operationList_msg(6, "./static/img/stud_account_notice.png")'> 预览效果图</span>
+                        </div>
+                    </div>
+                    <div class="popup_line mb8 font_size14" style="margin-top:30px;padding-left: 15px;font-weight: 600;">自定义后缀</div>
+                    <div class="popup_line">
+                        <div class="col-xs-12 popup_rt">
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="setData.smsMsg" placeholder='感谢您对{{currentShop.shopName}}的支持！' maxlength="200"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>

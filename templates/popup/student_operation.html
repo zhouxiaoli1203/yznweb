@@ -1,0 +1,1383 @@
+<!--插班-班级选择-->
+<div class="popup_ operation_choiceClass" id="operation_choiceClass">
+    <h6>班级选择<span ng-click="closePopup('operation_choiceClass')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="insertClassConfirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll popupMinHeight" isScroll="false">
+                    <div class="popup_line">
+                        <ul class="temporary_head clearfix">
+                            <li>
+                                <kindsearch list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="className" select-input="{{isInput}}"></kindsearch>
+                            </li>
+                            <li>
+                                <my-select list-name="班级类型" list-data="{{classType}}" list-field="name" list-click="changeClassStatus(n)" list-sort="false"></my-select>
+                            </li>
+                            <li>
+                                <my-select list-name="课程" list-data="{{screen_course}}" list-field="courseName" list-click="changeClass(n)" list-sort="false"></my-select>
+                            </li>
+                            <!--<li>
+                                <label class="checkbox-inline checkbox-padding">
+                                    <input type="checkbox" name="classstatus" value="1" ng-model="$classStatusa" ng-click="classStatus()">满班
+                                </label>
+                                <label class="checkbox-inline checkbox-padding">
+                                    <input type="checkbox" name="classstatus" value="0" ng-model="$classStatus" ng-click="classStatus()">未满班
+                                </label>
+                            </li>-->
+                            <li ng-click="onReset()" class="clickText" style="line-height: 28px;">重置</li>
+                        </ul>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th width="6%"></th>
+                                    <th width="8%">班级类型</th>
+                                    <th width="17%">班级名称</th>
+                                    <th width="15%">课程</th>
+                                    <th width="15%">适龄</th>
+                                    <th width="15%">人数</th>
+                                    <th width="8%"> 开班时间</th>
+                                    <th width="8%">老师</th>
+                                    <th width="8%">教学进度</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="popup_table_body" id="courseLoading">
+                            <table>
+                                <tbody class="roll_tbody">
+                                    <tr>
+                                        <td width="6%"><input type="radio" name="choseschedule" /></td>
+                                        <td width="8%">111</td>
+                                        <td width="17%">123</td>
+                                        <td width="15%">123</td>
+                                        <td width="15%">123</td>
+                                        <td width="15%">123</td>
+                                        <td width="8%">123</td>
+                                        <td width="8%">123</td>
+                                        <td width="8%">123</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="9" class="textAlignCenter">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operation_choiceClass')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--插班 560-->
+<div class="popup_" id="operat_transfer">
+    <h6>分班<var class="color_nameState">（{{classList.courselist.course.courseName}}）</var><span ng-click="closePopup('operat_transfer')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="insertClassConfirm()">
+            <div class="popup_form_content" style="max-height: 470px;">
+                <div class="popup_scroll" isScroll="false">
+                    <!--<div class="popup_line noneMargin">
+                        <label for="" class="form-label">报名课程:</label>
+                        <span class="col-xs-4 form-span">{{classList.courselist.course.courseName}} {{classList.classlist.schoolTerm.schoolYear}} {{classList.classlist.schoolTerm.schoolTermName}}</span>
+                        <label for="" class="form-label">剩余课时:</label>
+                        <span class="col-xs-4 form-span" ng-if="classList.courselist.package.feeType != 2">{{classList.classlist.surplusTime}}课时</span>
+                        <span class="col-xs-4 form-span" ng-if="classList.courselist.package.feeType == 2">{{classList.classlist.surplusDateTime}}天</span>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label for="" class="form-label">意愿老师:</label>
+                        <span class="col-xs-9 form-span"><span ng-repeat="x in classList.classlist.contractTeachers">{{x.teacherName}}<span ng-if="!$last">，</span> </span>
+                        </span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">意愿时间:</label>
+                        <span class="col-xs-9 form-span"> <span ng-repeat="x in classList.classlist.contractDateList">{{$returnWee(x.week)}}&nbsp;{{$yznDateFormatHm(x.beginTime)}}-{{$yznDateFormatHm(x.endTime)}}<span ng-if="!$last">，</span></span>
+                        </span>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>-->
+                    <div class="popup_line">
+                        <label class="form-label required">选择班级:</label>
+                        <div class="col-xs-8">
+                            <div class="addParent icon_name_add" ng-if="insertclassname=='添加班级'" ng-click="goCommonPop('course-sel', 'choseClass', '1060px', {oldClassId: oldClassId, name: 'class', type: 'radio',callBackName:'插班-添加班级', item: classList.courselist.course,excludeStudentId:classList.studentInfo.id, screen_classType: '0'})">添加班级</div>
+
+                            <div class="addParent" ng-if="insertclassname!='添加班级'" style="padding-top: 6px;width:auto;display: inline-block;">{{insertclassname}}</div>
+                            <div class="addParent clickText" ng-if="insertclassname!='添加班级'" ng-click="insertReset({oldClassId: oldClassId, name: 'class', type: 'radio',callBackName:'插班-添加班级', item: classList.courselist.course,excludeStudentId:classList.studentInfo.id, screen_classType: '0'})"
+                                style="padding-top: 6px;width: 66px;display: inline-block;">重置</div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">进班时间:</label>
+                        <div class="col-xs-8">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width: 80px;">
+                                <input type="radio" name="optionsRa" value="0" ng-model="xWhetherTime">立即进班
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width: 80px;">
+                                <input type="radio" name="optionsRa" value="1" ng-model="xWhetherTime">时间待定
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width: 80px;">
+                                <input type="radio" name="optionsRa" value="2" ng-model="xWhetherTime">未来时间
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="xWhetherTime==2">
+                        <label class="form-label">未来时间:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control dateIcon laydates" ng-model="LAYDATE" placeholder="选择未来时间" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operat_transfer')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--转课-->
+<div class="popup_" id="operat_turn">
+    <h6>学员转课<var class="color_nameState">（{{classList.studentInfo.name}}）</var><span ng-click="closePopup('operat_turn')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="deter_transferClass()">
+            <div class="popup_form_content overinherit">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line noneMargin">
+                        <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;选择转课合同（赠送课时/赠送天数不计转课金额）</label>
+                    </div>
+                    <div class="table_title clearfix" ng-if="endCoursesList.length>0">
+                        <span class="span_title">选择转课合同（赠送课时/赠送天数不计转课金额）</span>
+                    </div>
+                    <div class="course_title">
+                        <span title="{{endclass_prop.courselist.course.courseName}}">{{classList.courselist.course.courseName}}</span>
+                    </div>
+                    <div class="popup_table" ng-if="returnClass.hour.length>0">
+                        <table class="popup_table_head">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px"><span class="courseType_status keshi">课时</span></th>
+                                        <th>学年学期</th>
+                                        <!--<th>购买课时</th>
+                                        <th>赠送课时</th>-->
+                                        <th>剩余购买课时</th>
+                                        <th>剩余赠送课时</th>
+                                        <th>剩余学费</th>
+                                        <th>欠费金额</th>
+                                        <th>有效期至</th>
+                                        <th>转购买课时</th>
+                                        <th>转赠送课时</th>
+                                        <th>可转学费</th>
+                                        <th>转出金额</th>
+                                        <th class="newHelp_after">手续费
+                                            <div class="help_icon noneWidth" data-tips="机构根据规定或者业务需要收取学员一定的费用" style="top: 12px;left: 45px;"></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in returnClass.hour">
+                                        <td ng-click="otherFun.operate(2, x)"><input type="checkbox" name="sel_course" ng-checked="x.hasChecked" /></td>
+                                        <td>
+                                            <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                            <span ng-if="x.feeType==0">-</span>
+                                        </td>
+                                        <!--<td>{{x.buyAllTime}}</td>
+                                        <td>{{x.giveTime}}</td>-->
+                                        <td>{{x.buySurplusTime}}</td>
+                                        <td>{{x.giveSurplusTime}}</td>
+                                        <td>{{x.contractRenewBuysurplusPrice}}</td>
+                                        <td>{{x.arrearage}}</td>
+                                        <td>{{x.validityEndTime?(x.validityEndTime | yznDate:'yyyy-MM-dd') : '-'}}</td>
+                                        <td><input style="width: 65px" type="text" ng-model="x.returnBuyTime" ng-change="watchInputOperate(1, x)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked"></td>
+                                        <td><input style="width: 65px" type="text" ng-model="x.returnGiveTime" ng-change="watchInputOperate(2, x)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked || !(x.giveSurplusTime*1)"></td>
+                                        <td>{{x.canBackPrice | m}}</td>
+                                        <td><input style="width: 65px" type="text" ng-model="x.returnPrice" ng-change="watchReceivable(1)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked"></td>
+                                        <td>{{x.canBackPrice - x.returnPrice | m}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </table>
+                    </div>
+                    <div class="popup_table mt10" ng-if="returnClass.month.length>0">
+                        <table class="popup_table_head">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px"><span class="courseType_status tian">按月</span></th>
+                                        <th>购买天数</th>
+                                        <th>赠送天数</th>
+                                        <th>签约金额</th>
+                                        <th>剩余购买天数</th>
+                                        <th>剩余赠送天数</th>
+                                        <th>剩余学费</th>
+                                        <th>欠费金额</th>
+                                        <th>转出金额</th>
+                                        <th class="newHelp_after">手续费
+                                            <div class="help_icon noneWidth" data-tips="机构根据规定或者业务需要收取学员一定的费用" style="top: 12px;left: 45px;"></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in returnClass.month">
+                                        <td ng-click="otherFun.operate(2, x)"><input type="checkbox" name="sel_course" ng-checked="x.hasChecked" /></td>
+                                        <td>{{x.buyAllDateNum}}</td>
+                                        <td>{{x.giveAllDateNum}}</td>
+                                        <td>{{x.contractPrice}}</td>
+                                        <td>{{x.buySurplusDateNum}}</td>
+                                        <td>{{x.giveSurplusDateNum}}</td>
+                                        <td>{{x.contractRenewBuysurplusPrice}}</td>
+                                        <td>{{x.arrearage}}</td>
+                                        <td><input style="width: 65px" type="text" ng-model="x.returnPrice" ng-change="watchReceivable(1)" yzn-filter="num_" class="form-control" ng-disabled="!x.hasChecked"></td>
+                                        <td>{{(x.contractRenewBuysurplusPrice - x.arrearage - x.returnPrice) | m}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </table>
+                    </div>
+                    <div class="popup_line noneMargin">
+                        <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;转入课程</label>
+                    </div>
+                    <div class="popup_line" ng-if="transferStatus && shop.shopType == 1">
+                        <label class="form-label required">选择校区:</label>
+                        <div class="col-xs-3 padRightNone">
+                            <select name="" class="form-control" ng-model="transferClass_params.school" ng-change="resetShop()">
+                                <option value="" style="display: none;">请选择校区</option>
+                                <option value="{{n.shopId}}" ng-repeat="n in shopList">{{n.shopShortName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">报名方式:</label>
+                        <div class="col-xs-10">
+                            <div class="col-xs-1" style="width:10%;padding: 0;">
+                                <button class="buttonpop" type="button" ng-click="goCommonPop('course-sel', 'choseCourse', '760px', {name: 'course', type: 'checkbox', callBackName: '转课-添加课程', contractList: contractList,shopId:transferClass_params.school})">
+                                    <span class="addic">+</span>
+                                    <span class="popname">选课报名</span>
+                                </button>
+                            </div>
+                            <div class="col-xs-1" style="width:10%;padding: 0;">
+                                <button class="buttonpop" type="button" ng-click="goCommonPop('course-sel', 'choseClass', '1060px', {name: 'class', type: 'radio', teachingMethod:'2', callBackName: '转课-添加班级', contractList: contractList,shopId:transferClass_params.school})">
+                                    <span class="addic">+</span>
+                                    <span class="popname">选班报名</span>
+                                </button>
+                            </div>
+                            <div class="col-xs-1" style="width:10%;padding: 0;">
+                                <button class="buttonpop" type="button" ng-click="goCommonPop( 'course-sel', 'choseGoods', '760px',{name:'goods',type: 'checkbox',callBackName: '选课报名-学杂',item:sign_parmas2_goods,shopId:transferClass_params.school})">
+                                    <span class="addic">+</span>
+                                    <span class="popname">购买学杂</span>
+                                </button>
+                            </div>
+                            <div class="col-xs-1 activitySignupBtn_" style="width:10%;padding: 0;display: none;" ng-hide="transferStatus && transferClass_params.school != transferClass_params.thisSchool">
+                                <button class="buttonpop" type="button" ng-click="activity_signup()">
+                                    <span class="addic">+</span>
+                                    <span class="popname activitySignupBtn">活动报名</span>
+                                </button>
+                            </div>
+                            <div class="col-xs-1" style="width:10%;padding: 0;">
+                                <button class="buttonpop" type="button" ng-click="goCommonPop( 'course-sel', 'choseCoursePackage', '760px', {name: 'coursePackage', type: 'checkbox', callBackName: '选课报名-课程包',shopId:transferClass_params.school})">
+                                    <span class="addic">+</span>
+                                    <span class="popname">课程包报名</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--活动课程报名-->
+                    <div class="activity_list" ng-repeat="act in activitySignupList">
+                        <div class="popup_line noneMargin" ng-show="act.activity_course.length > 0 || act.activity_goods.length > 0" style="margin-top: 20px;">
+                            <label class="form-label vertical_line theadleft" style="width: 100%;">&nbsp;&nbsp;&nbsp;活动报名（{{act.activityName}}）<i class="icon_delete clickText" ng-click="del_act_signup('all', $index)"></i></label>
+                        </div>
+                        <div class="courseList" ng-repeat="x in act.activity_course" style="overflow: visible; margin-bottom: 10px;" ng-show="act.activity_course.length > 0">
+                            <h2 class="courseList_h clearfix">
+                                <div style="position: relative">
+                                    <span class="icon_sign_type" data-toggle="dropdown" ng-class="{'sign_type_2': x.signType==2, 'sign_type_3': x.signType==3}">{{x.signType==1?'新报':(x.signType==2?'续报':'扩科')}}</span>
+                                    <span class="dropdown-menu discount_lis" style="overflow: initial; min-width: 50px;height: 95px">
+                                    <em ng-click="x.signType = 1">新报</em>
+                                    <em ng-click="x.signType = 2">续报</em>
+                                    <em ng-click="x.signType = 3">扩科</em>
+                                </span>
+                                    <span class="signUp_course_name" title="{{x.course.courseName}}">{{x.course.courseName}}</span>
+                                </div>
+                                <div ng-if="x.package.feeType == 1">
+                                    <label for="">学年：</label>
+                                    <select style="float:left; width: 80px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolYear" ng-change="selYear(x)" required>
+                                        <option value="" ng-disable="false ">学年</option>
+                                        <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                    </select>
+                                </div>
+                                <div ng-if="x.package.feeType == 1">
+                                    <label for="">学期：</label>
+                                    <select style="float:left; width: 90px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolTerm" ng-change="selSchoolTerm(x)" ng-options="p as p.schoolTermName for p in schoolTermList" required>
+                                        <option value="">选择学期</option>
+                                    </select>
+                                </div>
+                                <div ng-if="x.course.teachingMethod==1">
+                                    <label for="">班级：</label>
+                                    <span class="signUp_clickText_">
+                                        <span class="" ><span title="{{classList.studentInfo.name}}-{{x.course.courseName}}班">{{classList.studentInfo.name}}-{{x.course.courseName}}班</span></span>
+                                    </span>
+                                </div>
+                                <div ng-if="x.course.teachingMethod==1">
+                                    <label for="">老师：</label>
+                                    <span class="signUp_clickText_" style="display: inline-block;width: 80px;">
+                                        <span class="signUp_clickText_sp" ng-if="x.oneTeacher"><span>{{x.oneTeacher.teacherName}}</span><i ng-click="del_oneTeacher(x)">x</i></span>
+                                    <div ng-if="!x.oneTeacher">
+                                        <span class="icon_name_add"></span>
+                                        <my-select my-id="_onTeacher" list-name="选择老师" list-data="{{oneTeacherList}}" list-field="teacherName" list-click="selScreen_(n, x)" list-search="true"></my-select>
+                                    </div>
+                                    </span>
+                                </div>
+
+                                <div ng-if="x.course.teachingMethod==2">
+                                    <label for="">班级：</label>
+                                    <span class="signUp_clickText" style="display: inline-block;">
+                                        <span class="signUp_clickText_sp" ng-if="x.isShowClass"><span title="{{x.classInfo.className}}">{{x.classInfo.className}}</span><i ng-click="del_oneTeacher(x)">x</i></span>
+                                    <span ng-if="!x.isShowClass" class="clickText icon_name_add" ng-click="choseClass_(x, $index)">选择班级</span>
+                                    </span>
+                                </div>
+                                <div style="float: right;">
+                                    <span class="" ng-click="del_act_signup('course', $index, $parent.$index)"><i class="icon_delete clickText"></i></span>
+                                </div>
+                                <!--<div style="float: right;">
+                                    <label for="">签约金额：</label>
+                                    <span ng-if="x.discountType=='1'" title="{{x.package.packagePrice-x.discountPrice | m}}">￥{{(x.package.packagePrice-x.discountPrice) | m}}</span>
+                                    <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100)) | m}}">￥{{(x.package.packagePrice*(x.discountPrice_/100)) | m}}</span>
+                                </div>-->
+                            </h2>
+                            <div class="popup_table noneMargin" style="overflow: visible;">
+                                <table class="popup_table_head">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 150px;">套餐名称</th>
+                                            <th style="width: 85px;">单课价</th>
+                                            <th ng-if="x.package.feeType != 2" style="width: 95px;">购买课时</th>
+                                            <th ng-if="x.package.feeType != 2" style="width: 95px;">赠送课时</th>
+                                            <th ng-if="x.package.feeType == 2" style="width: 130px;">开始时间</th>
+                                            <th ng-if="x.package.feeType == 2" style="width: 80px;">结束时间</th>
+                                            <th ng-if="x.package.feeType == 2" style="width: 115px;"></th>
+                                            <th ng-if="x.package.feeType == 2" style="width: 75px;">赠送时间</th>
+                                            <th style="width: 110px;">课程价格</th>
+                                            <th style="width: 145px;">优惠</th>
+                                            <th style="width: 110px;">金额</th>
+                                            <!--<th style="width: 85px;">均课价</th>-->
+                                            <th ng-if="x.package.feeType != 2" style="width: 150px;">有效期至</th>
+                                            <!--<th style="text-align: center;">操作</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="overinherit">
+                                                <!--<select style="float:left; width: 130px; margin-right: 5px;" ng-change="sel_package(x)" class="form-control" ng-model="x.package_" ng-options="p as p.packageName for p in (x.package.feeType == 1?x.packageList:x.packageList_)">
+                                                    <option value="" disabled="disabled">选择套餐</option>
+                                                </select>-->
+                                                <mix-sel my-id="{{x.mixid}}" sel-data="{{x.packageList}}" selected-fn="sel_package(n,x)" default-seleted="{{x.package_}}"></mix-sel>
+                                            </td>
+                                            <td class="moneyColor" ng-if="x.package.feeType != 2">{{x.package.packageUnitPrice | m}}元/课时</td>
+                                            <td class="moneyColor" ng-if="x.package.feeType == 2">{{(x.chargeType=="1"?x.package.packageUnitPrice:x.package.packageUnitPrice/30) | m}}{{x.chargeType=="1"?"元/月":"元/天"}}</td>
+                                            <td ng-if="x.package.feeType != 2">
+                                                <input type="text" ng-change="inputPackageTime(x, 1)" ng-model="x.package.packageTime" class="form-control width55" yzn-filter="num_" />
+                                            </td>
+                                            <td ng-if="x.package.feeType != 2">
+                                                <input type="text" ng-model="x.package.giveTime" class="form-control width55" yzn-filter="num_" />
+                                            </td>
+                                            <td ng-if="x.package.feeType == 2">
+                                                <input ng-mouseover="selTimeFrame(x, $event, 1)" ng-model="x.beginTime" type="text" class="form-control dateIcon" index="{{$index}}" placeholder="选择开始时间">
+                                            </td>
+                                            <td ng-if="x.package.feeType == 2">
+                                                <select name="" ng-model="x.chargeType" ng-change="inputPackageTime(x, 2,true)" class="form-control" style="float: left; margin: 5px;">
+                                                    <option value="">按天</option>
+                                                    <option value="1">按月</option>
+                                                </select>
+                                            </td>
+                                            <td ng-if="x.package.feeType == 2">
+                                                <input ng-hide="x.chargeType" type="text" ng-model="x.endTime" ng-mouseover="selTimeFrame(x, $event, 2)" class="form-control dateIcon" placeholder="选择结束时间" />
+                                                <span class="sign_td_span" ng-if="x.chargeType"><input style="width: 40px;" ng-change="inputPackageTime(x, 2)"  class="form-control" type="text" ng-model="x.monthNum" yzn-filter="num" />月</span>
+                                            </td>
+                                            <td ng-if="x.package.feeType == 2">
+                                                <span class="sign_td_span"><input type="text" style="width: 40px;" ng-model="x.package.giveTime" class="form-control" yzn-filter="num"/>天</span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span"><input ng-model="x.package.packagePrice" ng-change="inputPackageTime(x, 3)" ng-disabled="toString(x.package.packageTime) == '0'" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元</span>
+                                            </td>
+                                            <td style="overflow: visible;">
+                                                <select class="form-control width58" ng-model="x.discountType" ng-change="initDiscount(x)" ng-disabled="toString(x.package.packageTime) == '0'">
+                                                    <option value="1">优惠</option>
+                                                    <option value="2">折扣</option>
+                                                </select>
+                                                <span ng-if="x.discountType=='1'"><input style="width: 55px;" type="text" ng-model="x.discountPrice" ng-blur="inputPackageTime(x, 4)" ng-disabled="toString(x.package.packageTime) == '0'" class="form-control width45" yzn-filter="num_" />&nbsp;元</span>
+                                                <span ng-if="x.discountType=='2'" class="discount">
+                                                    <input style="width: 55px;" type="text" value="{{x.discountPrice_ / 10}}" data-toggle="dropdown" class="form-control width45" ng-disabled="toString(x.package.packageTime) == '0'" readonly="readonly" />&nbsp;折
+                                                    <span class="dropdown-menu discount_lis">
+                                                        <em ng-repeat="h in (m | limitTo:100)" ng-click="x.discountPrice_ = (100 - h);inputPackageTime(x, 4)">{{(100 - h) / 10}}折</em>
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="sign_td_span">
+                                                    <input ng-model="x.amount"  ng-disabled="toString(x.package.packageTime) == '0'" ng-change="inputPackageTime(x, 5)" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元
+                                                </span>
+                                            </td>
+                                            <!--<td>
+                                                <span ng-if="x.discountType=='1'" title="{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m}}">{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m:'int'}}</span>
+                                                <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}">{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}</span>
+                                                <span ng-if="x.package.feeType != 2">元/课时</span>
+                                                <span ng-if="x.package.feeType == 2">{{x.chargeType=="1"?"元/月":"元/天"}}</span>
+                                            </td>-->
+                                            <td ng-if="x.package.feeType != 2">
+                                                <textarea id="{{x.time_id}}" ng-mouseover="selTimeFrame(x, $event, 3)" type="text" style="resize: none;height:28px;" class="form-control dateIcon" index="{{$index}}" placeholder="选择时间范围" rows="2"></textarea>
+                                            </td>
+                                            <!--<td class="textAlignCenter"><span class="" ng-click="del_act_signup('course', $index, $parent.$index)"><i class="icon_delete clickText"></i></span></td>-->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="popup_table noneMargin" style="overflow: visible;" ng-show="act.activity_goods.length > 0">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th>学杂名称</th>
+                                        <th>学杂规格</th>
+                                        <th>原价</th>
+                                        <th>单价</th>
+                                        <th>购买数量</th>
+                                        <th>学杂价格</th>
+                                        <th class="textAlignCenter" width="10%">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in act.activity_goods">
+                                        <td title="{{x.goodsName}}">{{x.goodsName}}</td>
+                                        <td ng-if="x.goodsType == 1">
+                                            <select class="form-control input-w100 pull-left" ng-model="x.goodsSpecId" required ng-change="switch_goodsSpecId(x)">
+                                                <option value='' selected>请选择规格</option>
+                                                <option ng-repeat="n in x.goodsSpecList track by $index"
+                                                        value="{{n.goodsSpecId}}">{{n.name}}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td ng-if="x.goodsType == 2">-</td>
+                                        <td>{{x.goodsPrice_}}元</td>
+                                        <td>
+                                            <input type="text" ng-model="x.goodsPrice" class="form-control width58" yzn-filter="num_" required/>&nbsp;&nbsp;元
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="x.goodsNumber" class="form-control width58" yzn-filter="num" required/>
+                                        </td>
+                                        <td>￥{{x.goodsPrice*x.goodsNumber?(x.goodsPrice*x.goodsNumber|number:2):"0.00"}}</td>
+                                        <td class="textAlignCenter"><span class="" ng-click="del_act_signup('goods', $index, $parent.$index)"><i class="icon_delete clickText"></i></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--报读课程-->
+                    <div class="courseList" ng-repeat="x in transferClass_params.courseList" ng-if="transferClass_params.courseList.length>0">
+                        <h2 class="courseList_h clearfix">
+                            <div style="position: relative">
+                                <span class="icon_sign_type" data-toggle="dropdown" ng-class="{'sign_type_2': x.signType==2, 'sign_type_3': x.signType==3}">{{x.signType==1?'新报':(x.signType==2?'续报':'扩科')}}</span>
+                                <span class="dropdown-menu discount_lis" style="overflow: initial; min-width: 50px;height: 95px">
+                                    <em ng-click="x.signType = 1">新报</em>
+                                    <em ng-click="x.signType = 2">续报</em>
+                                    <em ng-click="x.signType = 3">扩科</em>
+                                </span>
+                                <span class="signUp_course_name" title="{{x.course.courseName}}">{{x.course.courseName}}</span>
+                            </div>
+                            <div ng-if="x.package.feeType == 1">
+                                <label for="">学年：</label>
+                                <select style="float:left; width: 80px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolYear" ng-change="selYear(x)" required>
+                                    <option value="" ng-disable="false ">学年</option>
+                                    <option value="{{y}}" ng-repeat="y in thisYears">{{y}}</option>
+                                </select>
+                            </div>
+                            <div ng-if="x.package.feeType == 1">
+                                <label for="">学期：</label>
+                                <select style="float:left; width: 90px; margin-right: 5px;" name="" class="form-control" ng-model="x.schoolTerm" ng-change="selSchoolTerm(x)" ng-options="p as p.schoolTermName for p in schoolTermList" required>
+                                    <option value="">选择学期</option>
+                                </select>
+                            </div>
+                            <div ng-if="x.course.teachingMethod==1">
+                                <label for="">班级：</label>
+                                <span class="signUp_clickText_">
+                                    <span class="" >
+                                        <span title="{{classList.studentInfo.name}}-{{x.course.courseName}}班">{{classList.studentInfo.name}}-{{x.course.courseName}}班</span>
+                                </span>
+                                </span>
+                            </div>
+                            <div ng-if="x.course.teachingMethod==1">
+                                <label for="">老师：</label>
+                                <span class="signUp_clickText_" style="display: inline-block;width: 80px;">
+                                    <span class="signUp_clickText_sp" ng-if="x.oneTeacher"><span>{{x.oneTeacher.teacherName}}</span><i ng-click="del_oneTeacher(x)">x</i></span>
+                                <div ng-if="!x.oneTeacher">
+                                    <span class="icon_name_add"></span>
+                                    <my-select my-id="_onTeacher" list-name="选择老师" list-data="{{oneTeacherList}}" list-field="teacherName" list-click="selScreen_(n, x)" list-search="true"></my-select>
+                                </div>
+                                </span>
+                            </div>
+
+                            <div ng-if="x.course.teachingMethod==2">
+                                <label for="">班级：</label>
+                                <span class="signUp_clickText" style="display: inline-block;">
+                                    <span class="signUp_clickText_sp" ng-if="x.isShowClass"><span title="{{x.classInfo.className}}">{{x.classInfo.className}}</span><i ng-click="del_oneTeacher(x)">x</i></span>
+                                <span ng-if="!x.isShowClass" class="clickText icon_name_add" ng-click="choseClass_(x, $index)">选择班级</span>
+                                </span>
+                            </div>
+                            <div style="float: right;">
+                                <span class="" ng-click="del_transferCourse($index)"><i class="icon_delete clickText"></i></span>
+                            </div>
+                        </h2>
+                        <div class="popup_table noneMargin" style="overflow: visible;">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 150px;">套餐名称</th>
+                                        <th style="width: 85px;">单课价</th>
+                                        <th ng-if="x.package.feeType != 2" style="width: 95px;">购买课时</th>
+                                        <th ng-if="x.package.feeType != 2" style="width: 95px;">赠送课时</th>
+                                        <th ng-if="x.package.feeType == 2" style="width: 130px;">开始时间</th>
+                                        <th ng-if="x.package.feeType == 2" style="width: 80px;">结束时间</th>
+                                        <th ng-if="x.package.feeType == 2" style="width: 115px;"></th>
+                                        <th ng-if="x.package.feeType == 2" style="width: 75px;">赠送时间</th>
+                                        <th style="width: 110px;">课程价格</th>
+                                        <th style="width: 145px;">优惠</th>
+                                        <th style="width: 110px;">金额</th>
+                                        <th ng-if="x.package.feeType != 2" style="width: 150px;">有效期至</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="overinherit">
+                                            <!--<select style="float:left; width: 130px; margin-right: 5px;" ng-change="sel_package(x)" class="form-control" ng-model="x.package_" ng-options="p as p.packageName for p in (x.package.feeType == 1?x.packageList:x.packageList_)">
+                                                <option value="">选择套餐</option>
+                                            </select>-->
+                                            <mix-sel my-id="{{x.mixid}}" sel-data="{{x.packageList}}" selected-fn="sel_package(n,x)" default-seleted="{{x.package_}}"></mix-sel>
+                                        </td>
+                                        <td class="moneyColor" ng-if="x.package.feeType != 2">{{x.package.packageUnitPrice | m}}元/课时</td>
+                                        <td class="moneyColor" ng-if="x.package.feeType == 2">{{(x.chargeType=="1"?x.package.packageUnitPrice:x.package.packageUnitPrice/30) | m}}{{x.chargeType=="1"?"元/月":"元/天"}}</td>
+                                        <td ng-if="x.package.feeType != 2">
+                                            <input type="text" ng-change="inputPackageTime(x, 1)" ng-model="x.package.packageTime" class="form-control width55" yzn-filter="num_" />
+                                        </td>
+                                        <td ng-if="x.package.feeType != 2">
+                                            <input type="text" ng-model="x.package.giveTime" class="form-control width55" yzn-filter="num_" />
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2">
+                                            <input ng-mouseover="selTimeFrame(x, $event, 1, $index)" ng-model="x.beginTime" type="text" class="form-control dateIcon" index="{{$index}}" placeholder="选择开始时间">
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2">
+                                            <select name="" ng-model="x.chargeType" ng-change="inputPackageTime(x, 2,true)" class="form-control" style="float: left; margin: 5px;">
+                                                <option value="">按天</option>
+                                                <option value="1">按月</option>
+                                            </select>
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2">
+                                            <input ng-hide="x.chargeType" type="text" ng-model="x.endTime" ng-mouseover="selTimeFrame(x, $event, 2, $index)" class="form-control dateIcon" placeholder="选择结束时间" />
+                                            <span class="sign_td_span" ng-if="x.chargeType"><input style="width: 40px;" ng-change="inputPackageTime(x, 2)"  class="form-control" type="text" ng-model="x.monthNum" yzn-filter="num" />月</span>
+                                        </td>
+                                        <td ng-if="x.package.feeType == 2">
+                                            <span class="sign_td_span"><input type="text" style="width: 40px;" ng-model="x.package.giveTime" class="form-control" yzn-filter="num"/>天</span>
+                                        </td>
+                                        <td>
+                                            <span class="sign_td_span"><input ng-model="x.package.packagePrice" ng-change="inputPackageTime(x, 3)" ng-disabled="toString(x.package.packageTime) == '0'" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元</span>
+                                        </td>
+                                        <td style="overflow: visible;">
+                                            <select class="form-control width58" ng-model="x.discountType" ng-change="initDiscount(x)" ng-disabled="toString(x.package.packageTime) == '0'">
+                                                <option value="1">优惠</option>
+                                                <option value="2">折扣</option>
+                                            </select>
+                                            <span ng-if="x.discountType=='1'"><input style="width: 55px;" type="text" ng-model="x.discountPrice" ng-change="inputPackageTime(x, 4)" ng-disabled="toString(x.package.packageTime) == '0'" class="form-control width45" yzn-filter="num_" />&nbsp;元</span>
+                                            <span ng-if="x.discountType=='2'" class="discount">
+                                                <input style="width: 55px;" type="text" value="{{x.discountPrice_ / 10}}" data-toggle="dropdown" class="form-control width45" ng-disabled="toString(x.package.packageTime) == '0'" readonly="readonly" />&nbsp;折
+                                                <span class="dropdown-menu discount_lis">
+                                                    <em ng-repeat="h in (m | limitTo:100)" ng-click="x.discountPrice_ = (100 - h);inputPackageTime(x, 4)">{{(100 - h) / 10}}折</em>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="sign_td_span">
+                                                <input ng-model="x.amount"  ng-disabled="toString(x.package.packageTime) == '0'" ng-change="inputPackageTime(x, 5)" type="text" style="width: 75px;" class="form-control" yzn-filter="num_"/>元
+                                            </span>
+                                        </td>
+                                        <!--<td>
+                                            <span ng-if="x.discountType=='1'" title="{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m}}">{{(x.package.packagePrice-x.discountPrice)/x.package.packageTime | m:'int'}}</span>
+                                            <span ng-if="x.discountType=='2'" title="{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}">{{(x.package.packagePrice*(x.discountPrice_/100))/x.package.packageTime | m}}</span>
+                                            <span ng-if="x.package.feeType != 2">元/课时</span>
+                                            <span ng-if="x.package.feeType == 2">{{x.chargeType=="1"?"元/月":"元/天"}}</span>
+                                        </td>-->
+                                        <td ng-if="x.package.feeType != 2">
+                                            <textarea id="{{x.time_id}}" ng-mouseover="selTimeFrame(x, $event, 3, $index)" type="text" style="resize: none;height:28px;" class="form-control dateIcon" index="{{$index}}" placeholder="选择时间范围" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--学杂-->
+                    <div class="popup_line noneMargin" ng-show="transferClass_params.goodsList.length > 0">
+                        <label class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;学杂</label>
+                    </div>
+                    <div class="popup_table noneMargin" style="overflow: visible;" ng-show="transferClass_params.goodsList.length > 0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>学杂名称</th>
+                                    <th>学杂规格</th>
+                                    <th>原价</th>
+                                    <th>单价</th>
+                                    <th>购买数量</th>
+                                    <th>学杂价格</th>
+                                    <th class="textAlignCenter" width="10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in transferClass_params.goodsList">
+                                    <td title="{{x.course.courseName}}">{{x.goodsName}}</td>
+                                    <td ng-if="x.goodsType == 1">
+                                        <select class="form-control input-w100 pull-left" ng-model="x.goodsSpecId" required ng-change="switch_goodsSpecId(x)">
+                                            <option value='' selected>请选择规格</option>
+                                            <option ng-repeat="n in x.goodsSpecList track by $index"
+                                                    value="{{n.goodsSpecId}}">{{n.name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td ng-if="x.goodsType == 2">-</td>
+                                    <td>{{x.goodsPrice_}}元</td>
+                                    <td>
+                                        <input type="text" ng-model="x.goodsPrice" class="form-control width58" yzn-filter="num_" required/>&nbsp;&nbsp;元
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="x.goodsNumber" class="form-control width58" yzn-filter="num" required/>
+                                    </td>
+                                    <td>￥{{x.goodsPrice*x.goodsNumber?(x.goodsPrice*x.goodsNumber|number:2):"0.00"}}</td>
+                                    <td class="textAlignCenter"><span class="" ng-click="del_signUpGoods($index)"><i class="icon_delete clickText"></i></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-show="transferClass_params.school == transferClass_params.thisSchool">
+                        <div class="popup_line noneMargin" style="margin-top:10px;">
+                            <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;支付信息</label>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label">{{!isRefund?"签约":"退款"}}金额:</label>
+                            <span class="col-xs-1 form-span padRightNone main_color">￥{{transferClass_params.contractMoney | abs | m}}</span>
+                            <label ng-show="!isRefund" class="form-label width45 marging-rt-15">欠费:</label>
+                            <span ng-show="!isRefund" class="form-span padRightNone" class="color_ff595e">￥{{(transferClass_params.receivable - (PayProjectList['other']['paymentMoney'] * 1)) | m}}</span>
+                        </div>
+                        <!--支付方式-->
+                        <div class="popup_line" ng-hide="classList.studentInfo.accountBalance == 0 && !isRefund">
+                            <label for="" class="form-label">{{isRefund?'学员账户':'使用余额'}}</label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" ng-change="watchReceivable(1)" ng-model="PayProjectList.student.paymentMoney" placeholder="请输入金额" yzn-filter="num_" />
+                            </div>
+                            <span class="form-span" style="color: #999;" ng-if="isRefund">（退款支持退款至学员账户，部分退款至其他方式）</span>
+                            <div class="col-xs-3" ng-if="!isRefund" style="padding-left: 0px;line-height:27px;">（账户余额：¥{{classList.studentInfo.accountBalance}}）</div>
+                        </div>
+                        <!--<div class="popup_line">
+                            <label class="form-label marging-rt-15">{{isRefund?'应退:':'应收:'}}</label>
+                            <span class="form-span padRightNone">￥{{transferClass_params.receivable | m}}</span>
+                            <label class="form-label width45 marging-rt-15">{{isRefund?'实退:':'实收:'}}</label>
+                            <span class="form-span padRightNone">￥{{PayProjectList['other']['paymentMoney'] | m}}</span>
+                        </div>-->
+                        <div class="popup_line">
+                            <label for="" class="form-label">{{isRefund?'退款方式':'收款方式'}}</label>
+                            <div class="col-xs-10">
+                                <ul class="pay_type_icon clearfix">
+                                    <li ng-if="!isOnlinePayType && !isRefund" class="pay_type_icon_hide" ng-mouseover="clickPayTypeIcon(null, $event)"></li>
+                                    <li ng-hide="!isOnlinePayType && x.name=='易收宝' || isRefund && x.name=='易收宝'" ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.other.paymentMode==x.name}" ng-click="clickPayTypeIcon(x.name)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label">{{isRefund?'实退金额':'实收金额'}}</label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" placeholder="输入金额" ng-model="PayProjectList.other.paymentMoney" yzn-filter="num_" />
+                            </div>
+                            <div class="col-xs-1" style="padding: 0;line-height:27px;border: 1px solid #397fd4;text-align: center;">
+                                <span class="clickText" ng-click="totalPay($index)">全额{{isRefund?"退款":"付款"}}</span>
+                            </div>
+                        </div>
+                        <div class="popup_line" ng-show="PayProjectList.other.paymentMode !== '易收宝'">
+                            <label for="" class="form-label required">{{isRefund? '退款时间:': '支付时间:'}}</label>
+                            <div class="col-xs-3">
+                                <input type="text" class="form-control dateIcon" ng-model="transferClass_params.payTime" placeholder="请选择{{isRefund? '退款时间': '收款时间'}}" id="payTime" autocomplete="off" ng-required="PayProjectList.other.paymentMode !== '易收宝'" />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">经办人:</label>
+                            <div class="col-xs-3 padRightNone">
+                                <select name="" class="form-control" ng-model="transferClass_params.agent">
+                                    <option value="">请选择经办人</option>
+                                    <option value="{{n.shopTeacherId}}" ng-repeat="n in HandlerList">{{n.teacherName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label marging-rt-15">业绩归属:</label>
+                            <ul class="teacher_select_new">
+                                <li ng-repeat="x in transferClass_params.adviser">
+                                    <span style="float: left; width: 60px;display: inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{x.teacherName}}&nbsp;&nbsp;</span>
+                                    <span ng-if="(act.activity_course.length > 0 || transferClass_params.courseList.length > 0) && transferClass_params.adviser.length==1" style="float: left;">业绩分摊{{x.percentage}}%</span>
+                                    <span ng-if="(act.activity_course.length > 0 || transferClass_params.courseList.length > 0) && transferClass_params.adviser.length>1" style="float: left;">业绩分摊<input class="form-control" type="text" ng-model="x.percentage" ng-change="resetAdviser($index)" yzn-filter="num"/>%</span>
+                                    <!--<span ng-if="$first && transferClass_params.courseList.length>0 || $first && act.activity_course.length>0" style="float: left; margin-left:5px;position: relative;color: #f5787c;" ng-mouseenter="adviser_rule = true" ng-mouseleave="adviser_rule = false" class="icon_head_help">
+                                        <span class="tippaopao" ng-if="adviser_rule" style="display: block; top: 18px; padding: 5px 14px; box-shadow: 0 0 5px #ccc;">顾问签单分成规则</span>
+                                    </span>-->
+                                    <i ng-click="transferClass_delAdviser(x, $index)" style="margin-top: 4px;"></i>
+                                </li>
+                            </ul>
+                            <div class="drop_add_teacher screen_no" style="margin-left: 100px;float: inherit; width: 120px;">
+                                <i class="icon_name_add"></i>
+                                <my-select list-name="选择顾问" my-id="_adviser_2" list-data="{{adviserList}}" list-field="teacherName" list-click="transferClass_sel_adviser(n)" list-headname="noChange" list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="transferClass_params.school != transferClass_params.thisSchool">
+                        <div class="popup_line noneMargin">
+                            <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;其他信息</label>
+                        </div>
+                        <div class="popup_line">
+                            <label for="" class="form-label required">操作时间:</label>
+                            <div class="col-xs-3 padRightNone">
+                                <input type="text" class="form-control dateIcon" ng-model="transferClass_params.payTime" placeholder="请选择操作时间" id="operateTime" autocomplete="off" required />
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label required">经办人:</label>
+                            <div class="col-xs-3 padRightNone">
+                                <select name="" class="form-control" ng-model="transferClass_params.agent">
+                                    <option value="">请选择经办人</option>
+                                    <option value="{{n.shopTeacherId}}" ng-repeat="n in HandlerList">{{n.teacherName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对内备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="4" ng-model="transferClass_params.desc" placeholder="该备注只有内部操作人员可见" style="min-width: 612px;max-width: 612px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对外备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="4" ng-model="transferClass_params.desc_out" placeholder="该备注会显示在订单打印的小票或收据上" style="min-width: 612px;max-width: 612px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operat_turn')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--退课-->
+<div class="popup_" id="operat_refund">
+    <h6>学员退课<var class="color_nameState">（{{classList.studentInfo.name}}）</var><span ng-click="closePopup('operat_refund')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="refund_confirm()">
+            <div class="popup_form_content" style="max-height: 440px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="table_title clearfix">
+                        <span class="span_title">选择退课合同（赠送课时/赠送天数不计退课金额）</span>
+                    </div>
+                    <div class="course_title">
+                        <span title="{{endclass_prop.courselist.course.courseName}}">{{classList.courselist.course.courseName}}</span>
+                    </div>
+                    <div class="popup_table" ng-if="returnClass.hour.length>0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px"><span class="courseType_status keshi">课时</span></th>
+                                    <th>学年学期</th>
+                                    <!--<th>购买课时</th>
+                                    <th>赠送课时</th>-->
+                                    <th>剩余购买课时</th>
+                                    <th>剩余赠送课时</th>
+                                    <th>剩余学费</th>
+                                    <th>欠费金额</th>
+                                    <th>退购买课时</th>
+                                    <th>退赠送课时</th>
+                                    <th>可退学费</th>
+                                    <th>退课金额</th>
+                                    <th class="newHelp_after">手续费
+                                        <div class="help_icon noneWidth" data-tips="机构根据规定或者业务需要收取学员一定的费用" style="top: 12px;left: 45px;"></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in returnClass.hour">
+                                    <td ng-click="returnClassOperate(1, x)"><input type="checkbox" name="sel_course" ng-checked="x.hasChecked" /></td>
+                                    <td>
+                                        <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                        <span ng-if="x.feeType==0">-</span>
+                                    </td>
+                                    <!--<td>{{x.buyAllTime}}</td>
+                                    <td>{{x.giveTime}}</td>-->
+                                    <td>{{x.buySurplusTime}}</td>
+                                    <td>{{x.giveSurplusTime}}</td>
+                                    <td>{{x.contractRenewBuysurplusPrice}}</td>
+                                    <td>{{x.arrearage}}</td>
+                                    <td><input style="width: 65px" type="text" ng-model="x.returnBuyTime" ng-change="watchInputOperate(1, x)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked"></td>
+                                    <td><input style="width: 65px" type="text" ng-model="x.returnGiveTime" ng-change="watchInputOperate(2, x)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked || !(x.giveSurplusTime*1)"></td>
+                                    <td>{{x.canBackPrice | m}}</td>
+                                    <td><input style="width: 65px" type="text" ng-model="x.returnPrice" ng-change="watchReceivable(2)" class="form-control" yzn-filter="num_" ng-disabled="!x.hasChecked"></td>
+                                    <td>{{(x.canBackPrice - x.returnPrice) | m}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="popup_table mt10" ng-if="returnClass.month.length>0">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px"><span class="courseType_status tian">按月</span></th>
+                                    <th>购买天数</th>
+                                    <th>赠送天数</th>
+                                    <th>签约金额</th>
+                                    <th>剩余购买天数</th>
+                                    <th>剩余赠送天数</th>
+                                    <th>剩余学费</th>
+                                    <th>欠费金额</th>
+                                    <th>退课金额</th>
+                                    <th class="newHelp_after">手续费
+                                        <div class="help_icon noneWidth" data-tips="机构根据规定或者业务需要收取学员一定的费用" style="top: 12px;left: 45px;"></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in returnClass.month">
+                                    <td ng-click="returnClassOperate(1, x)"><input type="checkbox" name="sel_course" ng-checked="x.hasChecked" /></td>
+                                    <td>{{x.buyAllDateNum}}</td>
+                                    <td>{{x.giveAllDateNum}}</td>
+                                    <td>{{x.contractPrice}}</td>
+                                    <td>{{x.buySurplusDateNum}}</td>
+                                    <td>{{x.giveSurplusDateNum}}</td>
+                                    <td>{{x.contractRenewBuysurplusPrice}}</td>
+                                    <td>{{x.arrearage}}</td>
+                                    <td><input style="width: 65px" type="text" ng-model="x.returnPrice" ng-change="watchReceivable(2)" yzn-filter="num_" class="form-control" ng-disabled="!x.hasChecked"></td>
+                                    <td>{{(x.contractRenewBuysurplusPrice - x.arrearage - x.returnPrice) | m}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="popup_line noneMargin" style="margin-top:10px;">
+                        <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;退款信息</label>
+                    </div>
+                    <!--退款方式-->
+                    <div class="popup_line">
+                        <label class="form-label">退款金额:</label>
+                        <span class="col-xs-1 form-span padRightNone main_color">￥{{ref_receivable.contractMoney | m}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">学员账户</label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" ng-change="watchReceivable(2)" ng-model="PayProjectList.student.paymentMoney" placeholder="请输入金额" yzn-filter="num_" />
+                        </div>
+                        <span class="form-span" style="color: #999;">（退款支持退款至学员账户，部分退款至其他方式）</span>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label">应退:</label>
+                        <span class="col-xs-1 form-span padRightNone">￥{{ref_receivable.money|number:2}}</span>
+                        <label class="form-label width45">实退:</label>
+                        <span class="col-xs-1 form-span padRightNone">￥{{PayProjectList.other.paymentMoney|number:2}}</span>
+                    </div>-->
+                    <div class="popup_line">
+                        <label for="" class="form-label">退款方式</label>
+                        <div class="col-xs-10">
+                            <ul class="pay_type_icon clearfix">
+                                <!--<li ng-if="!isOnlinePayType" class="pay_type_icon_hide" ng-click="clickPayTypeIcon()"></li>-->
+                                <li ng-hide="!isOnlinePayType && x.name=='易收宝'" ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.other.paymentMode==x.name}" ng-click="clickPayTypeIcon(x.name)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">实退金额</label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" placeholder="输入金额" ng-model="PayProjectList.other.paymentMoney" yzn-filter="num_" />
+                        </div>
+                        <div class="col-xs-1" style="padding: 0;line-height:27px;border: 1px solid #397fd4;text-align: center;">
+                            <span class="clickText" ng-click="totalPay($index)">全额退款</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">退款时间</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control dateIcon" id="refund_time" name="name" ng-model="refund_time" placeholder="选择退款时间" required autocomplete="off" style="width:240px;" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">经办人:</label>
+                        <div class="col-xs-3 padRightNone">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择经办人" list-data="{{HandlerList}}" list-field="teacherName" list-click="clickHandler(n)" list-search="true" list-all="no" list-default="{{shopTeachName}}"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对内备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="4" placeholder="该备注只有内部操作人员可见" ng-model="refundDesc" style="min-width: 612px;max-width: 612px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">对外备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="4" placeholder="该备注会显示在订单打印的小票或收据上" ng-model="refundDesc_out" style="min-width: 612px;max-width: 612px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operat_refund')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--结课-->
+<div class="popup_ operat_finish" id="operat_finish">
+    <h6>确认信息<var class="color_nameState">（{{endclass_prop.studentInfo.name}}）</var><span ng-click="closePopup('operat_finish')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content" style="padding-top:0;">
+        <form class="popup_form" role="form" ng-submit="endclass_prop.page != 'signUp_detail'?finishClassComfirm():finishClassComfirm_2()">
+            <div class="popup_form_content" style="max-height: 440px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="table_title clearfix" ng-if="endCoursesList.length>0">
+                        <span class="span_title">选择结课合同（赠送课时/赠送天数不计结课金额）：</span>
+                    </div>
+                    <div class="course_title" ng-if="endCoursesList.length>0">
+                        <span title="{{endclass_prop.courselist.course.courseName}}">{{endclass_prop.courselist.course.courseName}}</span>
+                    </div>
+                    <!--按课时的列表-->
+                    <div ng-if="endCourses.hour.length>0">
+                        <div class="popup_table">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;"><span class="courseType_status keshi">课时</span></th>
+                                        <th>学年学期</th>
+                                        <th class="textAlignRt">购买课时</th>
+                                        <th class="textAlignRt">赠送课时</th>
+                                        <th class="textAlignRt">剩余购买课时</th>
+                                        <th class="textAlignRt">剩余赠送课时</th>
+                                        <th class="textAlignRt">剩余学费</th>
+                                        <th class="textAlignRt">欠费金额</th>
+                                        <th style="width: 220px" class="textAlignCenter">有效期</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in endCourses.hour track by $index" ng-click="sel_course(x, endCoursesList_keshi);">
+                                        <td class="textAlignCenter" style="width:5%;">
+                                            <input type="checkbox" style="display: block;margin: 0 auto;" ng-checked="x.hasChecked" ng-hide="endclass_prop.page == 'signUp_detail'" />
+                                        </td>
+                                        <td>
+                                            <span ng-if="x.feeType==1">{{x.schoolYear}} {{x.schoolTermName}}</span>
+                                            <span ng-if="x.feeType==0">-</span>
+                                        </td>
+                                        <td class="textAlignRt">{{x.buyAllTime}}</td>
+                                        <td class="textAlignRt">{{x.giveTime}}</td>
+                                        <td class="textAlignRt">{{x.buySurplusTime|number:2}}</td>
+                                        <td class="textAlignRt">{{x.giveSurplusTime|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.contractRenewBuysurplusPrice|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.arrearage|number:2}}</td>
+                                        <td class="textAlignCenter">{{x.validityBeginTime?(x.validityBeginTime | yznDate:'yyyy-MM-dd')+" 至 "+(x.validityEndTime | yznDate:'yyyy-MM-dd'):"-"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--按期的列表-->
+                    <!--<div ng-if="endCoursesList_anqi.length>0">
+                        <div class="course_title">
+                            <span class="courseType_status anqi">学期</span>
+                            <span  title="{{endclass_prop.courselist.course.courseName}} {{endCoursesList_anqi[0].schoolYear}} {{endCoursesList_anqi[0].schoolTermName}}">{{endclass_prop.courselist.course.courseName}}&nbsp;&nbsp;{{endCoursesList_anqi[0].schoolYear}}&nbsp;&nbsp;{{endCoursesList_anqi[0].schoolTermName}}</span>
+                        </div>
+                        <div class="popup_table">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;"></th>
+                                        <th class="textAlignRt">购买课时</th>
+                                        <th class="textAlignRt">赠送课时</th>
+                                        <th class="textAlignRt">剩余购买课时</th>
+                                        <th class="textAlignRt">剩余赠送课时</th>
+                                        <th class="textAlignRt">剩余学费</th>
+                                        <th class="textAlignRt">欠费金额</th>
+                                        <th style="width: 220px" class="textAlignCenter">有效期</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in endCoursesList track by $index" ng-show="x.feeType==1" ng-click="sel_course(x, endCoursesList);" >
+                                        <td class="textAlignCenter" style="width:5%;" ng-hide="endclass_prop.page == 'signUp_detail'">
+                                            <input type="checkbox" style="display: block;margin: 0 auto;" ng-checked="x.hasChecked"/>
+                                        </td>
+                                        <td class="textAlignRt">{{x.buyAllTime}}</td>
+                                        <td class="textAlignRt">{{x.giveTime}}</td>
+                                        <td class="textAlignRt">{{x.buySurplusTime|number:2}}</td>
+                                        <td class="textAlignRt">{{x.giveSurplusTime|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.contractRenewBuysurplusPrice|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.arrearage|number:2}}</td>
+                                        <td class="textAlignCenter">{{x.validityBeginTime?(x.validityBeginTime | yznDate:'yyyy-MM-dd')+" 至 "+(x.validityEndTime | yznDate:'yyyy-MM-dd'):"-"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                    <!--按月的列表-->
+                    <div class="mt10" ng-if="endCourses.month.length>0">
+                        <div class="popup_table">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;"><span class="courseType_status tian">按月</span></th>
+                                        <th class="textAlignRt">剩余购买天数</th>
+                                        <th class="textAlignRt">剩余赠送天数</th>
+                                        <th class="textAlignRt">剩余学费</th>
+                                        <th class="textAlignRt">欠费金额</th>
+                                        <th style="width: 220px" class="textAlignCenter">有效期</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="x in endCourses.month track by $index" ng-click="sel_course(x, endCoursesList_tian);">
+                                        <td class="textAlignCenter" style="width:5%;">
+                                            <input type="checkbox" style="display: block;margin: 0 auto;" ng-checked="x.hasChecked" ng-hide="endclass_prop.page == 'signUp_detail'" />
+                                        </td>
+                                        <td class="textAlignRt">{{x.buySurplusDateNum|tian}}</td>
+                                        <td class="textAlignRt">{{x.giveSurplusDateNum|tian}}</td>
+                                        <td class="textAlignRt">￥{{x.contractRenewBuysurplusPrice|number:2}}</td>
+                                        <td class="textAlignRt">￥{{x.arrearage|number:2}}</td>
+                                        <td class="textAlignCenter">{{x.validityBeginTime?(x.validityBeginTime | yznDate:'yyyy-MM-dd')+" 至 "+(x.validityEndTime | yznDate:'yyyy-MM-dd'):"-"}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-if="ownCourse && endclass_prop.page != 'signUp_detail'">
+                        <div class="table_title clearfix">
+                            <span>欠费处理（系统将根据“欠课课时x单课价”计算本课程产生的亏损）</span>
+                        </div>
+                        <div class="popup_table">
+                            <table class="popup_table_head" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>欠课课程</th>
+                                        <th>欠课课时</th>
+                                        <th>单课价</th>
+                                        <th>结算金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="roll_tbody">
+                                    <tr>
+                                        <td>{{ownCourse.courseName}}</td>
+                                        <td>{{ownCourse.surplusTime|number:2}}</td>
+                                        <td>
+                                            <input type="text" style="width:80px;display: inline-block;" class="form-control" ng-model="ownCourse.unitPrice" yzn-filter="num" required/>元/课时
+                                        </td>
+                                        <td>￥{{(ownCourse.surplusTime*1*ownCourse.unitPrice*1)|number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--结课信息-->
+                    <div class="table_title clearfix">
+                        <span>结课信息：</span>
+                    </div>
+                    <div class="popup_line" ng-if="endCoursesList.length>0">
+                        <label class="form-label">结购买:</label>
+                        <span class="col-xs-4 form-span main_color">{{EndCoursesInfo.buySurplusTime|keshi_tian:EndCoursesInfo.buySurplusDateNum}}</span>
+                    </div>
+                    <div class="popup_line" ng-if="endCoursesList.length>0" ng-hide="!EndCoursesInfo.giveSurplusTime && !EndCoursesInfo.giveSurplusDateNum">
+                        <label class="form-label">结赠送:</label>
+                        <span class="col-xs-4 form-span main_color">{{EndCoursesInfo.giveSurplusTime|keshi_tian:EndCoursesInfo.giveSurplusDateNum}}</span>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label">欠费金额:</label>
+                        <span class="col-xs-4 form-span main_color">￥{{EndCoursesInfo.arrearage?(EndCoursesInfo.arrearage|number:2):"0.00"}}</span>
+                    </div>-->
+                    <div class="popup_line" ng-if="endCoursesList.length>0">
+                        <label class="form-label">结算金额:</label>
+                        <span class="col-xs-4 form-span main_color">￥{{EndCoursesInfo.amount?((EndCoursesInfo.amount+(ownCourse.unitPrice?(ownCourse.surplusTime*1*ownCourse.unitPrice*1):0))|number:2):"0.00"}}</span>
+                    </div>
+                    <div class="popup_line" ng-class='{"marginTop_10":endCoursesList.length<=0}'>
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{talkDesc?talkDesc.length:0}}/100</span>
+                            <textarea class="form-control fixedTextareaWidth" rows="4" ng-model="talkDesc" maxlength="100" placeholder="备注或其他备注信息"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label"></label>
+                        <span class="col-xs-10 form-span" style="line-height: normal;"><i class="icon_warn"></i>&nbsp;结课后剩余课时和学费将自动转为盈收金额！<br>注：(不包含欠费金额)</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operat_finish')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--退学杂-->
+<div class="popup_" id="operat_return_goods">
+    <h6>退学杂<span ng-click="closePopup('operat_return_goods')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="returnGoods_confirm()">
+            <div class="popup_form_content" style="max-height: 440px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line noneMargin">
+                        <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;退学杂</label>
+                    </div>
+                    <div class="popup_table">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <td>学杂名称</td>
+                                    <td>学杂原价</td>
+                                    <th>购买单价</th>
+                                    <th>数量</th>
+                                    <th>购买价格</th>
+                                    <th>退出数量</th>
+                                    <th>退款金额</th>
+                                    <th class="newHelp_after">手续费
+                                        <div class="help_icon noneWidth" data-tips="机构根据规定或者业务需要收取学员一定的费用" style="top: 12px;left: 45px;"></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in returnGoodsInfo.list">
+                                    <td title="{{x.goodsName}}{{x.goodsSpecName?'*'+x.goodsSpecName:''}}">{{x.goodsName}}{{x.goodsSpecName?'*'+x.goodsSpecName:''}}</td>
+                                    <td>{{x.goodsPriceOld}}</td>
+                                    <td>{{x.goodsPrice}}</td>
+                                    <td>{{x.num}}</td>
+                                    <td>{{x.price}}</td>
+                                    <td><input style="width: 65px" class="form-control" type="text" ng-change="returnGoodsOperate(3, x)" ng-model="x.returnNum"></td>
+                                    <td><input style="width: 65px" class="form-control" type="text" ng-change="returnGoodsOperate(2, x)" ng-model="x.returnPrice"></td>
+                                    <td>{{(x.goodsPrice * (x.returnNum?x.returnNum:0) - (x.returnPrice?x.returnPrice:0)) | m}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="popup_line noneMargin" style="margin-top:10px;">
+                        <label style="width: 100%;font-size: 14px;color: #000" class="form-label vertical_line theadleft">&nbsp;&nbsp;&nbsp;退款信息</label>
+                    </div>
+                    <!--退款方式-->
+                    <div class="popup_line">
+                        <label class="form-label">退款金额:</label>
+                        <span class="col-xs-1 form-span padRightNone main_color">￥{{returnGoodsInfo.contractMoney | m}}</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">学员账户</label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" ng-change="returnGoodsOperate(1)" ng-model="PayProjectList.student.paymentMoney" placeholder="请输入金额" yzn-filter="num_" />
+                        </div>
+                        <span class="form-span" style="color: #999;">（退款支持退款至学员账户，部分退款至其他方式）</span>
+                    </div>
+                    <!--<div class="popup_line">
+                        <label class="form-label">应退:</label>
+                        <span class="col-xs-1 form-span padRightNone">￥{{returnGoodsInfo.receivable | m}}</span>
+                        <label class="form-label width45">实退:</label>
+                        <span class="col-xs-1 form-span padRightNone">￥{{PayProjectList.other.paymentMoney | m}}</span>
+                    </div>-->
+                    <div class="popup_line">
+                        <label for="" class="form-label">退款方式</label>
+                        <div class="col-xs-10">
+                            <ul class="pay_type_icon clearfix">
+                                <!--<li ng-if="!isOnlinePayType" class="pay_type_icon_hide" ng-click="clickPayTypeIcon()"></li>-->
+                                <li ng-hide="!isOnlinePayType && x.name=='易收宝'" ng-repeat="x in PayTypeList" ng-class="{'pay_type_icon_show': PayProjectList.other.paymentMode==x.name}" ng-click="clickPayTypeIcon(x.name)"><span class="pay_type_icon_{{x.value}}"></span>{{x.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">实退金额</label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" placeholder="输入金额" ng-model="PayProjectList.other.paymentMoney" yzn-filter="num_" />
+                        </div>
+                        <div class="col-xs-1" style="padding: 0;line-height:27px;border: 1px solid #397fd4;text-align: center;">
+                            <span class="clickText" ng-click="totalPay($index)">全额退款</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">退款时间</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control dateIcon" id="refund_time_goods" name="name" ng-model="refund_time" placeholder="选择退款时间" required autocomplete="off" style="width:240px;" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label">经办人:</label>
+                        <div class="col-xs-3 padRightNone">
+                            <div class="drop_select screen_no">
+                                <span class="drop_select_icon"></span>
+                                <my-select list-name="选择经办人" list-data="{{HandlerList}}" list-field="teacherName" list-click="clickHandler(n)" list-search="true" list-all="no" list-default="{{shopTeachName}}"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows="4" placeholder="备注信息" ng-model="returnGoodsInfo.remark" style="min-width: 612px;max-width: 612px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('operat_refund')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--活动报名-活动列表-->
+<div class="popup_" id="signUp_joinActivity_">
+    <h6>活动报名<span ng-click="closePopup('signUp_joinActivity_')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <div class="popup_form_content" style="min-height: 230px;">
+            <div class="popup_scroll" isScroll="true">
+                <div class="popup_table" ng-if="joinActivityList">
+                    <table class="popup_table_head" style="width:101.5%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 90px;" ng-click="choseActivityCourse('', 'all')"><input type="checkbox" /></th>
+                                <th style="width: 200px">活动名称</th>
+                                <th style="width: 100px">活动类型</th>
+                                <th style="width: 300px">活动内容</th>
+                                <th style="width: 150px">参与时间</th>
+                                <th>使用状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="popup_table_body" style="max-height: 300px; width:101.5%;">
+                        <table>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="a in joinActivityList" ng-click="choseActivityCourse(a, 'one')">
+                                    <td style="width: 90px;"><input type="checkbox" ng-checked="a.hasChecked" /></td>
+                                    <td style="width: 200px">{{a.activityName}}</td>
+                                    <td style="width: 100px">
+                                        <span ng-if="a.activityType == 2">砍价</span>
+                                        <span ng-if="a.activityType == 3">助力</span>
+                                        <span ng-if="a.activityType == 4">拼团</span>
+                                        <span ng-if="a.activityType == 5">微传单</span>
+                                    </td>
+                                    <td style="width: 300px" title="{{a.prizeName}}">{{a.prizeName}}</td>
+                                    <td style="width: 150px;">{{a.createTime | yznDate:'yyyy-MM-dd'}}</td>
+                                    <td>
+                                        <span ng-if="a.activityType == 2 || a.activityType == 3">{{a.prizeUseStatus==0?'未使用':'已使用'}}</span>
+                                        <span ng-if="a.activityType == 4 || a.activityType == 5"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup_btn">
+            <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+            <button class="btn sure" ng-click="deter_choseActivityCourse()" type="button">确定</button>
+        </div>
+    </div>
+</div>
+
+<!--扫码支付-->
+<div class="popup_ onlinePay" id="onlinePay_zk">
+    <h6>扫码支付<span ng-click="closewithFn('onlinePay_zk')" class="popup_x icon_drop_x"></span></h6>
+    <h2>扫一扫付款</h2>
+    <h3>¥{{onlindePayData.money}}</h3>
+    <div class="onlinePay_code">
+
+    </div>
+    <p ng-click="reloadOnlinePay()">点击刷新支付状态</p>
+    <div class="onlinePay_order">
+        <strong>{{shopInfo.shopName}}</strong>
+        <!--<em>订单号：{{onlindePayData.externalOrderId}}</em>-->
+    </div>
+</div>
+
+<!--欠费分摊金额-->
+<div class="popup_ zk_arrearage_share" id="zk_arrearage_share">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="signArrearageShare_confirm()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div>
+                        <strong>缴费金额总计：<span style="color: #ff595e;">￥{{returnClass_params.arrearage_}}</span></strong>
+                        <strong style="float: right;">缴费金额分配总计：<span style="color: #ff595e;">￥{{returnClass_params.arrearageTotal_}}</span></strong>
+                    </div>
+                    <div class="popup_table noneMargin">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th>欠费课程</th>
+                                    <th>应收金额</th>
+                                    <th>缴费金额分配</th>
+                                    <th>欠费金额</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in returnClass_params.courseList">
+                                    <td>{{transferClass_params_.courseList[$index].course.courseName}}</td>
+                                    <td>{{x.amount}}</td>
+                                    <td><input style="width: 90px" type="text" ng-change="signArrearageShareChange(x)" ng-model="x.arrearage_" yzn-filter="num_" class="form-control"></td>
+                                    <td style="color: #ff595e;">￥{{x.arrearage | number:2}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeDialog()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--转校重复信息-->
+<div class="popup_ zx_repeat_student" id="zx_repeat_student">
+    <h6>重复信息<span ng-click="closePopup('zx_repeat_student')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_table noneMargin">
+                        <table class="popup_table_head">
+                            <thead>
+                                <tr>
+                                    <th width="50px;"></th>
+                                    <th>学员</th>
+                                    <th>昵称</th>
+                                    <th>年龄</th>
+                                    <th>联系方式</th>
+                                    <th>关系</th>
+                                    <th>所属顾问</th>
+                                    <th>报读情况</th>
+                                </tr>
+                            </thead>
+                            <tbody class="roll_tbody">
+                                <tr ng-repeat="x in repeat_student" ng-click="sel_student(x, $event)">
+                                    <td width="50px;" ><input type="radio" name="repeatStud" value="{{x.potentialCustomerId}}" ng-checked="x.hasChecked"></td>
+                                    <td title="{{x.name}}">{{x.name}}</td>
+                                    <td title="{{x.nickname}}">{{x.nickname}}</td>
+                                    <td ng-bind-html="caclBirthToAge(x.age,x.birthday)"></td>
+                                    <td>{{x.potentialCustomerParentPhone}}</td>
+                                    <td>{{x.potentialCustomerParentType | _relation}}</td>
+                                    <td>{{x.oaUserName}}</td>
+                                    <td>{{x.studentFrom | _studentType}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel fontRed_BgWhite" type="button" ng-click="new_student_confirm()">这是新学员</button>
+                <button class="btn sure" type="button" ng-click="hb_student_confirm()">合并学员</button>
+            </div>
+        </form>
+    </div>
+</div>

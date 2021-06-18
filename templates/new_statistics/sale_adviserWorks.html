@@ -1,0 +1,158 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">工作概况详情</div>
+</div>
+<div class="common_body new_summary_body">
+     <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">工作概况</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">工作记录</span>
+        <span ng-click="switchStudNav(3)" ng-class="{tab_nav_show: studNavJud==3}">试听统计</span>
+    </div>
+    <div class="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>新增潜客</th>
+                    <th>完成签约</th>
+                    <th>无效潜客</th>
+                    <th>沟通人数</th>
+                    <th>成单率</th>
+                </tr>
+            </thead>
+            <tbody class="course_tbody">
+                <tr>
+                    <td>本周</td>
+                    <td class="">{{dataTotal.weekAddPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.weekAddContractTotal}}</td>
+                    <td class="">{{dataTotal.weekFreezingPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.weekAddContcommunicateTotal}}</td>
+                    <td class="">{{dataTotal.weekAddContractRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>本月</td>
+                    <td class="">{{dataTotal.monthAddPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.monthAddContractTotal}}</td>
+                    <td class="">{{dataTotal.monthFreezingPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.monthAddContcommunicateTotal}}</td>
+                    <td class="">{{dataTotal.monthAddContractRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>上周</td>
+                    <td class="">{{dataTotal.lastWeekAddPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekAddContractTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekFreezingPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekAddContcommunicateTotal}}</td>
+                    <td class="">{{dataTotal.lastWeekAddContractRate|number:2}}%</td>
+                </tr>
+                <tr>
+                    <td>上月</td>
+                    <td class="">{{dataTotal.lastMonthAddPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthAddContractTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthFreezingPotentialCustomerTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthAddContcommunicateTotal}}</td>
+                    <td class="">{{dataTotal.lastMonthAddContractRate|number:2}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="common_content organ">
+        <div class="common_tab" style="margin-bottom: 15px;padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+            <ul class="ul_left clearfix">
+                <li>
+                    <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择时间段"  autocomplete="off" >
+                </li>
+            </ul>
+        </div>
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="li_left date" style="margin-left:0;">
+                        <ul>
+                            <li ng-click="switchStudNav_(0)" ng-class='{tab_active: studNavJud_==0}'>日</li>
+                            <li ng-click="switchStudNav_(1)" ng-class='{tab_active: studNavJud_==1}'>周</li>
+                            <li ng-click="switchStudNav_(2)" ng-class='{tab_active: studNavJud_==2}'>月</li>
+                        </ul>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="changeAdviser(n)" list-sort="false" list-search="true"></my-select>
+                    </li>
+                    <li class="li_left margin_lf_15">
+                        <my-select list-name="新增潜客" my-id="class_type" list-data="{{screen_classType}}" list-field="name" list-click="changeClassType(n)"  list-all="no" list-sort="false" list-defalut="{{typeName}}"></my-select>
+                    </li>
+                </ul>
+            </div>
+            <!--统计图-->
+            <div class="summary_classify">
+                <div class="summary_classify_d1" >
+                    <span>单位:&nbsp;人&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="main_echart">
+                <div class="show_echart" id="mainechart">
+                    <!--echart统计图  容器-->
+                </div>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <ul class="ul_left clearfix">
+                <li class="newHelp_before" style="padding-left: 20px;margin-top:6px;">
+                   <span>统计规则 </span>
+                   <div style="top:0;" class="help_icon noneWidth" data-tips="新增潜客：按潜客录入时间统计，新增潜客的人数之和（包含名单转潜客和潜客登记）<br>  
+潜客再分配（得到）：按潜客分配至顾问的时间统计，新顾问获得的潜客数量<br>
+潜客再分配（失去）：按潜客分配至新顾问的时间统计，原顾问失去的潜客数量<br>
+完成签约：按订单时间统计，完成签约的人数之和<br>
+无效潜客：按标为无效的操作时间统计，无效潜客的人数之和<br>
+沟通人数：按沟通记录时间统计，至少沟通过一次的潜客人数之和<br>
+成单率：完成签约÷（完成签约+无效潜客）"></div>
+                </li>
+                <li class="common_tab_libtn" style="float: right;">
+                    <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                </li>
+            </ul>
+            <table class="table" style="margin-bottom:0">
+                <thead>
+                    <tr class="head-tr-col">
+                        <th style="border-right:none;"></th>
+                        <th></th>
+                        <th colspan="2" class="textAlignCenter">潜客再分配</th>
+                        <th style="border-right:none;"></th>
+                        <th style="border-right:none;"></th>
+                        <th style="border-right:none;"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <thead my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="8">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.addPotentialCustomerTotal}}</td>
+                        <td class="textAlignCenter">{{x.getPotentialCustomerTotal}}</td>
+                        <td class="textAlignCenter rightBorder">{{x.losePotentialCustomerTotal}}</td>
+                        <td class="textAlignCenter">{{x.addContractTotal}}</td>
+                        <td class="textAlignCenter">{{x.freezingPotentialCustomerTotal}}</td>
+                        <td class="textAlignCenter">{{x.communicateTotal}}</td>
+                        <td class="textAlignCenter">{{x.addContractRate|number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td>总计</td>
+                    <td class="textAlignCenter main_color rightBorder">{{totalData.addPotentialCustomerTotal_total}}</td>
+                    <td class="textAlignCenter main_color">-</td>
+                    <td class="textAlignCenter main_color rightBorder">-</td>
+                    <td  class="textAlignCenter main_color">{{totalData.addContractTotal_total}}</td>
+                    <td  class="textAlignCenter main_color">{{totalData.freezingPotentialCustomerTotal_total}}</td>
+                    <td  class="textAlignCenter main_color">{{totalData.communicateTotal_total}}</td>
+                    <td  class="textAlignCenter main_color">{{(totalData.addContractTotal_total/(totalData.addContractTotal_total+totalData.freezingPotentialCustomerTotal_total))*100|number:2}}%</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

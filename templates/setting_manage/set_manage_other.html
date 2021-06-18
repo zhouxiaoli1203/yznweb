@@ -1,0 +1,740 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}" ng-if="routerBefore">
+    <div class="back_icon icon_return" ng-click="routerSkip(routerBefore)">返回</div>
+</div>
+<div class="common_body visit_common" ng-style="{'margin-top':routerBefore?'34px':'0px'}">
+    <div class="tab_nav">
+        <span ng-repeat="x in tabMenu" ng-click="switchVisitNav(x.tab)" ng-class="{tab_nav_show: visitNavJud==x.tab}">{{x.name}}</span>
+    </div>
+
+    <div class="center_body" ng-if='visitNavJud==1'>
+        <div class="clearfix">
+            <div class="tab_course_history">
+                <div ng-click="tabSwitch(1)" ng-class="{bg_active:tabIndex_1 == 1}">打印设置</div>
+                <div ng-click="tabSwitch(2)" ng-class="{bg_active:tabIndex_1 == 2}">报名须知</div>
+                <div ng-click="tabSwitch(3)" ng-class="{bg_active:tabIndex_1 == 3}">收款码配置</div>
+            </div>
+        </div>
+        <div ng-if="tabIndex_1 == 1">
+            <div class="setPrint mt15">
+                <form class="popup_form" role="form">
+                    <div class="popup_form_content">
+                        <!-- <div class="popup_scroll" isScroll="true"> -->
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">logo:</label>
+                            <div class="col-xs-10">
+                                <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                    <img src="{{BillSettingInfo.logo}}" alt="" />
+                                    <span class="shop_img_msk"><em ng-click="add_organInfo('logo')" style="margin:32px auto 0">{{officialData.homeImg?'更换图片':'添加图片'}}</em></span>
+                                </div>
+                                <i ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete" ng-click="BillSettingInfo.logo = ''"></i>
+                                <ul class="printTips">
+                                    <li>建议尺寸800*800像素，图片支持JPG、PNG格式 </li>
+                                    <li>请尽量试用文字logo或镂空logo</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">校区名称:</label>
+                            <div class="col-xs-5" style="width: 390px !important;">
+                                <input type="text" class="form-control" autocomplete="off" placeholder="校区名称，展示在收据抬头位置" ng-model="BillSettingInfo.billSettingTitle">
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">联系电话:</label>
+                            <div class="col-xs-5" style="width: 390px !important;">
+                                <input type="text" class="form-control" autocomplete="off" placeholder="请输入校区联系电话" ng-model="BillSettingInfo.billSettingPhone">
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">校区地址:</label>
+                            <div class="col-xs-10" style="width: 630px !important;">
+                                <input type="text" class="form-control" autocomplete="off" placeholder="请输入校区地址" ng-model="BillSettingInfo.billSettingAddress">
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">二维码:</label>
+                            <div class="col-xs-10">
+                                <div class="min_official_img icon_noimg shop_img" ng-mouseover="imgover($event,'change')" ng-mouseout="imgout($event,'change')">
+                                    <img src="{{BillSettingInfo.miniWebsite}}" alt="" />
+                                    <span class="shop_img_msk"><em ng-click="add_organInfo('miniWebsite')" style="margin:32px auto 0">{{officialData.homeImg?'更换图片':'添加图片'}}</em></span>
+                                </div>
+                                <i ng-mouseover="imgover($event,'delete')" ng-mouseout="imgout($event,'delete')" class="icon_newdelete" ng-click="BillSettingInfo.miniWebsite = ''"></i>
+                                <ul class="printTips" style="margin-top:70px;">
+                                    <li>可上传微信公众号二维码 </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="popup_line">
+                            <label class="form-label" style="width: 54px">附加信息:</label>
+                            <div class="col-xs-10" style="width: 630px !important">
+                                <span class="input_words">{{BillSettingInfo.billSettingDesc?BillSettingInfo.billSettingDesc.length:0}}/2000</span>
+                                <textarea class="form-control" style="max-width:100%;" maxlength="2000" rows="3" ng-model="BillSettingInfo.billSettingDesc" placeholder="可填写报名须知，近期宣传信息或祝福语"></textarea>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <div class="popup_btn" style="height: auto;">
+                        <button class="btn sure" style="float:inherit;margin:0 auto" ng-click="updateBillSettingInfo()">保存</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+        <div ng-if="tabIndex_1 == 2">
+            <div class="clearfix">
+                <div class="pull-left" style="margin-top: 16px;">
+                    填写后，学员在线上购课时，必须勾选
+                    <我已阅读并同意《报名须知》>，包含商城报名、活动报名以及推送订单。
+                </div>
+            </div>
+            <div class="mt15">
+                <textarea class="form-control" id="textcontain" style="width: 100%;"></textarea>
+            </div>
+            <div class="popup_btn" style="height: auto;">
+                <button class="btn sure" style="float:inherit;margin:0 auto" ng-click="needToknowSub()">保存</button>
+            </div>
+        </div>
+        <div ng-if="tabIndex_1 == 3">
+            <div class="clearfix">
+                <p class="pull-left" style="margin-top:12px;"><i class="setWarn"></i>配置家长扫收款码时，需要填写的字段内容</p>
+            </div>
+            <div class="table-responsivecharge_table mt15">
+                <table class="table table-hover">
+                    <thead my-thead='[{"name":"选项"},{"name":"显示选项","align":"center"},{"name":"必填","align":"center"}]'></thead>
+                    <tbody class="course_tbody">
+                        <tr>
+                            <td>学员姓名</td>
+                            <td class="textAlignCenter">显示</td>
+                            <td class="textAlignCenter">必填</td>
+                        </tr>
+                        <tr>
+                            <td>手机号码</td>
+                            <td><span ng-click="operateOption('phoneShow')" ng-class="{'enable_showcourse': h5_pay_options.phoneShow == 1, 'disable_showcourse': h5_pay_options.phoneShow !== 1}"></span></td>
+                            <td><span ng-click="operateOption('phoneNeed')" ng-class="{'enable_showcourse': h5_pay_options.phoneNeed == 1, 'disable_showcourse': h5_pay_options.phoneNeed !== 1}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>备注</td>
+                            <td><span ng-click="operateOption('descShow')" ng-class="{'enable_showcourse': h5_pay_options.descShow == 1, 'disable_showcourse': h5_pay_options.descShow !== 1}"></span></td>
+                            <td><span ng-click="operateOption('descNeed')" ng-class="{'enable_showcourse': h5_pay_options.descNeed == 1, 'disable_showcourse': h5_pay_options.descNeed !== 1}"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="center_body" ng-if='visitNavJud==2'>
+        <div class="clearfix">
+            <div class="tab_course_history">
+                <div ng-click="tabSwitch(1)" ng-class="{bg_active:tabIndex_2 == 1}">老师通知</div>
+                <div ng-click="tabSwitch(2)" ng-class="{bg_active:tabIndex_2 == 2}">学员通知</div>
+                <div ng-click="tabSwitch(3)" ng-class="{bg_active:tabIndex_2 == 3}">短信设置</div>
+            </div>
+        </div>
+        <div ng-if="tabIndex_2 == 1">
+            <div class="table-responsivecharge_table mt15">
+                <table class="table table-hover tableNoneRightborder">
+                    <thead my-thead="{{nameListThead_2}}"></thead>
+                    <tbody class="demo_tbody" ng-if="!messageSetList1">
+                        <tr>
+                            <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="course_tbody">
+                        <tr ng-repeat="x in messageSetList1">
+                            <td>{{x.name}}</td>
+                            <td title="{{x.description}}">{{x.description}}</td>
+                            <td ng-if="x.wxappStatus!=null"><span ng-click="operationList_msg(1, x)" ng-class="{'enable_showcourse': x.wxappStatus, 'disable_showcourse': !x.wxappStatus}"></span></td>
+                            <td ng-if="x.wxappStatus==null" style="text-align: center;">-</td>
+                            <td><span ng-click="operationList_msg(2, x)" ng-class="{'enable_showcourse': x.smsStatus, 'disable_showcourse': !x.smsStatus}"></span></td>
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-if="x.wxappPreivew" ng-click="operationList_msg(4, x)">应用端效果图</span>
+                                <span class="clickText" ng-if="x.smsPreview" ng-click="operationList_msg(3, x)">短信效果图</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-if="tabIndex_2 == 2">
+            <div class="mt15">自定义通知后缀(该后缀只用于“公众号”通知)</div>
+            <div class="popup_line mt5">
+                <div class="popup_rt">
+                    <textarea class="form-control fixedTextareaWidth" rows="4" ng-blur="set_confirm()" ng-model="$parent.$parent.smsMsg" placeholder='感谢您对{{currentShop.shopName}}的支持！' maxlength="200"></textarea>
+                </div>
+            </div>
+            <div class="table-responsivecharge_table mt15">
+                <table class="table table-hover tableNoneRightborder">
+                    <thead my-thead="{{nameListThead_2}}"></thead>
+                    <tbody class="demo_tbody" ng-if="!messageSetList2">
+                        <tr>
+                            <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="course_tbody">
+                        <tr ng-repeat="x in messageSetList2">
+                            <td>{{x.name}}</td>
+                            <td title="{{x.description}}">{{x.description}}</td>
+                            <td ng-if="x.wxappStatus!=null"><span ng-click="operationList_msg(1, x,$index == 0)" ng-class="{'enable_showcourse': x.wxappStatus, 'disable_showcourse': !x.wxappStatus}"></span></td>
+                            <td ng-if="x.wxappStatus==null" style="text-align: center;">-</td>
+                            <td ng-if="!x.special"><span ng-click="operationList_msg(2, x)" ng-class="{'enable_showcourse': x.smsStatus, 'disable_showcourse': !x.smsStatus}"></span></td>
+                            <td ng-if="x.special" style="text-align: center;">-</td>
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-if="x.wxappPreivew && x.id != 22" ng-click="operationList_msg(4, x)">应用端效果图</span>
+                                <span class="clickText" ng-if="x.smsPreview" ng-click="operationList_msg(3, x)">短信效果图</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-if="tabIndex_2 == 3">
+            <form class="popup_form" role="form" ng-submit="confirm_updateInfo()">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">短信预警设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;">预警设置:</label>
+                        <div class="col-xs-8 message_early_p">
+                            <p>短信条数低于</p><input type="text" class="form-control" ng-model="messageTotleInfo.smsWarningNum" yzn-filter="num" />
+                            <p>条数，将提示预警</p>
+                            <span style="position: relative; margin: 6px 0 0 5px; float: left;color: #f5787c;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help">
+                            <span class="tippaopao" style="width: 200px;">如果剩余短信条数不足，系统将自动关闭所有短信提醒</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;">手机提醒:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" style="float: left; width: 140px;" ng-model='messageTotleInfo.smsWarningPhone' yzn-filter="num" maxlength="11" />
+                            <span style="position: relative; margin: 6px 0 0 5px; float: left;color: #f5787c;" ng-mouseenter="tipShow($event)" ng-mouseleave="tipHide($event)" class="icon_head_help">
+                            <span class="tippaopao" style="width: 200px;">当短信条数不足xx条时，短信通知至该手机号</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">短信签名设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;">签名设置:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words" style="right: 20px;">{{messageTotleInfo.signName.length?messageTotleInfo.signName.length:0}}/12</span>
+                            <input type="text" class="form-control" ng-model="messageTotleInfo.signName" placeholder="输入限制2~12个字符，建议输入机构名字" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;"></label>
+                        <div class="col-xs-8">
+                            <span class="form-span" style="color: #F6B352;">注：本签名将使用至短信通知抬头，如未设置将使用「易知鸟」为抬头</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <span class="rollcall_head_name" style="font-size: 14px;">生日祝福模板设置</span>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;">通知内容:</label>
+                        <div class="col-xs-9">
+                            <span style="position: absolute;left: 18px;top: 4px;color: #999;">【{{messageTotleInfo.signName?messageTotleInfo.signName:'短信签名'}}】某某某</span>
+                            <span class="input_words" style="right: 19px;">{{messageTotleInfo.signName?(messageTotleInfo.birthdayTemplate.length + messageTotleInfo.signName.length + 5):messageTotleInfo.birthdayTemplate.length}}/200</span>
+                            <textarea ng-trim="false" class="form-control" style="height: 94px;resize: none;text-indent: 9em;" ng-style="{'text-indent': (messageTotleInfo.signName?(messageTotleInfo.signName.length + 5):9) + 'em'}" ng-model="messageTotleInfo.birthdayTemplate" placeholder="同学，祝你生日快乐！愿这特殊的日子里，你的每时每刻都充满欢乐。"
+                                maxlength="{{195 - messageTotleInfo.signName.length}}"></textarea>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label for="" class="form-label" style="width: 52px;"></label>
+                        <div class="col-xs-8">
+                            <span class="form-span" style="color: #F6B352;">注：移动/联通/电信每条70字，普通短信70字符，长短信67字符为一条计费。</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn" style="height: auto;">
+                    <button class="btn sure" style="float:inherit;margin:0 auto" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="center_body" ng-if='visitNavJud==3'>
+        <form class="popup_form" role="form" ng-submit="confirm_set()">
+            <div class="common_content">
+                <div class="table-responsivecharge_table">
+                    <table class="table table-hover abnormal">
+                        <thead>
+                            <tr>
+                                <th width='178px'>功能</th>
+                                <th>功能描述</th>
+                                <th width='150px' class="textAlignCenter">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="demo_tbody">
+                            <tr>
+                                <td>自动点名</td>
+                                <td>开启后，系统将根据上课结束时间自动完成点名(学员刷脸签到后；则点名结果为"到课"，反之为"缺席")</td>
+                                <td class="textAlignCenter"><span style="margin-top: 10px;cursor: pointer;" ng-class='{"isEnable":change_confirm,"isDisable":!change_confirm}' ng-click="changeSet()"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--周一到周五-->
+            <div class="popup_line">
+                <div class="mb10 clearfix">
+                    <div class="vertical_line_ pull-left relative_dm" style="margin-top:12px;">&nbsp;&nbsp;&nbsp;周一到周五</div>
+                    <div class="btn_empty_red pull-right" style="margin-right:0" ng-click="addTime(1)"><i class="icon_attend_6"></i>新增考勤时间段</div>
+                </div>
+                <div class="cursor popup_form_content">
+                    <div class="popup_scroll no_padding">
+                        <div class="popup_table" style="border:0;">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <th style="width:100%;">考勤批次</th>
+                                    <th style="width:110px;">签到开始时间</th>
+                                    <th style="width:110px;">签到结束时间</th>
+                                    <th style="width:110px;" class="textAlignCenter">是否需要签退</th>
+                                    <th style="width:110px;">签退开始时间</th>
+                                    <th style="width:110px;">签退结束时间</th>
+                                    <th style="width:100px;" class="textAlignCenter">操作</th>
+                                </thead>
+                                <tbody class="demo_tbody" ng-if="workList.length == 0">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="item in workList">
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="item.rulesName" maxlength="10" required/>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signInBeginTime" ng-mouseover="selTimeFrame(item, $event, 1)" required/>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signInEndTime" ng-mouseover="selTimeFrame(item, $event, 2)" required/>
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            <span ng-class='{"isYesToggle":item.signBackStatus=="1","isNoToggle":item.signBackStatus=="0"}' ng-click="changeStatus(item)"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signBackBeginTime" ng-mouseover="selTimeFrame(item, $event, 3)" ng-disabled="item.signBackStatus=='0'" ng-required="item.signBackStatus=='1'" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signBackEndTime" ng-mouseover="selTimeFrame(item, $event, 4)" ng-disabled="item.signBackStatus=='0'" ng-required="item.signBackStatus=='1'" />
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            <span class="icon_delete clickText" ng-click="deleteItem(workList,$index)"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--周六周日-->
+            <div class="popup_line">
+                <div class="mb10 clearfix">
+                    <div class="vertical_line_ pull-left relative_dm" style="margin-top:12px;">&nbsp;&nbsp;&nbsp;周六周日</div>
+                    <div class="btn_empty_red pull-right" style="margin-right:0" ng-click="addTime(2)"><i class="icon_attend_6"></i>新增考勤时间段</div>
+                </div>
+                <div class="cursor popup_form_content">
+                    <div class="popup_scroll no_padding">
+                        <div class="popup_table" style="border:0;">
+                            <table class="popup_table_head">
+                                <thead>
+                                    <th style="width:100%;">考勤批次</th>
+                                    <th style="width:110px;">签到开始时间</th>
+                                    <th style="width:110px;">签到结束时间</th>
+                                    <th style="width:110px;" class="textAlignCenter">是否需要签退</th>
+                                    <th style="width:110px;">签退开始时间</th>
+                                    <th style="width:110px;">签退结束时间</th>
+                                    <th style="width:100px;" class="textAlignCenter">操作</th>
+                                </thead>
+                                <tbody class="demo_tbody" ng-if="weekList.length == 0">
+                                    <tr>
+                                        <td class="textAlignCenter" colspan="7">没有相关数据</td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="roll_tbody">
+                                    <tr ng-repeat="item in weekList">
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="item.rulesName" maxlength="10" required/>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signInBeginTime" ng-mouseover="selTimeFrame(item, $event, 1)" required/>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signInEndTime" ng-mouseover="selTimeFrame(item, $event, 2)" required/>
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            <span ng-class='{"isYesToggle":item.signBackStatus=="1","isNoToggle":item.signBackStatus=="0"}' ng-click="changeStatus(item)"></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signBackBeginTime" ng-mouseover="selTimeFrame(item, $event, 3)" ng-disabled="item.signBackStatus=='0'" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control dateIcon_2" ng-model="item.signBackEndTime" ng-mouseover="selTimeFrame(item, $event, 4)" ng-disabled="item.signBackStatus=='0'" />
+                                        </td>
+                                        <td class="textAlignCenter">
+                                            <span class="icon_delete clickText" ng-click="deleteItem(weekList,$index)"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn" style="height: auto;">
+                <button class="btn sure" style="float:inherit;margin:0 auto" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="center_body" ng-if='visitNavJud==4'>
+        <div class="clearfix">
+            <div class="tab_course_history">
+                <div class="line28" ng-click="tabSwitch(1)" ng-class="{bg_active:tabIndex_4 == 1}">员工假期</div>
+                <div class="line28" ng-click="tabSwitch(2)" ng-class="{bg_active:tabIndex_4 == 2}">考勤设置</div>
+            </div>
+            <div class="btn_empty_red pull-right" style="margin-right:0" ng-if="tabIndex_4 == 1" ng-click="operateBtn(3)"><i class="icon_attend_6"></i>新增员工假期</div>
+            <div class="btn_empty_red pull-right" style="margin-right:0" ng-if="tabIndex_4 == 2" ng-click="operateBtn(7)"><i class="icon_attend_6"></i>新增考勤组</div>
+        </div>
+        <div ng-if="tabIndex_4 == 1">
+            <div class="popup_table mt15" style="border:0">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>员工假期</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th class="textAlignCenter">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="roll_tbody">
+                        <tr ng-if="!peoVacationList.length">
+                            <td colspan="4" class="textAlignCenter">暂未设置员工假期</td>
+                        </tr>
+                        <tr ng-repeat="x in peoVacationList">
+                            <td>{{x.holidayName}}</td>
+                            <td>{{x.holidayBeginTime | yznDate:'yyyy-MM-dd'}}</td>
+                            <td>{{x.holidayEndTime | yznDate:'yyyy-MM-dd'}}</td>
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-click="operateBtn(5, x)">编辑</span>
+                                <span class="clickText" ng-click="operateBtn(6, x)">删除</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-if="tabIndex_4 == 2">
+            <div class="popup_table mt15" style="border:0">
+                <table class="popup_table_head">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>星期</th>
+                            <th>上下班时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="roll_tbody">
+                        <tr ng-if="!dailySetList.length">
+                            <td colspan="5" class="textAlignCenter">暂未设置考勤</td>
+                        </tr>
+                        <tr ng-repeat="x in dailySetList">
+                            <td>{{x.name}}</td>
+                            <td>{{x.type==0?'固定':'排课'}}</td>
+                            <td>{{x.type==0?x.weeks:''}}</td>
+                            <td ng-if="x.type!=0"></td>
+                            <td ng-if="x.type==0">{{x.beginTime | _interception_time}}-{{x.endTime | _interception_time}}</td>
+                            <td class="operate overflow-normal">
+                                <span class="clickText" ng-click="operateBtn(11, x)">编辑</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="center_body" ng-if='visitNavJud==5'>
+        <div class="clearfix">
+            <p class="pull-left" style="margin-top:12px;"><i class="setWarn"></i>设置后，系统将根据以下字段生成“工资导入模板”</p>
+            <div class="common_tab_btn fontRed_BgWhite pull-right" ng-click="addModel('add')" style="margin-right:0"><i class="icon_addcourse"></i>新增工资表头</div>
+        </div>
+        <div class="popup_table mt10" style="border:0">
+            <table class="popup_table_head" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>工资表头</th>
+                        <th class="textAlignCenter">操作</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="">
+                <table>
+                    <tbody class="roll_tbody" ng-if="salaryTable==''||!salaryTable">
+                        <tr>
+                            <td class="textAlignCenter" colspan="3">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="roll_tbody" ng-if="salaryTable" style="max-height:370px;">
+                        <tr ng-repeat="x in salaryTable track by $index" ng-class='{"cannotMove":x.deleteStatus==0,"canMove":x.deleteStatus!=0}' ng-drop="x.deleteStatus==1" ng-drop-success="onDropComplete($index, $data, $event)" ng-drag="x.deleteStatus==1" ng-drag-data="x" style="cursor: move;">
+                            <td>{{$index+1}}</td>
+                            <td>{{x.payrollHeadName}}</td>
+                            <td class="operate overflow-normal textAlignCenter" style="cursor: default;">
+                                <span class="clickText" ng-if="x.deleteStatus==1" ng-click="addModel('edit',x)">编辑</span>
+                                <span class="clickText" ng-if="x.deleteStatus==1" ng-click="deleteModel(x)">删除</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="center_body" ng-show='visitNavJud==6'>
+        <div class="common_tab" style="padding-bottom:10px;">
+            <ul class="pot_pop_peo_nav ul_left clearfix" style="padding: 0;">
+                <li>
+                    <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="sc_type0" ng-click="changeType(false)">支出
+                </label>
+                </li>
+                <li>
+                    <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="sc_type1" ng-click="changeType(true)">收入
+                </label>
+                </li>
+                <li class="screen_onreset clickText" ng-click="onReset(true)">重置</li>
+            </ul>
+            <div class="clearfix">
+                <p class="pull-left" style="margin-top:12px;"><i class="setWarn"></i>设置后，便于新增费用记录时快速选择收支项目。</p>
+                <div class="common_tab_btn fontRed_BgWhite pull-right" ng-click="addClassify('add')" style="margin-right:0"><i class="icon_addClassify"></i>新增分类</div>
+            </div>
+        </div>
+        <div class="popup_table" style="border:0">
+            <table class="popup_table_head" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>分类名称</th>
+                        <th>类型</th>
+                        <th>备注</th>
+                        <th class="textAlignCenter">操作</th>
+                    </tr>
+                </thead>
+            </table>
+            <div>
+                <table>
+                    <tbody class="roll_tbody" ng-if="classifyList==''||!classifyList">
+                        <tr>
+                            <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="roll_tbody" ng-if="classifyList">
+                        <tr ng-repeat="x in classifyList">
+                            <td>{{x.shopCostTypeName}}</td>
+                            <td>{{x.shopCostPayType == 1?"收入":"支出"}}</td>
+                            <td title="{{x.shopCostTypeDesc}}">{{x.shopCostTypeDesc}}</td>
+                            <td class="operate overflow-normal textAlignCenter">
+                                <span class="clickText" ng-hide="x.system && x.system == 1" ng-click="addClassify('edit',x)">编辑</span>
+                                <span class="clickText" ng-hide="x.system && x.system == 1" ng-click="deletePreClassify(x)">删除</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--点击预览短信通知-->
+<div class="message_see">
+    <span class="message_see_x" ng-click='operationList_msg(5, 0)'></span>
+    <img src="{{previewImg}}" style="width:100%;height:auto;" alt="预览" />
+</div>
+
+<!--新增费用类型-->
+<div class="popup_ add_preSetClassify" id="add_preSetClassify">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="confirmClassify()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">分类名称:</label>
+                        <div class="col-xs-5" style="height:30px;">
+                            <input type="text" class="form-control" maxlength="20" placeholder="请输入分类名称" ng-model="expense.shopCostTypeName" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">分类类型:</label>
+                        <div class="col-xs-5" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="expense.shopCostPayType" value="0" required ng-disabled="operateType=='edit'"/>支出
+                            </label>
+                            <label class="checkbox-inline labelLeft">
+                                <input type="radio" name="type" ng-model="expense.shopCostPayType" value="1" required ng-disabled="operateType=='edit'"/>收入
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words">{{expense.shopCostTypeDesc?expense.shopCostTypeDesc.length:0}}/500</span>
+                            <textarea class="form-control" style="max-width:100%;max-height:100px;" maxlength="500" rows="3" ng-model="expense.shopCostTypeDesc" placeholder="请输入备注"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup('add_preSetClassify')" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--新增员工假期-->
+<div class="popup_ daily_vacation_add">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="operateBtn(4)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">员工假期：</label>
+                        <div class="col-xs-8">
+                            <input type="text" ng-model="dailyData.newAddVacation.name" class="form-control" maxlength="20" placeholder="请输入员工假期名称" autocomplete="off" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">日期：</label>
+                        <div class="col-xs-8">
+                            <input type="text" id="daily_detail_3" ng-model="dailyData.newAddVacation.time" class="form-control dateIcon" placeholder="请选择时间" autocomplete="off" required />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">描述：</label>
+                        <div class="col-xs-8">
+                            <span class="input_words">{{dailyData.newAddVacation.dec?dailyData.newAddVacation.dec.length:0}}/100</span>
+                            <textarea class="form-control" style="width: 100%;height: 60px;resize: none;" ng-model="dailyData.newAddVacation.dec" placeholder="请添加描述"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--新增考勤组-->
+<div class="popup_ daily_set_add">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="operateBtn(10)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line">
+                        <label class="form-label required">考勤组名称：</label>
+                        <div class="col-xs-4">
+                            <input type="text" ng-model="dailyData.newAddSet.name" class="form-control" maxlength="20" placeholder="请输入考勤组名称" autocomplete="off" required/>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">类型：</label>
+                        <div class="col-xs-3">
+                            <label class="checkbox-inline labelLeft checkbox-padding" style="width:77px;">
+                                <input type="radio" name="set_type" value="0" ng-model="dailyData.newAddSet.type" required>固定制
+                            </label>
+                            <label class="checkbox-inline labelLeft checkbox-padding">
+                                <input type="radio" name="set_type" value="1" ng-model="dailyData.newAddSet.type" required>排课制
+                            </label>
+                        </div>
+                        <span class="form-span" ng-if="dailyData.newAddSet.type==0" style="color: #999;">（说明：固定制，即有固定的上下班时间。）</span>
+                        <span class="form-span" ng-if="dailyData.newAddSet.type==1" style="color: #999;">（说明：排课制，即老师将按照排课时间进行考勤。）</span>
+                    </div>
+                    <div class="popup_line" ng-show="dailyData.newAddSet.type==0">
+                        <label class="form-label">工作日：</label>
+                        <div class="col-xs-10">
+                            <label class="checkbox-inline checkbox-padding" style="margin-left:5px" ng-repeat="w in weekList track by $index">
+                                <input type="checkbox" ng-model="dailyData.newAddSet.days[w]">{{w | _week}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" ng-show="dailyData.newAddSet.type==0">
+                        <label class="form-label">上班时间：</label>
+                        <div class="col-xs-3">
+                            <input type="text" id="daily_detail_4" ng-model="dailyData.newAddSet.time_1" class="form-control dateIcon_2" placeholder="请选择时间" autocomplete="off" />
+                        </div>
+                        <label class="form-label">下班时间：</label>
+                        <div class="col-xs-3">
+                            <input type="text" id="daily_detail_5" ng-model="dailyData.newAddSet.time_2" class="form-control dateIcon_2" placeholder="请选择时间" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">员工：</label>
+                        <div class="col-xs-10">
+                            <div class="teacher_select">
+                                <span ng-repeat="x in dailyData.newAddSet.peoList">{{x.shopTeacher.teacherName}}<i ng-click="operateBtn(9, $index)" class="icon_drop_x"></i></span>
+                            </div>
+                            <span style="float: left;" class="icon_name_add" ng-click="operateBtn(8)">选择员工</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--新增工资表头-->
+<div class="popup_ addSalary">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="addSalary_confirm()">
+            <div class="popup_form_content" style="max-height:462px;">
+                <div class="popup_scroll" isScroll="true">
+                    <div class="popup_line">
+                        <label class="form-label required">表头名称:</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="20" placeholder="请输入表头名称" ng-model="salaryHead.payrollHeadName" required>
+                            <span class="marginTop_7" style="color:#999;display: inline-block;">注：最多可创建15个工资表头</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeSalaryPop()" type="button">取消</button>
+                <button class="btn sure">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--员工选择筛选器-->
+<staff-sel></staff-sel>
+<style type="text/css">
+    .layui-laydate-content>.layui-laydate-list {
+        padding-bottom: 0px;
+        overflow: hidden;
+    }
+
+    .layui-laydate-content>.layui-laydate-list>li {
+        width: 50%
+    }
+
+    .merge-box .scrollbox .merge-list {
+        padding-bottom: 5px;
+    }
+</style>

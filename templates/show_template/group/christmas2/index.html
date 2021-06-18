@@ -1,0 +1,339 @@
+<div class="group_flicker">
+    <link rel="stylesheet" type="text/css" href="templates/show_template/group/christmas2/css/index.css" />
+    <div class="flicker">
+        <!--闪团首页-->
+        <div class="g_1">
+            <div class="g_1_img">
+                <img src="templates/show_template/group/christmas2/img/bg2.png" alt="" />
+                <span class="g_1_img1"></span>
+                <span class="g_1_img2"></span>
+                <span class="g_1_img3"></span>
+                <span class="g_1_img4"></span>
+                <strong></strong>
+                <em></em>
+            </div>
+            <div class="g_1_con">
+                <audio id="bacMusic" src=""></audio>
+                <div class="g_peo">
+                    <img src="templates/show_template/group/christmas/img/peo.jpg" alt="" />
+                    <p>FLY</p>
+                    <p>剩余名额<span>500</span>份</p>
+                    <p>原价<span>1200</span>元，活动价<span>1200</span>元，已闪<span>3</span>/10个</p>
+                </div>
+                <div class="g_tit">活动截止时间：<span>00</span>天<span>00</span>时<span>00</span>分<span>00</span>秒</div>
+                <div class="g_fun">
+                    <span class="g_fun_bg"></span>
+                    <div class="g_fun_con">
+                        <div class="g_1_tit">
+                            <p>xx教育夏季招生大促销</p>
+                        </div>
+                        <h3>闪团价：¥280<span>200</span></h3>
+                        <div class="g_fun_ul">
+                            <ul>
+                                <li><img src="templates/show_template/group/christmas/img/header.jpg" alt="" /><span>团长 </span></li>
+                                <li><img src="templates/show_template/group/christmas/img/header.jpg" alt="" /></li>
+                                <li><img src="templates/show_template/group/christmas/img/header.jpg" alt="" /></li>
+                                <li><img src="templates/show_template/group/christmas/img/header.jpg" alt="" /></li>
+                            </ul>
+                        </div>
+                        <div class="g_btns">
+                            <button class="g_btn g_btn2" btnType="first"><span>发起拼团</span><em>预付1000元</em></button>
+                            <button class="g_btn g_btn3" btnType="move"><span>快速参团</span><em>预付1000元</em></button>
+                        </div>
+                        <h2>该团已经凑齐，您可以参与其他的拼团或发起拼团</h2>
+                        <h4></h4>
+                    </div>
+                </div>
+                <span class="r_music" id="bacMusicBtn" btnType="on"></span>
+            </div>
+        </div>
+        <div class="g_bg_2">
+            <!--奖品信息-->
+            <div class="g_2">
+                <div class="g_text">
+                    <span class="g_text_bg"></span>
+                    <h3 class="g_head g_head_1"></h3>
+                    <div class="g_text_con">
+                        <p>麦兜成长教育原价1000元幼儿小班课低至200，限时闪团抢购。</p>
+                        <img src="templates/show_template/group/spell11/img/prizeimg.png" alt="" />
+                    </div>
+                </div>
+            </div>
+            <!--正在拼团-->
+            <div class="g_5">
+                <div class="g_text">
+                    <h3 class="g_head g_head_2"></h3>
+                    <div class="g_text_con">
+                        <ul class="grop_list">
+                            <li><img alt="用户头像" src="templates/show_template/group/christmas/img/header.jpg" /><strong>李**的团</strong><em>还差<var>1</var>人成团</em><span>参与此团</span></li>
+                            <li><img alt="用户头像" src="templates/show_template/group/christmas/img/header.jpg" /><strong>李**的团</strong><em>还差<var>1</var>人成团</em><span>参与此团</span></li>
+                            <li><img alt="用户头像" src="templates/show_template/group/christmas/img/header.jpg" /><strong>李**的团</strong><em>还差<var>1</var>人成团</em><span>参与此团</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--活动规则-->
+            <div class="g_3">
+                <div class="g_text">
+                    <span class="g_text_bg"></span>
+                    <h3 class="g_head g_head_3"></h3>
+                    <div class="g_text_con">
+                        <p>麦兜成长教育原价1000元幼儿小班课低至200，限时闪团抢购。</p>
+                    </div>
+                </div>
+            </div>
+            <!--机构信息-->
+            <div class="g_4">
+                <div class="g_text">
+                    <span class="g_text_bg"></span>
+                    <h3 class="g_head g_head_4"></h3>
+                    <div class="g_text_con">
+                        <p>麦兜成长教育原价1000元幼儿小班课低至200，限时闪团抢购。</p>
+                    </div>
+                </div>
+            </div>
+            <!--底部信息-->
+            <div class="copyright pos_ele_5">
+                <span></span>
+                <em></em>
+                <p class="copyright_erweima"></p>
+                <p class="copyright_organ">易知鸟教育培训</p>
+                <p class="copyright_phone">0571-85789582</p>
+                <p class="copyright_dress">杭州市上城区香榭商务大厦8楼8G</p>
+                <p style="margin-top: 0.5rem;"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.showTimer = true;
+        //渲染数据
+        function getShowData(data) {
+            if (!data) {
+                var data = h5_tempalteData['group/christmas'];
+            }
+            console.log('修改了数据', data);
+            var music_url = '';
+            var organHtml = '';
+            var peoHtml = '<img src="templates/show_template/group/christmas/img/peo.jpg"><p>FLY</p><p>剩余名额<span>' + (data.prizeInfo.totalNumber * data.prizeInfo.selfNumber) + '</span>份</p>';
+            peoHtml += '<p>原价<span>' + data.prizeInfo.originalPrice + '</span>元,闪团价<span>' + data.prizeInfo.floorPrice + '</span>元，<span>' + data.prizeInfo.totalNumber + '</span>人成团。</p>';
+
+            //判断是音乐库音乐还是自定义的音乐
+            if (data.basicInfo.musicType == '0') {
+                //判断用户是否选择了背景音乐
+                if (data.basicInfo.bacMusic.musicId) {
+                    //根据用户选择的音乐id去列表中寻找到音乐链接
+                    for (var i = 0; i < data.musicList.length; i++) {
+                        if (data.basicInfo.bacMusic.musicId == data.musicList[i].musicId) {
+                            music_url = data.musicList[i].musicUrl;
+                        }
+                    }
+                } else {
+                    music_url = '';
+                }
+            } else {
+                music_url = data.basicInfo.musicUrl;
+            };
+
+            //渲染音乐
+            $('#bacMusicBtn').hide();
+            $('#bacMusicBtn').attr('btnType', 'off');
+            $('#bacMusicBtn').removeClass('music_rotate');
+            if (music_url) {
+                $('#bacMusic').attr('src', music_url);
+                if (data.basicInfo.musicType == '0') {
+                    $('#bacMusicBtn').show();
+                    $('#audition_music').attr('btnType', 'on');
+                    $('#audition_music')[0].className = 'add_info play_music';
+                }
+            } else {
+                $('#bacMusic').attr('src', '');
+                if (data.basicInfo.musicType == '0') {
+                    $('#audition_music').attr('btnType', 'off');
+                    $('#audition_music')[0].className = 'add_info off_music';
+                }
+            }
+
+            /*--------渲染html信息--------*/
+            $('.g_peo').html(peoHtml); //渲染人物信息
+            $('.g_1_tit p').html(data.basicInfo.activityName); //渲染活动名称
+            $('.g_3 .g_text_con p').html(data.prizeInfo.activityRule.replace(/\n/g, "<br/>")); //活动规则
+            var prizeHtml = '';
+            //奖品列表信息
+            for (var i = 0; i < data.prizeInfo.describeList.length; i++) {
+                if (data.prizeInfo.describeList[i].type == 'text') {
+                    prizeHtml += '<p>' + data.prizeInfo.describeList[i].value.replace(/\n/g, "<br/>") + '</p>';
+                } else {
+                    prizeHtml += '<img src=' + data.prizeInfo.describeList[i].value + ' alt="奖品描述图片">';
+                }
+            }
+            $('.g_2 .g_text_con').html(prizeHtml);
+
+            //渲染底部信息
+            if (data.organ.code) {
+                $('.copyright_erweima').show();
+                $('.copyright_erweima').html('<img src=' + data.organ.code + '> alt="校区二维码"');
+            } else {
+                $('.copyright_erweima').hide();
+            };
+            $('.copyright_organ').html(data.organ.name);
+            $('.copyright_phone').html('电话: ' + data.organ.phone.join('  '));
+            $('.copyright_dress').html('地址: ' + data.organ.address);
+            //渲染校区介绍信息
+            for (var i = 0; i < data.organInfo.length; i++) {
+                if (data.organInfo[i].type == 'text') {
+                    organHtml += '<p>' + data.organInfo[i].value.replace(/\n/g, "<br/>") + '</p>';
+                } else {
+                    organHtml += '<img src=' + data.organInfo[i].value + ' alt="校区介绍图片">';
+                }
+            };
+            $('.g_4 .g_text_con').html(organHtml);
+        }
+
+        //小鹿眼睛动画
+        setInterval(function() {
+            if ($('.g_1_img6').hasClass('g_1_img6_2')) {
+                $('.g_1_img6').removeClass('g_1_img6_2');
+            } else {
+                $('.g_1_img6').addClass('g_1_img6_2');
+            }
+        }, 3000);
+
+        //雪花效果
+        function snowEffect(window, ele, undefined) {
+            console.log(ele)
+                // 存储所有的雪花
+            const snows = [];
+
+            // 下落的加速度
+            const G = 0.01;
+
+            const fps = 60;
+
+            // 速度上限，避免速度过快
+            const SPEED_LIMIT_X = 1;
+            const SPEED_LIMIT_Y = 1;
+
+            const W = ele.width();
+            const H = ele.height();
+            console.log(H);
+
+            let tickCount = 150;
+            let ticker = 0;
+            let lastTime = Date.now();
+            let deltaTime = 0;
+
+            let canvas = null;
+            let ctx = null;
+
+            let snowImage = null;
+
+            window.requestAnimationFrame = (function() {
+                return window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame ||
+                    window.msRequestAnimationFrame ||
+                    function(callback) {
+                        setTimeout(callback, 1000 / fps);
+                    }
+            })();
+
+            function Snow(x, y, radius) {
+                this.x = x;
+                this.y = y;
+                this.sx = 0;
+                this.sy = 0;
+                this.deg = 0;
+                this.radius = radius;
+                this.ax = Math.random() < 0.5 ? 0.005 : -0.005;
+            }
+
+            Snow.prototype.update = function() {
+                const deltaDeg = Math.random() * 0.6 + 0.2;
+
+                this.sx += this.ax;
+                if (this.sx >= SPEED_LIMIT_X || this.sx <= -SPEED_LIMIT_X) {
+                    this.ax *= -1;
+                }
+
+                if (this.sy < SPEED_LIMIT_Y) {
+                    this.sy += G;
+                }
+
+                this.deg += deltaDeg;
+                this.x += this.sx;
+                this.y += this.sy;
+            }
+
+            Snow.prototype.draw = function() {
+                const radius = this.radius;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.deg * Math.PI / 180);
+                ctx.drawImage(snowImage, -radius, -radius, radius * 2, radius * 2);
+                ctx.restore();
+            }
+
+            function createCanvas() {
+                canvas = document.createElement('canvas');
+                console.log(canvas);
+                ctx = canvas.getContext('2d');
+            }
+
+            init();
+
+            function init() {
+                createCanvas();
+                canvas.width = W;
+                canvas.height = H;
+                canvas.style.cssText = 'position: absolute; top: 0; left: 0; pointer-events: none;';
+                ele[0].appendChild(canvas);
+                // 小屏幕时延长添加雪花时间，避免屏幕上出现太多的雪花
+                //              if(W < 768) {
+                //                  tickCount = 350;
+                //              }
+
+                snowImage = new Image();
+                snowImage.src = 'templates/show_template/group/christmas/img/snow.png';
+
+                loop();
+            }
+
+            function loop() {
+                try {
+                    if (!window.showTimer) return;
+                    requestAnimationFrame(loop);
+
+                    ctx.clearRect(0, 0, W, H);
+
+                    const now = Date.now();
+                    deltaTime = now - lastTime;
+                    lastTime = now;
+                    ticker += deltaTime;
+
+                    if (ticker > tickCount) {
+                        snows.push(
+                            new Snow(Math.random() * W, 0, Math.random() * 5 + 5)
+                        );
+                        ticker %= tickCount;
+                    }
+
+                    const length = snows.length;
+                    snows.map(function(s, i) {
+                        s.update();
+                        s.draw();
+                        if (s.y >= H) {
+                            snows.splice(i, 1);
+                        }
+                    });
+                } catch (arr) {
+                    console.log(arr);
+                    window.showTimer = false;
+                }
+            }
+        };
+        setTimeout(function() {
+            snowEffect(window, $('.flicker'));
+        });
+    </script>
+</div>

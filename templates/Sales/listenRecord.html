@@ -1,0 +1,139 @@
+<div class="common_body stud_common">
+    <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">试听记录</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">试听课课表</span>
+    </div>
+    <!-- 搜索 -->
+    <div class="common_tab">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" placeholder="请选择试听时间"  autocomplete="off" >
+            </li>
+        </ul>
+        <ul class="ul_left clearfix searchByDrop">
+            <li>
+                <my-select list-name="课程" list-data="{{courseList}}" list-field="courseName" list-click="changeCourse(n)" list-search="true"></my-select>
+            </li>
+            <li>
+                <my-select list-name="老师" list-data="{{teacherList}}" list-field="teacherName" list-click="changeTeach(n)" list-search="true"></my-select>
+            </li>
+             <li ng-show="isAllpotential">
+                <my-select list-name="顾问" list-data="{{screen_adviser}}" list-field="teacherName" list-click="searchByAdviser(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="auditionRecordStatus === 0" ng-click="changesType($event,0)">已安排
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="auditionRecordStatus === 1" ng-click="changesType($event,1)">已试听
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="auditionRecordStatus === 2" ng-click="changesType($event,2)">未到课
+                </label>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox" class="checkbox-inline labelLeft" ng-checked="auditionRecordStatus === 3" ng-click="changesType($event,3)">已取消
+                </label>
+            </li>
+            <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+        </ul>
+    </div>
+
+    <!-- 列表 -->
+    <div class="common_content table-box">
+        <div class="table-responsivecharge_table table-center">
+            <table class="table table-hover tableNoneRightborder">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="listenList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="10">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" >
+                    <tr ng-click="tableTr(x)" ng-repeat="x in listenList">
+                        <td></td>
+                        <td></td>
+                        <td>{{x.oaUserName}}</td>
+                        <td title="{{x.courseName}}">{{x.courseName}}</td>
+                        <td title="{{x.className}}">{{x.className}}</td>
+                        <td title='{{x.arrangingCourses.arrangingCoursesBeginDate?(x.arrangingCourses.arrangingCoursesBeginDate | beginEndDate: x.arrangingCourses.arrangingCoursesEndDate: "yyWeek_hh" : x.arrangingCourses.arrangingCoursesWeek):""}}'>
+                            {{x.arrangingCourses.arrangingCoursesBeginDate?(x.arrangingCourses.arrangingCoursesBeginDate | beginEndDate: x.arrangingCourses.arrangingCoursesEndDate: 'yyWeek_hh' : x.arrangingCourses.arrangingCoursesWeek):""}}
+                        </td>
+                        <td title="{{x.teacherStr}}">{{x.teacherStr}}</td>
+                        <td title="{{x.classroomName}}">{{x.classroomName}}</td>
+                        <td>{{x.auditionRecordStatus==0?"已安排":x.auditionRecordStatus==1?"已试听":x.auditionRecordStatus==2?"未到课":x.auditionRecordStatus==3?"已取消":""}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-l">
+            <table style="width:320px;">
+                <thead>
+                    <tr>
+                        <th>学员姓名</th>
+                        <th>联系方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in listenList">
+                        <td title='{{x.potentialCustomer.name}}  {{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}' class="clickText" ng-click="gotoViewStudent(x)">
+                            <span>{{x.potentialCustomer.name}}</span>
+                            <span ng-class="{'1':'icon_male','0':'icon_female'}[x.potentialCustomer.sex]"></span>
+                            <span>{{x.potentialCustomer.nickname?"("+x.potentialCustomer.nickname+")":""}}</span>
+                        </td>
+                        <td>
+                            <span>{{x.potentialCustomer.potentialCustomerParentPhone}}({{x.potentialCustomer.typePhone}})</span>
+                            <span ng-show="x.potentialCustomer.potentialCustomerParentTowPhone || x.potentialCustomer.potentialCustomerParentThreePhone" ng-mouseenter="mouseover(x,$index,$event)" ng-mouseleave="mouseleave($event)" class="icon_more" style="color:#fa575d;margin-left:5px;position: absolute;">
+                                <div class="openPop"  ng-show="$index == showInd">
+                                    <ul class="popContent">
+                                        <li ng-if="x.potentialCustomer.potentialCustomerParentTowPhone">
+                                            <span>{{x.potentialCustomer.potentialCustomerParentTowPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.typeTwoPhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentTowName}}</span>
+                                        </li>
+                                        <li  ng-if="x.potentialCustomer.potentialCustomerParentThreePhone">
+                                            <span>{{x.potentialCustomer.potentialCustomerParentThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.typeThreePhone}}&nbsp;</span>
+                                            <span>{{x.potentialCustomer.potentialCustomerParentThreeName}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-fixed table-fixed-r">
+            <table style="width:200px;">
+                <thead>
+                    <tr>
+                        <th class="textAlignCenter cursor_pointer">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in listenList">
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span ng-if="x.auditionRecordStatus==1"  class="clickText" ng-click="operate(x,2)">标为未到课</span>
+                            <span ng-if="(x.auditionRecordStatus==0 || x.auditionRecordStatus==2)"  class="clickText" ng-click="operate(x,1)">标为已试听</span>
+                            <span ng-if="(x.auditionRecordStatus==0 || x.auditionRecordStatus==2)"  class="clickText" ng-click="operate(x,4)">重新预约</span>
+                            <span ng-if="(x.auditionRecordStatus==0 || x.auditionRecordStatus==2)"  class="clickText" ng-click="operate(x,3)">取消预约</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3"></div>
+    </div>
+</div>

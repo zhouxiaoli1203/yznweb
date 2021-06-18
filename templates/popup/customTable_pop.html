@@ -1,0 +1,27 @@
+<!--预设时间-->
+<div class="popup_ customTable" id="customTable">
+    <h6>自定义显示列<span ng-click="closePopup('customTable')" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content"  style="padding-top:0;">
+        <form class="popup_form" role="form" ng-submit="confirm_sel()">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <ul>
+                        <li ng-repeat="x in list">
+                            <label class="search_checkbox ml15 pull-left" ng-hide="x.fixed">
+                                <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="x.checked" ng-change="checkSingle(x)">{{x.name}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="popup_btn">
+                 <label class="search_checkbox ml15 pull-left">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-checked = "selAll" ng-model="selAll" ng-change="checkboxAll(selAll,list)">全选
+                </label>
+                <button class="btn cancel" ng-click="closePopup('customTable')" type="button">取消</button>
+                <button class="btn sure" type="submit" >确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+

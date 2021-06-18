@@ -1,0 +1,58 @@
+<div class="new_common_title {{ismenuOoen?'':'isclosed_'}}">
+    <div class="back_icon icon_return" ng-click="toStatistics()">待消金额详情</div>
+</div>
+<div class="common_body new_summary_body">
+     <div class="tab_nav">
+        <span ng-click="switchStudNav(1)" ng-class="{tab_nav_show: studNavJud==1}">课时待消</span>
+        <span ng-click="switchStudNav(2)" ng-class="{tab_nav_show: studNavJud==2}">按月待消</span>
+    </div>
+    <div class="common_content organ">
+       
+        <div class="main_content">
+            <div class="common_tab">
+                <ul class="ul_left clearfix">
+                    <li class="ml5">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType" ng-change="chargeType(true)">一对一
+                        </label>
+                    </li>
+                    <li class="ml5">
+                        <label class="search_checkbox">
+                            <input type="checkbox" class="checkbox-inline labelLeft" ng-model="compareType1" ng-change="chargeType(false)">一对多
+                        </label>
+                    </li>
+                    <li class="screen_onreset clickText" ng-click="onReset()">重置</li>
+                    <li class="common_tab_libtn" style="float: right;">
+                        <div class="common_tab_btn" ng-click="export_config()"><i class="icon_shiting"></i>导出数据</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="table-responsivecharge_table">
+            <table class="table" style="margin-bottom:0;">
+                <thead my-id="head" my-thead="{{teacListThead}}" list-clicks="sortCllict0(data)"></thead>
+                <tbody class="demo_tbody" ng-if="tableList.length<=0">
+                    <tr>
+                        <td class="textAlignCenter" colspan="4">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody class="course_tbody" ng-if="tableList">
+                    <tr ng-repeat="x in tableList">
+                        <td>{{x.name}}</td>
+                        <td class="textAlignCenter">{{x.num}}</td>
+                        <td class="textAlignCenter">{{x.giveNum}}</td>
+                        <td class="textAlignCenter">￥{{x.price|number:2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table totalTr" ng-if="tableList.length>0"><tbody>
+                <tr>
+                    <td width="30%">总计</td>
+                    <td width="30%"class="textAlignCenter main_color">{{"num" |_total :tableList}}</td>
+                    <td width="30%"class="textAlignCenter main_color">{{"giveNum" |_total :tableList}}</td>
+                    <td width="30%"class="textAlignCenter main_color">￥{{"price" |_total :tableList|number:2}}</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>

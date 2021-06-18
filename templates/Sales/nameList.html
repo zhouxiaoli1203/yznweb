@@ -1,0 +1,874 @@
+<!--名单详情-->
+<div class="popup_ nameDetail">
+    <h6>名单详情<var class="color_nameState">（{{nameDetail.studentName}}）</var><span ng-click="closeEditPop()" class="popup_x icon_drop_x"></span></h6>
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content" style="height:492px;">
+                <div class="popup_scroll" isScroll="true">
+
+                    <div class="popup_line infos">
+                        <label class="form-label">姓名 :</label>
+                        <span class="col-xs-4 form-span">{{nameDetail.studentName}}<span ng-class="{'1':'icon_male','0':'icon_female'}[nameDetail.sex]"></span><i class="icon_edit" ng-if='!(nameDetail.rosterStatus == "2" || nameDetail.rosterStatus == "4") && isCaozuo' ng-click="openEdit(nameDetail)"></i></span>
+                        <div class="nameOperate" ng-if="nameDetail.rosterStatus !== '2'">
+                            <ul>
+                                <li ng-if='nameDetail.rosterStatus == "4"' ng-click="nameActive(nameDetail)">激活名单</li>
+                                <li ng-if='nameDetail.rosterStatus == "5" && isCaozuo' ng-click="openAppoint(nameDetail)">预约来访</li>
+                                <li ng-if='!(nameDetail.rosterStatus == "2" || nameDetail.rosterStatus == "4") && isZhuanqianke' ng-click="openPotential(nameDetail)">转为潜客</li>
+                                <li ng-if='!(nameDetail.rosterStatus == "2" || nameDetail.rosterStatus == "4") && isCaozuo' ng-click="invalidName(nameDetail)">无效</li>
+                                <li ng-if='nameDetail.rosterStatus == "1"' ng-click="openAppoint(nameDetail)">重新预约</li>
+                                <li ng-if='!(nameDetail.rosterStatus == "2" || nameDetail.rosterStatus == "4") && isCaozuo' ng-click="openDelay(nameDetail)">延期处理<span ng-if="nameDetail.delayTotal">({{nameDetail.delayTotal}})</span></li>
+                                <li ng-if='(nameDetail.rosterStatus == "0" || nameDetail.rosterStatus == "3" || nameDetail.rosterStatus == "5") && isCaozuo' ng-click="noAnswer(nameDetail)">未接听</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="popup_line infos">
+                        <label class="form-label">年龄 :</label>
+                        <span class="col-xs-6 form-span">{{caclBirthToAge(nameDetail.age, nameDetail.birthday)}}</span>
+                    </div>
+                     <div class="popup_line infos">
+                        <label class="form-label">家长 :</label>
+                        <span class="col-xs-6 form-span">{{nameDetail.userName}}</span>
+                    </div>
+                     <div class="popup_line infos">
+                        <label class="form-label">联系方式 :</label>
+                        <span class="col-xs-2 form-span">{{nameDetail.userPhone}}</span>
+                    </div>
+                    <div class="popup_line  infos">
+                        <label class="form-label">备注 :</label>
+                        <span class="col-xs-10 form-span">{{nameDetail.rosterDesc}}</span>
+                    </div>
+                    <div class="parting_line_2"></div>
+                    <div class="popup_line record">
+                        <ul>
+                            <li ng-repeat="x in recordList">
+                                <div class="col-xs-2 textAlignRt">
+                                    <div class="time">{{x.rosterRecordDate | yznDate :'yyyy-MM-dd HH:mm'}}</div>
+                                    <div class="marginTop_m7">操作人 : <span class="person_name">{{x.teacherName}}</span></div>
+                                </div>
+                                <div class="col-xs-1 icon_circel"><span></span></div>
+                                <div class="col-xs-8 textAlignLf">
+                                    <div class="oprate_name">{{x.opreate}}</div>
+                                    <div class="oprate_to marginTop_m7">
+                                        <span class="name">{{x.opreateDesc[0]}}</span>
+                                        <span ng-if="x.opreateDesc[0]">&nbsp;:&nbsp;</span>
+                                        <span class="data">{{x.opreateDesc[1]}}</span>
+                                        <span ng-if="x.rosterRecordType == '0' || x.rosterRecordType == '5' || x.rosterRecordType == '7'">&nbsp;&nbsp;{{x.opreateDesc[2]}} <span class="data">{{x.opreateDesc[3]}}</span></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--无效名单-->
+<div class="popup_ invalidName_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label">无效原因:</label>
+                        <div class="col-xs-10 radios lineHeight28">
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName1" ng-model="invalid" value="0"/>暂无意向
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName2" ng-model="invalid" value="5"/>不适龄
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName3" ng-model="invalid" value="4"/>无人接听
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName4" ng-model="invalid" value="2"/>空号码
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName5" ng-model="invalid" value="3"/>错误信息
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="reason" id="invalidName6" ng-model="invalid" value="1"/>其他
+							</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" ng-click="invalidName_confirm()" type=" ">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--转为潜客-->
+<div class="popup_ potential_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="potential_confirm()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">姓名:</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" ng-model="potentialData.studentName" autocomplete="off" placeholder="学员姓名" maxlength="12" required>
+                        </div>
+                        <label class="form-label required">主要联系人:</label>
+                        <div class="col-xs-4 popup_rt">
+                            <div class="parent potential">
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="Relation_relation">
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="Relation_phone" required ng-blur="phoneBlur()">
+                                </div>
+                                <!--<div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="Relation_name">
+                                </div>-->
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">性别:</label>
+                        <div class="col-xs-4" style="line-height:28px;">
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="gender" ng-model="studentGend" value="0"/>女
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="gender"  ng-model="studentGend" value="1"/>男
+							</label>
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" name="gender"  ng-model="studentGend" value="2"/>未知
+							</label>
+                        </div>
+                        <label class="form-label">备用联系人:</label>
+                        <div class="col-xs-4 popup_rt" >
+                            <div class="parent potential list">
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="addParentList[0].relation" ng-required="addParentList[0].phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="addParentList[0].phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <!--<label class="form-label">年龄:</label>
+                        <div class="col-xs-4" id="addPotential">
+                            <input class="form-control age" type="text" yzn-filter="age" ng-model="detail.age" autocomplete="off" placeholder="年龄"  style="width:45px;">
+                            <span class="month" ng-show="hasMonth" style="margin-top:0px;">{{detail.studentMonth}}</span>
+                            <input class="form-control birthday dateIcon studentBirth" type="text" ng-model="detail.birthday" autocomplete="off" placeholder="生日" style="width:110px;">
+                        </div>-->
+                        <label class="form-label">生日/年龄:</label>
+                        <div class="col-xs-4">
+                            <select name="relation" ng-model="ageType" class="form-control" style="width:75px;float:left;">
+                                <option value="" disabled="false">选择类型</option>
+                                <option value="1">生日</option>
+                                <option value="2">年龄</option>
+                            </select>
+                            <div  ng-show="ageType == 2" style="float:left;margin-left: 0px;">
+                                <input type="text" style="width:135px;"  class="form-control" name="detail.age" yzn-filter="age" placeholder="年龄" maxlength="2" ng-model="detail.age"/>
+                            </div>
+                            <input type="text" style="width:135px;" ng-show="ageType == 1" class="form-control dateIcon studentBirth" name="date" placeholder="生日" ng-model="detail.birthday"/>
+                        </div>
+                        <label class="form-label"></label>
+                        <div class="col-xs-4 popup_rt" >
+                            <div class="parent potential list">
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="addParentList[1].relation" ng-required="addParentList[1].phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="addParentList[1].phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="borderTop"></div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label labelLeft required">家长:</label>
+                        <div class="col-xs-10" style="width:620px;">
+                            <div class="col-xs-12 parent" ng-repeat="x in addParentList track by $index">
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11" type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="x.phone">
+                                </div>
+                                 <div class="relation">
+                                    <select class="form-control" style="width:100%;" ng-model="x.relation">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="name">
+                                    <input class="form-control" type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="x.name">
+                                </div>
+
+
+                                <i class="x_" ng-show="addParentList.length>=2" ng-click="deleteRelation($event,$index)"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-2"></label>
+                        <div class="col-xs-2">
+                            <div class="addParent icon_name_add" ng-click="addParent()">增加家长信息</div>
+                        </div>
+                    </div>-->
+                    <!--<div class="parting_line"></div>-->
+                    <!--<div class="popup_line">
+                        <label class="form-label required">主要联系人:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <div class="parent">
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="Relation_phone" required ng-blur="phoneBlur()">
+                                </div>
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="Relation_relation">
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="Relation_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div class="popup_line" ng-if="addParentList.length>0">
+                        <label class="form-label">其他联系人:</label>
+                        <div class="col-xs-10 popup_rt">
+                            <div class="parent list" ng-repeat="x in addParentList track by $index">
+                                <div class="phone">
+                                    <input class="form-control" yzn-filter="phone" max-length="11"  type="text" autocomplete="off" placeholder="手机号" maxlength="11" ng-model="x.phone">
+                                </div>
+                                <div class="relation">
+                                    <select class="form-control"  ng-model="x.relation" ng-required="x.phone">
+                                        <option value="">选择关系</option>
+                                        <option value="{{x.value}}" ng-repeat="x in relationList">{{x.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="name">
+                                    <input class="form-control"  type="text" autocomplete="off" placeholder="家长姓名" maxlength="12" ng-model="x.name">
+                                </div>
+
+                                <i class="x_" ng-show="addParentList.length>=1" ng-click="deleteRelation($event,$index)"></i>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div class="popup_line">
+                        <label class="form-label"></label>
+                        <div class="col-xs-3">
+                            <div class="addParent icon_name_add" ng-click="addParent()">添加家长信息</div>
+                        </div>
+                    </div>-->
+                    <div class="parting_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label">昵称:</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" ng-model="studentNickName" autocomplete="off" placeholder="学员昵称" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">选择校区:</label>
+                        <div class="col-xs-4">
+                            <select class="form-control" style="width:100%;" ng-model="potentialData.subscribeShopId" ng-change="changeShop(potentialData.subscribeShopId)" required>
+								<option value="">请选择校区</option>
+								<option value="{{x.shop.shopId}}" ng-repeat="x in shopListByShopId">{{x.shop.shopName}}</option>
+							</select>
+                        </div>
+                        <label class="form-label">意向度:</label>
+                        <div class="col-xs-3 intent" style="width:135px;">
+                            <label class="checkbox-inline labelLeft">
+								<input type="radio" class="low" name="intent"  ng-model="studentIntent" value="1" ng-click="intentShow(studentIntent)"/>
+							</label>
+                            <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+								<input type="radio" class="middle" name="intent"  ng-model="studentIntent" value="2" ng-click="intentShow(studentIntent)"/>
+							</label>
+                            <label class="checkbox-inline labelLeft" style="margin-left:10px;">
+								<input type="radio" class="high" name="intent"  ng-model="studentIntent" value="3" ng-click="intentShow(studentIntent)"/>
+							</label>
+                        </div>
+                        <div class="col-xs-2 intent_tips" ng-show="studentIntent"><i></i>{{tip_text}}</div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">顾问:</label>
+                        <div class="col-xs-4">
+                            <select class="form-control" style="width:100%;" ng-model="adviser">
+								<option value="">请选择顾问</option>
+								<option value="{{x.shopTeacherId}}" ng-repeat="x in adviserList">{{x.userName}}&nbsp;<a class="adviserNum">({{x.potentialCustomerTotal}})</a></option>
+							</select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{potentialData.rosterDesc?potentialData.rosterDesc.length:0}}/500</span>
+                            <textarea class="form-control fixedTextareaWidth" cols="30" rows="3" ng-model="potentialData.rosterDesc" maxlength="500" placeholder="意向或者其他备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn ">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type=" ">确定</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--激活名单-->
+<div class="popup_ activeName_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="activeName_confirm()">
+                <div class="popup_form_content">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label">激活原因:</label>
+                        <div class="col-xs-9">
+                            <span class="input_words" >{{activeName?activeName.length:0}}/100</span>
+                            <textarea class="form-control fixedTextareaWidth" cols="30" rows="3" ng-model="activeName" maxlength="100" placeholder="请输入激活原因"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn ">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type=" ">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--延期处理-->
+<div class="popup_ delay_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="delay_confirm(listData)">
+                <div class="popup_form_content">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">延期:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control dateIcon" style="width:100%;" id="currenTime" ng-model="currenTime" type="text" autocomplete="off" placeholder="请选择操作时间" required  >
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">更新备注:</label>
+                        <div class="col-xs-8">
+                            <span class="input_words" >{{delayDesc?delayDesc.length:0}}/500</span>
+                            <textarea class="form-control fixedTextareaWidth" cols="30" rows="3" ng-model="delayDesc" maxlength="500" placeholder="备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn ">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type=" ">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--操作记录-->
+<div class="popup_ record_pop" id="record_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content" style="max-height:470px;">
+                     <div class="popup_scroll" isScroll="true">
+                    <!-- 内容区 -->
+                    <ul>
+                        <li ng-repeat="x in recordList">
+                            <div class="col-xs-3 textAlignRt">
+                                <div class="time">{{x.rosterRecordDate | yznDate :'yyyy-MM-dd HH:mm'}}</div>
+                                <div class="marginTop_m7">操作人 : <span class="person_name">{{x.teacherName}}</span></div>
+                            </div>
+                            <div class="col-xs-1 icon_circel"><span></span></div>
+                            <div class="col-xs-8 textAlignLf">
+                                <div class="oprate_name">{{x.opreate}}</div>
+                                <div class="oprate_to marginTop_m7">
+                                    <span class="name">{{x.opreateDesc[0]}}</span>
+                                    <span ng-if="x.opreateDesc[0]">&nbsp;:&nbsp;</span>
+                                    <span class="data">{{x.opreateDesc[1]}}</span>
+                                    <span ng-if="x.rosterRecordType == '0' || x.rosterRecordType == '5' || x.rosterRecordType == '7'">&nbsp;&nbsp;{{x.opreateDesc[2]}} <span class="data">{{x.opreateDesc[3]}}</span></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--编辑名单-->
+<div class="popup_ editName_pop">
+    <!--<div class="shade_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="edit_confirm()">
+                <div class="popup_form_content">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label">姓名:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control" type="text" ng-model="detailData.studentName" autocomplete="off" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">性别:</label>
+                        <div class="col-xs-6 lineHeight28">
+                            <label class="checkbox-inline labelLeft" style="padding-top:0;">
+                                <input type="radio" name="gender" ng-model="detailData.sex" value="0"/>女
+                            </label>
+                            <label class="checkbox-inline labelLeft" style="padding-top:0;">
+                                <input type="radio" name="gender" ng-model="detailData.sex" value="1"/>男
+                            </label>
+                            <label class="checkbox-inline labelLeft" style="padding-top:0;">
+                                <input type="radio" name="gender" ng-model="detailData.sex" value="2"/>未知
+                            </label>
+                        </div>
+                    </div>
+                    <div class="popup_line" id="addPotential">
+                        <label class="form-label">年龄:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control age" type="text" yzn-filter="age" ng-model="detail.age" autocomplete="off" placeholder="年龄"  style="width:75px;">
+                            <span class="month" ng-show="hasMonth" style="margin-top:0px;">{{detail.studentMonth}}</span>
+                            <input class="form-control birthday dateIcon studentBirth" type="text" ng-model="detail.birthday" autocomplete="off" placeholder="生日" style="width:110px;">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">家长:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control" type="text" ng-model="detailData.userName" autocomplete="off" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">联系方式:</label>
+                        <div class="col-xs-6">
+                            <input class="form-control" type="text" yzn-filter="phone" max-length="11" ng-model="detailData.userPhone" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">备注:</label>
+                        <div class="col-xs-10">
+                            <span class="input_words" >{{detailData.rosterDesc?detailData.rosterDesc.length:0}}/500</span>
+                            <textarea class="form-control" name="" rows="3" cols="" maxlength="500" ng-model="detailData.rosterDesc"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="popup_btn ">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type=" ">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--预约来访-->
+<div class="popup_ apppoint_pop">
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="apppoint_confirm()">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="true">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">选择校区:</label>
+                        <div class="col-xs-8">
+                            <!--<select class="form-control" style="width:100%;" ng-model="shopId" required>
+								<option value="">请选择校区</option>
+								<option value="{{x.shop.shopId}}" ng-repeat="x in shopListByShopId">{{x.shop.shopName}}</option>
+							</select>-->
+							 <div class="drop_select screen_no">
+                                <i class="drop_select_icon"></i>
+                                <my-select my-id="school_" list-name="请选择校区" list-data="{{shopListByShopId}}" list-field="shop.shopName" list-click="sel_school(n)"  list-search="true" list-all="no" list-type="2"></my-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label required">预约时间:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control dateIcon" style="width:100%;" id="apppointTime" ng-model="apppointTime" type="text" autocomplete="off" placeholder="请选择操作时间" required >
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">更新备注:</label>
+                        <div class="col-xs-8">
+                            <span class="input_words" >{{apppointDesc?apppointDesc.length:0}}/500</span>
+                            <textarea class="form-control fixedTextareaWidth" cols="30" rows="3" ng-model="apppointDesc" maxlength="500" placeholder="备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" ng-click="closePop()" type="button">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+                </div>
+            </form>
+        </div>
+</div>
+<!--分配名单-->
+<div class="popup_ destribute_pop">
+    <!--<div class="popup_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form" ng-submit="destribute_confirm()">
+                <div class="popup_form_content">
+                    <!-- 内容区 -->
+                    <div class="popup_line">
+                        <label class="form-label required">来源销售:</label>
+                        <div class="col-xs-10" ng-show="selectIsEmpty" style="padding-top:3px;">
+                            <span class="add_sale_source icon_name_add" ng-click="add_sale_sourceBtn(true)">请添加来源销售</span>
+                        </div>
+                        <div class="col-xs-10 lineHeight28" ng-show="!selectIsEmpty" style="padding-top:2px;">
+                            <span>{{saleSingle.teacherName}}<span style="color:#f5565b;">({{saleSingle.allTotal}}人)</span></span>
+                            <span class="change clickText" ng-click="add_sale_sourceBtn(true)">更改</span>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">来源渠道:</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" ng-model="type" ng-change="resourceChange2(type)">
+								<option value="">请选择来源渠道</option>
+								<option value="{{x}}" ng-repeat="x in channelTypeList" ng-hide="x.status == 0">{{x.channelTypeName}}</option>
+							</select>
+                        </div>
+                        <div class="col-xs-5">
+                            <select class="form-control" ng-model="channel2" ng-show="hasType" ng-change="channelChange2(channel2)">
+							    <option value="">请选择来源</option>
+								<option value="{{x.id}}" ng-repeat="x in channelList2">{{x.channelName}}</option>
+							</select>
+                        </div>
+                    </div>
+                    <div class="popup_line">
+                        <label class="form-label">名单状态:</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" ng-model="destri_status" ng-change="changeStatus(destri_status)">
+								<option value="">请选择名单状态</option>
+								<option value="0">待处理</option>
+								<option value="3">延期</option>
+								<option value="5">未接听</option>
+							</select>
+                        </div>
+                    </div>
+                    <div class="parting_line"></div>
+                    <div class="popup_line">
+                        <label class="form-label required">分配销售:</label>
+                        <div class="col-xs-10 sales">
+                            <div class="salesList col-xs-12" ng-repeat="x in salesList track by $index">
+                                <div class="col-xs-6"><span class="name" title="{{x.teacherName}}">{{x.teacherName}}</span><span class="number">({{x.allTotal}}人)</span></div>
+                                <div class="col-xs-3">
+                                    <input class="form-control" ng-model="x.number" type="text" yzn-filter="num" placeholder="请输入分配数量" ng-keyup="watchSaleNum($event,$index)" required/>
+                                </div>
+                                <div class="col-xs-1" ng-click="deleteSales($index)"><i class="x_"></i></div>
+                            </div>
+                            <span class="add_list_source icon_name_add" ng-click="add_sale_sourceBtn(false)" style="padding-top:3px;">请添加分配销售</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" type="button" ng-click="closePop()">取消</button>
+                    <button class="btn sure" type="submit">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<!--重复导入名单确认信息-->
+<div class="popup_ reUpload">
+    <!--closePopup方法为公共的关闭弹窗的方法，参数填需要关闭的id名-->
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line reuploadMsg">
+                        所选导入名单中有<span class="main_color"> {{reRecordNum}} </span>条重复记录，是否继续操作？
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closeReDialog()" type="button">取消</button>
+                <button class="btn sure" ng-click="deleteReupload()" type="button">去重导入</button>
+                <button class="btn sure" ng-click="reupload()" type="button">重复导入</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!--选择销售-->
+<div class="popup_ selectSale_pop">
+    <!--<div class="popup_body">-->
+        <div class="popup_content">
+            <form class="popup_form" role="form">
+                <div class="popup_form_content">
+                    <div class="popup_scroll" isScroll="false">
+                    <!-- 内容区 -->
+                    <table class="table normal" ng-show="selectOneSale">
+                        <!--<thead>
+							<tr>
+								<th ng-show="selectOneSale"></th>
+								<th>销售</th>
+								<th>待处理</th>
+								<th>延期</th>
+								<th>未接听</th>
+							</tr>
+						</thead>-->
+                        <thead my-thead="{{saleThead}}" list-clicks="sale_sortCllict(data)"></thead>
+                        <tbody class="demo_tbody" ng-if="telemarketingList==''">
+                            <tr>
+                                <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="demo_tbody sales" ng-if="telemarketingList">
+                            <tr ng-repeat="x in telemarketingList" ng-click="selectSale($event)">
+                                <td style="width:52px;"><input type="radio" class="selectSale" name="sale" data-sale="{{x}}" /></td>
+                                <td>{{x.teacherName}}</td>
+                                <td>{{x.untreatedCount}}</td>
+                                <td>{{x.delayCount}}</td>
+                                <td>{{x.noAnswerTotal}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table normal" ng-show="!selectOneSale">
+                        <!--<thead>
+							<tr>
+								<th ng-click="selectSalesAll($event)"><input type="checkbox"/></th>
+								<th>销售</th>
+								<th>待处理</th>
+								<th>延期</th>
+								<th>未接听</th>
+							</tr>
+						</thead>-->
+                        <thead my-thead="{{salesThead}}" che-clicks="checkboxClick($event)" list-clicks="sales_sortCllict(data)"></thead>
+                        <tbody class="demo_tbody" ng-if="telemarketingLists==''">
+                            <tr>
+                                <td class="textAlignCenter" colspan="5">没有相关数据</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="demo_tbody sales" ng-if="telemarketingLists">
+                            <tr ng-repeat="x in telemarketingLists track by $index" ng-click="selectSales($event)">
+                                <td style="text-align: center;width:52px;"><input class="selectSales" type="checkbox" data-sales="{{x}}" /></td>
+                                <td>{{x.teacherName}}</td>
+                                <td>{{x.untreatedCount}}</td>
+                                <td>{{x.delayCount}}</td>
+                                <td>{{x.noAnswerTotal}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="popup_btn">
+                    <button class="btn cancel" type="button" ng-click="closeSale()">取消</button>
+                    <button class="btn sure" type="submit" ng-click="confrimSale()">确定</button>
+                </div>
+            </form>
+        </div>
+    <!--</div>-->
+</div>
+<div class="common_body">
+    <div class="common_tab namelist">
+        <ul class="ul_left clearfix">
+            <li>
+                <kindsearch class="vagueSearch" list-clicks="SearchData(n)" list-keyup="Enterkeyup(n)" list-data="{{kindSearchData}}" select-name="{{selectInfoNameId}}" select-input="false"></kindsearch>
+            </li>
+            <li>
+                <input type="text" class="form-control dateIcon" id="searchTime" size="30" ng-model="searchTime" value="" placeholder="请选择录入时间"  autocomplete="off" >
+            </li>
+            <li class="common_tab_libtn drop">
+                <div class="common_tab_btn fontRed_BgWhite" data-toggle="dropdown">
+                    <i class="icon_more">更多</i>
+                </div>
+                <div class="dropdown-menu drop-list">
+                    <span class="mark"></span>
+                    <ul>
+                        <li ng-click="goCommonPop('import-pop','import_popup','860px',{page:'名单'})" ng-if="isDaoru">导入名单</li>
+                        <li ng-click="export_config()" ng-if="isDaochu">导出名单</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="common_tab_libtn" style="margin-bottom: 10px;">
+                <div class="common_tab_btn" ng-click="distributeList()" ng-if="isFenpei"><i class="icon_import icon_destri_name"></i>名单分配</div>
+            </li>
+            <li class="common_tab_libtn" style="margin-bottom: 10px;">
+                <div class="common_tab_btn" ng-click="groundPush(1)"><i class="icon_normalSet"></i>地推设置</div>
+            </li>
+        </ul>
+        <ul class="ul_left clearfix">
+            <li>
+                <my-select list-name="状态" list-data="{{pendingList}}" list-field="name" list-click="searchByPending(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-if="isApppoint">
+                <my-select list-name="校区" list-data="{{shopList}}" list-field="shop.shopName" list-click="searchByStore(n)" list-search="true" list-sort="true"></my-select>
+            </li>
+            <li ng-if="isApppoint">
+                <my-select list-name="到访状态" list-data="{{apppointStatus}}" list-field="name" list-click="searchByStatus(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-if="isPotential">
+                <my-select list-name="潜客状态" list-data="{{potentialStatus}}" list-field="name" list-click="searchByStatus(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-if="isInvalid">
+                <my-select list-name="无效原因" list-data="{{invalidStatus}}" list-field="name" list-click="searchByStatus(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-show="isAllname">
+                <my-select list-name="销售" list-data="{{telemarketerList}}" list-field="teacherName" list-click="searchBySales(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="采单员" list-data="{{marketerList}}" list-field="teacherName" list-click="searchByMarketer(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <my-select list-name="来源渠道" list-data="{{channelTypeList}}" list-field="channelTypeName" list-click="searchByChannelType(n)" list-search="false" list-sort="false"></my-select>
+            </li>
+            <li ng-show="hasSecondType">
+                <my-select list-name="来源" list-data="{{channelList}}" list-field="channelName" list-click="searchByChannel(n)" list-search="true" list-sort="false"></my-select>
+            </li>
+            <li>
+                <label class="search_checkbox">
+                    <input type="checkbox"  class="checkbox-inline labelLeft" ng-model="potential_channel" ng-change="changeChannel()">无渠道
+                </label>
+            </li>
+            <li>
+                <button class="common_tab_reset clickText" ng-click="onReset()">重置</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="common_content">
+        <div class="table-responsivecharge_table">
+            <table class="table table-hover">
+                <thead my-thead="{{nameListThead}}" list-clicks="sortCllict(data)"></thead>
+                <tbody class="demo_tbody" ng-if="rosterList==''">
+                    <tr>
+                        <td class="textAlignCenter" colspan="9">没有相关数据</td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="rosterList">
+                    <tr ng-repeat="x in rosterList">
+                        <!--0 待处理 1 预约 2 已转潜客 3 延期 4 无效 5 未接听-->
+
+                        <td class="clickText" ng-click="gotoNameDetail(x)">{{x.studentName}}<span ng-class="{'1':'icon_male','0':'icon_female'}[x.sex]"></span></td>
+                        <td>{{x.userName}}</td>
+                        <td>{{x.userPhone}}</td>
+                        <td class="remarks overflow-normal">
+                            <remark-view view-data="{{x.rosterDesc}}"></remark-view>
+                            <remark-edit edit-id="{{x.rosterId}}" edit-title="备注" edit-text="{{x.rosterDesc}}" edit-length="500" edit-otext="{{x.rosterDesc}}" edit-click="editRemark(n)" ng-if="!fromOrgn"></remark-edit>
+                        </td>
+                        <td>{{x.teacherName}}</td>
+                        <td>{{x.marketerName}}</td>
+                        <td ng-if='x.rosterStatus == "1" || x.rosterStatus == "3"'>
+                            <span ng-if="isAllStatus">{{x.rosterChangeDate.slice(0,10)}}</span>
+                            <span ng-if="!isAllStatus">{{x.workTime.slice(0,10)}}</span>
+                            <span ng-if="x.rosterStatus == '1' && (!isAllStatus)" title="{{x.subscribeShopName}}">&nbsp;&nbsp;{{x.subscribeShopName}}</span>
+                        </td>
+                        <td ng-if='!(x.rosterStatus == "1" || x.rosterStatus == "3")'>{{x.rosterChangeDate.slice(0,10)}}</td>
+                        <td>{{x.nameStatus}}
+                            <span ng-class='{"0":"status_red","1":"status_green"}[x.specialStatus]' ng-if='x.rosterStatus == "1"'>({{x.specialStatusText}})</span>
+                            <span ng-if="x.rosterStatus == '2'">({{x.specialStatusText}})</span>
+                            <span ng-class='{"0":"status_red","1":"status_green"}[x.workType]' ng-if='x.rosterStatus == "3"'>({{x.specialStatusText}})</span>
+                            <span ng-if="x.rosterStatus == '4'">({{x.specialStatusText}})</span>
+                        </td>
+                        <td class="operate overflow-normal textAlignCenter">
+                            <span class="clickText" ng-click="nameActive(x)" ng-if='x.rosterStatus == "4" && isCaozuo'>激活名单</span>
+                            <span class="clickText" ng-if='(x.rosterStatus == "2" || x.rosterStatus == "4") && isCaozuo' ng-click="openOpreat(x)">操作记录</span>
+                            <!--<span class="clickText" ng-click="invalidName(x)" ng-if='!(x.rosterStatus == "2" || x.rosterStatus == "4")'>无效</span>-->
+                            <btn-floatlay class="clickText" view-data="未接听" view-click="noAnswer(x)" view-num="{{x.noAnswerTotal}}" ng-if='(x.rosterStatus == "0" || x.rosterStatus == "3" || x.rosterStatus == "5") && isCaozuo'></btn-floatlay>
+                            <btn-floatlay class="clickText" view-data="延期处理" view-num="{{x.delayTotal}}" view-click="openDelay(x)" ng-if='!(x.rosterStatus == "2" || x.rosterStatus == "4")&&isCaozuo'></btn-floatlay>
+                            <span class="clickText" ng-if='x.rosterStatus == "1" && isCaozuo' ng-click="openAppoint(x)">重新预约</span>
+                            <btn-drop ng-if="(isCaozuo || isZhuanqianke) && x.dropData.length>0 && x.rosterStatus !=2" class="clickText" drop-title="更多" drop-list="{{x.dropData}}" drop-id="{{x}}" drop-status="{{x.rosterStatus}}" drop-mouseenter="drop_mouseEnter(x)" drop-click="openPop(m)" ng-if='!(x.rosterStatus == "2" || x.rosterStatus == "4")'></btn-drop>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <div class="pagitionDiv">
+        <div class="M-box3-total">
+            共计{{totalNum}}条数据
+        </div>
+        <div class="M-box3"></div>
+    </div>
+
+</div>
+
+<!--地推设置-->
+<div class="popup_" id="ground_push">
+    <div class="popup_content">
+        <form class="popup_form" role="form" ng-submit="groundPush(5)">
+            <div class="popup_form_content">
+                <div class="popup_scroll" isScroll="false">
+                    <div class="popup_line" style="margin-left: -32px;">
+                        <label class="form-label">报名设置:</label>
+                        <div class="col-xs-8 padLeftNone">
+                            <label class="form-label required">学员姓名:</label>
+                            <label class="form-label required">联系电话:</label>
+                            <label class="form-label required">学员年龄:</label>
+                        </div>
+                    </div>
+                    <div class="popup_line" style="margin-left: -32px;">
+                        <label class="form-label"></label>
+                        <div class="col-xs-10">
+                            <label class="search_checkbox">
+                                <input type="checkbox" ng-click="groundPush(6, $event)" ng-checked="groundPushInfo.verificationCodeStatus == 1" class="checkbox-inline labelLeft" ng-disabled="groundPushMsg.smsNum <= 0">短信验证码
+                            </label>
+                            <span class="floLeft">（当前短信剩余{{groundPushInfo.smsNum}}条，当短信不足时用户将无法获取验证码提交信息）</span>
+                            <span class="clickText" ng-click="groundPush(2)">前往充值</span>
+                        </div>
+                    </div>
+                    <div class="parting_solidline popup_line"></div>
+                    <div class="popup_line" style="margin-left: -32px;">
+                        <span class="rollcall_head_name" style="margin: 0 0 0 33px;">地推二维码</span>
+                    </div>
+                    <div class="popup_table">
+                        <table class="table normal"  style="margin-bottom:0;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">采单员</th>
+                                    <th style="text-align: center;">专属二维码</th>
+                                </tr>
+                            </thead>
+                            <tbody class="demo_tbody">
+                                <tr ng-repeat="x in groundPushInfo.list">
+                                    <td style="text-align: center;">{{x.teacherName}}</td>
+                                    <td style="text-align: center;"> <span class="clickText" ng-click="groundPush(3, x)">查看二维码</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_btn">
+                <button class="btn cancel" ng-click="closePopup()" type="button">取消</button>
+                <button class="btn sure" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup_ ground_push_code">
+    <div class="popup_content">
+        <form class="popup_form" role="form">
+            <div class="popup_form_content">
+                <div class="popup_scroll">
+                    <div class="popup_line">
+                        <div id="ground_push_code" style="width: 290px; height: 290px; margin: 0 auto;"></div>
+                    </div>
+                    <div class="popup_line">
+                        <div style="width: 82px; height: 30px; margin: 0 auto; background-color: #ff595e; color: #fff; text-align: center; line-height: 30px; cursor: pointer;" ng-click="groundPush(4)">下载图片</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
